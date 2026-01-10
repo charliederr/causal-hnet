@@ -1,0 +1,2 @@
+# on GNU/linuxen
+export CLAUDE_CONFIG_DIR=/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/
