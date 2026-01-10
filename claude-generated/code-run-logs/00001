@@ -1,0 +1,182 @@
+(jax12) ni@singbuntu24:~/repos/h/causal-hnet/claude-generated$ python causal_attention_multihead.py --n_heads 4 --n_clusters 16 --template_steps 100
+================================================================================
+CAUSAL MULTI-HEAD ATTENTION WITH LEARNABLE TEMPLATES
+================================================================================
+JAX backend: gpu
+JAX devices: [CudaDevice(id=0)]
+
+Total tokens: 208455
+Vocabulary size: 4258
+
+Building word embeddings...
+Building co-occurrence edges...
+Directional edges: 282654
+
+Learning template prototypes (100 steps)...
+  step 1/100  loss=-114.9849  entropy=2.771
+  step 20/100  loss=-115.0273  entropy=2.770
+  step 40/100  loss=-115.1683  entropy=2.769
+  step 60/100  loss=-115.4508  entropy=2.765
+  step 80/100  loss=-115.8875  entropy=2.760
+  step 100/100  loss=-116.4688  entropy=2.753
+
+--------------------------------------------------------------------------------
+TOP CLUSTER->CLUSTER DIRECTIONAL COUPLINGS (J_pmi)
+--------------------------------------------------------------------------------
+c02 -> c03   J_pmi=1.443
+c00 -> c03   J_pmi=1.433
+c09 -> c03   J_pmi=1.407
+c04 -> c03   J_pmi=1.405
+c10 -> c03   J_pmi=1.392
+c01 -> c03   J_pmi=1.391
+c02 -> c06   J_pmi=1.388
+c00 -> c06   J_pmi=1.378
+c02 -> c14   J_pmi=1.378
+c05 -> c03   J_pmi=1.374
+c00 -> c14   J_pmi=1.367
+c09 -> c06   J_pmi=1.352
+c04 -> c06   J_pmi=1.351
+c09 -> c14   J_pmi=1.342
+c04 -> c14   J_pmi=1.341
+c10 -> c06   J_pmi=1.338
+
+--------------------------------------------------------------------------------
+MULTI-HEAD ATTENTION ANALYSIS (4 heads)
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+TEMPLATE->TEMPLATE ATTENTION FLOWS (combined)
+--------------------------------------------------------------------------------
+Template 03 -> Template 06   flow=1.8629   J_pmi=-0.484   W_psi=0.709
+Template 06 -> Template 03   flow=1.8470   J_pmi=-0.459   W_psi=0.709
+Template 03 -> Template 11   flow=1.7580   J_pmi=-0.569   W_psi=0.690
+Template 03 -> Template 14   flow=1.7572   J_pmi=-0.493   W_psi=0.736
+Template 11 -> Template 03   flow=1.7521   J_pmi=-0.359   W_psi=0.690
+Template 14 -> Template 03   flow=1.7494   J_pmi=-0.379   W_psi=0.736
+Template 11 -> Template 06   flow=1.7051   J_pmi=-0.413   W_psi=0.594
+Template 14 -> Template 06   flow=1.7025   J_pmi=-0.431   W_psi=0.665
+Template 06 -> Template 11   flow=1.6962   J_pmi=-0.599   W_psi=0.594
+Template 06 -> Template 14   flow=1.6957   J_pmi=-0.521   W_psi=0.665
+Template 03 -> Template 08   flow=1.6599   J_pmi=-0.599   W_psi=0.473
+Template 08 -> Template 03   flow=1.6520   J_pmi=-0.482   W_psi=0.473
+Template 03 -> Template 07   flow=1.6437   J_pmi=-0.619   W_psi=0.627
+Template 07 -> Template 03   flow=1.6181   J_pmi=-0.423   W_psi=0.627
+Template 03 -> Template 12   flow=1.6124   J_pmi=-0.641   W_psi=0.615
+Template 11 -> Template 14   flow=1.6082   J_pmi=-0.421   W_psi=0.665
+
+-- Head 0 top flows --
+  t03 -> t06   flow=1.8887
+  t06 -> t03   flow=1.8784
+  t03 -> t11   flow=1.7824
+  t11 -> t03   flow=1.7806
+  t03 -> t14   flow=1.7791
+  t14 -> t03   flow=1.7773
+  t11 -> t06   flow=1.7276
+  t14 -> t06   flow=1.7247
+
+-- Head 1 top flows --
+  t03 -> t06   flow=1.8426
+  t06 -> t03   flow=1.8240
+  t03 -> t14   flow=1.7395
+  t03 -> t11   flow=1.7385
+  t11 -> t03   flow=1.7303
+  t14 -> t03   flow=1.7285
+  t11 -> t06   flow=1.6874
+  t14 -> t06   flow=1.6856
+
+-- Head 2 top flows --
+  t03 -> t06   flow=1.8795
+  t06 -> t03   flow=1.8647
+  t03 -> t11   flow=1.7731
+  t03 -> t14   flow=1.7717
+  t11 -> t03   flow=1.7690
+  t14 -> t03   flow=1.7659
+  t11 -> t06   flow=1.7196
+  t14 -> t06   flow=1.7167
+
+-- Head 3 top flows --
+  t03 -> t06   flow=1.8410
+  t06 -> t03   flow=1.8209
+  t03 -> t14   flow=1.7385
+  t03 -> t11   flow=1.7382
+  t11 -> t03   flow=1.7285
+  t14 -> t03   flow=1.7260
+  t11 -> t06   flow=1.6857
+  t14 -> t06   flow=1.6833
+
+--------------------------------------------------------------------------------
+TOP 50 TOKEN->TOKEN LINKS (IDF-weighted)
+--------------------------------------------------------------------------------
+[seg 3] LOCAL  exceeding      -> is;             score=3.1266  attn=0.0276  idf=(10.56,10.74)  dist=54
+[seg 3] LOCAL  requires       -> resembling      score=3.1060  attn=0.0249  idf=(11.10,11.25)  dist=56
+[seg 5] LOCAL  state          -> august          score=3.0302  attn=0.0248  idf=(10.85,11.25)  dist=18
+[seg 5] LOCAL  blood.         -> strikes         score=3.0121  attn=0.0241  idf=(11.10,11.25)  dist=13
+[seg 5] LOCAL  blood.         -> hue,            score=2.9948  attn=0.0243  idf=(11.10,11.10)  dist=15
+[seg 5] LOCAL  blood.         -> lurks           score=2.9932  attn=0.0246  idf=(11.10,10.96)  dist=25
+[seg 3] LOCAL  civilized      -> is;             score=2.9634  attn=0.0265  idf=(10.40,10.74)  dist=58
+[seg 5] LOCAL  daily          -> august          score=2.9603  attn=0.0240  idf=(10.96,11.25)  dist=19
+[seg 2] LOCAL  leaned         -> push            score=2.9067  attn=0.0243  idf=(10.64,11.25)  dist=39
+[seg 2] LOCAL  leaned         -> movement        score=2.8890  attn=0.0241  idf=(10.64,11.25)  dist=58
+[seg 5] LOCAL  blood.         -> innermost       score=2.8733  attn=0.0236  idf=(11.10,10.96)  dist=19
+[seg 3] LOCAL  uncommon       -> resembling      score=2.8434  attn=0.0248  idf=(10.21,11.25)  dist=57
+[seg 4] LOCAL  face;          -> could,          score=2.8382  attn=0.0227  idf=(11.10,11.25)  dist=37
+[seg 2] LOCAL  fell           -> push            score=2.8369  attn=0.0263  idf=(9.58,11.25)  dist=46
+[seg 1] LOCAL  landsmen       -> discover        score=2.8324  attn=0.0230  idf=(11.10,11.10)  dist=39
+[seg 1] LOCAL  landsmen       -> numberless      score=2.8237  attn=0.0226  idf=(11.10,11.25)  dist=35
+[seg 5] LOCAL  daily          -> mysteries       score=2.8196  attn=0.0229  idf=(10.96,11.25)  dist=15
+[seg 4] LOCAL  private        -> boots           score=2.8161  attn=0.0242  idf=(10.48,11.10)  dist=64
+[seg 2] LOCAL  jaw;           -> push            score=2.8003  attn=0.0227  idf=(10.96,11.25)  dist=31
+[seg 2] LOCAL  spilled        -> push            score=2.7982  attn=0.0224  idf=(11.10,11.25)  dist=32
+[seg 5] LOCAL  call           -> august          score=2.7979  attn=0.0275  idf=(9.05,11.25)  dist=27
+[seg 5] LOCAL  kings          -> august          score=2.7930  attn=0.0243  idf=(10.21,11.25)  dist=16
+[seg 2] LOCAL  jaw;           -> movement        score=2.7896  attn=0.0226  idf=(10.96,11.25)  dist=50
+[seg 2] LOCAL  spilled        -> movement        score=2.7813  attn=0.0223  idf=(11.10,11.25)  dist=51
+[seg 3] LOCAL  civilized      -> eating          score=2.7795  attn=0.0244  idf=(10.40,10.96)  dist=30
+[seg 5] LOCAL  daily          -> persian         score=2.7779  attn=0.0228  idf=(10.96,11.10)  dist=35
+[seg 3] LOCAL  requires       -> own,            score=2.7606  attn=0.0232  idf=(11.10,10.74)  dist=17
+[seg 2] LOCAL  call           -> push            score=2.7586  attn=0.0271  idf=(9.05,11.25)  dist=47
+[seg 3] LOCAL  civilized      -> hump,           score=2.7584  attn=0.0244  idf=(10.40,10.85)  dist=24
+[seg 4] LOCAL  face;          -> boots           score=2.7566  attn=0.0224  idf=(11.10,11.10)  dist=46
+[seg 3] LOCAL  requires       -> able            score=2.7461  attn=0.0230  idf=(11.10,10.74)  dist=12
+[seg 2] LOCAL  jaw;           -> spilled         score=2.7411  attn=0.0225  idf=(10.96,11.10)  dist=1
+[seg 5] LOCAL  daily          -> forked          score=2.7342  attn=0.0222  idf=(10.96,11.25)  dist=40
+[seg 1] LOCAL  preternatural  -> year.           score=2.7315  attn=0.0216  idf=(11.25,11.25)  dist=38
+[seg 5] LOCAL  state          -> persian         score=2.7266  attn=0.0227  idf=(10.85,11.10)  dist=34
+[seg 1] LOCAL  general,       -> numberless      score=2.7238  attn=0.0221  idf=(10.96,11.25)  dist=33
+[seg 3] LOCAL  uncommon       -> requires        score=2.7210  attn=0.0240  idf=(10.21,11.10)  dist=1
+[seg 6] LOCAL  german         -> thoughts,       score=2.7184  attn=0.0232  idf=(10.56,11.10)  dist=51
+[seg 1] LOCAL  general,       -> discover        score=2.7152  attn=0.0223  idf=(10.96,11.10)  dist=37
+[seg 3] LOCAL  civilized      -> good.           score=2.6935  attn=0.0239  idf=(10.40,10.85)  dist=20
+[seg 2] LOCAL  leaned         -> spilled         score=2.6858  attn=0.0227  idf=(10.64,11.10)  dist=7
+[seg 5] LOCAL  state          -> mysteries       score=2.6840  attn=0.0220  idf=(10.85,11.25)  dist=14
+[seg 3] LOCAL  civilized      -> fat             score=2.6715  attn=0.0237  idf=(10.40,10.85)  dist=16
+[seg 5] LOCAL  call           -> august          score=2.6606  attn=0.0261  idf=(9.05,11.25)  dist=24
+[seg 1] LOCAL  general,       -> landsmen        score=2.6562  attn=0.0218  idf=(10.96,11.10)  dist=2
+[seg 5] LOCAL  daily          -> greek           score=2.6523  attn=0.0221  idf=(10.96,10.96)  dist=52
+[seg 4] LOCAL  face;          -> particularly    score=2.6514  attn=0.0218  idf=(11.10,10.96)  dist=30
+[seg 3] LOCAL  exceeding      -> hump,           score=2.6510  attn=0.0232  idf=(10.56,10.85)  dist=20
+[seg 4] LOCAL  putting        -> boots           score=2.6437  attn=0.0233  idf=(10.21,11.10)  dist=62
+[seg 2] LOCAL  bows,          -> were;           score=2.6393  attn=0.0233  idf=(10.05,11.25)  dist=11
+
+--------------------------------------------------------------------------------
+TEMPLATE WORD ASSOCIATIONS (top words per template)
+--------------------------------------------------------------------------------
+Template 00: dream, tree,, icy, tree, cook., “oh!, oh, room.
+Template 01: jaw;, jaw., (by, by., jaw,, by;, jaw, clouds
+Template 02: icy, jacket,, eh?, front,, “why,, jacket, mean,, hammock.
+Template 03: of;, of., of,, *the, _the, no:, (the, “no
+Template 04: “oh!, oh, eh?, “oh,, jacket,, cheek, cook., jaw;
+Template 05: oh, “oh!, eh?, jacket,, “oh,, jacket, cheek, (by
+Template 06: no:, “no, no!, no;, “no,, no,, of;, of.
+Template 07: up;, up., bag, bag,, up,, hell, on.”, lance,
+Template 08: is., is;, is,, “then, then?”, sell, then?, had,
+Template 09: “oh!, oh, “oh,, cook., plates, crowd, oh!, book,
+Template 10: cook., front,, bed., cook,, bed;, cook, jaw;, jacket,
+Template 11: _the, *the, of;, of., (the, is., is;, they,
+Template 12: ye?”, ye.”, ye., ye;, ye!, ye?, ye,, that!
+Template 13: alive,, bible, front,, blank, runs, torn, alas!, dr.
+Template 14: on.”, “on, us!, ha,, on;, ’em,, ear, is.
+Template 15: (by, by., by;, oh, “oh!, tree,, tree, met
+
+Done.
+(jax12) ni@singbuntu24:~/repos/h/causal-hnet/claude-generated$
