@@ -503,8 +503,13 @@ def compute_F_total(x, z_layers, params, config):
 # Training Step
 # ============================================================
 
-def make_train_step(config: TrainConfig):
-    """Create JIT-compiled training step."""
+def make_train_step(config: TrainConfig, optimizer):
+    """Create JIT-compiled training step.
+
+    Args:
+        config: Training configuration
+        optimizer: Optax optimizer (closed over, not passed to JIT)
+    """
 
     module_mapping = get_module_param_mapping()
 
@@ -525,7 +530,7 @@ def make_train_step(config: TrainConfig):
         return gated
 
     @jit
-    def train_step(params_dict, opt_state, x, key, optimizer):
+    def train_step(params_dict, opt_state, x, key):
         # Project input to latent space
         params = dict_to_params(params_dict)
         x_latent = x @ params.W_input + params.b_input
@@ -557,7 +562,7 @@ def make_train_step(config: TrainConfig):
         # Apply gated gradients
         gated_grads = apply_gated_grads(grads, gates)
 
-        # Update parameters
+        # Update parameters (optimizer is closed over)
         updates, new_opt_state = optimizer.update(gated_grads, opt_state, params_dict)
         new_params = optax.apply_updates(params_dict, updates)
 
@@ -651,8 +656,8 @@ def train(
     params_dict = params_to_dict(params)
     opt_state = optimizer.init(params_dict)
 
-    # Create training step
-    train_step_fn = make_train_step(config)
+    # Create training step (optimizer is closed over)
+    train_step_fn = make_train_step(config, optimizer)
 
     # Training state
     state = TrainState()
@@ -679,7 +684,7 @@ def train(
 
             # Training step
             params_dict, opt_state, loss, metrics = train_step_fn(
-                params_dict, opt_state, Eseg, step_key, optimizer
+                params_dict, opt_state, Eseg, step_key
             )
 
             # Record metrics
