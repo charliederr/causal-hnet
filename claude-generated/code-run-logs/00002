@@ -1,0 +1,218 @@
+(jax12) ni@singbuntu24:~/repos/h/causal-hnet/claude-generated$ python causal_attention_hamiltonian_v1.py
+================================================================================
+CAUSAL ATTENTION WITH HAMILTONIAN RELATIONAL CONSTRAINTS
+Phase 1: Binary-Consistent Energy Extension
+================================================================================
+JAX backend: gpu
+JAX devices: [CudaDevice(id=0)]
+
+Hamiltonian parameters:
+  Relations: 6 (IMPLIES, EXCLUDES, REQUIRES, COOCCURS, PRECEDES, FOLLOWS)
+  Gamma (bias strength): 0.5
+  Binarization weight: 0.05
+
+Total tokens: 208455
+Vocabulary size: 4258
+
+Building word embeddings...
+Building co-occurrence edges...
+Directional edges: 282654
+
+Initialized Hamiltonian relation matrices:
+  IMPLIES: H_r = [[1.00, -0.50], [-0.50, 0.00]]
+  EXCLUDES: H_r = [[0.00, 0.50], [0.50, 0.00]]
+  REQUIRES: H_r = [[0.00, -0.50], [-0.50, 1.00]]
+  COOCCURS: H_r = [[1.00, -1.00], [-1.00, 1.00]]
+  PRECEDES: H_r = [[0.20, -0.30], [-0.70, 0.20]]
+  FOLLOWS: H_r = [[0.20, -0.70], [-0.30, 0.20]]
+
+Learning template prototypes (100 steps)...
+  step 1/100  loss=84.5670  entropy=2.771  bin_loss=199.5504
+  step 20/100  loss=84.5077  entropy=2.770  bin_loss=199.5142
+  step 40/100  loss=84.3651  entropy=2.767  bin_loss=199.4491
+  step 60/100  loss=84.0699  entropy=2.763  bin_loss=199.3336
+  step 80/100  loss=83.5285  entropy=2.757  bin_loss=199.1124
+  step 100/100  loss=82.7007  entropy=2.749  bin_loss=198.7652
+
+--------------------------------------------------------------------------------
+TOP CLUSTER->CLUSTER DIRECTIONAL COUPLINGS (J_pmi)
+--------------------------------------------------------------------------------
+c02 -> c03   J_pmi=1.806
+c00 -> c03   J_pmi=1.764
+c09 -> c03   J_pmi=1.730
+c04 -> c03   J_pmi=1.724
+c05 -> c03   J_pmi=1.623
+c02 -> c06   J_pmi=1.589
+c02 -> c14   J_pmi=1.585
+c10 -> c03   J_pmi=1.563
+c02 -> c07   J_pmi=1.552
+c01 -> c03   J_pmi=1.547
+c00 -> c06   J_pmi=1.546
+c00 -> c14   J_pmi=1.543
+c09 -> c06   J_pmi=1.513
+c09 -> c14   J_pmi=1.512
+c00 -> c07   J_pmi=1.509
+c04 -> c06   J_pmi=1.507
+
+--------------------------------------------------------------------------------
+HAMILTONIAN MULTI-HEAD ATTENTION ANALYSIS (4 heads)
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+HAMILTONIAN ENERGY STATISTICS (per relation type)
+--------------------------------------------------------------------------------
+  IMPLIES     : mean=+0.0000  std=0.0000
+  EXCLUDES    : mean=+1.0000  std=0.0000
+  REQUIRES    : mean=+0.0000  std=0.0000
+  COOCCURS    : mean=+0.0000  std=0.0000
+  PRECEDES    : mean=-0.6000  std=0.0000
+  FOLLOWS     : mean=-0.6000  std=0.0000
+
+--------------------------------------------------------------------------------
+TEMPLATE->TEMPLATE ATTENTION FLOWS (combined)
+--------------------------------------------------------------------------------
+Template 03 -> Template 07   flow=1.8813   J_pmi=-0.630   W_psi=0.381
+Template 03 -> Template 06   flow=1.8485   J_pmi=-0.590   W_psi=0.629
+Template 06 -> Template 03   flow=1.7986   J_pmi=-0.395   W_psi=0.629
+Template 07 -> Template 03   flow=1.7825   J_pmi=-0.166   W_psi=0.381
+Template 06 -> Template 07   flow=1.7414   J_pmi=-0.654   W_psi=0.316
+Template 03 -> Template 14   flow=1.7049   J_pmi=-0.583   W_psi=0.529
+Template 07 -> Template 06   flow=1.6934   J_pmi=-0.386   W_psi=0.316
+Template 03 -> Template 11   flow=1.6745   J_pmi=-0.889   W_psi=0.411
+Template 14 -> Template 03   flow=1.6501   J_pmi=+0.006   W_psi=0.529
+Template 03 -> Template 08   flow=1.6081   J_pmi=-0.762   W_psi=0.225
+Template 11 -> Template 03   flow=1.6013   J_pmi=-0.005   W_psi=0.411
+Template 14 -> Template 07   flow=1.5960   J_pmi=-0.252   W_psi=0.244
+Template 06 -> Template 14   flow=1.5846   J_pmi=-0.606   W_psi=0.325
+Template 14 -> Template 06   flow=1.5760   J_pmi=-0.210   W_psi=0.325
+Template 08 -> Template 03   flow=1.5606   J_pmi=-0.088   W_psi=0.225
+Template 07 -> Template 14   flow=1.5598   J_pmi=-0.381   W_psi=0.244
+
+-- Head 0 top flows --
+  t03 -> t07   flow=1.9246
+  t03 -> t06   flow=1.8666
+  t07 -> t03   flow=1.8262
+  t06 -> t03   flow=1.8257
+  t06 -> t07   flow=1.7718
+  t03 -> t14   flow=1.7172
+  t07 -> t06   flow=1.7145
+  t03 -> t11   flow=1.6798
+
+-- Head 1 top flows --
+  t03 -> t07   flow=1.8692
+  t03 -> t06   flow=1.8445
+  t06 -> t03   flow=1.7944
+  t07 -> t03   flow=1.7634
+  t06 -> t07   flow=1.7401
+  t03 -> t14   flow=1.7027
+  t07 -> t06   flow=1.6847
+  t03 -> t11   flow=1.6745
+
+-- Head 2 top flows --
+  t03 -> t07   flow=1.9084
+  t03 -> t06   flow=1.8542
+  t06 -> t03   flow=1.8082
+  t07 -> t03   flow=1.8078
+  t06 -> t07   flow=1.7576
+  t03 -> t14   flow=1.7060
+  t07 -> t06   flow=1.7044
+  t03 -> t11   flow=1.6745
+
+-- Head 3 top flows --
+  t03 -> t06   flow=1.8286
+  t03 -> t07   flow=1.8231
+  t06 -> t03   flow=1.7659
+  t07 -> t03   flow=1.7327
+  t06 -> t07   flow=1.6963
+  t03 -> t14   flow=1.6937
+  t07 -> t06   flow=1.6700
+  t03 -> t11   flow=1.6691
+
+--------------------------------------------------------------------------------
+TOP 50 TOKEN->TOKEN LINKS (IDF-weighted)
+--------------------------------------------------------------------------------
+[seg 5] LOCAL  blood.         -> strikes         score=3.1798  attn=0.0255  idf=(11.10,11.25)  dist=13
+[seg 3] LOCAL  requires       -> resembling      score=3.1700  attn=0.0254  idf=(11.10,11.25)  dist=56
+[seg 5] LOCAL  blood.         -> hue,            score=3.0753  attn=0.0250  idf=(11.10,11.10)  dist=15
+[seg 5] LOCAL  blood.         -> lurks           score=2.9896  attn=0.0246  idf=(11.10,10.96)  dist=25
+[seg 2] LOCAL  fell           -> push            score=2.9843  attn=0.0277  idf=(9.58,11.25)  dist=46
+[seg 2] LOCAL  leaned         -> push            score=2.9656  attn=0.0248  idf=(10.64,11.25)  dist=39
+[seg 5] LOCAL  blood.         -> innermost       score=2.9518  attn=0.0243  idf=(11.10,10.96)  dist=19
+[seg 3] LOCAL  uncommon       -> resembling      score=2.9392  attn=0.0256  idf=(10.21,11.25)  dist=57
+[seg 2] LOCAL  leaned         -> movement        score=2.9277  attn=0.0244  idf=(10.64,11.25)  dist=58
+[seg 1] LOCAL  landsmen       -> numberless      score=2.9009  attn=0.0232  idf=(11.10,11.25)  dist=35
+[seg 4] LOCAL  face;          -> could,          score=2.8986  attn=0.0232  idf=(11.10,11.25)  dist=37
+[seg 5] LOCAL  daily          -> august          score=2.8957  attn=0.0235  idf=(10.96,11.25)  dist=19
+[seg 3] LOCAL  uncommon       -> requires        score=2.8554  attn=0.0252  idf=(10.21,11.10)  dist=1
+[seg 2] LOCAL  call           -> push            score=2.8485  attn=0.0280  idf=(9.05,11.25)  dist=47
+[seg 4] LOCAL  private        -> boots           score=2.8482  attn=0.0245  idf=(10.48,11.10)  dist=64
+[seg 5] LOCAL  state          -> august          score=2.8409  attn=0.0233  idf=(10.85,11.25)  dist=18
+[seg 5] LOCAL  daily          -> mysteries       score=2.8346  attn=0.0230  idf=(10.96,11.25)  dist=15
+[seg 2] LOCAL  spilled        -> push            score=2.8324  attn=0.0227  idf=(11.10,11.25)  dist=32
+[seg 2] LOCAL  leaned         -> spilled         score=2.8188  attn=0.0239  idf=(10.64,11.10)  dist=7
+[seg 2] LOCAL  fell           -> spilled         score=2.8179  attn=0.0265  idf=(9.58,11.10)  dist=14
+[seg 1] LOCAL  landsmen       -> discover        score=2.8113  attn=0.0228  idf=(11.10,11.10)  dist=39
+[seg 3] LOCAL  requires       -> own,            score=2.8113  attn=0.0236  idf=(11.10,10.74)  dist=17
+[seg 4] LOCAL  face;          -> boots           score=2.8055  attn=0.0228  idf=(11.10,11.10)  dist=46
+[seg 5] LOCAL  daily          -> forked          score=2.8020  attn=0.0227  idf=(10.96,11.25)  dist=40
+[seg 3] LOCAL  civilized      -> eating          score=2.8014  attn=0.0246  idf=(10.40,10.96)  dist=30
+[seg 3] LOCAL  requires       -> able            score=2.7999  attn=0.0235  idf=(11.10,10.74)  dist=12
+[seg 2] LOCAL  spilled        -> movement        score=2.7956  attn=0.0224  idf=(11.10,11.25)  dist=51
+[seg 1] LOCAL  general,       -> numberless      score=2.7943  attn=0.0227  idf=(10.96,11.25)  dist=33
+[seg 3] LOCAL  civilized      -> is;             score=2.7722  attn=0.0248  idf=(10.40,10.74)  dist=58
+[seg 3] LOCAL  civilized      -> fat             score=2.7663  attn=0.0245  idf=(10.40,10.85)  dist=16
+[seg 2] LOCAL  jaw;           -> push            score=2.7603  attn=0.0224  idf=(10.96,11.25)  dist=31
+[seg 5] LOCAL  state          -> mysteries       score=2.7491  attn=0.0225  idf=(10.85,11.25)  dist=14
+[seg 5] LOCAL  daily          -> persian         score=2.7467  attn=0.0226  idf=(10.96,11.10)  dist=35
+[seg 2] LOCAL  jaw;           -> movement        score=2.7457  attn=0.0223  idf=(10.96,11.25)  dist=50
+[seg 3] LOCAL  civilized      -> good.           score=2.7401  attn=0.0243  idf=(10.40,10.85)  dist=20
+[seg 1] LOCAL  preternatural  -> noah’s          score=2.7297  attn=0.0216  idf=(11.25,11.25)  dist=34
+[seg 4] LOCAL  face;          -> particularly    score=2.7268  attn=0.0224  idf=(11.10,10.96)  dist=30
+[seg 3] LOCAL  exceeding      -> eating          score=2.7231  attn=0.0235  idf=(10.56,10.96)  dist=26
+[seg 3] LOCAL  civilized      -> hump,           score=2.7229  attn=0.0241  idf=(10.40,10.85)  dist=24
+[seg 6] LOCAL  german         -> thoughts,       score=2.7193  attn=0.0232  idf=(10.56,11.10)  dist=51
+[seg 3] LOCAL  civilized      -> meat            score=2.7139  attn=0.0241  idf=(10.40,10.85)  dist=64
+[seg 1] LOCAL  preternatural  -> year.           score=2.7129  attn=0.0214  idf=(11.25,11.25)  dist=38
+[seg 6] LOCAL  equally        -> curious,        score=2.7128  attn=0.0220  idf=(10.96,11.25)  dist=55
+[seg 3] LOCAL  exceeding      -> is;             score=2.7019  attn=0.0238  idf=(10.56,10.74)  dist=54
+[seg 2] LOCAL  leaned         -> jaw;            score=2.6999  attn=0.0231  idf=(10.64,10.96)  dist=8
+[seg 1] LOCAL  general,       -> discover        score=2.6993  attn=0.0222  idf=(10.96,11.10)  dist=37
+[seg 2] LOCAL  call           -> spilled         score=2.6959  attn=0.0268  idf=(9.05,11.10)  dist=15
+[seg 1] LOCAL  general,       -> landsmen        score=2.6882  attn=0.0221  idf=(10.96,11.10)  dist=2
+[seg 5] LOCAL  state          -> forked          score=2.6877  attn=0.0220  idf=(10.85,11.25)  dist=39
+[seg 1] LOCAL  landsmen       -> general,        score=2.6857  attn=0.0221  idf=(11.10,10.96)  dist=2
+
+--------------------------------------------------------------------------------
+TEMPLATE WORD ASSOCIATIONS (top words per template)
+--------------------------------------------------------------------------------
+Template 00: icy, room., room;, boy, oh, “oh!, care, in;
+Template 01: jaw;, jaw., jaw,, jaw, ribs,, in;, ribs, (by
+Template 02: rib, out;, “if, dr., mean,, jacket,, serene, eh?
+Template 03: of;, of., of,, *the, _the, on.”, (the, “on
+Template 04: “oh!, oh, bed., bed;, eh?, “oh,, cheek, out;
+Template 05: (by, by., by;, eh?, crawl, bible, jacket,, alarm,
+Template 06: of;, of., no:, of,, “no, no!, no;, “no,
+Template 07: lance,, image, lance, use, be;, be., end;, end.
+Template 08: is., is;, he., is,, he,, hey,, “he, him?”
+Template 09: oh, “oh!, “oh,, oh!, oh,, lips, dr., plates
+Template 10: in;, cook., cook,, bed., in., “in, bed;, room.
+Template 11: “mr., of;, of., of,, tide, fin,, mr., fin
+Template 12: ye?”, ye.”, ye., ye;, ye!, ye?, ye,, ye
+Template 13: lo!, push, alive,, pair, sir!, ago,
+Template 14: on.”, “on, on;, on., it,”, it?”, on,, de
+Template 15: (by, by., by;, by,, man.”, man!, inner, man;
+
+================================================================================
+Phase 1 Implementation Complete
+================================================================================
+Key additions from Causal-HNet paper:
+  - Hamiltonian relation matrices H_r (Eq. 5)
+  - Binary-consistent energy extension (Eq. 9)
+  - Binarization regularizer F_bin (Eq. 10)
+  - Hamiltonian attention bias (Eq. 13)
+
+Next phases to implement:
+  - Phase 2: Soft edge masks and full F_rel (Section 5)
+  - Phase 3: Predictive-coding integration (Section 2.1)
+  - Phase 4: Context-gated modules (Section 2.2)
+(jax12) ni@singbuntu24:~/repos/h/causal-hnet/claude-generated$ 

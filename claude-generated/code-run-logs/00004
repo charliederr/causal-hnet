@@ -1,0 +1,175 @@
+(jax12) ni@singbuntu24:~/repos/h/causal-hnet/claude-generated$ python causal_attention_hamiltonian_v3.py 
+================================================================================
+CAUSAL ATTENTION WITH PREDICTIVE CODING
+Phase 3: Multi-Layer Latent Inference
+================================================================================
+JAX backend: gpu
+JAX devices: [CudaDevice(id=0)]
+
+Predictive-coding parameters:
+  PC layers: 3
+  Latent dim: 64
+  Inference steps: 10
+  Latent LR: 0.1
+  Relational layer ℓ*: 1
+
+Total tokens: 208455
+Vocabulary size: 4258
+
+Building word embeddings...
+Building co-occurrence edges...
+Directional edges: 282654
+
+Predictive-coding architecture:
+  Input projection: (96, 64)
+  PC layers: 3 x (64, 64)
+  Output projection: (64, 96)
+
+--------------------------------------------------------------------------------
+PREDICTIVE-CODING INFERENCE + ATTENTION (4 heads)
+--------------------------------------------------------------------------------
+
+Segment 1 inference:
+  Steps: 10, Final F_PC: 29.4767
+  F_total: 544.7310 = F_PC(25.4624) + λ*F_rel(5164.5703) + F_bin(2.8116)
+
+Segment 2 inference:
+  Steps: 10, Final F_PC: 30.4332
+  F_total: 544.5170 = F_PC(26.2970) + λ*F_rel(5154.2495) + F_bin(2.7950)
+
+--------------------------------------------------------------------------------
+PREDICTIVE-CODING STATISTICS
+--------------------------------------------------------------------------------
+  Mean F_PC:   25.7144 ± 0.3790
+  Mean F_rel:  5171.4398 ± 14.3868
+  Mean F_bin:  2.8066 ± 0.0059
+  Mean F_total: 545.6649 ± 1.2434
+  Avg inference steps: 10.0
+
+--------------------------------------------------------------------------------
+TOP CLUSTER->CLUSTER DIRECTIONAL COUPLINGS (J_pmi)
+--------------------------------------------------------------------------------
+c02 -> c03   J_pmi=2.674
+c02 -> c06   J_pmi=2.486
+c00 -> c03   J_pmi=2.422
+c02 -> c14   J_pmi=2.287
+c00 -> c06   J_pmi=2.227
+c02 -> c08   J_pmi=2.195
+c04 -> c03   J_pmi=2.060
+c00 -> c14   J_pmi=2.036
+c00 -> c08   J_pmi=1.937
+c04 -> c06   J_pmi=1.864
+c14 -> c03   J_pmi=1.789
+c04 -> c14   J_pmi=1.673
+c14 -> c06   J_pmi=1.595
+c04 -> c08   J_pmi=1.586
+c01 -> c03   J_pmi=1.575
+c02 -> c01   J_pmi=1.556
+
+--------------------------------------------------------------------------------
+TEMPLATE->TEMPLATE ATTENTION FLOWS (combined)
+--------------------------------------------------------------------------------
+Template 03 -> Template 06   flow=1.1020   J_pmi=+0.253
+Template 06 -> Template 03   flow=1.0918   J_pmi=-0.041
+Template 06 -> Template 07   flow=1.0722   J_pmi=-1.180
+Template 06 -> Template 09   flow=1.0675   J_pmi=-1.747
+Template 07 -> Template 06   flow=1.0646   J_pmi=+0.733
+Template 01 -> Template 06   flow=1.0644   J_pmi=+1.373
+Template 08 -> Template 06   flow=1.0629   J_pmi=+1.033
+Template 03 -> Template 07   flow=1.0622   J_pmi=-0.686
+Template 14 -> Template 06   flow=1.0617   J_pmi=+1.595
+Template 09 -> Template 06   flow=1.0614   J_pmi=+1.098
+Template 11 -> Template 06   flow=1.0588   J_pmi=+0.892
+Template 06 -> Template 01   flow=1.0579   J_pmi=-1.173
+Template 03 -> Template 09   flow=1.0576   J_pmi=-1.252
+Template 15 -> Template 06   flow=1.0563   J_pmi=+0.553
+Template 06 -> Template 15   flow=1.0554   J_pmi=-1.724
+Template 06 -> Template 08   flow=1.0552   J_pmi=-0.525
+
+--------------------------------------------------------------------------------
+TOP 50 TOKEN->TOKEN LINKS
+--------------------------------------------------------------------------------
+[seg 3] LOCAL  requires       -> resembling      score=3.2091  attn=0.0257  mask=0.459  dist=56
+[seg 5] LOCAL  blood.         -> strikes         score=3.1950  attn=0.0256  mask=0.479  dist=13
+[seg 5] LOCAL  blood.         -> hue,            score=3.1014  attn=0.0252  mask=0.462  dist=15
+[seg 5] LOCAL  blood.         -> innermost       score=2.9947  attn=0.0246  mask=0.450  dist=19
+[seg 5] LOCAL  blood.         -> lurks           score=2.9942  attn=0.0246  mask=0.431  dist=25
+[seg 3] LOCAL  uncommon       -> resembling      score=2.9781  attn=0.0259  mask=0.462  dist=57
+[seg 2] LOCAL  fell           -> push            score=2.9717  attn=0.0276  mask=0.471  dist=46
+[seg 2] LOCAL  leaned         -> movement        score=2.9627  attn=0.0247  mask=0.469  dist=58
+[seg 2] LOCAL  leaned         -> push            score=2.9623  attn=0.0247  mask=0.457  dist=39
+[seg 4] LOCAL  face;          -> could,          score=2.9375  attn=0.0235  mask=0.469  dist=37
+[seg 1] LOCAL  landsmen       -> numberless      score=2.9087  attn=0.0233  mask=0.511  dist=35
+[seg 3] LOCAL  uncommon       -> requires        score=2.8963  attn=0.0256  mask=0.460  dist=1
+[seg 5] LOCAL  daily          -> mysteries       score=2.8744  attn=0.0233  mask=0.504  dist=15
+[seg 5] LOCAL  daily          -> august          score=2.8722  attn=0.0233  mask=0.528  dist=19
+[seg 4] LOCAL  private        -> boots           score=2.8685  attn=0.0247  mask=0.520  dist=64
+[seg 2] LOCAL  fell           -> spilled         score=2.8610  attn=0.0269  mask=0.473  dist=14
+[seg 2] LOCAL  leaned         -> spilled         score=2.8557  attn=0.0242  mask=0.459  dist=7
+[seg 5] LOCAL  daily          -> forked          score=2.8432  attn=0.0231  mask=0.521  dist=40
+[seg 2] LOCAL  call           -> push            score=2.8420  attn=0.0279  mask=0.481  dist=47
+[seg 2] LOCAL  spilled        -> movement        score=2.8388  attn=0.0227  mask=0.485  dist=51
+[seg 3] LOCAL  requires       -> able            score=2.8323  attn=0.0238  mask=0.464  dist=12
+[seg 4] LOCAL  face;          -> boots           score=2.8272  attn=0.0230  mask=0.475  dist=46
+[seg 3] LOCAL  civilized      -> eating          score=2.8258  attn=0.0248  mask=0.520  dist=30
+[seg 2] LOCAL  spilled        -> push            score=2.8256  attn=0.0226  mask=0.472  dist=32
+[seg 3] LOCAL  requires       -> own,            score=2.8240  attn=0.0237  mask=0.476  dist=17
+[seg 5] LOCAL  state          -> august          score=2.8237  attn=0.0231  mask=0.518  dist=18
+[seg 1] LOCAL  landsmen       -> discover        score=2.8073  attn=0.0228  mask=0.522  dist=39
+[seg 5] LOCAL  state          -> forked          score=2.7958  attn=0.0229  mask=0.511  dist=39
+[seg 5] LOCAL  state          -> mysteries       score=2.7902  attn=0.0229  mask=0.494  dist=14
+[seg 1] LOCAL  general,       -> numberless      score=2.7867  attn=0.0226  mask=0.521  dist=33
+[seg 5] LOCAL  daily          -> persian         score=2.7777  attn=0.0228  mask=0.516  dist=35
+[seg 2] LOCAL  leaned         -> jaw;            score=2.7734  attn=0.0238  mask=0.484  dist=8
+[seg 2] LOCAL  fell           -> jaw;            score=2.7712  attn=0.0264  mask=0.499  dist=15
+[seg 2] LOCAL  jaw;           -> push            score=2.7664  attn=0.0224  mask=0.485  dist=31
+[seg 3] LOCAL  civilized      -> fat             score=2.7616  attn=0.0245  mask=0.547  dist=16
+[seg 3] LOCAL  civilized      -> hump,           score=2.7563  attn=0.0244  mask=0.526  dist=24
+[seg 2] LOCAL  jaw;           -> movement        score=2.7536  attn=0.0223  mask=0.498  dist=50
+[seg 1] LOCAL  preternatural  -> year.           score=2.7530  attn=0.0217  mask=0.421  dist=38
+[seg 1] LOCAL  preternatural  -> noah’s          score=2.7494  attn=0.0217  mask=0.443  dist=34
+[seg 3] LOCAL  civilized      -> good.           score=2.7463  attn=0.0243  mask=0.534  dist=20
+[seg 6] LOCAL  german         -> thoughts,       score=2.7463  attn=0.0234  mask=0.498  dist=51
+[seg 3] LOCAL  civilized      -> meat            score=2.7448  attn=0.0243  mask=0.501  dist=64
+[seg 6] LOCAL  equally        -> curious,        score=2.7398  attn=0.0222  mask=0.511  dist=55
+[seg 4] LOCAL  face;          -> particularly    score=2.7390  attn=0.0225  mask=0.470  dist=30
+[seg 2] LOCAL  call           -> spilled         score=2.7388  attn=0.0273  mask=0.482  dist=15
+[seg 3] LOCAL  civilized      -> is;             score=2.7381  attn=0.0245  mask=0.530  dist=58
+[seg 5] LOCAL  strikes        -> vision          score=2.7370  attn=0.0216  mask=0.481  dist=62
+[seg 4] LOCAL  call           -> could,          score=2.7365  attn=0.0269  mask=0.474  dist=46
+[seg 3] LOCAL  exceeding      -> eating          score=2.7332  attn=0.0236  mask=0.512  dist=26
+[seg 1] LOCAL  landsmen       -> general,        score=2.7231  attn=0.0224  mask=0.519  dist=2
+
+--------------------------------------------------------------------------------
+TEMPLATE WORD ASSOCIATIONS
+--------------------------------------------------------------------------------
+Template 00: do., do;, ’em,, ’em., room., room;, paid, ho!
+Template 01: um,, ribs,, ribs, in;, spray,, arctic, works, (by
+Template 02: “if, year., gone., tear, if,, as,, us!, board.
+Template 03: of;, of., skill,, “now,, now!, dust, dull, no:
+Template 04: die,, ho!, or,, leap, ho,, eh?, as,, path
+Template 05: open,, (by, crawl, by., all!”, by;, ahoy!, hath
+Template 06: of;, of., no:, away;, tiger, away., rig, lit
+Template 07: “mr., lake, quick,, uses, wake., well., ice,, “it’s
+Template 08: is., is;, he., soon,, open,, mad., mad,, hey,
+Template 09: box, plank,, we,, a.d., tides, being,, waved, off.
+Template 10: jot, us!, bend, dog,, dog, could,, fled, beer
+Template 11: fin,, row, row!, “mr., fin, of;, prow,, rig
+Template 12: ye?”, ah!, ye.”, ah,, ye., ye;, ye!, ye?
+Template 13: lo!, alive,, blank, all!”, sir!, dr., solemnly, watch.
+Template 14: ’em,, ’em., so?, own;, dream, ’em, ahoy!, on.”
+Template 15: (by, by., die,, by;, inner, own;, hull,, named
+
+================================================================================
+Phase 3 Implementation Complete
+================================================================================
+Key additions from Causal-HNet paper Section 2.1:
+  - Multi-layer latent states z = {z^(ℓ)}_{ℓ=1}^L
+  - Predictive-coding free energy F_PC (Eq. 1)
+  - Latent inference via gradient descent (Eq. 2)
+  - Combined objective F_total = F_PC + λF_rel + F_bin (Eq. 12)
+  - Relational module driven by chosen layer ℓ*
+
+Next phase to implement:
+  - Phase 4: Context-gated modules (Section 2.2)
+(jax12) ni@singbuntu24:~/repos/h/causal-hnet/claude-generated$ 

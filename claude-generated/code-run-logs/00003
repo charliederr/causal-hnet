@@ -1,0 +1,224 @@
+(jax12) ni@singbuntu24:~/repos/h/causal-hnet/claude-generated$ python causal_attention_hamiltonian_v2.py 
+================================================================================
+CAUSAL ATTENTION WITH HAMILTONIAN RELATIONAL CONSTRAINTS
+Phase 2: Soft Edge Masks and F_rel
+================================================================================
+JAX backend: gpu
+JAX devices: [CudaDevice(id=0)]
+
+Phase 2 parameters:
+  Mask hidden dim: 32
+  Mask temperature: 1.0
+  F_rel weight: 0.1
+
+Hamiltonian parameters:
+  Relations: 6 (IMPLIES, EXCLUDES, REQUIRES, COOCCURS, PRECEDES, FOLLOWS)
+  Gamma (bias strength): 0.5
+
+Total tokens: 208455
+Vocabulary size: 4258
+
+Building word embeddings...
+Building co-occurrence edges...
+Directional edges: 282654
+
+Initialized edge mask MLP:
+  Layer 1: (196, 32)
+  Layer 2: (32, 1)
+
+Learning templates with F_rel (100 steps)...
+  step 1/100  loss=84.5652  entropy=2.771  bin_loss=199.5505
+  step 20/100  loss=84.4599  entropy=2.770  bin_loss=199.5226
+  step 40/100  loss=84.3347  entropy=2.768  bin_loss=199.4679
+  step 60/100  loss=84.0591  entropy=2.765  bin_loss=199.3649
+  step 80/100  loss=83.5395  entropy=2.759  bin_loss=199.1617
+  step 100/100  loss=82.7367  entropy=2.751  bin_loss=198.8382
+
+--------------------------------------------------------------------------------
+TOP CLUSTER->CLUSTER DIRECTIONAL COUPLINGS (J_pmi)
+--------------------------------------------------------------------------------
+c02 -> c03   J_pmi=1.838
+c00 -> c03   J_pmi=1.804
+c04 -> c03   J_pmi=1.774
+c09 -> c03   J_pmi=1.742
+c05 -> c03   J_pmi=1.701
+c02 -> c06   J_pmi=1.638
+c10 -> c03   J_pmi=1.624
+c00 -> c06   J_pmi=1.602
+c01 -> c03   J_pmi=1.588
+c04 -> c06   J_pmi=1.573
+c09 -> c06   J_pmi=1.541
+c02 -> c14   J_pmi=1.521
+c05 -> c06   J_pmi=1.499
+c00 -> c14   J_pmi=1.487
+c04 -> c14   J_pmi=1.459
+c02 -> c13   J_pmi=1.459
+
+--------------------------------------------------------------------------------
+PHASE 2: HAMILTONIAN ATTENTION WITH SOFT EDGE MASKS (4 heads)
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+EDGE MASK STATISTICS
+--------------------------------------------------------------------------------
+  Mean edge mask value: 0.9999
+  Std edge mask value:  0.0000
+
+--------------------------------------------------------------------------------
+HAMILTONIAN ENERGY STATISTICS (per relation type)
+--------------------------------------------------------------------------------
+  IMPLIES     : mean=+0.0000  std=0.0000
+  EXCLUDES    : mean=+1.0000  std=0.0000
+  REQUIRES    : mean=+0.0000  std=0.0000
+  COOCCURS    : mean=+0.0000  std=0.0000
+  PRECEDES    : mean=-0.6000  std=0.0000
+  FOLLOWS     : mean=-0.6000  std=0.0000
+
+--------------------------------------------------------------------------------
+TEMPLATE->TEMPLATE ATTENTION FLOWS (combined)
+--------------------------------------------------------------------------------
+Template 03 -> Template 06   flow=1.9558   J_pmi=-0.542   W_psi=0.649
+Template 06 -> Template 03   flow=1.8930   J_pmi=-0.329   W_psi=0.649
+Template 03 -> Template 07   flow=1.7093   J_pmi=-0.944   W_psi=0.332
+Template 03 -> Template 11   flow=1.7033   J_pmi=-0.894   W_psi=0.435
+Template 03 -> Template 08   flow=1.6916   J_pmi=-0.780   W_psi=0.258
+Template 03 -> Template 14   flow=1.6885   J_pmi=-0.650   W_psi=0.485
+Template 14 -> Template 03   flow=1.6303   J_pmi=+0.133   W_psi=0.485
+Template 08 -> Template 03   flow=1.6286   J_pmi=-0.075   W_psi=0.258
+Template 11 -> Template 03   flow=1.6259   J_pmi=+0.067   W_psi=0.435
+Template 06 -> Template 07   flow=1.6247   J_pmi=-0.936   W_psi=0.263
+Template 06 -> Template 11   flow=1.6185   J_pmi=-0.886   W_psi=0.344
+Template 06 -> Template 08   flow=1.6071   J_pmi=-0.766   W_psi=0.296
+Template 06 -> Template 14   flow=1.6042   J_pmi=-0.639   W_psi=0.331
+Template 14 -> Template 06   flow=1.5996   J_pmi=-0.065   W_psi=0.331
+Template 08 -> Template 06   flow=1.5983   J_pmi=-0.275   W_psi=0.296
+Template 11 -> Template 06   flow=1.5959   J_pmi=-0.135   W_psi=0.344
+
+-- Head 0 top flows --
+  t03 -> t06   flow=1.9745
+  t06 -> t03   flow=1.9204
+  t03 -> t07   flow=1.7126
+  t03 -> t11   flow=1.7109
+  t03 -> t08   flow=1.7022
+  t03 -> t14   flow=1.6991
+  t14 -> t03   flow=1.6521
+  t08 -> t03   flow=1.6492
+
+-- Head 1 top flows --
+  t03 -> t06   flow=1.9467
+  t06 -> t03   flow=1.8758
+  t03 -> t07   flow=1.7055
+  t03 -> t11   flow=1.7031
+  t03 -> t08   flow=1.6852
+  t03 -> t14   flow=1.6843
+  t06 -> t07   flow=1.6219
+  t14 -> t03   flow=1.6193
+
+-- Head 2 top flows --
+  t03 -> t06   flow=1.9772
+  t06 -> t03   flow=1.9280
+  t03 -> t07   flow=1.7154
+  t03 -> t11   flow=1.7079
+  t03 -> t08   flow=1.6977
+  t03 -> t14   flow=1.6947
+  t14 -> t03   flow=1.6568
+  t08 -> t03   flow=1.6559
+
+-- Head 3 top flows --
+  t03 -> t06   flow=1.9248
+  t06 -> t03   flow=1.8478
+  t03 -> t07   flow=1.7037
+  t03 -> t11   flow=1.6915
+  t03 -> t08   flow=1.6811
+  t03 -> t14   flow=1.6759
+  t06 -> t07   flow=1.6193
+  t06 -> t11   flow=1.6073
+
+--------------------------------------------------------------------------------
+TOP 50 TOKEN->TOKEN LINKS (with edge masks)
+--------------------------------------------------------------------------------
+[seg 5] LOCAL  blood.         -> strikes         score=3.1725  attn=0.0254  mask=1.000  idf=(11.10,11.25)  dist=13
+[seg 3] LOCAL  requires       -> resembling      score=3.1719  attn=0.0254  mask=1.000  idf=(11.10,11.25)  dist=56
+[seg 5] LOCAL  blood.         -> hue,            score=3.0660  attn=0.0249  mask=1.000  idf=(11.10,11.10)  dist=15
+[seg 5] LOCAL  blood.         -> lurks           score=2.9882  attn=0.0246  mask=1.000  idf=(11.10,10.96)  dist=25
+[seg 2] LOCAL  fell           -> push            score=2.9718  attn=0.0276  mask=1.000  idf=(9.58,11.25)  dist=46
+[seg 2] LOCAL  leaned         -> push            score=2.9619  attn=0.0247  mask=1.000  idf=(10.64,11.25)  dist=39
+[seg 5] LOCAL  blood.         -> innermost       score=2.9571  attn=0.0243  mask=1.000  idf=(11.10,10.96)  dist=19
+[seg 3] LOCAL  uncommon       -> resembling      score=2.9403  attn=0.0256  mask=1.000  idf=(10.21,11.25)  dist=57
+[seg 2] LOCAL  leaned         -> movement        score=2.9310  attn=0.0245  mask=1.000  idf=(10.64,11.25)  dist=58
+[seg 5] LOCAL  daily          -> august          score=2.8951  attn=0.0235  mask=1.000  idf=(10.96,11.25)  dist=19
+[seg 1] LOCAL  landsmen       -> numberless      score=2.8935  attn=0.0232  mask=1.000  idf=(11.10,11.25)  dist=35
+[seg 4] LOCAL  face;          -> could,          score=2.8845  attn=0.0231  mask=1.000  idf=(11.10,11.25)  dist=37
+[seg 4] LOCAL  private        -> boots           score=2.8569  attn=0.0246  mask=1.000  idf=(10.48,11.10)  dist=64
+[seg 3] LOCAL  uncommon       -> requires        score=2.8521  attn=0.0252  mask=1.000  idf=(10.21,11.10)  dist=1
+[seg 5] LOCAL  state          -> august          score=2.8429  attn=0.0233  mask=1.000  idf=(10.85,11.25)  dist=18
+[seg 2] LOCAL  call           -> push            score=2.8377  attn=0.0279  mask=1.000  idf=(9.05,11.25)  dist=47
+[seg 5] LOCAL  daily          -> mysteries       score=2.8313  attn=0.0230  mask=1.000  idf=(10.96,11.25)  dist=15
+[seg 2] LOCAL  spilled        -> push            score=2.8275  attn=0.0226  mask=1.000  idf=(11.10,11.25)  dist=32
+[seg 3] LOCAL  requires       -> own,            score=2.8150  attn=0.0236  mask=1.000  idf=(11.10,10.74)  dist=17
+[seg 2] LOCAL  leaned         -> spilled         score=2.8123  attn=0.0238  mask=1.000  idf=(10.64,11.10)  dist=7
+[seg 4] LOCAL  face;          -> boots           score=2.8122  attn=0.0228  mask=1.000  idf=(11.10,11.10)  dist=46
+[seg 1] LOCAL  landsmen       -> discover        score=2.8089  attn=0.0228  mask=1.000  idf=(11.10,11.10)  dist=39
+[seg 5] LOCAL  daily          -> forked          score=2.8040  attn=0.0227  mask=1.000  idf=(10.96,11.25)  dist=40
+[seg 3] LOCAL  civilized      -> eating          score=2.8033  attn=0.0246  mask=1.000  idf=(10.40,10.96)  dist=30
+[seg 2] LOCAL  fell           -> spilled         score=2.8013  attn=0.0264  mask=1.000  idf=(9.58,11.10)  dist=14
+[seg 3] LOCAL  civilized      -> is;             score=2.8005  attn=0.0251  mask=1.000  idf=(10.40,10.74)  dist=58
+[seg 2] LOCAL  spilled        -> movement        score=2.7951  attn=0.0224  mask=1.000  idf=(11.10,11.25)  dist=51
+[seg 1] LOCAL  general,       -> numberless      score=2.7856  attn=0.0226  mask=1.000  idf=(10.96,11.25)  dist=33
+[seg 3] LOCAL  requires       -> able            score=2.7792  attn=0.0233  mask=1.000  idf=(11.10,10.74)  dist=12
+[seg 3] LOCAL  exceeding      -> is;             score=2.7668  attn=0.0244  mask=1.000  idf=(10.56,10.74)  dist=54
+[seg 2] LOCAL  jaw;           -> push            score=2.7662  attn=0.0224  mask=1.000  idf=(10.96,11.25)  dist=31
+[seg 3] LOCAL  civilized      -> fat             score=2.7605  attn=0.0245  mask=1.000  idf=(10.40,10.85)  dist=16
+[seg 2] LOCAL  jaw;           -> movement        score=2.7553  attn=0.0223  mask=1.000  idf=(10.96,11.25)  dist=50
+[seg 5] LOCAL  daily          -> persian         score=2.7525  attn=0.0226  mask=1.000  idf=(10.96,11.10)  dist=35
+[seg 5] LOCAL  state          -> mysteries       score=2.7459  attn=0.0225  mask=1.000  idf=(10.85,11.25)  dist=14
+[seg 3] LOCAL  civilized      -> hump,           score=2.7316  attn=0.0242  mask=1.000  idf=(10.40,10.85)  dist=24
+[seg 3] LOCAL  civilized      -> good.           score=2.7269  attn=0.0242  mask=1.000  idf=(10.40,10.85)  dist=20
+[seg 4] LOCAL  face;          -> particularly    score=2.7269  attn=0.0224  mask=1.000  idf=(11.10,10.96)  dist=30
+[seg 6] LOCAL  german         -> thoughts,       score=2.7198  attn=0.0232  mask=1.000  idf=(10.56,11.10)  dist=51
+[seg 1] LOCAL  preternatural  -> noah’s          score=2.7194  attn=0.0215  mask=1.000  idf=(11.25,11.25)  dist=34
+[seg 3] LOCAL  civilized      -> meat            score=2.7155  attn=0.0241  mask=1.000  idf=(10.40,10.85)  dist=64
+[seg 3] LOCAL  exceeding      -> eating          score=2.7133  attn=0.0234  mask=1.000  idf=(10.56,10.96)  dist=26
+[seg 2] LOCAL  leaned         -> jaw;            score=2.7103  attn=0.0232  mask=1.000  idf=(10.64,10.96)  dist=8
+[seg 1] LOCAL  preternatural  -> year.           score=2.7036  attn=0.0214  mask=1.000  idf=(11.25,11.25)  dist=38
+[seg 6] LOCAL  equally        -> curious,        score=2.7021  attn=0.0219  mask=1.000  idf=(10.96,11.25)  dist=55
+[seg 1] LOCAL  general,       -> discover        score=2.6969  attn=0.0222  mask=1.000  idf=(10.96,11.10)  dist=37
+[seg 2] LOCAL  call           -> spilled         score=2.6942  attn=0.0268  mask=1.000  idf=(9.05,11.10)  dist=15
+[seg 5] LOCAL  state          -> persian         score=2.6901  attn=0.0224  mask=1.000  idf=(10.85,11.10)  dist=34
+[seg 5] LOCAL  state          -> forked          score=2.6886  attn=0.0220  mask=1.000  idf=(10.85,11.25)  dist=39
+[seg 4] LOCAL  putting        -> boots           score=2.6879  attn=0.0237  mask=1.000  idf=(10.21,11.10)  dist=62
+
+--------------------------------------------------------------------------------
+TEMPLATE WORD ASSOCIATIONS
+--------------------------------------------------------------------------------
+Template 00: icy, room., room;, term, oh, “oh!, tree,, tree
+Template 01: jaw;, jaw., in;, ribs,, jaw,, ribs, (by, jaw
+Template 02: eh?, icy, jacket,, scene., serene, jacket, happens, tashtego.
+Template 03: of;, of., of,, on.”, “on, on;, *the, _the
+Template 04: eh?, bed., bed;, “oh!, oh, jaw;, out;, jaw.
+Template 05: (by, by., by;, case., bible, alarm,, jacket,, crawl
+Template 06: no:, no!, no;, “no, of;, of., “no,, no,
+Template 07: lance,, well., lance, well;, up;, use, be., be;
+Template 08: is., is;, he., is,, he,, him.”, him?”, him!
+Template 09: oh, “oh!, “oh,, oh!, oh,, plates, lips, dr.
+Template 10: cook., eh?, bed., in;, cook,, bed;, cook, front,
+Template 11: of;, of., of,, fin,, fin, “mr., so?, tide
+Template 12: ye?”, ye.”, ye., ye;, ye!, ye?, ye,, ye
+Template 13: lo!, push, ago,, alive,, ago, pity
+Template 14: on.”, “on, on;, on., on,, it,”, ’em,, ha,
+Template 15: (by, by., by;, by,, die,, in;, man.”, met
+
+================================================================================
+Phase 2 Implementation Complete
+================================================================================
+Key additions from Causal-HNet paper Section 5:
+  - Soft edge masks m_ij(u) via learned MLP (Section 5.1)
+  - Edge feature computation (distance, direction)
+  - Full relational energy F_rel (Eq. 11)
+  - Combined loss with F_rel term
+  - Masked Hamiltonian attention bias
+
+Next phase to implement:
+  - Phase 3: Predictive-coding integration (Section 2.1)
+  - Phase 4: Context-gated modules (Section 2.2)
+(jax12) ni@singbuntu24:~/repos/h/causal-hnet/claude-generated$ 

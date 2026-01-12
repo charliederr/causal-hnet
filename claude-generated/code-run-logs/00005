@@ -1,0 +1,181 @@
+(jax12) ni@singbuntu24:~/repos/h/causal-hnet/claude-generated$ python causal_attention_hamiltonian_v4.py 
+================================================================================
+CAUSAL ATTENTION WITH CONTEXT-GATED MODULES
+Phase 4: Modular Parameter Gating
+================================================================================
+JAX backend: gpu
+JAX devices: [CudaDevice(id=0)]
+
+Context gating parameters:
+  Context dim: 32
+  Num modules: 9
+  Gate temperature: 1.0
+
+Module definitions:
+  Module 0: template - Template prototypes
+  Module 1: attention_qk - Query/Key projections
+  Module 2: attention_vo - Value/Output projections
+  Module 3: relational - Hamiltonian relations
+  Module 4: edge_mask - Edge mask MLP
+  Module 5: pc_layer_0 - PC layer 0
+  Module 6: pc_layer_1 - PC layer 1
+  Module 7: pc_layer_2 - PC layer 2
+  Module 8: projections - I/O projections
+
+Total tokens: 208455
+Vocabulary size: 4258
+
+Building word embeddings...
+Building co-occurrence edges...
+Directional edges: 282654
+
+Context gating architecture:
+  Context encoder: (96, 32)
+  Gate predictor: (32, 9)
+
+--------------------------------------------------------------------------------
+CONTEXT-GATED INFERENCE + ATTENTION (4 heads)
+--------------------------------------------------------------------------------
+
+Segment 1:
+  F_total: 543.9282
+  Gates: [0.622, 0.622, 0.623, 0.623, 0.623, 0.623, 0.622, 0.622, 0.623]
+  Active modules (>0.5): ['template', 'attention_qk', 'attention_vo', 'relational', 'edge_mask', 'pc_layer_0', 'pc_layer_1', 'pc_layer_2', 'projections']
+
+Segment 2:
+  F_total: 544.2850
+  Gates: [0.622, 0.622, 0.623, 0.623, 0.623, 0.623, 0.622, 0.622, 0.623]
+  Active modules (>0.5): ['template', 'attention_qk', 'attention_vo', 'relational', 'edge_mask', 'pc_layer_0', 'pc_layer_1', 'pc_layer_2', 'projections']
+
+--------------------------------------------------------------------------------
+CONTEXT GATING STATISTICS
+--------------------------------------------------------------------------------
+  template       : mean=0.622 ± 0.000
+  attention_qk   : mean=0.622 ± 0.000
+  attention_vo   : mean=0.623 ± 0.000
+  relational     : mean=0.623 ± 0.000
+  edge_mask      : mean=0.623 ± 0.000
+  pc_layer_0     : mean=0.623 ± 0.000
+  pc_layer_1     : mean=0.622 ± 0.000
+  pc_layer_2     : mean=0.622 ± 0.000
+  projections    : mean=0.623 ± 0.000
+
+--------------------------------------------------------------------------------
+PREDICTIVE-CODING STATISTICS
+--------------------------------------------------------------------------------
+  Mean F_PC:    26.0465 ± 0.3098
+  Mean F_rel:   5167.3004 ± 19.4433
+  Mean F_bin:   2.8063 ± 0.0057
+  Mean F_total: 545.6041 ± 1.9857
+
+--------------------------------------------------------------------------------
+TEMPLATE->TEMPLATE ATTENTION FLOWS
+--------------------------------------------------------------------------------
+Template 03 -> Template 06   flow=1.1020   J_pmi=+0.253
+Template 06 -> Template 03   flow=1.0918   J_pmi=-0.041
+Template 06 -> Template 07   flow=1.0722   J_pmi=-1.180
+Template 06 -> Template 09   flow=1.0675   J_pmi=-1.747
+Template 07 -> Template 06   flow=1.0646   J_pmi=+0.733
+Template 01 -> Template 06   flow=1.0643   J_pmi=+1.373
+Template 08 -> Template 06   flow=1.0629   J_pmi=+1.033
+Template 03 -> Template 07   flow=1.0622   J_pmi=-0.686
+Template 14 -> Template 06   flow=1.0617   J_pmi=+1.595
+Template 09 -> Template 06   flow=1.0614   J_pmi=+1.098
+Template 11 -> Template 06   flow=1.0588   J_pmi=+0.892
+Template 06 -> Template 01   flow=1.0579   J_pmi=-1.173
+Template 03 -> Template 09   flow=1.0576   J_pmi=-1.252
+Template 15 -> Template 06   flow=1.0563   J_pmi=+0.553
+Template 06 -> Template 15   flow=1.0554   J_pmi=-1.724
+Template 06 -> Template 08   flow=1.0552   J_pmi=-0.525
+
+--------------------------------------------------------------------------------
+TOP 50 TOKEN->TOKEN LINKS
+--------------------------------------------------------------------------------
+[seg 3] LOCAL  requires       -> resembling      score=3.2134  attn=0.0257  mask=0.457
+[seg 5] LOCAL  blood.         -> strikes         score=3.1926  attn=0.0256  mask=0.466
+[seg 5] LOCAL  blood.         -> hue,            score=3.1185  attn=0.0253  mask=0.488
+[seg 5] LOCAL  blood.         -> innermost       score=2.9919  attn=0.0246  mask=0.459
+[seg 5] LOCAL  blood.         -> lurks           score=2.9869  attn=0.0246  mask=0.442
+[seg 3] LOCAL  uncommon       -> resembling      score=2.9846  attn=0.0260  mask=0.474
+[seg 2] LOCAL  leaned         -> push            score=2.9724  attn=0.0248  mask=0.518
+[seg 2] LOCAL  leaned         -> movement        score=2.9710  attn=0.0248  mask=0.491
+[seg 2] LOCAL  fell           -> push            score=2.9683  attn=0.0275  mask=0.507
+[seg 4] LOCAL  face;          -> could,          score=2.9495  attn=0.0236  mask=0.469
+[seg 1] LOCAL  landsmen       -> numberless      score=2.9170  attn=0.0234  mask=0.468
+[seg 5] LOCAL  daily          -> august          score=2.8861  attn=0.0234  mask=0.531
+[seg 3] LOCAL  uncommon       -> requires        score=2.8777  attn=0.0254  mask=0.488
+[seg 4] LOCAL  private        -> boots           score=2.8661  attn=0.0247  mask=0.520
+[seg 5] LOCAL  daily          -> mysteries       score=2.8616  attn=0.0232  mask=0.540
+[seg 2] LOCAL  fell           -> spilled         score=2.8596  attn=0.0269  mask=0.498
+[seg 5] LOCAL  daily          -> forked          score=2.8530  attn=0.0231  mask=0.500
+[seg 2] LOCAL  leaned         -> spilled         score=2.8527  attn=0.0242  mask=0.509
+[seg 2] LOCAL  call           -> push            score=2.8431  attn=0.0279  mask=0.463
+[seg 4] LOCAL  face;          -> boots           score=2.8323  attn=0.0230  mask=0.460
+[seg 2] LOCAL  spilled        -> push            score=2.8301  attn=0.0227  mask=0.495
+[seg 2] LOCAL  spilled        -> movement        score=2.8276  attn=0.0226  mask=0.468
+[seg 3] LOCAL  requires       -> own,            score=2.8219  attn=0.0237  mask=0.443
+[seg 1] LOCAL  landsmen       -> discover        score=2.8208  attn=0.0229  mask=0.484
+[seg 3] LOCAL  civilized      -> eating          score=2.8183  attn=0.0247  mask=0.513
+[seg 3] LOCAL  requires       -> able            score=2.8166  attn=0.0236  mask=0.451
+[seg 5] LOCAL  state          -> august          score=2.8128  attn=0.0231  mask=0.531
+[seg 5] LOCAL  state          -> forked          score=2.7953  attn=0.0229  mask=0.499
+[seg 5] LOCAL  state          -> mysteries       score=2.7947  attn=0.0229  mask=0.540
+[seg 1] LOCAL  general,       -> numberless      score=2.7930  attn=0.0226  mask=0.484
+[seg 5] LOCAL  daily          -> persian         score=2.7841  attn=0.0229  mask=0.505
+[seg 2] LOCAL  fell           -> jaw;            score=2.7822  attn=0.0265  mask=0.486
+[seg 2] LOCAL  jaw;           -> push            score=2.7648  attn=0.0224  mask=0.486
+[seg 2] LOCAL  leaned         -> jaw;            score=2.7630  attn=0.0237  mask=0.497
+[seg 1] LOCAL  preternatural  -> noah’s          score=2.7622  attn=0.0218  mask=0.474
+[seg 3] LOCAL  civilized      -> fat             score=2.7605  attn=0.0245  mask=0.554
+[seg 2] LOCAL  jaw;           -> movement        score=2.7604  attn=0.0224  mask=0.458
+[seg 3] LOCAL  civilized      -> hump,           score=2.7588  attn=0.0245  mask=0.546
+[seg 6] LOCAL  german         -> thoughts,       score=2.7529  attn=0.0235  mask=0.447
+[seg 1] LOCAL  preternatural  -> year.           score=2.7510  attn=0.0217  mask=0.475
+[seg 3] LOCAL  civilized      -> meat            score=2.7506  attn=0.0244  mask=0.506
+[seg 6] LOCAL  equally        -> curious,        score=2.7485  attn=0.0223  mask=0.553
+[seg 3] LOCAL  exceeding      -> eating          score=2.7460  attn=0.0237  mask=0.491
+[seg 3] LOCAL  civilized      -> good.           score=2.7432  attn=0.0243  mask=0.521
+[seg 4] LOCAL  face;          -> particularly    score=2.7402  attn=0.0225  mask=0.477
+[seg 1] LOCAL  landsmen       -> general,        score=2.7321  attn=0.0225  mask=0.471
+[seg 3] LOCAL  civilized      -> is;             score=2.7314  attn=0.0244  mask=0.511
+[seg 4] LOCAL  call           -> could,          score=2.7278  attn=0.0268  mask=0.465
+[seg 5] LOCAL  strikes        -> vision          score=2.7275  attn=0.0215  mask=0.442
+[seg 2] LOCAL  call           -> spilled         score=2.7271  attn=0.0271  mask=0.454
+
+--------------------------------------------------------------------------------
+TEMPLATE WORD ASSOCIATIONS
+--------------------------------------------------------------------------------
+Template 00: do., do;, ’em,, ’em., room., room;, paid, ho!
+Template 01: um,, ribs,, ribs, in;, spray,, arctic, works, (by
+Template 02: “if, year., gone., tear, if,, as,, us!, board.
+Template 03: of;, of., skill,, “now,, now!, dust, dull, no:
+Template 04: die,, ho!, or,, leap, ho,, eh?, as,, path
+Template 05: open,, (by, crawl, by., all!”, by;, ahoy!, hath
+Template 06: of;, of., no:, away;, tiger, away., rig, lit
+Template 07: “mr., lake, quick,, uses, wake., well., ice,, “it’s
+Template 08: is., is;, he., soon,, open,, mad., mad,, hey,
+Template 09: box, plank,, we,, a.d., tides, being,, waved, off.
+Template 10: jot, us!, bend, dog,, dog, could,, fled, beer
+Template 11: fin,, row, row!, “mr., fin, of;, prow,, rig
+Template 12: ye?”, ah!, ye.”, ah,, ye., ye;, ye!, ye?
+Template 13: lo!, alive,, blank, all!”, sir!, dr., solemnly, watch.
+Template 14: ’em,, ’em., so?, own;, dream, ’em, ahoy!, on.”
+Template 15: (by, by., die,, by;, inner, own;, hull,, named
+
+================================================================================
+Phase 4 Implementation Complete
+================================================================================
+Key additions from Causal-HNet paper Section 2.2:
+  - Module partitioning θ = (θ_1, ..., θ_K)
+  - Context encoding from input statistics
+  - Context-dependent gates g_{k,c}
+  - Gated parameter updates (Eq. 4)
+  - Gate sparsity regularization
+
+All phases complete! Full Causal-HNet implementation:
+  - Phase 1: Hamiltonian energies (Eq. 5, 9, 10)
+  - Phase 2: Soft edge masks and F_rel (Eq. 11)
+  - Phase 3: Predictive-coding F_PC (Eq. 1, 2)
+  - Phase 4: Context-gated modules (Eq. 4)
+  - Combined: F_total = F_PC + λF_rel + F_bin (Eq. 12)
+(jax12) ni@singbuntu24:~/repos/h/causal-hnet/claude-generated$

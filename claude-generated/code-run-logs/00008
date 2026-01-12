@@ -1,0 +1,134 @@
+(jax12) ni@singbuntu24:~/repos/h/causal-hnet/claude-generated$ python causal_attention_hamiltonian_v5.py
+================================================================================
+CAUSAL-HNET FULL TRAINING
+================================================================================
+JAX backend: gpu
+JAX devices: [CudaDevice(id=0)]
+
+Loading data...
+Total tokens: 208455
+Vocabulary size: 4258
+Building embeddings...
+Initializing model...
+Total parameters: 86,539
+
+================================================================================
+STARTING TRAINING
+================================================================================
+Epochs: 5
+Steps per epoch: 100
+Learning rate: 0.001
+Inference steps: 10
+Segment length: 256
+Step     0/500 | Loss: 2546.7236 | F_PC: 26.30 | F_rel: 25175.6 | Gates: [0.27-0.66] | 0.1 steps/s
+Step    10/500 | Loss: 2534.0312 | F_PC: 25.02 | F_rel: 25061.4 | Gates: [0.28-0.66] | 1.4 steps/s
+Step    20/500 | Loss: 2427.4883 | F_PC: 25.13 | F_rel: 23995.2 | Gates: [0.28-0.65] | 2.6 steps/s
+Step    30/500 | Loss: 2222.4644 | F_PC: 24.48 | F_rel: 21951.9 | Gates: [0.27-0.65] | 3.8 steps/s
+Step    40/500 | Loss: 1833.8212 | F_PC: 22.89 | F_rel: 18082.1 | Gates: [0.26-0.64] | 5.1 steps/s
+Step    50/500 | Loss: 1137.5162 | F_PC: 21.27 | F_rel: 11136.1 | Gates: [0.24-0.60] | 6.2 steps/s
+Step    60/500 | Loss: 444.5757 | F_PC: 19.82 | F_rel: 4222.3 | Gates: [0.23-0.60] | 7.4 steps/s
+Step    70/500 | Loss: 128.7370 | F_PC: 18.15 | F_rel: 1081.7 | Gates: [0.23-0.62] | 8.6 steps/s
+Step    80/500 | Loss: 46.2294 | F_PC: 16.39 | F_rel: 275.0 | Gates: [0.20-0.67] | 9.7 steps/s
+Step    90/500 | Loss: 27.4168 | F_PC: 16.11 | F_rel: 90.9 | Gates: [0.15-0.76] | 10.9 steps/s
+
+============================================================
+Epoch 1/5 complete in 8.4s
+  Avg Loss: 1219.3098
+  Avg F_PC: 21.05
+  Avg F_rel: 11956.7
+============================================================
+
+Step   100/500 | Loss: 21.3384 | F_PC: 15.05 | F_rel: 41.5 | Gates: [0.09-0.87] | 12.0 steps/s
+Step   110/500 | Loss: 19.2292 | F_PC: 14.83 | F_rel: 23.4 | Gates: [0.04-0.94] | 13.1 steps/s
+Step   120/500 | Loss: 18.3003 | F_PC: 14.67 | F_rel: 16.0 | Gates: [0.02-0.97] | 14.2 steps/s
+Step   130/500 | Loss: 17.7065 | F_PC: 14.58 | F_rel: 11.5 | Gates: [0.01-0.98] | 15.2 steps/s
+Step   140/500 | Loss: 17.6408 | F_PC: 14.81 | F_rel: 8.7 | Gates: [0.01-0.99] | 16.3 steps/s
+Step   150/500 | Loss: 17.3080 | F_PC: 14.63 | F_rel: 7.1 | Gates: [0.00-0.99] | 17.4 steps/s
+Step   160/500 | Loss: 17.5754 | F_PC: 15.04 | F_rel: 5.9 | Gates: [0.00-0.99] | 18.4 steps/s
+Step   170/500 | Loss: 17.7091 | F_PC: 15.27 | F_rel: 4.9 | Gates: [0.00-0.99] | 19.4 steps/s
+Step   180/500 | Loss: 17.8786 | F_PC: 15.51 | F_rel: 4.3 | Gates: [0.00-1.00] | 20.5 steps/s
+Step   190/500 | Loss: 18.0494 | F_PC: 15.74 | F_rel: 3.8 | Gates: [0.00-1.00] | 21.5 steps/s
+
+============================================================
+Epoch 2/5 complete in 0.5s
+  Avg Loss: 18.1253
+  Avg F_PC: 15.07
+  Avg F_rel: 10.7
+============================================================
+
+Step   200/500 | Loss: 17.8985 | F_PC: 15.63 | F_rel: 3.4 | Gates: [0.00-1.00] | 22.5 steps/s
+Step   210/500 | Loss: 18.2320 | F_PC: 15.97 | F_rel: 3.2 | Gates: [0.00-1.00] | 23.5 steps/s
+Step   220/500 | Loss: 18.3051 | F_PC: 16.08 | F_rel: 2.9 | Gates: [0.00-1.00] | 24.4 steps/s
+Step   230/500 | Loss: 18.4503 | F_PC: 16.24 | F_rel: 2.7 | Gates: [0.00-1.00] | 25.4 steps/s
+Step   240/500 | Loss: 18.3679 | F_PC: 16.19 | F_rel: 2.5 | Gates: [0.00-1.00] | 26.3 steps/s
+Step   250/500 | Loss: 18.4962 | F_PC: 16.33 | F_rel: 2.4 | Gates: [0.00-1.00] | 27.3 steps/s
+Step   260/500 | Loss: 18.3973 | F_PC: 16.26 | F_rel: 2.2 | Gates: [0.00-1.00] | 28.2 steps/s
+Step   270/500 | Loss: 18.8429 | F_PC: 16.69 | F_rel: 2.1 | Gates: [0.00-1.00] | 29.1 steps/s
+Step   280/500 | Loss: 18.7879 | F_PC: 16.66 | F_rel: 2.1 | Gates: [0.00-1.00] | 30.1 steps/s
+Step   290/500 | Loss: 19.0600 | F_PC: 16.94 | F_rel: 2.0 | Gates: [0.00-1.00] | 31.0 steps/s
+
+============================================================
+Epoch 3/5 complete in 0.5s
+  Avg Loss: 18.5714
+  Avg F_PC: 16.40
+  Avg F_rel: 2.5
+============================================================
+
+Step   300/500 | Loss: 19.0945 | F_PC: 16.98 | F_rel: 1.9 | Gates: [0.00-1.00] | 31.9 steps/s
+Step   310/500 | Loss: 19.0747 | F_PC: 16.97 | F_rel: 1.8 | Gates: [0.00-1.00] | 32.7 steps/s
+Step   320/500 | Loss: 19.1532 | F_PC: 17.05 | F_rel: 1.8 | Gates: [0.00-1.00] | 33.6 steps/s
+Step   330/500 | Loss: 19.1789 | F_PC: 17.09 | F_rel: 1.7 | Gates: [0.00-1.00] | 34.5 steps/s
+Step   340/500 | Loss: 18.8719 | F_PC: 16.78 | F_rel: 1.7 | Gates: [0.00-1.00] | 35.4 steps/s
+Step   350/500 | Loss: 19.1853 | F_PC: 17.11 | F_rel: 1.7 | Gates: [0.00-1.00] | 36.2 steps/s
+Step   360/500 | Loss: 19.2327 | F_PC: 17.14 | F_rel: 1.6 | Gates: [0.00-1.00] | 37.0 steps/s
+Step   370/500 | Loss: 19.3565 | F_PC: 17.28 | F_rel: 1.6 | Gates: [0.00-1.00] | 37.9 steps/s
+Step   380/500 | Loss: 19.2152 | F_PC: 17.13 | F_rel: 1.6 | Gates: [0.00-1.00] | 38.7 steps/s
+Step   390/500 | Loss: 19.4793 | F_PC: 17.40 | F_rel: 1.6 | Gates: [0.00-1.00] | 39.5 steps/s
+
+============================================================
+Epoch 4/5 complete in 0.5s
+  Avg Loss: 19.2416
+  Avg F_PC: 17.16
+  Avg F_rel: 1.7
+============================================================
+
+Step   400/500 | Loss: 19.3942 | F_PC: 17.31 | F_rel: 1.6 | Gates: [0.00-1.00] | 40.3 steps/s
+Step   410/500 | Loss: 19.4067 | F_PC: 17.35 | F_rel: 1.5 | Gates: [0.00-1.00] | 41.1 steps/s
+Step   420/500 | Loss: 19.6131 | F_PC: 17.56 | F_rel: 1.5 | Gates: [0.00-1.00] | 41.9 steps/s
+Step   430/500 | Loss: 19.5067 | F_PC: 17.42 | F_rel: 1.5 | Gates: [0.00-1.00] | 42.7 steps/s
+Step   440/500 | Loss: 19.7367 | F_PC: 17.67 | F_rel: 1.5 | Gates: [0.00-1.00] | 43.5 steps/s
+Step   450/500 | Loss: 19.3486 | F_PC: 17.28 | F_rel: 1.5 | Gates: [0.00-1.00] | 44.2 steps/s
+Step   460/500 | Loss: 19.8031 | F_PC: 17.75 | F_rel: 1.5 | Gates: [0.00-1.00] | 45.0 steps/s
+Step   470/500 | Loss: 19.2119 | F_PC: 17.15 | F_rel: 1.5 | Gates: [0.00-1.00] | 45.7 steps/s
+Step   480/500 | Loss: 19.6026 | F_PC: 17.54 | F_rel: 1.5 | Gates: [0.00-1.00] | 46.5 steps/s
+Step   490/500 | Loss: 19.5552 | F_PC: 17.49 | F_rel: 1.5 | Gates: [0.00-1.00] | 47.2 steps/s
+
+============================================================
+Epoch 5/5 complete in 0.5s
+  Avg Loss: 19.4826
+  Avg F_PC: 17.42
+  Avg F_rel: 1.5
+============================================================
+
+
+Training complete in 10.4s
+Best loss: 18.1253
+
+================================================================================
+FINAL EVALUATION
+================================================================================
+  F_PC: 17.7157
+  F_PC_std: 0.0223
+  F_rel: 1.5117
+  F_rel_std: 0.0013
+  F_bin: 2.0250
+  F_bin_std: 0.0007
+  gate_mean: 0.4446
+  gate_mean_std: 0.0000
+  p_mean: 0.8024
+  p_mean_std: 0.0001
+  m_mean: 0.0001
+  m_mean_std: 0.0000
+
+Training complete!
+(jax12) ni@singbuntu24:~/repos/h/causal-hnet/claude-generated$
