@@ -1,0 +1,37 @@
+[
+  {
+    "content": "Add edge mask predictor parameters to ModelParams",
+    "status": "in_progress",
+    "activeForm": "Adding edge mask predictor parameters"
+  },
+  {
+    "content": "Implement soft edge mask prediction m_ij(u)",
+    "status": "pending",
+    "activeForm": "Implementing soft edge mask prediction"
+  },
+  {
+    "content": "Implement full F_rel relational energy (Eq. 11)",
+    "status": "pending",
+    "activeForm": "Implementing relational energy F_rel"
+  },
+  {
+    "content": "Add sparse candidate edge selection for efficiency",
+    "status": "pending",
+    "activeForm": "Adding sparse candidate edge selection"
+  },
+  {
+    "content": "Integrate F_rel into training loss",
+    "status": "pending",
+    "activeForm": "Integrating F_rel into training"
+  },
+  {
+    "content": "Update attention to use masked Hamiltonian bias",
+    "status": "pending",
+    "activeForm": "Updating attention with edge masks"
+  },
+  {
+    "content": "Test the v2 implementation",
+    "status": "pending",
+    "activeForm": "Testing v2 implementation"
+  }
+]
