@@ -167,7 +167,9 @@ class TrainConfig:
     # Loss weights
     lambda_rel: float = 0.1
     beta_bin: float = 0.05
-    gate_sparsity_weight: float = 0.01
+    gate_sparsity_weight: float = 0.1
+    gate_l1_weight: float = 0.05
+    gate_target_sparsity: float = 0.4  # Target fraction of active gates
 
     # Context gating
     gate_temperature: float = 1.0
@@ -254,7 +256,9 @@ def init_params(key: jax.random.PRNGKey, config: TrainConfig) -> ModelParams:
     W_ctx_enc = jax.random.normal(keys[11], (config.emb_dim, config.ctx_dim)) / math.sqrt(config.emb_dim)
     b_ctx_enc = jnp.zeros(config.ctx_dim)
     W_gate = jax.random.normal(keys[12], (config.ctx_dim, config.n_modules)) / math.sqrt(config.ctx_dim)
-    b_gate = jnp.ones(config.n_modules) * 0.5
+    # Initialize gate bias so sigmoid output starts near target sparsity (0.4)
+    # sigmoid(-0.4) ≈ 0.4, so bias of -0.4 gives initial gates around 0.4
+    b_gate = jnp.ones(config.n_modules) * (-0.4)
 
     return ModelParams(
         Zc=Zc, Wq=Wq, Wk=Wk, Wv=Wv, Wo=Wo,
@@ -472,9 +476,10 @@ def compute_F_total(x, z_layers, params, config):
     m = predict_edge_masks(Eseg, edge_features, params)
     w_rel = predict_relation_weights(Eseg, params.W_rel)
 
-    # F_rel
+    # F_rel (use softplus to ensure non-negative energies)
     E_all = relaxed_pair_energy_batched(p, params.H_r, params.k_r)
-    E_weighted = jnp.sum(w_rel * E_all, axis=-1)
+    E_all_pos = jax.nn.softplus(E_all)  # Ensure E_r >= 0 for proper constraint energy
+    E_weighted = jnp.sum(w_rel * E_all_pos, axis=-1)
     F_rel = jnp.sum(m * E_weighted)
 
     # F_bin
@@ -484,16 +489,23 @@ def compute_F_total(x, z_layers, params, config):
     ctx = encode_context(Eseg, params)
     gates = compute_gates(ctx, params, config.gate_temperature)
 
-    # Gate sparsity
-    gate_sparsity = config.gate_sparsity_weight * jnp.sum(gates * (1 - gates))
+    # Gate regularization:
+    # 1. Binary regularizer (push toward 0 or 1)
+    gate_binary = config.gate_sparsity_weight * jnp.sum(gates * (1 - gates))
+    # 2. L1 regularizer (push toward 0, encouraging sparsity)
+    gate_l1 = config.gate_l1_weight * jnp.sum(gates)
+    # 3. Target sparsity (penalize if average gate deviates from target)
+    gate_mean = jnp.mean(gates)
+    gate_target_penalty = 0.5 * ((gate_mean - config.gate_target_sparsity) ** 2)
 
-    F_total = F_PC + config.lambda_rel * F_rel + F_bin + gate_sparsity
+    F_total = F_PC + config.lambda_rel * F_rel + F_bin + gate_binary + gate_l1 + gate_target_penalty
 
     return F_total, {
         "F_PC": F_PC,
         "F_rel": F_rel,
         "F_bin": F_bin,
         "gates": gates,
+        "gate_mean": gate_mean,
         "p_mean": jnp.mean(p),
         "m_mean": jnp.mean(m),
     }
