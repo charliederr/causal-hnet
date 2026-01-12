@@ -1,0 +1,578 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\title{Top-Down Parsing via Bidirectional Context Expansion:\\
+A Distributional Approach to Constituency}
+
+\author{Research Notes, Claude Code prompted by Rob Freeman}
+\date{January 12, 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We explore a parsing approach based on \emph{substitution patterns} rather than local co-occurrence. The key insight is that syntactic units should be identified by maximizing the size of their \emph{bidirectional expansion}: the set of units that can substitute in similar contexts, where contexts themselves are also expanded to handle novel sentences. This document traces our reasoning, presents concrete examples, describes our prototype implementation, and identifies current technical challenges.
+\end{abstract}
+
+\section{Initial Problem: Local Context vs. Global Substitutability}
+
+\subsection{The Limitation of Current Approaches}
+
+Existing distributional parsers (including our baseline hdp1.py) score spans using \emph{local context windows}:
+
+\begin{lstlisting}[language=Python]
+# Current approach
+left_context = tokens[i-4:i]      # 4 tokens to the left
+right_context = tokens[i+n:i+n+4] # 4 tokens to the right
+span_score = f(left_context, right_context)
+\end{lstlisting}
+
+\textbf{Problem:} This only measures whether a span fits \emph{this particular} 4-token window, not whether it's a true substitutable unit across diverse contexts.
+
+\subsection{Example: ``my money'' vs. ``lost my''}
+
+Consider the sentence: \texttt{I lost my money yesterday}
+
+\textbf{Intuition says:} ``my money'' should be a unit (possessive NP)
+
+\textbf{Current parser logic:}
+\begin{itemize}
+\item ``lost my'': appears in immediate sequence, has co-occurrence statistics
+\item ``my money'': also appears in sequence, similar statistics
+\item \emph{Both} have consistent local contexts
+\end{itemize}
+
+\textbf{The key question:} How do we distinguish compositional units from accidental adjacency?
+
+\subsection{The Substitution Criterion}
+
+\textbf{Insight:} A true syntactic unit should have many \emph{substitutes} across diverse sentence frames.
+
+\begin{center}
+\begin{tabular}{l|l}
+\textbf{Frame} & \textbf{Substitutes} \\
+\hline
+I lost \underline{\phantom{my money}} yesterday & my money, your keys, his wallet, the car \\
+I need \underline{\phantom{my money}} for rent & my money, your help, some cash, the funds \\
+Where is \underline{\phantom{my money}}? & my money, your phone, his address, the key \\
+\end{tabular}
+\end{center}
+
+``My money'' has \emph{many diverse substitutes} $\implies$ strong unit
+
+\begin{center}
+\begin{tabular}{l|l}
+\textbf{Frame} & \textbf{Substitutes} \\
+\hline
+I \underline{\phantom{lost my}} money & lost my, found my, need my, want my, \ldots \\
+You \underline{\phantom{lost my}} keys & lost your, found your, took your, \ldots \\
+\end{tabular}
+\end{center}
+
+``Lost my'' has \emph{limited substitutes} and they require changing the determiner $\implies$ weaker unit
+
+\section{From Single-Sided to Bidirectional Expansion}
+
+\subsection{First Attempt: Expand Units Only}
+
+\textbf{Naive approach:}
+\begin{enumerate}
+\item Fix the context: ``did you \underline{\phantom{XX}} with Sarah''
+\item Find all units from corpus that fit this \emph{exact} context
+\item Size of this set = substitutability score
+\end{enumerate}
+
+\textbf{Problem:} What if the exact context ``did you \_ with Sarah'' was never seen in the corpus?
+
+\subsection{The Critical Insight: Expand Contexts Too}
+
+\textbf{Key realization:} Novel sentences will have novel contexts. We can't match exact contexts; we must match \emph{context patterns}.
+
+\subsubsection{Example: Novel Sentence}
+
+Sentence: \texttt{Should we go out on Friday}
+
+The exact pattern ``should we \_ on Friday'' might be rare.
+
+\textbf{Solution:} Expand the context pattern:
+
+\begin{align*}
+\text{Context}_0 &= \text{``should we \_ on Friday''} \\
+\text{Context expansion} &= \begin{cases}
+\text{``should we \_ on Friday''} \\
+\text{``should we \_ tonight''} \\
+\text{``did you \_ on Wednesday''} \\
+\text{``we \_ on Wednesdays''} \\
+\text{``would you \_ with me''}
+\end{cases}
+\end{align*}
+
+Now find units fitting \emph{any} of these expanded contexts:
+
+\begin{align*}
+\text{Unit expansion} &= \{\text{``go out''}, \text{``hang out''}, \text{``meet up''}, \text{``get together''}, \ldots\}
+\end{align*}
+
+\subsection{Bidirectional Expansion Algorithm}
+
+\begin{lstlisting}[language=Python, basicstyle=\small\ttfamily]
+def bidirectional_expansion(unit_0, context_0, catalog):
+    """
+    Simultaneously expand unit and context.
+    Returns: (unit_expansion, context_expansion)
+    """
+    # Initialize
+    unit_expansion = {unit_0}
+    context_expansion = {context_0}
+
+    for iteration in range(max_iters):
+        # EXPAND CONTEXTS:
+        # Find contexts similar to current expansion
+        new_contexts = set()
+        for ctx in context_expansion:
+            similar = find_similar_contexts(ctx, catalog)
+            new_contexts.update(similar)
+        context_expansion.update(new_contexts)
+
+        # EXPAND UNITS:
+        # Find units appearing in expanded contexts
+        new_units = set()
+        for ctx in context_expansion:
+            units = find_units_in_context(ctx, catalog)
+            new_units.update(units)
+        unit_expansion.update(new_units)
+
+    return unit_expansion, context_expansion
+\end{lstlisting}
+
+\textbf{Score:} Energy $E = -\log(|\text{unit\_expansion}| \times \log(|\text{context\_expansion}| + 1))$
+
+Lower energy = larger expansion = better unit
+
+\section{Connection to Embeddings and Predictive Coding}
+
+\subsection{Expansion as Implicit Embedding}
+
+Traditional embeddings: Map words to fixed vectors where similar words are nearby.
+
+\textbf{Our approach:} The expansion \emph{itself} is an embedding:
+\begin{itemize}
+\item Context defines a \emph{substitution set} (the expansion)
+\item Elements in the set are interchangeable in these contexts
+\item This IS a grouping/clustering (dimensionality reduction)
+\item Members can predict each other (if one fits, others likely fit too)
+\end{itemize}
+
+\subsection{Predictive Coding Interpretation}
+
+Large expansion $\implies$ high mutual predictability:
+\begin{itemize}
+\item If ``go out'' fits $\implies$ ``hang out'' probably fits
+\item If ``hang out'' fits $\implies$ ``meet up'' probably fits
+\item These units \emph{predict each other}
+\end{itemize}
+
+This satisfies a predictive coding objective: maximize prediction accuracy within the expansion set.
+
+\subsection{Dynamic vs. Pre-Clustered}
+
+\textbf{Pre-clustered approach:}
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+# Offline: cluster contexts
+catalog["go out"] = {
+    "cluster_0": {contexts: [...], signature: vec_social},
+    "cluster_1": {contexts: [...], signature: vec_motion}
+}
+
+# Parse time: match to clusters
+if similarity(current_context, vec_social) > threshold:
+    use cluster_0
+\end{lstlisting}
+
+\textbf{Dynamic expansion approach:}
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+# Parse time: expand both unit and context
+expansion = bidirectional_expansion("go out", current_context)
+# Clustering happens implicitly via expansion process
+\end{lstlisting}
+
+\textbf{Advantage:} Handles interpolation, novel contexts, soft boundaries.
+
+\section{Concrete Examples}
+
+\subsection{Example 1: ``go out'' - Polysemy}
+
+\subsubsection{Social Context}
+
+Sentence: \texttt{Did you go out with Sarah}
+
+\begin{enumerate}
+\item \textbf{Initial:} unit = ``go out'', context = (``did you'', ``with Sarah'')
+\item \textbf{Context expansion:}
+\begin{itemize}
+\item ``did you \_ with Helen''
+\item ``would you \_ with me''
+\item ``we \_ together''
+\item ``let's \_ on Friday''
+\end{itemize}
+\item \textbf{Unit expansion:}
+\begin{itemize}
+\item go out, hang out, meet up, get together, chat, connect
+\end{itemize}
+\item \textbf{Score:} $|\text{units}| \approx 15$, $|\text{contexts}| \approx 30$ $\implies$ E = $-\log(15 \times \log(31)) \approx -4.1$
+\end{enumerate}
+
+\subsubsection{Motion Context}
+
+Sentence: \texttt{I go out the door}
+
+\begin{enumerate}
+\item \textbf{Initial:} unit = ``go out'', context = (``I'', ``the door'')
+\item \textbf{Context expansion:}
+\begin{itemize}
+\item ``I \_ the door''
+\item ``we \_ the exit''
+\item ``please \_ this way''
+\item ``you should \_ now''
+\end{itemize}
+\item \textbf{Unit expansion:}
+\begin{itemize}
+\item go out, walk out, exit, leave, step out, head out
+\end{itemize}
+\item \textbf{Score:} $|\text{units}| \approx 12$, $|\text{contexts}| \approx 25$ $\implies$ E = $-\log(12 \times \log(26)) \approx -3.9$
+\end{enumerate}
+
+\textbf{Key point:} Same surface form ``go out'', different expansions, both recognized as valid units with context-appropriate meanings.
+
+\subsection{Example 2: ``my money'' vs. ``lost my''}
+
+Sentence: \texttt{I lost my money yesterday}
+
+\subsubsection{Testing ``my money'' as unit}
+
+\begin{enumerate}
+\item \textbf{Context expansion:}
+\begin{itemize}
+\item ``I lost \_''
+\item ``I need \_''
+\item ``where is \_''
+\item ``I found \_''
+\item ``I want \_''
+\end{itemize}
+\item \textbf{Unit expansion:}
+\begin{itemize}
+\item my money, your keys, his wallet, the car, my phone, your help, \ldots
+\end{itemize}
+\item \textbf{Score:} Large expansion (possessive NPs are common)
+\end{enumerate}
+
+\subsubsection{Testing ``lost my'' as unit}
+
+\begin{enumerate}
+\item \textbf{Context expansion:}
+\begin{itemize}
+\item ``I \_ money''
+\item ``I \_ keys''
+\item ``you \_ wallet'' (but this changes to ``your'')
+\end{itemize}
+\item \textbf{Unit expansion:}
+\begin{itemize}
+\item lost my, found my, need my, want my (limited, requires ``my'')
+\end{itemize}
+\item \textbf{Score:} Small expansion (verb+determiner not freely substitutable)
+\end{enumerate}
+
+\textbf{Result:} ``my money'' wins due to larger bidirectional expansion.
+
+\section{Implementation}
+
+\subsection{Prototype Architecture}
+
+We implemented three versions:
+
+\subsubsection{Version 1: Simple Frequency-Based (prototype\_topdown\_units.py)}
+
+\begin{itemize}
+\item Builds corpus catalog: 32k n-grams (n=1..4) with contexts
+\item Scores units by: $E = -\log(\text{freq}) - \text{compositionality\_bonus} + \lambda \cdot \text{context\_mismatch}$
+\item Top-down parsing: test span as unit before splitting
+\item \textbf{Success:} Finds ``go out'', ``my money'', ``did you'', ``the door''
+\item \textbf{Limitation:} Uses local context matching, not full expansion
+\end{itemize}
+
+\subsubsection{Version 2: Explicit Bidirectional Expansion (bidirectional\_expansion\_parser.py)}
+
+\begin{itemize}
+\item Stores: unit $\to$ contexts mapping AND context $\to$ units mapping
+\item Implements expansion algorithm as described
+\item \textbf{Challenge:} Memory explosion - storing all individual context instances infeasible at scale
+\end{itemize}
+
+\subsubsection{Version 3: Aggregated Expansion (bidir\_simple.py)}
+
+\begin{itemize}
+\item Uses aggregated context distributions (Counter objects)
+\item Context similarity via Jaccard on top-k words
+\item Expansion limited by similarity threshold
+\item \textbf{Current status:} Working but needs refinement
+\end{itemize}
+
+\subsection{Parsing Algorithm}
+
+\begin{lstlisting}[language=Python, basicstyle=\small\ttfamily]
+def parse_topdown(span, tokens, catalog):
+    # 1. TEST AS UNIT
+    unit_expansion, context_expansion = \
+        bidirectional_expansion(span.text, context, catalog)
+
+    unit_energy = -log(len(unit_expansion) *
+                       log(len(context_expansion) + 1))
+
+    # 2. TEST ALL POSSIBLE SPLITS
+    best_split_energy = infinity
+    for split_point in possible_splits(span):
+        left = parse_topdown(left_span, tokens, catalog)
+        right = parse_topdown(right_span, tokens, catalog)
+        split_energy = left.energy + right.energy + penalty
+
+        if split_energy < best_split_energy:
+            best_split_energy = split_energy
+            best_split = (left, right)
+
+    # 3. CHOOSE: unit vs. split
+    if unit_energy < best_split_energy:
+        return UnitNode(span, unit_energy)
+    else:
+        return SplitNode(span, best_split)
+\end{lstlisting}
+
+\section{Current Challenges}
+
+\subsection{Challenge 1: Scalability of Explicit Expansion}
+
+\textbf{Problem:} With 32k units in catalog, comparing all pairs for context similarity is $O(n^2)$.
+
+For sentence parsing, we need:
+\begin{itemize}
+\item Fast lookup of similar contexts
+\item Fast retrieval of units fitting a context pattern
+\end{itemize}
+
+\textbf{Current bottleneck:} Iterating through all catalog entries for each candidate span.
+
+\subsubsection{Potential solutions:}
+\begin{enumerate}
+\item \textbf{Pre-compute similarity graph:} Offline clustering of contexts
+\item \textbf{Embedding-based retrieval:} Encode contexts as vectors, use approximate nearest neighbors
+\item \textbf{Inverted index:} Index units by context features (e.g., top-k words)
+\end{enumerate}
+
+\subsection{Challenge 2: Context Similarity Metric}
+
+\textbf{Current approach:} Jaccard similarity on top-10 words from context distributions
+
+\textbf{Problems:}
+\begin{itemize}
+\item Too loose: Many false positives (threshold = 0.15 gives 19k expansions)
+\item Too strict: Misses valid generalizations (threshold = 0.30 still gives 1.5k expansions)
+\item Ignores word order and syntactic structure
+\end{itemize}
+
+\subsubsection{Example of false positive:}
+
+\begin{lstlisting}[basicstyle=\small\ttfamily]
+"go out" context: (left: [to, you, i], right: [with, and, the])
+"a big" context:  (left: [to, was, i], right: [and, the, for])
+
+Jaccard similarity = 0.4 (overlaps on: to, i, and, the)
+=> Incorrectly deemed similar!
+\end{lstlisting}
+
+\subsection{Challenge 3: Representation of Context Patterns}
+
+\textbf{Question:} How should we represent a ``context pattern''?
+
+Current options tried:
+\begin{enumerate}
+\item \textbf{Exact tuples:} $(w_{-3}, w_{-2}, w_{-1})$ and $(w_{+1}, w_{+2}, w_{+3})$
+    \begin{itemize}
+    \item Pro: Precise
+    \item Con: Doesn't generalize to novel patterns
+    \end{itemize}
+
+\item \textbf{Aggregated distributions:} Counter of all words seen in left/right contexts
+    \begin{itemize}
+    \item Pro: Generalizes across instances
+    \item Con: Loses structural information
+    \end{itemize}
+
+\item \textbf{Embeddings:} Encode context as vector
+    \begin{itemize}
+    \item Pro: Captures semantic similarity
+    \item Con: Requires training/pre-trained model
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Challenge 4: The Averaging Problem}
+
+\textbf{Core issue:} We want to \emph{distinguish} different meanings (social vs. motion ``go out''), but aggregation tends to \emph{blend} them.
+
+If we represent ``go out'' contexts as:
+\begin{align*}
+\text{context\_distribution} &= \text{Counter}(\text{all left words}) \\
+&= \{``to'': 115, ``you'': 81, ``I'': 45, \ldots\}
+\end{align*}
+
+This mixes social and motion contexts together. When we compute similarity, we can't distinguish which meaning is active.
+
+\textbf{Desired:} Context patterns should cluster by meaning
+\begin{itemize}
+\item Social cluster: ``did you'', ``would you'', ``let's'', ``we'', \ldots
+\item Motion cluster: ``I'', ``please'', ``you should'', + spatial objects
+\end{itemize}
+
+\textbf{Question:} Should clustering be:
+\begin{enumerate}
+\item \textbf{Pre-computed} (offline clustering of contexts into meaning groups)?
+\item \textbf{Dynamic} (expand and naturally separate via similarity)?
+\item \textbf{Implicit} (learned neural representations)?
+\end{enumerate}
+
+\section{Connection to Goertzel's Hamiltonian Framework}
+
+The Causal-HNet paper (Goertzel, 2025) proposes a related approach:
+
+\subsection{Hamiltonian Energy for Relations}
+
+Define energy functions $E_r(p_i, p_j)$ for relation types $r$:
+\begin{itemize}
+\item $E_{\text{social}}(p_{\text{go}}, p_{\text{out}}) = -5 p_i p_j + 1$
+\item $E_{\text{motion}}(p_{\text{go}}, p_{\text{out}}) = -4 p_i p_j + 1$
+\end{itemize}
+
+Low energy when both nodes active and relation satisfied.
+
+\subsection{Dynamic Edge Prediction}
+
+From sentence embedding $z$, predict:
+\begin{itemize}
+\item Edge mask: $m_{ij}(z) \in [0,1]$ (should this edge be active?)
+\item Relation weights: $w_{ij,r}(z)$ (what relation type?)
+\end{itemize}
+
+\textbf{Key insight:} Different sentence contexts $\implies$ different $z$ $\implies$ different edge predictions.
+
+\subsection{Relation to Our Approach}
+
+\begin{center}
+\begin{tabular}{l|l}
+\textbf{Our expansion approach} & \textbf{Hamiltonian approach} \\
+\hline
+Explicit expansion sets & Implicit via learned energies \\
+Corpus statistics & Learned parameters \\
+Maximize expansion size & Minimize energy \\
+Interpret: substitutability & Interpret: relation satisfaction \\
+\end{tabular}
+\end{center}
+
+\textbf{Potential synthesis:}
+\begin{itemize}
+\item Use expansion to \emph{train} Hamiltonian energies
+\item Or: Use learned energies to \emph{guide} expansion
+\item Or: Hybrid objective combining both
+\end{itemize}
+
+\section{Next Steps and Open Questions}
+
+\subsection{Immediate Technical Questions}
+
+\begin{enumerate}
+\item \textbf{Scalability:} How to make bidirectional expansion efficient at scale?
+    \begin{itemize}
+    \item Approximate methods (LSH, embeddings)?
+    \item Pre-computed indices?
+    \item Limit expansion depth/breadth?
+    \end{itemize}
+
+\item \textbf{Similarity metric:} What's the right way to measure context similarity?
+    \begin{itemize}
+    \item Embeddings (BERT, word2vec)?
+    \item Structural features (POS tags, dependency patterns)?
+    \item Learned metric?
+    \end{itemize}
+
+\item \textbf{Representation:} How to represent contexts to preserve both generalization and discrimination?
+    \begin{itemize}
+    \item Hybrid: exact + aggregate?
+    \item Hierarchical: word-level + pattern-level?
+    \item Latent: learned representations?
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Architectural Choices}
+
+\textbf{Option A: Refine explicit expansion}
+\begin{itemize}
+\item Better indexing/clustering
+\item Efficient retrieval structures
+\item Interpretable, corpus-grounded
+\end{itemize}
+
+\textbf{Option B: Neural dynamic predictor}
+\begin{itemize}
+\item Learn $z = \text{encode}(\text{sentence})$
+\item Predict expansions implicitly via network
+\item End-to-end trainable
+\end{itemize}
+
+\textbf{Option C: Hybrid}
+\begin{itemize}
+\item Use expansion concept for objective
+\item Use learned representations for efficiency
+\item Best of both worlds?
+\end{itemize}
+
+\subsection{Theoretical Questions}
+
+\begin{enumerate}
+\item \textbf{Convergence:} Does bidirectional expansion converge? Under what conditions?
+
+\item \textbf{Uniqueness:} Can different segmentations yield similar expansion sizes?
+
+\item \textbf{Compositionality:} How does expansion size relate to semantic compositionality?
+
+\item \textbf{Learnability:} Can we learn to predict expansion size from sentence features?
+\end{enumerate}
+
+\section{Conclusion}
+
+We've developed a parsing approach based on a simple intuition: \emph{syntactic units are those with large substitution sets across diverse contexts.}
+
+The key innovation is \textbf{bidirectional expansion}: simultaneously expanding both the unit set (what can substitute) and context set (where they can substitute), enabling generalization to novel sentences.
+
+Our prototype demonstrates the concept works:
+\begin{itemize}
+\item Successfully finds multi-word units: ``go out'', ``my money'', ``did you''
+\item Prefers units with strong corpus support
+\item Handles polysemy through context-dependent expansion
+\end{itemize}
+
+The main challenge is \textbf{scalability}: efficient expansion at corpus scale requires better algorithms or learned representations.
+
+This approach connects to:
+\begin{itemize}
+\item \textbf{Distributional semantics}: Meaning from substitution patterns
+\item \textbf{Predictive coding}: Large expansion = high mutual predictability
+\item \textbf{Hamiltonian frameworks}: Energy minimization over relational constraints
+\item \textbf{Freeman-style attention}: Substitutability as basis for grouping
+\end{itemize}
+
+We see this as a promising direction that grounds parsing in fundamental distributional principles rather than arbitrary local windows.
+
+\end{document}
