@@ -167,12 +167,12 @@ class TrainConfig:
     # Loss weights
     lambda_rel: float = 0.1
     beta_bin: float = 0.05
-    gate_sparsity_weight: float = 0.1
-    gate_l1_weight: float = 0.05
-    gate_target_sparsity: float = 0.4  # Target fraction of active gates
+    gate_budget: float = 4.0  # Target sum of gates (out of n_modules=9)
+    gate_budget_weight: float = 0.5  # Weight for budget constraint
+    gate_variance_weight: float = 0.5  # Encourage variance in gate values
 
     # Context gating
-    gate_temperature: float = 1.0
+    gate_temperature: float = 0.5  # Lower temp = sharper gates
     ell_star: int = 1
 
     # Logging
@@ -256,9 +256,9 @@ def init_params(key: jax.random.PRNGKey, config: TrainConfig) -> ModelParams:
     W_ctx_enc = jax.random.normal(keys[11], (config.emb_dim, config.ctx_dim)) / math.sqrt(config.emb_dim)
     b_ctx_enc = jnp.zeros(config.ctx_dim)
     W_gate = jax.random.normal(keys[12], (config.ctx_dim, config.n_modules)) / math.sqrt(config.ctx_dim)
-    # Initialize gate bias so sigmoid output starts near target sparsity (0.4)
-    # sigmoid(-0.4) ≈ 0.4, so bias of -0.4 gives initial gates around 0.4
-    b_gate = jnp.ones(config.n_modules) * (-0.4)
+    # Initialize gate biases with varied values to encourage differentiation
+    # Some modules start more active, some less
+    b_gate = jax.random.uniform(keys[13], (config.n_modules,), minval=-1.0, maxval=1.0)
 
     return ModelParams(
         Zc=Zc, Wq=Wq, Wk=Wk, Wv=Wv, Wo=Wo,
@@ -490,15 +490,17 @@ def compute_F_total(x, z_layers, params, config):
     gates = compute_gates(ctx, params, config.gate_temperature)
 
     # Gate regularization:
-    # 1. Binary regularizer (push toward 0 or 1)
-    gate_binary = config.gate_sparsity_weight * jnp.sum(gates * (1 - gates))
-    # 2. L1 regularizer (push toward 0, encouraging sparsity)
-    gate_l1 = config.gate_l1_weight * jnp.sum(gates)
-    # 3. Target sparsity (penalize if average gate deviates from target)
+    # 1. Budget constraint: gates should sum to target (encourages some on, some off)
+    gate_sum = jnp.sum(gates)
+    gate_budget_penalty = config.gate_budget_weight * (gate_sum - config.gate_budget) ** 2
+    # 2. Variance incentive: encourage gates to be different from each other
+    # Maximize variance = minimize negative variance
     gate_mean = jnp.mean(gates)
-    gate_target_penalty = 0.5 * ((gate_mean - config.gate_target_sparsity) ** 2)
+    gate_variance = jnp.var(gates)
+    # We want high variance, so penalize low variance (minimize -variance)
+    gate_variance_loss = -config.gate_variance_weight * gate_variance
 
-    F_total = F_PC + config.lambda_rel * F_rel + F_bin + gate_binary + gate_l1 + gate_target_penalty
+    F_total = F_PC + config.lambda_rel * F_rel + F_bin + gate_budget_penalty + gate_variance_loss
 
     return F_total, {
         "F_PC": F_PC,
@@ -849,7 +851,9 @@ def main():
     # Loss weights
     ap.add_argument("--lambda_rel", type=float, default=0.1)
     ap.add_argument("--beta_bin", type=float, default=0.05)
-    ap.add_argument("--gate_sparsity_weight", type=float, default=0.01)
+    ap.add_argument("--gate_budget", type=float, default=4.0)
+    ap.add_argument("--gate_budget_weight", type=float, default=0.5)
+    ap.add_argument("--gate_variance_weight", type=float, default=0.5)
 
     # Model
     ap.add_argument("--n_clusters", type=int, default=16)
@@ -897,7 +901,9 @@ def main():
         prior_weight=args.prior_weight,
         lambda_rel=args.lambda_rel,
         beta_bin=args.beta_bin,
-        gate_sparsity_weight=args.gate_sparsity_weight,
+        gate_budget=args.gate_budget,
+        gate_budget_weight=args.gate_budget_weight,
+        gate_variance_weight=args.gate_variance_weight,
         gate_temperature=args.gate_temperature,
         ell_star=args.ell_star,
         log_every=args.log_every,
