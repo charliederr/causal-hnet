@@ -1,0 +1,689 @@
+2026-01-10T10:50:36.743Z [ERROR] Failed to save config with lock: Error: ENOENT: no such file or directory, lstat '/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json'
+2026-01-10T10:50:36.743Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236743
+2026-01-10T10:50:36.743Z [DEBUG] Setting permissions for new file: 600
+2026-01-10T10:50:36.752Z [DEBUG] Temp file written successfully, size: 82 bytes
+2026-01-10T10:50:36.752Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236743 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:36.752Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:36.755Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236755
+2026-01-10T10:50:36.755Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:36.756Z [DEBUG] Temp file written successfully, size: 130 bytes
+2026-01-10T10:50:36.756Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:36.756Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236755 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:36.756Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:36.756Z [DEBUG] [init] configureGlobalMTLS starting
+2026-01-10T10:50:36.756Z [DEBUG] [init] configureGlobalMTLS complete
+2026-01-10T10:50:36.756Z [DEBUG] [init] configureGlobalAgents starting
+2026-01-10T10:50:36.756Z [DEBUG] [init] configureGlobalAgents complete
+2026-01-10T10:50:36.756Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236756
+2026-01-10T10:50:36.756Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:36.758Z [DEBUG] Temp file written successfully, size: 167 bytes
+2026-01-10T10:50:36.758Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:36.758Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236756 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:36.758Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:36.758Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236758
+2026-01-10T10:50:36.758Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:36.759Z [DEBUG] Temp file written successfully, size: 202 bytes
+2026-01-10T10:50:36.759Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:36.759Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236758 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:36.759Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:36.759Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236759
+2026-01-10T10:50:36.759Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:36.760Z [DEBUG] Temp file written successfully, size: 239 bytes
+2026-01-10T10:50:36.760Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:36.760Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236759 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:36.760Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:36.761Z [DEBUG] [LSP MANAGER] initializeLspServerManager() called
+2026-01-10T10:50:36.761Z [DEBUG] [LSP MANAGER] Created manager instance, state=pending
+2026-01-10T10:50:36.761Z [DEBUG] [LSP MANAGER] Starting async initialization (generation 1)
+2026-01-10T10:50:36.762Z [DEBUG] [STARTUP] Loading MCP configs...
+2026-01-10T10:50:36.762Z [DEBUG] Found 0 plugins (0 enabled, 0 disabled)
+2026-01-10T10:50:36.762Z [DEBUG] Total LSP servers loaded: 0
+2026-01-10T10:50:36.762Z [DEBUG] [LSP SERVER MANAGER] getAllLspServers returned 0 server(s)
+2026-01-10T10:50:36.762Z [DEBUG] LSP manager initialized with 0 servers
+2026-01-10T10:50:36.762Z [DEBUG] [STARTUP] MCP configs loaded in 0ms
+2026-01-10T10:50:36.762Z [DEBUG] LSP server manager initialized successfully
+2026-01-10T10:50:36.762Z [DEBUG] LSP notification handlers registered successfully for all 0 server(s)
+2026-01-10T10:50:36.762Z [DEBUG] [STARTUP] Running setup()...
+2026-01-10T10:50:36.776Z [DEBUG] Loading skills from: managed=/etc/claude-code/.claude/skills, user=/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/skills, project=[]
+2026-01-10T10:50:36.808Z [DEBUG] installed_plugins.json doesn't exist, returning empty V2 object
+2026-01-10T10:50:36.811Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/todos/7c2d1381-153d-48d8-a9f6-a9ab3a71c934-agent-7c2d1381-153d-48d8-a9f6-a9ab3a71c934.json.tmp.826230.1768042236811
+2026-01-10T10:50:36.813Z [DEBUG] Temp file written successfully, size: 2 bytes
+2026-01-10T10:50:36.813Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/todos/7c2d1381-153d-48d8-a9f6-a9ab3a71c934-agent-7c2d1381-153d-48d8-a9f6-a9ab3a71c934.json.tmp.826230.1768042236811 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/todos/7c2d1381-153d-48d8-a9f6-a9ab3a71c934-agent-7c2d1381-153d-48d8-a9f6-a9ab3a71c934.json
+2026-01-10T10:50:36.813Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/todos/7c2d1381-153d-48d8-a9f6-a9ab3a71c934-agent-7c2d1381-153d-48d8-a9f6-a9ab3a71c934.json written atomically
+2026-01-10T10:50:36.820Z [DEBUG] getPluginSkills: Processing 0 enabled plugins
+2026-01-10T10:50:36.820Z [DEBUG] Total plugin skills loaded: 0
+2026-01-10T10:50:36.820Z [DEBUG] Total plugin commands loaded: 0
+2026-01-10T10:50:36.820Z [DEBUG] Registered 0 hooks from 0 plugins
+2026-01-10T10:50:36.821Z [DEBUG] [STARTUP] setup() completed in 59ms
+2026-01-10T10:50:36.821Z [DEBUG] [STARTUP] Loading commands and agents...
+2026-01-10T10:50:36.823Z [DEBUG] Total plugin agents loaded: 0
+2026-01-10T10:50:36.823Z [DEBUG] Loaded 0 unique skills (managed: 0, user: 0, project: 0, legacy commands: 0)
+2026-01-10T10:50:36.823Z [DEBUG] getSkills returning: 0 skill dir commands, 0 plugin skills, 0 bundled skills
+2026-01-10T10:50:36.824Z [DEBUG] [STARTUP] Commands and agents loaded in 3ms
+2026-01-10T10:50:36.824Z [DEBUG] [STARTUP] Running showSetupScreens()...
+2026-01-10T10:50:36.826Z [DEBUG] [render] initYoga starting
+2026-01-10T10:50:36.833Z [DEBUG] [render] initYoga complete
+2026-01-10T10:50:36.855Z [DEBUG] [keybindings] KeybindingSetup initialized with 39 bindings, 0 warnings
+2026-01-10T10:50:36.874Z [DEBUG] [keybindings] Skipping file watcher - user customization disabled
+2026-01-10T10:50:36.878Z [DEBUG] Creating shell snapshot for bash (/bin/bash)
+2026-01-10T10:50:36.878Z [DEBUG] Looking for shell config file: /home/ni/.bashrc
+2026-01-10T10:50:36.878Z [DEBUG] Snapshots directory: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/shell-snapshots
+2026-01-10T10:50:36.878Z [DEBUG] Creating snapshot at: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/shell-snapshots/snapshot-bash-1768042236878-dz2bnx.sh
+2026-01-10T10:50:36.878Z [DEBUG] Shell binary exists: true
+2026-01-10T10:50:36.878Z [DEBUG] Execution timeout: 10000ms
+2026-01-10T10:50:36.884Z [DEBUG] Acquired mtime-based lock on running version: /home/ni/.local/share/claude/versions/2.1.3
+2026-01-10T10:50:36.900Z [DEBUG] Shell snapshot created successfully (3248 bytes)
+2026-01-10T10:50:36.943Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236943
+2026-01-10T10:50:36.943Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:36.952Z [DEBUG] Temp file written successfully, size: 415 bytes
+2026-01-10T10:50:36.952Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:36.952Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236943 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:36.952Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:36.953Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236953
+2026-01-10T10:50:36.953Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:36.954Z [DEBUG] Temp file written successfully, size: 451 bytes
+2026-01-10T10:50:36.954Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:36.954Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236953 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:36.954Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:36.954Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236954
+2026-01-10T10:50:36.954Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:36.955Z [DEBUG] Temp file written successfully, size: 479 bytes
+2026-01-10T10:50:36.955Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:36.955Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236954 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:36.955Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:36.955Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236955
+2026-01-10T10:50:36.955Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:36.956Z [DEBUG] Temp file written successfully, size: 531 bytes
+2026-01-10T10:50:36.956Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:36.956Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236955 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:36.956Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:36.957Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236957
+2026-01-10T10:50:36.957Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:36.958Z [DEBUG] Temp file written successfully, size: 570 bytes
+2026-01-10T10:50:36.958Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:36.958Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236957 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:36.958Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:36.959Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236959
+2026-01-10T10:50:36.959Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:36.960Z [DEBUG] Temp file written successfully, size: 608 bytes
+2026-01-10T10:50:36.960Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:36.960Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236959 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:36.960Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:36.960Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236960
+2026-01-10T10:50:36.960Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:36.961Z [DEBUG] Temp file written successfully, size: 647 bytes
+2026-01-10T10:50:36.961Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:36.961Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236960 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:36.961Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:36.961Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236961
+2026-01-10T10:50:36.961Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:36.962Z [DEBUG] Temp file written successfully, size: 677 bytes
+2026-01-10T10:50:36.962Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:36.962Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236961 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:36.962Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:36.963Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236963
+2026-01-10T10:50:36.963Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:36.963Z [DEBUG] Temp file written successfully, size: 707 bytes
+2026-01-10T10:50:36.963Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:36.963Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236963 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:36.964Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:36.964Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236964
+2026-01-10T10:50:36.964Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:36.965Z [DEBUG] Temp file written successfully, size: 752 bytes
+2026-01-10T10:50:36.965Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:36.965Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236964 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:36.965Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:36.965Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236965
+2026-01-10T10:50:36.965Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:36.966Z [DEBUG] Temp file written successfully, size: 777 bytes
+2026-01-10T10:50:36.966Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:36.966Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236965 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:36.966Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:36.983Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236983
+2026-01-10T10:50:36.983Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:36.984Z [DEBUG] Temp file written successfully, size: 818 bytes
+2026-01-10T10:50:36.984Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:36.984Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236983 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:36.984Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:36.995Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236995
+2026-01-10T10:50:36.995Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:36.997Z [DEBUG] Temp file written successfully, size: 885 bytes
+2026-01-10T10:50:36.997Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:36.997Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042236995 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:36.997Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:37.147Z [DEBUG] Ripgrep first use test: PASSED (mode=builtin, path=/home/ni/.local/share/claude/versions/2.1.3)
+2026-01-10T10:50:38.878Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042238878
+2026-01-10T10:50:38.878Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:38.889Z [DEBUG] Temp file written successfully, size: 885 bytes
+2026-01-10T10:50:38.889Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:38.889Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042238878 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:38.889Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:50:38.890Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042238890
+2026-01-10T10:50:38.890Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:50:38.891Z [DEBUG] Temp file written successfully, size: 885 bytes
+2026-01-10T10:50:38.891Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:50:38.891Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042238890 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:50:38.891Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:21.467Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042281467
+2026-01-10T10:51:21.467Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:21.469Z [DEBUG] Temp file written successfully, size: 885 bytes
+2026-01-10T10:51:21.469Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:21.469Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042281467 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:21.469Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:21.473Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042281473
+2026-01-10T10:51:21.473Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:21.474Z [DEBUG] Temp file written successfully, size: 885 bytes
+2026-01-10T10:51:21.474Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:21.474Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042281473 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:21.474Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:21.571Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042281571
+2026-01-10T10:51:21.571Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:21.573Z [DEBUG] Temp file written successfully, size: 1135 bytes
+2026-01-10T10:51:21.573Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:21.573Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042281571 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:21.573Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:21.683Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042281683
+2026-01-10T10:51:21.683Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:21.692Z [DEBUG] Temp file written successfully, size: 1252 bytes
+2026-01-10T10:51:21.692Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:21.692Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042281683 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:21.692Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:21.839Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042281839
+2026-01-10T10:51:21.839Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:21.848Z [DEBUG] Temp file written successfully, size: 1313 bytes
+2026-01-10T10:51:21.848Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:21.848Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042281839 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:21.848Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:21.850Z [DEBUG] Skipping Notification:auth_success hook execution - workspace trust not accepted
+2026-01-10T10:51:28.685Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042288685
+2026-01-10T10:51:28.685Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:28.695Z [DEBUG] Temp file written successfully, size: 1383 bytes
+2026-01-10T10:51:28.695Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:28.695Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042288685 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:28.695Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:28.700Z [DEBUG] [render] initYoga starting
+2026-01-10T10:51:28.700Z [DEBUG] [render] initYoga complete
+2026-01-10T10:51:28.702Z [DEBUG] [keybindings] KeybindingSetup initialized with 39 bindings, 0 warnings
+2026-01-10T10:51:28.709Z [DEBUG] [keybindings] Skipping file watcher - user customization disabled
+2026-01-10T10:51:30.406Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290406
+2026-01-10T10:51:30.406Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:30.417Z [DEBUG] Temp file written successfully, size: 1769 bytes
+2026-01-10T10:51:30.417Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:30.417Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290406 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:30.417Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:30.428Z [DEBUG] Grove: No cache, fetching config in background (dialog skipped this session)
+2026-01-10T10:51:30.429Z [DEBUG] [STARTUP] showSetupScreens() completed in 53605ms
+2026-01-10T10:51:30.429Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-01-10T10:51:30.429Z [DEBUG] [API:auth] OAuth token check starting
+2026-01-10T10:51:30.433Z [DEBUG] [API:auth] OAuth token check complete
+2026-01-10T10:51:30.439Z [DEBUG] Initialized versioned plugins system with 0 plugins
+2026-01-10T10:51:30.441Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290441
+2026-01-10T10:51:30.441Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:30.443Z [DEBUG] Temp file written successfully, size: 1789 bytes
+2026-01-10T10:51:30.443Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:30.443Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290441 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:30.443Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:30.445Z [DEBUG] Getting matching hook commands for SessionStart with query: startup
+2026-01-10T10:51:30.445Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:51:30.445Z [DEBUG] Matched 0 unique hooks for query "startup" (0 before deduplication)
+2026-01-10T10:51:30.446Z [DEBUG] [render] initYoga starting
+2026-01-10T10:51:30.446Z [DEBUG] [render] initYoga complete
+2026-01-10T10:51:30.454Z [DEBUG] Skills and commands included in Skill tool:
+2026-01-10T10:51:30.454Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-01-10T10:51:30.454Z [DEBUG] [API:auth] OAuth token check starting
+2026-01-10T10:51:30.454Z [DEBUG] [API:auth] OAuth token check complete
+2026-01-10T10:51:30.455Z [DEBUG] Git remote URL: null
+2026-01-10T10:51:30.455Z [DEBUG] No git remote URL found
+2026-01-10T10:51:30.455Z [DEBUG] Not in a GitHub repository, skipping path mapping update
+2026-01-10T10:51:30.457Z [DEBUG] Getting matching hook commands for SubagentStart with query: Explore
+2026-01-10T10:51:30.457Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:51:30.457Z [DEBUG] Matched 0 unique hooks for query "Explore" (0 before deduplication)
+2026-01-10T10:51:30.459Z [DEBUG] Getting matching hook commands for SubagentStart with query: Plan
+2026-01-10T10:51:30.459Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:51:30.459Z [DEBUG] Matched 0 unique hooks for query "Plan" (0 before deduplication)
+2026-01-10T10:51:30.461Z [DEBUG] Getting matching hook commands for SubagentStart with query: Bash
+2026-01-10T10:51:30.461Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:51:30.461Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-10T10:51:30.465Z [DEBUG] [keybindings] KeybindingSetup initialized with 39 bindings, 0 warnings
+2026-01-10T10:51:30.480Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290480
+2026-01-10T10:51:30.480Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:30.482Z [DEBUG] Temp file written successfully, size: 1824 bytes
+2026-01-10T10:51:30.482Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:30.482Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290480 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:30.482Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:30.483Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290483
+2026-01-10T10:51:30.483Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:30.484Z [DEBUG] Temp file written successfully, size: 1824 bytes
+2026-01-10T10:51:30.484Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:30.484Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290483 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:30.484Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:30.485Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290485
+2026-01-10T10:51:30.485Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:30.486Z [DEBUG] Temp file written successfully, size: 1906 bytes
+2026-01-10T10:51:30.486Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:30.486Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290485 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:30.486Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:30.487Z [DEBUG] [keybindings] Skipping file watcher - user customization disabled
+2026-01-10T10:51:30.487Z [DEBUG] [REPL:mount] REPL mounted, disabled=false
+2026-01-10T10:51:30.487Z [DEBUG] performStartupChecks called
+2026-01-10T10:51:30.487Z [DEBUG] Starting background plugin installations
+2026-01-10T10:51:30.487Z [DEBUG] performBackgroundPluginInstallations called
+2026-01-10T10:51:30.491Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-10T10:51:30.492Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290492
+2026-01-10T10:51:30.492Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:30.493Z [DEBUG] Temp file written successfully, size: 1963 bytes
+2026-01-10T10:51:30.493Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:30.493Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290492 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:30.493Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:30.493Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290493
+2026-01-10T10:51:30.493Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:30.494Z [DEBUG] Temp file written successfully, size: 2036 bytes
+2026-01-10T10:51:30.494Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:30.494Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290493 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:30.494Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:30.495Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290495
+2026-01-10T10:51:30.495Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:30.496Z [DEBUG] Temp file written successfully, size: 2084 bytes
+2026-01-10T10:51:30.496Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:30.496Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290495 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:30.496Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:30.497Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290497
+2026-01-10T10:51:30.497Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:30.498Z [DEBUG] Temp file written successfully, size: 2124 bytes
+2026-01-10T10:51:30.498Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:30.498Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290497 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:30.498Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:30.498Z [DEBUG] Setting installation status: 0 marketplaces, 0 installable plugins, 0 uninstallable plugins
+2026-01-10T10:51:30.498Z [DEBUG] Attempting to auto-install official marketplace
+2026-01-10T10:51:30.500Z [DEBUG] Loaded plugins - Enabled: 0, Disabled: 0, Commands: 0, Agents: 0, Errors: 0
+2026-01-10T10:51:30.513Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290513
+2026-01-10T10:51:30.513Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:30.514Z [DEBUG] Temp file written successfully, size: 2170 bytes
+2026-01-10T10:51:30.514Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:30.514Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290513 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:30.514Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:30.515Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-01-10T10:51:30.515Z [DEBUG] Tool search disabled: MCPSearchTool is not available (may have been disallowed via disallowedTools).
+2026-01-10T10:51:30.515Z [DEBUG] Tool search disabled: MCPSearchTool is not available (may have been disallowed via disallowedTools).
+2026-01-10T10:51:30.516Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290516
+2026-01-10T10:51:30.516Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:30.517Z [DEBUG] Temp file written successfully, size: 2220 bytes
+2026-01-10T10:51:30.517Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:30.517Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290516 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:30.517Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:30.520Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-01-10T10:51:30.520Z [DEBUG] [API:auth] OAuth token check starting
+2026-01-10T10:51:30.520Z [DEBUG] [API:auth] OAuth token check complete
+2026-01-10T10:51:30.520Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-01-10T10:51:30.520Z [DEBUG] [API:auth] OAuth token check starting
+2026-01-10T10:51:30.520Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-01-10T10:51:30.520Z [DEBUG] [API:auth] OAuth token check starting
+2026-01-10T10:51:30.521Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290521
+2026-01-10T10:51:30.521Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:30.522Z [DEBUG] Temp file written successfully, size: 2266 bytes
+2026-01-10T10:51:30.522Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:30.522Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290521 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:30.522Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:30.523Z [DEBUG] [API:auth] OAuth token check complete
+2026-01-10T10:51:30.523Z [DEBUG] [API:auth] OAuth token check complete
+2026-01-10T10:51:30.528Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290528
+2026-01-10T10:51:30.528Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:30.530Z [DEBUG] Temp file written successfully, size: 2447 bytes
+2026-01-10T10:51:30.530Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:30.530Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290528 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:30.530Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:30.530Z [DEBUG] Metrics opt-out API response: enabled=true, vcsLinking=false
+2026-01-10T10:51:30.543Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290543
+2026-01-10T10:51:30.543Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:30.544Z [DEBUG] Temp file written successfully, size: 2447 bytes
+2026-01-10T10:51:30.544Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:30.544Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290543 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:30.544Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:30.553Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290553
+2026-01-10T10:51:30.553Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:30.554Z [DEBUG] Temp file written successfully, size: 2590 bytes
+2026-01-10T10:51:30.554Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:30.554Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290553 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:30.554Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:30.565Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290565
+2026-01-10T10:51:30.565Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:30.566Z [DEBUG] Temp file written successfully, size: 2766 bytes
+2026-01-10T10:51:30.566Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:30.566Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042290565 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:30.566Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:31.561Z [DEBUG] Stream started - received first chunk
+2026-01-10T10:51:31.986Z [DEBUG] Added marketplace source: claude-plugins-official
+2026-01-10T10:51:31.986Z [DEBUG] Successfully auto-installed official marketplace
+2026-01-10T10:51:31.986Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042291986
+2026-01-10T10:51:31.986Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:51:31.987Z [DEBUG] Temp file written successfully, size: 2861 bytes
+2026-01-10T10:51:31.987Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:51:31.987Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042291986 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:51:31.987Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:51:31.988Z [DEBUG] Showing marketplace installation success notification
+2026-01-10T10:51:32.450Z [DEBUG] Stream started - received first chunk
+2026-01-10T10:51:33.310Z [DEBUG] Stream started - received first chunk
+2026-01-10T10:51:33.609Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-10T10:51:33.609Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:51:33.609Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-10T10:51:34.116Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-10T10:51:34.116Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-10T10:51:34.116Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:51:34.116Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-10T10:51:34.120Z [DEBUG] [Agent: Plan] Reached max turns limit (1)
+2026-01-10T10:51:34.376Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-10T10:51:34.376Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:51:34.376Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-10T10:52:19.071Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-10T10:52:19.071Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-10T10:52:19.072Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-10T10:52:19.072Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-10T10:52:19.092Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-10T10:52:19.092Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:19.092Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-10T10:52:19.092Z [DEBUG] FileHistory: Added snapshot for 381877ba-78ad-4fda-9f17-c65937fda8eb, tracking 0 files
+2026-01-10T10:52:19.100Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-01-10T10:52:19.102Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-01-10T10:52:19.102Z [DEBUG] [API:auth] OAuth token check starting
+2026-01-10T10:52:19.102Z [DEBUG] [API:auth] OAuth token check complete
+2026-01-10T10:52:19.103Z [DEBUG] Total plugin output styles loaded: 0
+2026-01-10T10:52:19.104Z [DEBUG] Tool search disabled: MCPSearchTool is not available (may have been disallowed via disallowedTools).
+2026-01-10T10:52:19.113Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-01-10T10:52:19.113Z [DEBUG] [API:auth] OAuth token check starting
+2026-01-10T10:52:19.113Z [DEBUG] [API:auth] OAuth token check complete
+2026-01-10T10:52:19.622Z [DEBUG] Stream started - received first chunk
+2026-01-10T10:52:21.440Z [DEBUG] Stream started - received first chunk
+2026-01-10T10:52:23.467Z [DEBUG] executePreToolHooks called for tool: Glob
+2026-01-10T10:52:23.476Z [DEBUG] Getting matching hook commands for PreToolUse with query: Glob
+2026-01-10T10:52:23.476Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:23.476Z [DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+2026-01-10T10:52:23.812Z [DEBUG] Getting matching hook commands for PostToolUse with query: Glob
+2026-01-10T10:52:23.812Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:23.812Z [DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+2026-01-10T10:52:23.821Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-10T10:52:23.821Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-10T10:52:23.821Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-10T10:52:23.821Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-10T10:52:23.827Z [DEBUG] Tool search disabled: MCPSearchTool is not available (may have been disallowed via disallowedTools).
+2026-01-10T10:52:23.837Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-01-10T10:52:23.837Z [DEBUG] [API:auth] OAuth token check starting
+2026-01-10T10:52:23.837Z [DEBUG] [API:auth] OAuth token check complete
+2026-01-10T10:52:26.556Z [DEBUG] Stream started - received first chunk
+2026-01-10T10:52:31.055Z [DEBUG] executePreToolHooks called for tool: Glob
+2026-01-10T10:52:31.055Z [DEBUG] executePreToolHooks called for tool: Glob
+2026-01-10T10:52:31.055Z [DEBUG] executePreToolHooks called for tool: Glob
+2026-01-10T10:52:31.055Z [DEBUG] executePreToolHooks called for tool: Glob
+2026-01-10T10:52:31.055Z [DEBUG] executePreToolHooks called for tool: Glob
+2026-01-10T10:52:31.063Z [DEBUG] Getting matching hook commands for PreToolUse with query: Glob
+2026-01-10T10:52:31.063Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:31.063Z [DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+2026-01-10T10:52:31.063Z [DEBUG] Getting matching hook commands for PreToolUse with query: Glob
+2026-01-10T10:52:31.063Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:31.063Z [DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+2026-01-10T10:52:31.063Z [DEBUG] Getting matching hook commands for PreToolUse with query: Glob
+2026-01-10T10:52:31.063Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:31.063Z [DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+2026-01-10T10:52:31.063Z [DEBUG] Getting matching hook commands for PreToolUse with query: Glob
+2026-01-10T10:52:31.063Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:31.063Z [DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+2026-01-10T10:52:31.063Z [DEBUG] Getting matching hook commands for PreToolUse with query: Glob
+2026-01-10T10:52:31.063Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:31.063Z [DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+2026-01-10T10:52:31.483Z [DEBUG] Getting matching hook commands for PostToolUse with query: Glob
+2026-01-10T10:52:31.483Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:31.483Z [DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+2026-01-10T10:52:31.501Z [DEBUG] Getting matching hook commands for PostToolUse with query: Glob
+2026-01-10T10:52:31.501Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:31.501Z [DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+2026-01-10T10:52:31.509Z [DEBUG] Getting matching hook commands for PostToolUse with query: Glob
+2026-01-10T10:52:31.509Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:31.509Z [DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+2026-01-10T10:52:31.509Z [DEBUG] Getting matching hook commands for PostToolUse with query: Glob
+2026-01-10T10:52:31.509Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:31.509Z [DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+2026-01-10T10:52:31.509Z [DEBUG] Getting matching hook commands for PostToolUse with query: Glob
+2026-01-10T10:52:31.509Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:31.509Z [DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+2026-01-10T10:52:31.523Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-10T10:52:31.523Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-10T10:52:31.523Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-10T10:52:31.523Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-10T10:52:31.537Z [DEBUG] Tool search disabled: MCPSearchTool is not available (may have been disallowed via disallowedTools).
+2026-01-10T10:52:31.540Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-01-10T10:52:31.540Z [DEBUG] [API:auth] OAuth token check starting
+2026-01-10T10:52:31.540Z [DEBUG] [API:auth] OAuth token check complete
+2026-01-10T10:52:33.946Z [DEBUG] Stream started - received first chunk
+2026-01-10T10:52:47.778Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.778Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.778Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.778Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.778Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.778Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.778Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.778Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.778Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.778Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.782Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.782Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.782Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.782Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.782Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.782Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.782Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.782Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.782Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.782Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.782Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.782Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.782Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.782Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.782Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.782Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.782Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.782Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.782Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.782Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.782Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.782Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.782Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.782Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.782Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.782Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.782Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.782Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.782Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.782Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.822Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.822Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.822Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.822Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.822Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.823Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.823Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.823Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.823Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.823Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.823Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.823Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.823Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.823Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.823Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.823Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.823Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.823Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.823Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.823Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.823Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.823Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.823Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.823Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.823Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.823Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.823Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.823Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.823Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.823Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.848Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.848Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.848Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.848Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.848Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.848Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.848Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.848Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.848Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-10T10:52:47.861Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.861Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.861Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.861Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.861Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.861Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.861Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.861Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.861Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.861Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.861Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.861Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.861Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.861Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.861Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.861Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.861Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.861Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.861Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.861Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.861Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.861Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.861Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.861Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.861Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-10T10:52:47.861Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.861Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.923Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.923Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.923Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.923Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.923Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.923Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.923Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.923Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.923Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.923Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.923Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.923Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.923Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.923Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.923Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.923Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.923Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.923Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.923Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.923Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.923Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.923Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.923Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.923Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.923Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-10T10:52:47.923Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:47.923Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-10T10:52:47.965Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-10T10:52:47.965Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-10T10:52:47.965Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-10T10:52:47.965Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-10T10:52:48.032Z [DEBUG] Tool search disabled: MCPSearchTool is not available (may have been disallowed via disallowedTools).
+2026-01-10T10:52:48.035Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-01-10T10:52:48.035Z [DEBUG] [API:auth] OAuth token check starting
+2026-01-10T10:52:48.035Z [DEBUG] [API:auth] OAuth token check complete
+2026-01-10T10:52:50.305Z [ERROR] Error streaming, falling back to non-streaming mode: 400 {"type":"error","error":{"type":"invalid_request_error","message":"prompt is too long: 209936 tokens > 200000 maximum"},"request_id":"req_011CWya7jCd3kGS5rov9Y5TZ"}
+2026-01-10T10:52:50.305Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-01-10T10:52:50.305Z [DEBUG] [API:auth] OAuth token check starting
+2026-01-10T10:52:50.305Z [DEBUG] [API:auth] OAuth token check complete
+2026-01-10T10:52:51.954Z [ERROR] Error in non-streaming fallback: 400 {"type":"error","error":{"type":"invalid_request_error","message":"prompt is too long: 209936 tokens > 200000 maximum"},"request_id":"req_011CWya7tLYdfLzc3ofMdCp5"}
+2026-01-10T10:52:51.954Z [ERROR] Error: Error: 400 {"type":"error","error":{"type":"invalid_request_error","message":"prompt is too long: 209936 tokens > 200000 maximum"},"request_id":"req_011CWya7tLYdfLzc3ofMdCp5"}
+    at generate (/$bunfs/root/claude:439:33630)
+    at makeRequest (/$bunfs/root/claude:855:5435)
+    at processTicksAndRejections (native:7:39)
+2026-01-10T10:52:51.963Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-10T10:52:51.963Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:51.963Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-10T10:52:51.967Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042371967
+2026-01-10T10:52:51.967Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:52:51.976Z [DEBUG] Temp file written successfully, size: 2910 bytes
+2026-01-10T10:52:51.976Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:52:51.976Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042371967 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:52:51.976Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:52:51.986Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042371986
+2026-01-10T10:52:51.986Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:52:51.987Z [DEBUG] Temp file written successfully, size: 2948 bytes
+2026-01-10T10:52:51.987Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:52:51.987Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042371986 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:52:51.987Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:52:59.477Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042379477
+2026-01-10T10:52:59.477Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:52:59.487Z [DEBUG] Temp file written successfully, size: 2983 bytes
+2026-01-10T10:52:59.487Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:52:59.487Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042379477 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:52:59.487Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:52:59.506Z [DEBUG] Getting matching hook commands for PreCompact with query: manual
+2026-01-10T10:52:59.506Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:52:59.506Z [DEBUG] Matched 0 unique hooks for query "manual" (0 before deduplication)
+2026-01-10T10:52:59.507Z [DEBUG] Tool search disabled: MCPSearchTool is not available (may have been disallowed via disallowedTools).
+2026-01-10T10:52:59.507Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-01-10T10:52:59.507Z [DEBUG] [API:auth] OAuth token check starting
+2026-01-10T10:52:59.507Z [DEBUG] [API:auth] OAuth token check complete
+2026-01-10T10:52:59.579Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-10T10:53:01.912Z [ERROR] Error streaming, falling back to non-streaming mode: 400 {"type":"error","error":{"type":"invalid_request_error","message":"prompt is too long: 200806 tokens > 200000 maximum"},"request_id":"req_011CWya8YpZrsaVn9Ct5mFxx"}
+2026-01-10T10:53:01.912Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-01-10T10:53:01.912Z [DEBUG] [API:auth] OAuth token check starting
+2026-01-10T10:53:01.912Z [DEBUG] [API:auth] OAuth token check complete
+2026-01-10T10:53:03.571Z [ERROR] Error in non-streaming fallback: 400 {"type":"error","error":{"type":"invalid_request_error","message":"prompt is too long: 200806 tokens > 200000 maximum"},"request_id":"req_011CWya8iawVWjDXKX57nmbx"}
+2026-01-10T10:53:03.571Z [ERROR] Error: Error: 400 {"type":"error","error":{"type":"invalid_request_error","message":"prompt is too long: 200806 tokens > 200000 maximum"},"request_id":"req_011CWya8iawVWjDXKX57nmbx"}
+    at generate (/$bunfs/root/claude:439:33630)
+    at makeRequest (/$bunfs/root/claude:855:5435)
+    at processTicksAndRejections (native:7:39)
+2026-01-10T10:53:03.572Z [ERROR] Error: Error: Conversation too long. Press esc twice to go up a few messages and try again.
+    at o7$ (/$bunfs/root/claude:3144:1719)
+    at async call (/$bunfs/root/claude:3262:56)
+    at async lp9 (/$bunfs/root/claude:2991:3210)
+    at async VwD (/$bunfs/root/claude:2991:1034)
+    at async np9 (/$bunfs/root/claude:2997:2510)
+    at async dt (/$bunfs/root/claude:2995:3463)
+    at async kg9 (/$bunfs/root/claude:2816:2227)
+    at async sZ$ (/$bunfs/root/claude:2816:1388)
+    at async <anonymous> (/$bunfs/root/claude:2980:5658)
+    at async <anonymous> (/$bunfs/root/claude:2812:4446)
+    at processTicksAndRejections (native:7:39)
+2026-01-10T10:53:03.573Z [ERROR] Error: Error: Error during compaction: Error: Conversation too long. Press esc twice to go up a few messages and try again.
+    at call (/$bunfs/root/claude:3263:189)
+    at async lp9 (/$bunfs/root/claude:2991:3210)
+    at async VwD (/$bunfs/root/claude:2991:1034)
+    at async np9 (/$bunfs/root/claude:2997:2510)
+    at async dt (/$bunfs/root/claude:2995:3463)
+    at async kg9 (/$bunfs/root/claude:2816:2227)
+    at async sZ$ (/$bunfs/root/claude:2816:1388)
+    at async <anonymous> (/$bunfs/root/claude:2980:5658)
+    at async <anonymous> (/$bunfs/root/claude:2812:4446)
+    at processTicksAndRejections (native:7:39)
+2026-01-10T10:53:03.573Z [DEBUG] FileHistory: Making snapshot for message 0e39d654-27bb-4cfe-a85a-b6b242a6a826
+2026-01-10T10:53:03.573Z [DEBUG] FileHistory: Added snapshot for 0e39d654-27bb-4cfe-a85a-b6b242a6a826, tracking 0 files
+2026-01-10T10:53:03.575Z [DEBUG] UserCommandMessage rendering: "compact" (args: "none", isSkillFormat: false)
+2026-01-10T10:53:03.586Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-01-10T10:53:03.589Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-01-10T10:53:03.589Z [DEBUG] [API:auth] OAuth token check starting
+2026-01-10T10:53:03.589Z [DEBUG] [API:auth] OAuth token check complete
+2026-01-10T10:53:03.591Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042383591
+2026-01-10T10:53:03.591Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:53:03.601Z [DEBUG] Temp file written successfully, size: 3008 bytes
+2026-01-10T10:53:03.601Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:53:03.601Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042383591 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:53:03.601Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:53:03.603Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042383603
+2026-01-10T10:53:03.603Z [DEBUG] Preserving file permissions: 100600
+2026-01-10T10:53:03.604Z [DEBUG] Temp file written successfully, size: 3033 bytes
+2026-01-10T10:53:03.604Z [DEBUG] Applied original permissions to temp file
+2026-01-10T10:53:03.604Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.826230.1768042383603 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-10T10:53:03.604Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-10T10:53:03.971Z [DEBUG] Stream started - received first chunk
+2026-01-10T10:53:28.605Z [DEBUG] Getting matching hook commands for SessionEnd with query: prompt_input_exit
+2026-01-10T10:53:28.605Z [DEBUG] Found 0 hook matchers in settings
+2026-01-10T10:53:28.605Z [DEBUG] Matched 0 unique hooks for query "prompt_input_exit" (0 before deduplication)

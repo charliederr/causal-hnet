@@ -1,0 +1,1228 @@
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/:
+total 16
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:50 .
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:30 ..
+-rw-rw-r--  1 ni ni  101 Jan 10 05:36 errata
+drwxrwxr-x 11 ni ni 4096 Jan 10 06:10 logs
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs:
+total 68
+drwxrwxr-x 11 ni ni 4096 Jan 10 06:10 .
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:50 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:50 cache
+-rw-------  1 ni ni 4241 Jan 10 06:10 .claude.json
+-rw-------  1 ni ni 4141 Jan 10 06:10 .claude.json.backup
+-rw-------  1 ni ni  428 Jan 10 05:51 .credentials.json
+drwxrwxr-x  2 ni ni 4096 Jan 10 06:09 debug
+-rw-------  1 ni ni  705 Jan 10 06:10 history.jsonl
+drwxrwxr-x  2 ni ni 4096 Jan 10 06:10 plans
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 plugins
+drwx------  3 ni ni 4096 Jan 10 05:51 projects
+drwxrwxr-x  3 ni ni 4096 Jan 10 06:10 session-env
+drwxrwxr-x  2 ni ni 4096 Jan 10 06:09 shell-snapshots
+drwxrwxr-x  2 ni ni 4096 Jan 10 06:09 statsig
+drwxrwxr-x  2 ni ni 4096 Jan 10 06:09 todos
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/cache:
+total 72
+drwxrwxr-x  2 ni ni  4096 Jan 10 05:50 .
+drwxrwxr-x 11 ni ni  4096 Jan 10 06:10 ..
+-rw-rw-r--  1 ni ni 65255 Jan 10 05:51 changelog.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/debug:
+total 132
+drwxrwxr-x  2 ni ni  4096 Jan 10 06:09 .
+drwxrwxr-x 11 ni ni  4096 Jan 10 06:10 ..
+-rw-rw-r--  1 ni ni 70373 Jan 10 05:53 7c2d1381-153d-48d8-a9f6-a9ab3a71c934.txt
+-rw-rw-r--  1 ni ni 46918 Jan 10 06:10 ec7d412a-da9d-419f-bc81-173230a8d224.txt
+lrwxrwxrwx  1 ni ni   104 Jan 10 06:09 latest -> /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/debug/ec7d412a-da9d-419f-bc81-173230a8d224.txt
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plans:
+total 8
+drwxrwxr-x  2 ni ni 4096 Jan 10 06:10 .
+drwxrwxr-x 11 ni ni 4096 Jan 10 06:10 ..
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins:
+total 16
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 11 ni ni 4096 Jan 10 06:10 ..
+-rw-rw-r--  1 ni ni  313 Jan 10 06:09 known_marketplaces.json
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 marketplaces
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces:
+total 12
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x 7 ni ni 4096 Jan 10 05:51 claude-plugins-official
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official:
+total 36
+drwxrwxr-x  7 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+drwxrwxr-x 15 ni ni 4096 Jan 10 05:51 external_plugins
+drwxrwxr-x  8 ni ni 4096 Jan 10 06:09 .git
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 .github
+-rw-rw-r--  1 ni ni   19 Jan 10 05:51 .gitignore
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 plugins
+-rw-rw-r--  1 ni ni 1761 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.claude-plugin:
+total 32
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 7 ni ni  4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 22290 Jan 10 05:51 marketplace.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins:
+total 60
+drwxrwxr-x 15 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x  7 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 asana
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 context7
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 firebase
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 github
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 gitlab
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 greptile
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 laravel-boost
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 linear
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 playwright
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 serena
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 slack
+drwxrwxr-x  5 ni ni 4096 Jan 10 05:51 stripe
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 supabase
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/asana:
+total 16
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 15 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+-rw-rw-r--  1 ni ni   79 Jan 10 05:51 .mcp.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/asana/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  276 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/context7:
+total 16
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 15 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+-rw-rw-r--  1 ni ni   90 Jan 10 05:51 .mcp.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/context7/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  262 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/firebase:
+total 16
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 15 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+-rw-rw-r--  1 ni ni   97 Jan 10 05:51 .mcp.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/firebase/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  281 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/github:
+total 16
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 15 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+-rw-rw-r--  1 ni ni  178 Jan 10 05:51 .mcp.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/github/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  271 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/gitlab:
+total 16
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 15 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+-rw-rw-r--  1 ni ni   85 Jan 10 05:51 .mcp.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/gitlab/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  254 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/greptile:
+total 20
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 15 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+-rw-rw-r--  1 ni ni  162 Jan 10 05:51 .mcp.json
+-rw-rw-r--  1 ni ni 1914 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/greptile/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  357 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/laravel-boost:
+total 16
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 15 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+-rw-rw-r--  1 ni ni   88 Jan 10 05:51 .mcp.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/laravel-boost/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  295 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/linear:
+total 16
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 15 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+-rw-rw-r--  1 ni ni   82 Jan 10 05:51 .mcp.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/linear/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  279 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/playwright:
+total 16
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 15 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+-rw-rw-r--  1 ni ni   87 Jan 10 05:51 .mcp.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/playwright/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  295 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/serena:
+total 16
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 15 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+-rw-rw-r--  1 ni ni  137 Jan 10 05:51 .mcp.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/serena/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  254 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/slack:
+total 16
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 15 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+-rw-rw-r--  1 ni ni   79 Jan 10 05:51 .mcp.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/slack/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  270 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/stripe:
+total 24
+drwxrwxr-x  5 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 15 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 commands
+-rw-rw-r--  1 ni ni  108 Jan 10 05:51 .mcp.json
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 skills
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/stripe/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  353 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/stripe/commands:
+total 16
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  823 Jan 10 05:51 explain-error.md
+-rw-rw-r-- 1 ni ni 1015 Jan 10 05:51 test-cards.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/stripe/skills:
+total 12
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 stripe-best-practices
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/stripe/skills/stripe-best-practices:
+total 16
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 5502 Jan 10 05:51 SKILL.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/supabase:
+total 16
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 15 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+-rw-rw-r--  1 ni ni   86 Jan 10 05:51 .mcp.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/external_plugins/supabase/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  280 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.git:
+total 88
+drwxrwxr-x 8 ni ni  4096 Jan 10 06:09 .
+drwxrwxr-x 7 ni ni  4096 Jan 10 05:51 ..
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 branches
+-rw-rw-r-- 1 ni ni   280 Jan 10 05:51 config
+-rw-rw-r-- 1 ni ni    73 Jan 10 05:51 description
+-rw-rw-r-- 1 ni ni    88 Jan 10 06:09 FETCH_HEAD
+-rw-rw-r-- 1 ni ni    21 Jan 10 05:51 HEAD
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 hooks
+-rw-rw-r-- 1 ni ni 26018 Jan 10 05:56 index
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 info
+drwxrwxr-x 3 ni ni  4096 Jan 10 05:51 logs
+drwxrwxr-x 4 ni ni  4096 Jan 10 06:09 objects
+-rw-rw-r-- 1 ni ni    41 Jan 10 06:09 ORIG_HEAD
+-rw-rw-r-- 1 ni ni   112 Jan 10 05:51 packed-refs
+drwxrwxr-x 5 ni ni  4096 Jan 10 05:51 refs
+-rw-rw-r-- 1 ni ni    41 Jan 10 05:51 shallow
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.git/branches:
+total 8
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 8 ni ni 4096 Jan 10 06:09 ..
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.git/hooks:
+total 72
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 8 ni ni 4096 Jan 10 06:09 ..
+-rwxrwxr-x 1 ni ni  478 Jan 10 05:51 applypatch-msg.sample
+-rwxrwxr-x 1 ni ni  896 Jan 10 05:51 commit-msg.sample
+-rwxrwxr-x 1 ni ni 4726 Jan 10 05:51 fsmonitor-watchman.sample
+-rwxrwxr-x 1 ni ni  189 Jan 10 05:51 post-update.sample
+-rwxrwxr-x 1 ni ni  424 Jan 10 05:51 pre-applypatch.sample
+-rwxrwxr-x 1 ni ni 1643 Jan 10 05:51 pre-commit.sample
+-rwxrwxr-x 1 ni ni  416 Jan 10 05:51 pre-merge-commit.sample
+-rwxrwxr-x 1 ni ni 1492 Jan 10 05:51 prepare-commit-msg.sample
+-rwxrwxr-x 1 ni ni 1374 Jan 10 05:51 pre-push.sample
+-rwxrwxr-x 1 ni ni 4898 Jan 10 05:51 pre-rebase.sample
+-rwxrwxr-x 1 ni ni  544 Jan 10 05:51 pre-receive.sample
+-rwxrwxr-x 1 ni ni 2783 Jan 10 05:51 push-to-checkout.sample
+-rwxrwxr-x 1 ni ni 2308 Jan 10 05:51 sendemail-validate.sample
+-rwxrwxr-x 1 ni ni 3650 Jan 10 05:51 update.sample
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.git/info:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 8 ni ni 4096 Jan 10 06:09 ..
+-rw-rw-r-- 1 ni ni  240 Jan 10 05:51 exclude
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.git/logs:
+total 16
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 8 ni ni 4096 Jan 10 06:09 ..
+-rw-rw-r-- 1 ni ni  200 Jan 10 05:51 HEAD
+drwxrwxr-x 4 ni ni 4096 Jan 10 05:51 refs
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.git/logs/refs:
+total 16
+drwxrwxr-x 4 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 heads
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 remotes
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.git/logs/refs/heads:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  200 Jan 10 05:51 main
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.git/logs/refs/remotes:
+total 12
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 origin
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.git/logs/refs/remotes/origin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  200 Jan 10 05:51 HEAD
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.git/objects:
+total 16
+drwxrwxr-x 4 ni ni 4096 Jan 10 06:09 .
+drwxrwxr-x 8 ni ni 4096 Jan 10 06:09 ..
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 info
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 pack
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.git/objects/info:
+total 8
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni 4096 Jan 10 06:09 ..
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.git/objects/pack:
+total 340
+drwxrwxr-x 2 ni ni   4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni   4096 Jan 10 06:09 ..
+-r--r--r-- 1 ni ni   9780 Jan 10 05:51 pack-1f473059ef69103133883f19878d1057678b7cc2.idx
+-r--r--r-- 1 ni ni 322135 Jan 10 05:51 pack-1f473059ef69103133883f19878d1057678b7cc2.pack
+-r--r--r-- 1 ni ni   1296 Jan 10 05:51 pack-1f473059ef69103133883f19878d1057678b7cc2.rev
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.git/refs:
+total 20
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 8 ni ni 4096 Jan 10 06:09 ..
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 heads
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 remotes
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 tags
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.git/refs/heads:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni   41 Jan 10 05:51 main
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.git/refs/remotes:
+total 12
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 origin
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.git/refs/remotes/origin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni   30 Jan 10 05:51 HEAD
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.git/refs/tags:
+total 8
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.github:
+total 12
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 7 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 workflows
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/.github/workflows:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 1660 Jan 10 05:51 close-external-prs.yml
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins:
+total 108
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x  7 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  5 ni ni 4096 Jan 10 05:51 agent-sdk-dev
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 clangd-lsp
+drwxrwxr-x  4 ni ni 4096 Jan 10 05:51 code-review
+drwxrwxr-x  4 ni ni 4096 Jan 10 05:51 code-simplifier
+drwxrwxr-x  4 ni ni 4096 Jan 10 05:51 commit-commands
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 csharp-lsp
+drwxrwxr-x  5 ni ni 4096 Jan 10 05:51 example-plugin
+drwxrwxr-x  5 ni ni 4096 Jan 10 05:51 explanatory-output-style
+drwxrwxr-x  5 ni ni 4096 Jan 10 05:51 feature-dev
+drwxrwxr-x  4 ni ni 4096 Jan 10 05:51 frontend-design
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 gopls-lsp
+drwxrwxr-x 11 ni ni 4096 Jan 10 05:51 hookify
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 jdtls-lsp
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 kotlin-lsp
+drwxrwxr-x  5 ni ni 4096 Jan 10 05:51 learning-output-style
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 lua-lsp
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 php-lsp
+drwxrwxr-x  5 ni ni 4096 Jan 10 05:51 plugin-dev
+drwxrwxr-x  5 ni ni 4096 Jan 10 05:51 pr-review-toolkit
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 pyright-lsp
+drwxrwxr-x  6 ni ni 4096 Jan 10 05:51 ralph-loop
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 rust-analyzer-lsp
+drwxrwxr-x  4 ni ni 4096 Jan 10 05:51 security-guidance
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 swift-lsp
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 typescript-lsp
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/agent-sdk-dev:
+total 28
+drwxrwxr-x  5 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 agents
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 commands
+-rw-rw-r--  1 ni ni 6397 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/agent-sdk-dev/agents:
+total 24
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 5206 Jan 10 05:51 agent-sdk-verifier-py.md
+-rw-rw-r-- 1 ni ni 5419 Jan 10 05:51 agent-sdk-verifier-ts.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/agent-sdk-dev/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  167 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/agent-sdk-dev/commands:
+total 16
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 7846 Jan 10 05:51 new-sdk-app.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/clangd-lsp:
+total 12
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni  780 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/code-review:
+total 24
+drwxrwxr-x  4 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 commands
+-rw-rw-r--  1 ni ni 7321 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/code-review/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  234 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/code-review/commands:
+total 16
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 7422 Jan 10 05:51 code-review.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/code-simplifier:
+total 16
+drwxrwxr-x  4 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 agents
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/code-simplifier/agents:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 3129 Jan 10 05:51 code-simplifier.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/code-simplifier/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  271 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/commit-commands:
+total 24
+drwxrwxr-x  4 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 commands
+-rw-rw-r--  1 ni ni 5908 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/commit-commands/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  236 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/commit-commands/commands:
+total 20
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 1865 Jan 10 05:51 clean_gone.md
+-rw-rw-r-- 1 ni ni  624 Jan 10 05:51 commit.md
+-rw-rw-r-- 1 ni ni  796 Jan 10 05:51 commit-push-pr.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/csharp-lsp:
+total 12
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni  486 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/example-plugin:
+total 28
+drwxrwxr-x  5 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 commands
+-rw-rw-r--  1 ni ni   91 Jan 10 05:51 .mcp.json
+-rw-rw-r--  1 ni ni 1311 Jan 10 05:51 README.md
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 skills
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/example-plugin/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  270 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/example-plugin/commands:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  943 Jan 10 05:51 example-command.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/example-plugin/skills:
+total 12
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 example-skill
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/example-plugin/skills/example-skill:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 2725 Jan 10 05:51 SKILL.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/explanatory-output-style:
+total 24
+drwxrwxr-x  5 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 hooks
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 hooks-handlers
+-rw-rw-r--  1 ni ni 2470 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/explanatory-output-style/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  268 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/explanatory-output-style/hooks:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  314 Jan 10 05:51 hooks.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/explanatory-output-style/hooks-handlers:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rwxrwxr-x 1 ni ni 1468 Jan 10 05:51 session-start.sh
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/feature-dev:
+total 32
+drwxrwxr-x  5 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni  4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni  4096 Jan 10 05:51 agents
+drwxrwxr-x  2 ni ni  4096 Jan 10 05:51 .claude-plugin
+drwxrwxr-x  2 ni ni  4096 Jan 10 05:51 commands
+-rw-rw-r--  1 ni ni 11697 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/feature-dev/agents:
+total 20
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 2259 Jan 10 05:51 code-architect.md
+-rw-rw-r-- 1 ni ni 2115 Jan 10 05:51 code-explorer.md
+-rw-rw-r-- 1 ni ni 2994 Jan 10 05:51 code-reviewer.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/feature-dev/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  262 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/feature-dev/commands:
+total 16
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 5097 Jan 10 05:51 feature-dev.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/frontend-design:
+total 20
+drwxrwxr-x  4 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+-rw-rw-r--  1 ni ni  977 Jan 10 05:51 README.md
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 skills
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/frontend-design/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  180 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/frontend-design/skills:
+total 12
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 frontend-design
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/frontend-design/skills/frontend-design:
+total 16
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 4274 Jan 10 05:51 SKILL.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/gopls-lsp:
+total 12
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni  473 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/hookify:
+total 56
+drwxrwxr-x 11 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 agents
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 commands
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 core
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 examples
+-rw-rw-r--  1 ni ni  291 Jan 10 05:51 .gitignore
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 hooks
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 matchers
+-rw-rw-r--  1 ni ni 7710 Jan 10 05:51 README.md
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 skills
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 utils
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/hookify/agents:
+total 16
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 11 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni 5478 Jan 10 05:51 conversation-analyzer.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/hookify/.claude-plugin:
+total 12
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 11 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni  210 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/hookify/commands:
+total 32
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 11 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni 2863 Jan 10 05:51 configure.md
+-rw-rw-r--  1 ni ni 4624 Jan 10 05:51 help.md
+-rw-rw-r--  1 ni ni 7667 Jan 10 05:51 hookify.md
+-rw-rw-r--  1 ni ni 2020 Jan 10 05:51 list.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/hookify/core:
+total 32
+drwxrwxr-x  2 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 11 ni ni  4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni  9690 Jan 10 05:51 config_loader.py
+-rw-rw-r--  1 ni ni     0 Jan 10 05:51 __init__.py
+-rw-rw-r--  1 ni ni 10711 Jan 10 05:51 rule_engine.py
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/hookify/examples:
+total 24
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 11 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni  315 Jan 10 05:51 console-log-warning.local.md
+-rw-rw-r--  1 ni ni  278 Jan 10 05:51 dangerous-rm.local.md
+-rw-rw-r--  1 ni ni  500 Jan 10 05:51 require-tests-stop.local.md
+-rw-rw-r--  1 ni ni  421 Jan 10 05:51 sensitive-files-warning.local.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/hookify/hooks:
+total 28
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 11 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni 1020 Jan 10 05:51 hooks.json
+-rwxrwxr-x  1 ni ni    0 Jan 10 05:51 __init__.py
+-rwxrwxr-x  1 ni ni 1622 Jan 10 05:51 posttooluse.py
+-rwxrwxr-x  1 ni ni 1852 Jan 10 05:51 pretooluse.py
+-rwxrwxr-x  1 ni ni 1403 Jan 10 05:51 stop.py
+-rwxrwxr-x  1 ni ni 1389 Jan 10 05:51 userpromptsubmit.py
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/hookify/matchers:
+total 8
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 11 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni    0 Jan 10 05:51 __init__.py
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/hookify/skills:
+total 12
+drwxrwxr-x  3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 11 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 writing-rules
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/hookify/skills/writing-rules:
+total 20
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 8423 Jan 10 05:51 SKILL.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/hookify/utils:
+total 8
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 11 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni    0 Jan 10 05:51 __init__.py
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/jdtls-lsp:
+total 12
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni  811 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/kotlin-lsp:
+total 12
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni  306 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/learning-output-style:
+total 28
+drwxrwxr-x  5 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 hooks
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 hooks-handlers
+-rw-rw-r--  1 ni ni 4687 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/learning-output-style/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  273 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/learning-output-style/hooks:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  311 Jan 10 05:51 hooks.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/learning-output-style/hooks-handlers:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rwxrwxr-x 1 ni ni 3564 Jan 10 05:51 session-start.sh
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/lua-lsp:
+total 12
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni  705 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/php-lsp:
+total 12
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni  436 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev:
+total 36
+drwxrwxr-x  5 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni  4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni  4096 Jan 10 05:51 agents
+drwxrwxr-x  2 ni ni  4096 Jan 10 05:51 commands
+-rw-rw-r--  1 ni ni 14590 Jan 10 05:51 README.md
+drwxrwxr-x  9 ni ni  4096 Jan 10 05:51 skills
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/agents:
+total 32
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 7437 Jan 10 05:51 agent-creator.md
+-rw-rw-r-- 1 ni ni 6623 Jan 10 05:51 plugin-validator.md
+-rw-rw-r-- 1 ni ni 6079 Jan 10 05:51 skill-reviewer.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/commands:
+total 24
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni  4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 14950 Jan 10 05:51 create-plugin.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills:
+total 36
+drwxrwxr-x 9 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 agent-development
+drwxrwxr-x 4 ni ni 4096 Jan 10 05:51 command-development
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 hook-development
+drwxrwxr-x 4 ni ni 4096 Jan 10 05:51 mcp-integration
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 plugin-settings
+drwxrwxr-x 4 ni ni 4096 Jan 10 05:51 plugin-structure
+drwxrwxr-x 3 ni ni 4096 Jan 10 05:51 skill-development
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/agent-development:
+total 32
+drwxrwxr-x 5 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 9 ni ni  4096 Jan 10 05:51 ..
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 examples
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 references
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 scripts
+-rw-rw-r-- 1 ni ni 10430 Jan 10 05:51 SKILL.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/agent-development/examples:
+total 36
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni  4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  9390 Jan 10 05:51 agent-creation-prompt.md
+-rw-rw-r-- 1 ni ni 14117 Jan 10 05:51 complete-agent-examples.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/agent-development/references:
+total 44
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni  4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  8879 Jan 10 05:51 agent-creation-system-prompt.md
+-rw-rw-r-- 1 ni ni  9998 Jan 10 05:51 system-prompt-design.md
+-rw-rw-r-- 1 ni ni 11613 Jan 10 05:51 triggering-examples.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/agent-development/scripts:
+total 16
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rwxrwxr-x 1 ni ni 5796 Jan 10 05:51 validate-agent.sh
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/command-development:
+total 44
+drwxrwxr-x 4 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 9 ni ni  4096 Jan 10 05:51 ..
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 examples
+-rw-rw-r-- 1 ni ni  7651 Jan 10 05:51 README.md
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 references
+-rw-rw-r-- 1 ni ni 18941 Jan 10 05:51 SKILL.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/command-development/examples:
+total 36
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni  4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 13989 Jan 10 05:51 plugin-commands.md
+-rw-rw-r-- 1 ni ni  8675 Jan 10 05:51 simple-commands.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/command-development/references:
+total 128
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni  4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 13618 Jan 10 05:51 advanced-workflows.md
+-rw-rw-r-- 1 ni ni 14971 Jan 10 05:51 documentation-patterns.md
+-rw-rw-r-- 1 ni ni  9162 Jan 10 05:51 frontmatter-reference.md
+-rw-rw-r-- 1 ni ni 20980 Jan 10 05:51 interactive-commands.md
+-rw-rw-r-- 1 ni ni 16437 Jan 10 05:51 marketplace-considerations.md
+-rw-rw-r-- 1 ni ni 14622 Jan 10 05:51 plugin-features-reference.md
+-rw-rw-r-- 1 ni ni 14803 Jan 10 05:51 testing-strategies.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/hook-development:
+total 36
+drwxrwxr-x 5 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 9 ni ni  4096 Jan 10 05:51 ..
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 examples
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 references
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 scripts
+-rw-rw-r-- 1 ni ni 16246 Jan 10 05:51 SKILL.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/hook-development/examples:
+total 20
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rwxrwxr-x 1 ni ni 1690 Jan 10 05:51 load-context.sh
+-rwxrwxr-x 1 ni ni 1304 Jan 10 05:51 validate-bash.sh
+-rwxrwxr-x 1 ni ni 1222 Jan 10 05:51 validate-write.sh
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/hook-development/references:
+total 40
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni  4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 10148 Jan 10 05:51 advanced.md
+-rw-rw-r-- 1 ni ni  8299 Jan 10 05:51 migration.md
+-rw-rw-r-- 1 ni ni  7144 Jan 10 05:51 patterns.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/hook-development/scripts:
+total 36
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rwxrwxr-x 1 ni ni 4200 Jan 10 05:51 hook-linter.sh
+-rw-rw-r-- 1 ni ni 3677 Jan 10 05:51 README.md
+-rwxrwxr-x 1 ni ni 5336 Jan 10 05:51 test-hook.sh
+-rwxrwxr-x 1 ni ni 5081 Jan 10 05:51 validate-hook-schema.sh
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/mcp-integration:
+total 32
+drwxrwxr-x 4 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 9 ni ni  4096 Jan 10 05:51 ..
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 examples
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 references
+-rw-rw-r-- 1 ni ni 12519 Jan 10 05:51 SKILL.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/mcp-integration/examples:
+total 20
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  502 Jan 10 05:51 http-server.json
+-rw-rw-r-- 1 ni ni  413 Jan 10 05:51 sse-server.json
+-rw-rw-r-- 1 ni ni  686 Jan 10 05:51 stdio-server.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/mcp-integration/references:
+total 44
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni  4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 10196 Jan 10 05:51 authentication.md
+-rw-rw-r-- 1 ni ni 10613 Jan 10 05:51 server-types.md
+-rw-rw-r-- 1 ni ni 11674 Jan 10 05:51 tool-usage.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/plugin-settings:
+total 32
+drwxrwxr-x 5 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 9 ni ni  4096 Jan 10 05:51 ..
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 examples
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 references
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 scripts
+-rw-rw-r-- 1 ni ni 12097 Jan 10 05:51 SKILL.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/plugin-settings/examples:
+total 20
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 2177 Jan 10 05:51 create-settings-command.md
+-rw-rw-r-- 1 ni ni 2930 Jan 10 05:51 example-settings.md
+-rwxrwxr-x 1 ni ni 2205 Jan 10 05:51 read-settings-hook.sh
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/plugin-settings/references:
+total 32
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni  4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 11513 Jan 10 05:51 parsing-techniques.md
+-rw-rw-r-- 1 ni ni  9492 Jan 10 05:51 real-world-examples.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/plugin-settings/scripts:
+total 16
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rwxrwxr-x 1 ni ni 1269 Jan 10 05:51 parse-frontmatter.sh
+-rwxrwxr-x 1 ni ni 2712 Jan 10 05:51 validate-settings.sh
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/plugin-structure:
+total 36
+drwxrwxr-x 4 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 9 ni ni  4096 Jan 10 05:51 ..
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 examples
+-rw-rw-r-- 1 ni ni  3210 Jan 10 05:51 README.md
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 references
+-rw-rw-r-- 1 ni ni 13796 Jan 10 05:51 SKILL.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/plugin-structure/examples:
+total 48
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni  4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 18746 Jan 10 05:51 advanced-plugin.md
+-rw-rw-r-- 1 ni ni  1731 Jan 10 05:51 minimal-plugin.md
+-rw-rw-r-- 1 ni ni 13310 Jan 10 05:51 standard-plugin.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/plugin-structure/references:
+total 32
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni  4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 12086 Jan 10 05:51 component-patterns.md
+-rw-rw-r-- 1 ni ni 12061 Jan 10 05:51 manifest-reference.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/skill-development:
+total 36
+drwxrwxr-x 3 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 9 ni ni  4096 Jan 10 05:51 ..
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 references
+-rw-rw-r-- 1 ni ni 22825 Jan 10 05:51 SKILL.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/skill-development/references:
+total 20
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 3 ni ni  4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 11547 Jan 10 05:51 skill-creator-original.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/pr-review-toolkit:
+total 28
+drwxrwxr-x  5 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 agents
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 commands
+-rw-rw-r--  1 ni ni 7528 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/pr-review-toolkit/agents:
+total 52
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 3985 Jan 10 05:51 code-reviewer.md
+-rw-rw-r-- 1 ni ni 5230 Jan 10 05:51 code-simplifier.md
+-rw-rw-r-- 1 ni ni 5725 Jan 10 05:51 comment-analyzer.md
+-rw-rw-r-- 1 ni ni 4985 Jan 10 05:51 pr-test-analyzer.md
+-rw-rw-r-- 1 ni ni 7807 Jan 10 05:51 silent-failure-hunter.md
+-rw-rw-r-- 1 ni ni 5368 Jan 10 05:51 type-design-analyzer.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/pr-review-toolkit/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  266 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/pr-review-toolkit/commands:
+total 16
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 5 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni 4997 Jan 10 05:51 review-pr.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/pyright-lsp:
+total 12
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni  564 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/ralph-loop:
+total 32
+drwxrwxr-x  6 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 commands
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 hooks
+-rw-rw-r--  1 ni ni 5259 Jan 10 05:51 README.md
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 scripts
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/ralph-loop/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 6 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  321 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/ralph-loop/commands:
+total 20
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 6 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  738 Jan 10 05:51 cancel-ralph.md
+-rw-rw-r-- 1 ni ni 3227 Jan 10 05:51 help.md
+-rw-rw-r-- 1 ni ni  916 Jan 10 05:51 ralph-loop.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/ralph-loop/hooks:
+total 20
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 6 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  282 Jan 10 05:51 hooks.json
+-rwxrwxr-x 1 ni ni 6562 Jan 10 05:51 stop-hook.sh
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/ralph-loop/scripts:
+total 16
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 6 ni ni 4096 Jan 10 05:51 ..
+-rwxrwxr-x 1 ni ni 7002 Jan 10 05:51 setup-ralph-loop.sh
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/rust-analyzer-lsp:
+total 12
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni  701 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/security-guidance:
+total 16
+drwxrwxr-x  4 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .claude-plugin
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 hooks
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/security-guidance/.claude-plugin:
+total 12
+drwxrwxr-x 2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni  280 Jan 10 05:51 plugin.json
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/security-guidance/hooks:
+total 24
+drwxrwxr-x 2 ni ni  4096 Jan 10 05:51 .
+drwxrwxr-x 4 ni ni  4096 Jan 10 05:51 ..
+-rw-rw-r-- 1 ni ni   382 Jan 10 05:51 hooks.json
+-rwxrwxr-x 1 ni ni 10767 Jan 10 05:51 security_reminder_hook.py
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/swift-lsp:
+total 12
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni  602 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/plugins/marketplaces/claude-plugins-official/plugins/typescript-lsp:
+total 12
+drwxrwxr-x  2 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 27 ni ni 4096 Jan 10 05:51 ..
+-rw-rw-r--  1 ni ni  692 Jan 10 05:51 README.md
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/projects:
+total 12
+drwx------  3 ni ni 4096 Jan 10 05:51 .
+drwxrwxr-x 11 ni ni 4096 Jan 10 06:10 ..
+drwx------  4 ni ni 4096 Jan 10 06:09 -home-ni-repos-h
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/projects/-home-ni-repos-h:
+total 28492
+drwx------ 4 ni ni     4096 Jan 10 06:09 .
+drwx------ 3 ni ni     4096 Jan 10 05:51 ..
+drwx------ 3 ni ni     4096 Jan 10 05:51 7c2d1381-153d-48d8-a9f6-a9ab3a71c934
+-rw------- 1 ni ni 29107169 Jan 10 05:53 7c2d1381-153d-48d8-a9f6-a9ab3a71c934.jsonl
+drwx------ 3 ni ni     4096 Jan 10 06:09 ec7d412a-da9d-419f-bc81-173230a8d224
+-rw------- 1 ni ni    46543 Jan 10 06:10 ec7d412a-da9d-419f-bc81-173230a8d224.jsonl
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/projects/-home-ni-repos-h/7c2d1381-153d-48d8-a9f6-a9ab3a71c934:
+total 12
+drwx------ 3 ni ni 4096 Jan 10 05:51 .
+drwx------ 4 ni ni 4096 Jan 10 06:09 ..
+drwx------ 2 ni ni 4096 Jan 10 05:51 subagents
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/projects/-home-ni-repos-h/7c2d1381-153d-48d8-a9f6-a9ab3a71c934/subagents:
+total 20
+drwx------ 2 ni ni 4096 Jan 10 05:51 .
+drwx------ 3 ni ni 4096 Jan 10 05:51 ..
+-rw------- 1 ni ni 1300 Jan 10 05:51 agent-a0f9081.jsonl
+-rw------- 1 ni ni 1852 Jan 10 05:51 agent-ac8af9d.jsonl
+-rw------- 1 ni ni 2782 Jan 10 05:51 agent-ad45e41.jsonl
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/projects/-home-ni-repos-h/ec7d412a-da9d-419f-bc81-173230a8d224:
+total 12
+drwx------ 3 ni ni 4096 Jan 10 06:09 .
+drwx------ 4 ni ni 4096 Jan 10 06:09 ..
+drwx------ 2 ni ni 4096 Jan 10 06:09 subagents
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/projects/-home-ni-repos-h/ec7d412a-da9d-419f-bc81-173230a8d224/subagents:
+total 20
+drwx------ 2 ni ni 4096 Jan 10 06:09 .
+drwx------ 3 ni ni 4096 Jan 10 06:09 ..
+-rw------- 1 ni ni 1837 Jan 10 06:09 agent-a06af2d.jsonl
+-rw------- 1 ni ni 1163 Jan 10 06:09 agent-aaf854e.jsonl
+-rw------- 1 ni ni 1583 Jan 10 06:09 agent-abdf4b4.jsonl
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/session-env:
+total 12
+drwxrwxr-x  3 ni ni 4096 Jan 10 06:10 .
+drwxrwxr-x 11 ni ni 4096 Jan 10 06:10 ..
+drwxrwxr-x  2 ni ni 4096 Jan 10 06:10 ec7d412a-da9d-419f-bc81-173230a8d224
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/session-env/ec7d412a-da9d-419f-bc81-173230a8d224:
+total 8
+drwxrwxr-x 2 ni ni 4096 Jan 10 06:10 .
+drwxrwxr-x 3 ni ni 4096 Jan 10 06:10 ..
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/shell-snapshots:
+total 12
+drwxrwxr-x  2 ni ni 4096 Jan 10 06:09 .
+drwxrwxr-x 11 ni ni 4096 Jan 10 06:10 ..
+-rw-rw-r--  1 ni ni 3248 Jan 10 06:09 snapshot-bash-1768043385407-xabfhd.sh
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/statsig:
+total 44
+drwxrwxr-x  2 ni ni  4096 Jan 10 06:09 .
+drwxrwxr-x 11 ni ni  4096 Jan 10 06:10 ..
+-rw-rw-r--  1 ni ni 23693 Jan 10 06:09 statsig.cached.evaluations.6d9394fdb2
+-rw-rw-r--  1 ni ni    55 Jan 10 06:09 statsig.last_modified_time.evaluations
+-rw-rw-r--  1 ni ni   105 Jan 10 06:10 statsig.session_id.2656274335
+-rw-rw-r--  1 ni ni    38 Jan 10 05:50 statsig.stable_id.2656274335
+
+/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/todos:
+total 16
+drwxrwxr-x  2 ni ni 4096 Jan 10 06:09 .
+drwxrwxr-x 11 ni ni 4096 Jan 10 06:10 ..
+-rw-rw-r--  1 ni ni    2 Jan 10 05:50 7c2d1381-153d-48d8-a9f6-a9ab3a71c934-agent-7c2d1381-153d-48d8-a9f6-a9ab3a71c934.json
+-rw-rw-r--  1 ni ni    2 Jan 10 06:09 ec7d412a-da9d-419f-bc81-173230a8d224-agent-ec7d412a-da9d-419f-bc81-173230a8d224.json

@@ -1,0 +1,82 @@
+2026-01-12T09:47:09.460Z [DEBUG] [init] configureGlobalMTLS starting
+2026-01-12T09:47:09.460Z [DEBUG] [init] configureGlobalMTLS complete
+2026-01-12T09:47:09.460Z [DEBUG] [init] configureGlobalAgents starting
+2026-01-12T09:47:09.460Z [DEBUG] [init] configureGlobalAgents complete
+2026-01-12T09:47:09.462Z [DEBUG] [LSP MANAGER] initializeLspServerManager() called
+2026-01-12T09:47:09.462Z [DEBUG] [LSP MANAGER] Created manager instance, state=pending
+2026-01-12T09:47:09.462Z [DEBUG] [LSP MANAGER] Starting async initialization (generation 1)
+2026-01-12T09:47:09.463Z [DEBUG] [STARTUP] Loading MCP configs...
+2026-01-12T09:47:09.463Z [DEBUG] Found 0 plugins (0 enabled, 0 disabled)
+2026-01-12T09:47:09.463Z [DEBUG] Total LSP servers loaded: 0
+2026-01-12T09:47:09.463Z [DEBUG] [LSP SERVER MANAGER] getAllLspServers returned 0 server(s)
+2026-01-12T09:47:09.463Z [DEBUG] LSP manager initialized with 0 servers
+2026-01-12T09:47:09.463Z [DEBUG] [STARTUP] MCP configs loaded in 0ms
+2026-01-12T09:47:09.463Z [DEBUG] LSP server manager initialized successfully
+2026-01-12T09:47:09.463Z [DEBUG] LSP notification handlers registered successfully for all 0 server(s)
+2026-01-12T09:47:09.467Z [DEBUG] [STARTUP] Running setup()...
+2026-01-12T09:47:09.468Z [DEBUG] Stats cache does not exist, returning empty cache
+2026-01-12T09:47:09.469Z [DEBUG] Stats cache empty, processing all historical data in background
+2026-01-12T09:47:09.479Z [DEBUG] Loading skills from: managed=/etc/claude-code/.claude/skills, user=/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/skills, project=[]
+2026-01-12T09:47:09.510Z [DEBUG] installed_plugins.json doesn't exist, returning empty V2 object
+2026-01-12T09:47:09.514Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/todos/3fc334ed-82df-4dac-a22e-ce467cdfdaa1-agent-3fc334ed-82df-4dac-a22e-ce467cdfdaa1.json.tmp.72419.1768211229514
+2026-01-12T09:47:09.516Z [DEBUG] Temp file written successfully, size: 2 bytes
+2026-01-12T09:47:09.516Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/todos/3fc334ed-82df-4dac-a22e-ce467cdfdaa1-agent-3fc334ed-82df-4dac-a22e-ce467cdfdaa1.json.tmp.72419.1768211229514 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/todos/3fc334ed-82df-4dac-a22e-ce467cdfdaa1-agent-3fc334ed-82df-4dac-a22e-ce467cdfdaa1.json
+2026-01-12T09:47:09.516Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/todos/3fc334ed-82df-4dac-a22e-ce467cdfdaa1-agent-3fc334ed-82df-4dac-a22e-ce467cdfdaa1.json written atomically
+2026-01-12T09:47:09.525Z [DEBUG] getPluginSkills: Processing 0 enabled plugins
+2026-01-12T09:47:09.525Z [DEBUG] Total plugin skills loaded: 0
+2026-01-12T09:47:09.525Z [DEBUG] Total plugin commands loaded: 0
+2026-01-12T09:47:09.525Z [DEBUG] Registered 0 hooks from 0 plugins
+2026-01-12T09:47:09.526Z [DEBUG] [STARTUP] setup() completed in 59ms
+2026-01-12T09:47:09.526Z [DEBUG] [STARTUP] Loading commands and agents...
+2026-01-12T09:47:09.529Z [DEBUG] Total plugin agents loaded: 0
+2026-01-12T09:47:09.529Z [DEBUG] Loaded 0 unique skills (managed: 0, user: 0, project: 0, legacy commands: 0)
+2026-01-12T09:47:09.529Z [DEBUG] getSkills returning: 0 skill dir commands, 0 plugin skills, 0 bundled skills
+2026-01-12T09:47:09.530Z [DEBUG] [STARTUP] Commands and agents loaded in 4ms
+2026-01-12T09:47:09.530Z [DEBUG] [STARTUP] Running showSetupScreens()...
+2026-01-12T09:47:09.530Z [DEBUG] [render] initYoga starting
+2026-01-12T09:47:09.537Z [DEBUG] Acquired PID lock for 2.1.5 (PID 72419)
+2026-01-12T09:47:09.537Z [DEBUG] Acquired PID lock on running version: /home/ni/.local/share/claude/versions/2.1.5
+2026-01-12T09:47:09.573Z [DEBUG] Stats cache saved successfully (lastComputedDate: 2026-01-11)
+2026-01-12T09:47:09.573Z [DEBUG] Stats cache updated with 2 sessions
+2026-01-12T09:47:09.575Z [DEBUG] [render] initYoga complete
+2026-01-12T09:47:09.594Z [DEBUG] [keybindings] KeybindingSetup initialized with 39 bindings, 0 warnings
+2026-01-12T09:47:09.598Z [DEBUG] Creating shell snapshot for bash (/bin/bash)
+2026-01-12T09:47:09.598Z [DEBUG] Looking for shell config file: /home/ni/.bashrc
+2026-01-12T09:47:09.598Z [DEBUG] Snapshots directory: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/shell-snapshots
+2026-01-12T09:47:09.598Z [DEBUG] Creating snapshot at: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/shell-snapshots/snapshot-bash-1768211229598-mcu5sb.sh
+2026-01-12T09:47:09.598Z [DEBUG] Shell binary exists: true
+2026-01-12T09:47:09.598Z [DEBUG] Execution timeout: 10000ms
+2026-01-12T09:47:09.603Z [DEBUG] Grove: Cache stale, returning cached data and refreshing in background
+2026-01-12T09:47:09.605Z [DEBUG] [render] initYoga starting
+2026-01-12T09:47:09.605Z [DEBUG] [render] initYoga complete
+2026-01-12T09:47:09.607Z [DEBUG] [keybindings] Skipping file watcher - user customization disabled
+2026-01-12T09:47:09.608Z [DEBUG] Git remote URL: null
+2026-01-12T09:47:09.608Z [DEBUG] No git remote URL found
+2026-01-12T09:47:09.608Z [DEBUG] Not in a GitHub repository, skipping path mapping update
+2026-01-12T09:47:09.609Z [DEBUG] [keybindings] KeybindingSetup initialized with 39 bindings, 0 warnings
+2026-01-12T09:47:09.611Z [DEBUG] [keybindings] Skipping file watcher - user customization disabled
+2026-01-12T09:47:09.621Z [DEBUG] Shell snapshot created successfully (3278 bytes)
+2026-01-12T09:47:09.714Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.72419.1768211229714
+2026-01-12T09:47:09.714Z [DEBUG] Preserving file permissions: 100600
+2026-01-12T09:47:09.716Z [DEBUG] Temp file written successfully, size: 4764 bytes
+2026-01-12T09:47:09.716Z [DEBUG] Applied original permissions to temp file
+2026-01-12T09:47:09.716Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.72419.1768211229714 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-12T09:47:09.716Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-12T09:47:09.830Z [DEBUG] Ripgrep first use test: PASSED (mode=builtin, path=/home/ni/.local/share/claude/versions/2.1.5)
+2026-01-12T09:47:09.841Z [DEBUG] Failed to check metrics opt-out status: Request failed with status code 401
+2026-01-12T09:47:09.841Z [ERROR] AxiosError: Error
+    at Zy (/$bunfs/root/claude:58:1144)
+    at <anonymous> (/$bunfs/root/claude:59:10092)
+    at emit (node:events:92:22)
+    at endReadableNT (internal:streams/readable:862:50)
+    at processTicksAndRejections (native:7:39)
+    at request (/$bunfs/root/claude:61:2149)
+    at processTicksAndRejections (native:7:39)
+2026-01-12T09:47:10.501Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.72419.1768211230501
+2026-01-12T09:47:10.501Z [DEBUG] Preserving file permissions: 100600
+2026-01-12T09:47:10.511Z [DEBUG] Temp file written successfully, size: 4764 bytes
+2026-01-12T09:47:10.511Z [DEBUG] Applied original permissions to temp file
+2026-01-12T09:47:10.511Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json.tmp.72419.1768211230501 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json
+2026-01-12T09:47:10.511Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/logs/.claude.json written atomically
+2026-01-12T09:47:10.652Z [DEBUG] Successfully refreshed marketplace: claude-plugins-official
+2026-01-12T09:47:10.652Z [DEBUG] Plugin autoupdate: checking installed plugins
