@@ -4,6 +4,74 @@
 **Status**: Active Research/Experimental
 **Contributors**: Rob Freeman, Claude Code (Anthropic)
 
+---
+
+## 🚀 Get Started in 5 Minutes
+
+Want to see the parser in action? Follow these steps:
+
+### Step 1: Download the Corpus
+
+Download the Cornell Movie Dialog Corpus:
+
+```bash
+# Option A: Direct download
+wget http://www.cs.cornell.edu/~cristian/data/cornell_movie_dialogs_corpus.zip
+unzip cornell_movie_dialogs_corpus.zip
+
+# Option B: Manual download
+# Visit: http://www.cs.cornell.edu/~cristian/Cornell_Movie-Dialogs_Corpus.html
+# Download and unzip to the current directory
+```
+
+**Expected result**: You should now have a `cornell movie-dialogs corpus/` directory.
+
+### Step 2: Build the Unit Catalog
+
+This extracts n-grams and their contexts from the corpus (~2-3 minutes):
+
+```bash
+python3 preprocess_corpus.py
+```
+
+**Expected output**:
+```
+Building unit catalog from cornell movie-dialogs corpus/...
+Total tokens: 9,035,582
+Processing 1-grams...
+Processing 2-grams...
+Processing 3-grams...
+Processing 4-grams...
+Extracted 32,294 units (min_freq=20)
+  1-grams: 8,234
+  2-grams: 15,892
+  3-grams: 6,234
+  4-grams: 1,934
+Saved catalog to unit_catalog.pkl
+```
+
+**Expected result**: You should now have `unit_catalog.pkl` (~81MB).
+
+### Step 3: Run the Parser!
+
+```bash
+python3 hamiltonian_parser.py
+```
+
+**Expected output**:
+```
+"i lost my money yesterday"
+└─ [SPLIT]
+   ├─ [UNIT] "i lost"
+   └─ [SPLIT]
+      ├─ [UNIT] "my money"      ← Successfully identified!
+      └─ [UNIT] "yesterday"
+```
+
+**Success!** The parser correctly identifies "my money" as a unit (not "lost my").
+
+---
+
 ## Overview
 
 This branch explores an alternative parsing approach based on **global substitutability patterns** rather than local context windows. The key insight is that true syntactic units should be identified by maximizing their **bidirectional expansion**: the set of units that can substitute in similar contexts, where contexts themselves are also expanded to handle novel sentences.
@@ -73,66 +141,35 @@ Test spans as units BEFORE attempting to split them (unlike bottom-up approaches
 
 - **`preprocess_corpus.py`** - Build unit catalog from text corpus
 - **`learn_roles_simple.py`** - Learn role templates (directional clustering)
-- **`bidirectional_expansion_parser.py`** - Earlier full implementation (memory issues)
 - **`check_catalog.py`, `test_units.py`** - Testing utilities
 
 ### Documentation
 
-- **`pdfs/parsing_approach_summary.pdf`** - Comprehensive 11-page summary
+- **`docs/parsing_approach_summary.pdf`** - Comprehensive 11-page summary
   - Evolution of thinking
   - Concrete examples with "go out" polysemy
   - Implementation architecture comparison
   - Current technical challenges
   - Connection to Goertzel's Hamiltonian framework
 
-- **`pdfs/dynamic_roles_and_context_first_spans.pdf`** - Earlier exploration
+## More Examples
 
-## Quick Start
-
-### Build the Catalog
+### Try Your Own Sentences
 
 ```bash
-# Download Cornell Movie Dialogs Corpus first
-python3 preprocess_corpus.py
-
-# This creates unit_catalog.pkl (~81MB)
-# Contains 32k units with aggregated context patterns
-```
-
-### Run the Parser
-
-```bash
-# Basic parsing (recommended starting point)
-python3 hamiltonian_parser.py --max-iters 0
+# Parse a specific sentence
+python3 hamiltonian_parser.py --sentence "did you go out with sarah"
 
 # With debug output
-python3 hamiltonian_parser.py --debug --max-iters 0
+python3 hamiltonian_parser.py --debug --sentence "should we go out on friday"
 
-# Single sentence
-python3 hamiltonian_parser.py --sentence "i lost my money yesterday"
-
-# With expansion-based energy (experimental)
-python3 hamiltonian_parser.py --use-expansion
-```
-
-### Run the Prototype (simpler)
-
-```bash
+# Using the simpler prototype
 python3 prototype_topdown_units.py
 ```
 
-## Results
-
-The parser successfully identifies meaningful multi-word units:
+### Sample Results
 
 ```
-"i lost my money yesterday"
-└─ [SPLIT]
-   ├─ [UNIT] "i lost"
-   └─ [SPLIT]
-      ├─ [UNIT] "my money"      ← Correct!
-      └─ [UNIT] "yesterday"
-
 "did you go out with sarah"
 └─ [SPLIT]
    ├─ [SPLIT]
@@ -141,6 +178,71 @@ The parser successfully identifies meaningful multi-word units:
    └─ [SPLIT]
       ├─ [UNIT] "with"
       └─ [UNIT] "sarah"
+
+"my money is gone"
+└─ [SPLIT]
+   ├─ [UNIT] "my money"          ← Correct possessive NP
+   └─ [SPLIT]
+      ├─ [UNIT] "is"
+      └─ [UNIT] "gone"
+```
+
+## Troubleshooting
+
+### "FileNotFoundError: dialog_corpus.txt"
+
+**Problem**: The corpus hasn't been downloaded.
+
+**Solution**: Follow Step 1 above to download the Cornell Movie Dialog Corpus.
+
+### "FileNotFoundError: unit_catalog.pkl"
+
+**Problem**: The unit catalog hasn't been built yet.
+
+**Solution**: Run `python3 preprocess_corpus.py` (Step 2 above).
+
+### "ModuleNotFoundError: No module named 'numpy'"
+
+**Problem**: Missing dependencies.
+
+**Solution**: Install required packages:
+```bash
+pip install numpy
+```
+
+## Advanced Usage
+
+### Build with Different Corpus
+
+```bash
+# Use your own corpus (one sentence per line)
+python3 preprocess_corpus.py --corpus my_corpus.txt --output my_catalog.pkl
+
+# Then use it
+python3 hamiltonian_parser.py --catalog my_catalog.pkl
+```
+
+### Adjust Parameters
+
+```bash
+# Lower minimum frequency threshold (finds more rare units)
+python3 preprocess_corpus.py --min-freq 5
+
+# Enable experimental expansion-based energy
+python3 hamiltonian_parser.py --use-expansion
+
+# Run with iterative refinement
+python3 hamiltonian_parser.py --max-iters 3
+```
+
+### Inspect the Catalog
+
+```bash
+# Check what units are in the catalog
+python3 check_catalog.py
+
+# Test specific units
+python3 test_units.py
 ```
 
 ## Current Status
@@ -165,9 +267,11 @@ The parser successfully identifies meaningful multi-word units:
 1. **Context representation**: Exact tuples vs. aggregated vs. embeddings?
 2. **Pre-clustering vs. dynamic**: Compute expansion at parse time or offline?
 3. **Averaging problem**: How to cluster contexts by meaning without blending?
-4. **Neural approach**: Replace explicit expansion with learned predictor? (Option B in PDF)
+4. **Neural approach**: Replace explicit expansion with learned predictor?
 
-## Architecture Options (from PDF)
+## Architecture Options
+
+See `docs/parsing_approach_summary.pdf` for detailed discussion.
 
 ### Option A: Explicit Expansion (current)
 ```python
@@ -208,22 +312,11 @@ Both share the Hamiltonian energy minimization framework.
 ## Dependencies
 
 ```bash
-# Core
+# Core (required)
 pip install numpy
 
 # Optional (for future neural extensions)
 # pip install torch transformers
-```
-
-## Testing
-
-```bash
-# Run all test sentences
-python3 hamiltonian_parser.py
-
-# Test specific functionality
-python3 test_single_span.py
-python3 check_catalog.py
 ```
 
 ## Data
@@ -232,6 +325,7 @@ Uses **Cornell Movie Dialog Corpus**:
 - 220,579 conversational exchanges
 - 304,713 utterances
 - Good for short, substitutable phrases
+- Download: http://www.cs.cornell.edu/~cristian/Cornell_Movie-Dialogs_Corpus.html
 
 Preprocessed to `unit_catalog.pkl` with n-grams (n=1..4) and aggregated contexts.
 
@@ -261,7 +355,7 @@ Preprocessed to `unit_catalog.pkl` with n-grams (n=1..4) and aggregated contexts
 
 This is active research code. Feedback, suggestions, and collaboration welcome!
 
-**Documentation**: See `pdfs/parsing_approach_summary.pdf` for detailed exposition.
+**Documentation**: See `docs/parsing_approach_summary.pdf` for detailed exposition.
 
 ## Acknowledgments
 
