@@ -15,23 +15,44 @@ Want to see the parser in action? Follow these steps:
 Download the Cornell Movie Dialog Corpus:
 
 ```bash
-# Option A: Direct download
+# Option A: Using curl (Mac)
+curl -L -O http://www.cs.cornell.edu/~cristian/data/cornell_movie_dialogs_corpus.zip
+unzip cornell_movie_dialogs_corpus.zip
+
+# Option B: Using wget (Linux)
 wget http://www.cs.cornell.edu/~cristian/data/cornell_movie_dialogs_corpus.zip
 unzip cornell_movie_dialogs_corpus.zip
 
-# Option B: Manual download
+# Option C: Manual download
 # Visit: http://www.cs.cornell.edu/~cristian/Cornell_Movie-Dialogs_Corpus.html
 # Download and unzip to the current directory
 ```
 
 **Expected result**: You should now have a `cornell movie-dialogs corpus/` directory.
 
-### Step 2: Build the Unit Catalog
+### Step 2: Extract Dialog Lines
+
+The Cornell corpus uses a special format. Extract the dialog text:
+
+```bash
+python3 extract_cornell_dialogs.py
+```
+
+**Expected output**:
+```
+Extracting dialogs from cornell movie-dialogs corpus/movie_lines.txt...
+✓ Extracted 304,446 dialog lines to dialog_corpus.txt
+✓ Output file size: 16.3 MB
+```
+
+**Expected result**: You should now have `dialog_corpus.txt` (~16 MB).
+
+### Step 3: Build the Unit Catalog
 
 This extracts n-grams and their contexts from the corpus (~2-3 minutes):
 
 ```bash
-python3 preprocess_corpus.py
+python3 prototype_topdown_units.py --build-catalog
 ```
 
 **Expected output**:
