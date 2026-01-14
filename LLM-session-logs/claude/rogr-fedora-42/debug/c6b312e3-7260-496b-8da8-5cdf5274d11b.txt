@@ -1,0 +1,375 @@
+2026-01-14T10:15:24.661Z [DEBUG] [SLOW OPERATION DETECTED] fs.existsSync (11.7ms)
+2026-01-14T10:15:24.680Z [DEBUG] [LSP MANAGER] initializeLspServerManager() called
+2026-01-14T10:15:24.680Z [DEBUG] [LSP MANAGER] Created manager instance, state=pending
+2026-01-14T10:15:24.680Z [DEBUG] [LSP MANAGER] Starting async initialization (generation 1)
+2026-01-14T10:15:24.681Z [DEBUG] LSP server manager initialized successfully
+2026-01-14T10:15:24.681Z [DEBUG] LSP notification handlers registered successfully for all 0 server(s)
+2026-01-14T10:15:24.681Z [DEBUG] Found 0 plugins (0 enabled, 0 disabled)
+2026-01-14T10:15:24.689Z [DEBUG] Stats cache stale (2026-01-11), processing 2026-01-12 to 2026-01-13 in background
+2026-01-14T10:15:24.695Z [DEBUG] [SLOW OPERATION DETECTED] execSyncWithDefaults_DEPRECATED (5.2ms): ldd /bin/ls 2>/dev/null
+2026-01-14T10:15:24.697Z [DEBUG] Acquired PID lock for 2.0.76 (PID 6696)
+2026-01-14T10:15:24.699Z [DEBUG] Loading skills from: managed=/etc/claude-code/.claude/skills, user=/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/skills, project=[]
+2026-01-14T10:15:24.727Z [DEBUG] [SLOW OPERATION DETECTED] execSyncWithDefaults_DEPRECATED (26.1ms): ps aux | grep -E "code|cursor|windsurf|idea|pycharm|webstorm|phpstorm|rubymine|clion|goland|rider|da
+2026-01-14T10:15:24.727Z [DEBUG] installed_plugins.json doesn't exist, returning empty V2 object
+2026-01-14T10:15:24.732Z [DEBUG] Creating shell snapshot for bash (/bin/bash)
+2026-01-14T10:15:24.732Z [DEBUG] Looking for shell config file: /home/ni/.bashrc
+2026-01-14T10:15:24.732Z [DEBUG] Snapshots directory: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/shell-snapshots
+2026-01-14T10:15:24.732Z [DEBUG] Creating snapshot at: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/shell-snapshots/snapshot-bash-1768385724732-3d6ow4.sh
+2026-01-14T10:15:24.732Z [DEBUG] Shell binary exists: true
+2026-01-14T10:15:24.732Z [DEBUG] Execution timeout: 10000ms
+2026-01-14T10:15:24.734Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/todos/c6b312e3-7260-496b-8da8-5cdf5274d11b-agent-c6b312e3-7260-496b-8da8-5cdf5274d11b.json.tmp.6696.1768385724734
+2026-01-14T10:15:24.735Z [DEBUG] Temp file written successfully, size: 2 bytes
+2026-01-14T10:15:24.735Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/todos/c6b312e3-7260-496b-8da8-5cdf5274d11b-agent-c6b312e3-7260-496b-8da8-5cdf5274d11b.json.tmp.6696.1768385724734 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/todos/c6b312e3-7260-496b-8da8-5cdf5274d11b-agent-c6b312e3-7260-496b-8da8-5cdf5274d11b.json
+2026-01-14T10:15:24.735Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/todos/c6b312e3-7260-496b-8da8-5cdf5274d11b-agent-c6b312e3-7260-496b-8da8-5cdf5274d11b.json written atomically
+2026-01-14T10:15:24.738Z [DEBUG] getPluginSkills: Processing 0 enabled plugins
+2026-01-14T10:15:24.738Z [DEBUG] Total plugin skills loaded: 0
+2026-01-14T10:15:24.738Z [DEBUG] Total plugin commands loaded: 0
+2026-01-14T10:15:24.738Z [DEBUG] Registered 0 hooks from 0 plugins
+2026-01-14T10:15:24.739Z [DEBUG] Acquired PID lock on running version: /home/ni/.local/share/claude/versions/2.0.76
+2026-01-14T10:15:24.741Z [DEBUG] Total plugin agents loaded: 0
+2026-01-14T10:15:24.741Z [DEBUG] Loaded 0 unique skills (managed: 0, user: 0, project: 0, legacy commands: 0)
+2026-01-14T10:15:24.742Z [DEBUG] getSkills returning: 0 skill dir commands, 0 plugin skills
+2026-01-14T10:15:24.781Z [DEBUG] Stats cache saved successfully (lastComputedDate: 2026-01-13)
+2026-01-14T10:15:24.781Z [DEBUG] Stats cache lastComputedDate updated (no new data)
+2026-01-14T10:15:24.816Z [DEBUG] Git remote URL: ssh://wreading.xyz:51357/home/ni/contain.git
+2026-01-14T10:15:24.816Z [DEBUG] Could not parse repository from: ssh://wreading.xyz:51357/home/ni/contain.git
+2026-01-14T10:15:24.816Z [DEBUG] Parsed repository: null from URL: ssh://wreading.xyz:51357/home/ni/contain.git
+2026-01-14T10:15:24.816Z [DEBUG] Not in a GitHub repository, skipping path mapping update
+2026-01-14T10:15:24.846Z [DEBUG] Shell snapshot created successfully (4560 bytes)
+2026-01-14T10:15:24.878Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385724878
+2026-01-14T10:15:24.878Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:15:24.879Z [DEBUG] Temp file written successfully, size: 76444 bytes
+2026-01-14T10:15:24.879Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:15:24.879Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385724878 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:15:24.880Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:15:24.882Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385724882
+2026-01-14T10:15:24.882Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:15:24.884Z [DEBUG] Temp file written successfully, size: 76616 bytes
+2026-01-14T10:15:24.884Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:15:24.884Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385724882 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:15:24.884Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:15:24.888Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385724888
+2026-01-14T10:15:24.888Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:15:24.890Z [DEBUG] Temp file written successfully, size: 76654 bytes
+2026-01-14T10:15:24.890Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:15:24.890Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385724888 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:15:24.890Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:15:24.891Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385724891
+2026-01-14T10:15:24.891Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:15:24.892Z [DEBUG] Temp file written successfully, size: 76690 bytes
+2026-01-14T10:15:24.892Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:15:24.892Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385724891 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:15:24.892Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:15:24.936Z [ERROR] AxiosError: Error
+    at ry (/$bunfs/root/claude:58:1144)
+    at <anonymous> (/$bunfs/root/claude:59:10093)
+    at emit (node:events:92:22)
+    at endReadableNT (internal:streams/readable:862:50)
+    at processTicksAndRejections (native:7:39)
+    at request (/$bunfs/root/claude:61:2149)
+    at processTicksAndRejections (native:7:39)
+2026-01-14T10:15:25.027Z [DEBUG] Ripgrep first use test: PASSED (mode=builtin, path=/home/ni/.local/share/claude/versions/2.0.76)
+2026-01-14T10:15:25.699Z [DEBUG] Successfully refreshed marketplace: claude-plugins-official
+2026-01-14T10:15:25.699Z [DEBUG] Plugin autoupdate: checking installed plugins
+2026-01-14T10:15:27.487Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385727487
+2026-01-14T10:15:27.487Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:15:27.492Z [DEBUG] Temp file written successfully, size: 77062 bytes
+2026-01-14T10:15:27.492Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:15:27.492Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385727487 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:15:27.492Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:15:27.599Z [DEBUG] Failed to fetch Grove notice config: AxiosError: Request failed with status code 401
+2026-01-14T10:15:27.605Z [DEBUG] Initialized versioned plugins system with 0 plugins
+2026-01-14T10:15:27.606Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385727606
+2026-01-14T10:15:27.606Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:15:27.608Z [DEBUG] Temp file written successfully, size: 77062 bytes
+2026-01-14T10:15:27.608Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:15:27.608Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385727606 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:15:27.608Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:15:27.611Z [DEBUG] Getting matching hook commands for SessionStart with query: startup
+2026-01-14T10:15:27.611Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:15:27.611Z [DEBUG] Matched 0 unique hooks for query "startup" (0 before deduplication)
+2026-01-14T10:15:27.615Z [DEBUG] Skills and commands included in Skill tool:
+2026-01-14T10:15:27.616Z [DEBUG] Failed to check metrics opt-out status: Request failed with status code 401
+2026-01-14T10:15:27.616Z [ERROR] AxiosError: Error
+    at ry (/$bunfs/root/claude:58:1144)
+    at <anonymous> (/$bunfs/root/claude:59:10093)
+    at emit (node:events:92:22)
+    at endReadableNT (internal:streams/readable:862:50)
+    at processTicksAndRejections (native:7:39)
+    at request (/$bunfs/root/claude:61:2149)
+    at processTicksAndRejections (native:7:39)
+2026-01-14T10:15:27.631Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385727631
+2026-01-14T10:15:27.631Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:15:27.633Z [DEBUG] Temp file written successfully, size: 77063 bytes
+2026-01-14T10:15:27.633Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:15:27.633Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385727631 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:15:27.633Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:15:27.634Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385727634
+2026-01-14T10:15:27.634Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:15:27.635Z [DEBUG] Temp file written successfully, size: 77063 bytes
+2026-01-14T10:15:27.635Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:15:27.635Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385727634 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:15:27.635Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:15:27.637Z [DEBUG] Official marketplace auto-install skipped: already_attempted
+2026-01-14T10:15:27.637Z [DEBUG] performStartupChecks called
+2026-01-14T10:15:27.637Z [DEBUG] Starting background plugin installations
+2026-01-14T10:15:27.637Z [DEBUG] performBackgroundPluginInstallations called
+2026-01-14T10:15:27.641Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-14T10:15:27.642Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385727642
+2026-01-14T10:15:27.642Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:15:27.643Z [DEBUG] Temp file written successfully, size: 77112 bytes
+2026-01-14T10:15:27.643Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:15:27.643Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385727642 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:15:27.643Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:15:27.644Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385727644
+2026-01-14T10:15:27.644Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:15:27.645Z [DEBUG] Temp file written successfully, size: 77185 bytes
+2026-01-14T10:15:27.645Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:15:27.645Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385727644 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:15:27.645Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:15:27.646Z [DEBUG] Setting installation status: 0 marketplaces, 0 installable plugins, 0 uninstallable plugins
+2026-01-14T10:15:27.646Z [DEBUG] Loaded plugins - Enabled: 0, Disabled: 0, Commands: 0, Agents: 0, Errors: 0
+2026-01-14T10:15:27.649Z [DEBUG] Getting matching hook commands for SubagentStart with query: Explore
+2026-01-14T10:15:27.649Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:15:27.649Z [DEBUG] Matched 0 unique hooks for query "Explore" (0 before deduplication)
+2026-01-14T10:15:27.651Z [DEBUG] Getting matching hook commands for SubagentStart with query: Plan
+2026-01-14T10:15:27.651Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:15:27.651Z [DEBUG] Matched 0 unique hooks for query "Plan" (0 before deduplication)
+2026-01-14T10:15:27.673Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385727673
+2026-01-14T10:15:27.673Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:15:27.674Z [DEBUG] Temp file written successfully, size: 77366 bytes
+2026-01-14T10:15:27.674Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:15:27.674Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385727673 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:15:27.675Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:15:27.676Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385727676
+2026-01-14T10:15:27.676Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:15:27.677Z [DEBUG] Temp file written successfully, size: 77366 bytes
+2026-01-14T10:15:27.677Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:15:27.677Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385727676 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:15:27.678Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:15:27.738Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385727738
+2026-01-14T10:15:27.738Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:15:27.740Z [DEBUG] Temp file written successfully, size: 77365 bytes
+2026-01-14T10:15:27.740Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:15:27.740Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385727738 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:15:27.740Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:15:28.129Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385728129
+2026-01-14T10:15:28.129Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:15:28.131Z [DEBUG] Temp file written successfully, size: 77365 bytes
+2026-01-14T10:15:28.131Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:15:28.131Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385728129 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:15:28.131Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:15:29.503Z [DEBUG] Stream started - received first chunk
+2026-01-14T10:15:29.503Z [DEBUG] Stream started - received first chunk
+2026-01-14T10:15:29.699Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385729699
+2026-01-14T10:15:29.699Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:15:29.703Z [DEBUG] Temp file written successfully, size: 77553 bytes
+2026-01-14T10:15:29.703Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:15:29.703Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385729699 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:15:29.703Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:15:31.063Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-14T10:15:31.063Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:15:31.063Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T10:15:31.464Z [DEBUG] Stream started - received first chunk
+2026-01-14T10:15:32.855Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-14T10:15:32.855Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:15:32.855Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T10:17:19.210Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-14T10:17:19.210Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-14T10:17:19.210Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-14T10:17:19.210Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-14T10:17:19.226Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-14T10:17:19.226Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:17:19.226Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T10:17:19.227Z [DEBUG] FileHistory: Added snapshot for 64b03c86-bf9f-4c77-84b3-57e5dfcd2e43, tracking 0 files
+2026-01-14T10:17:19.237Z [DEBUG] Total plugin output styles loaded: 0
+2026-01-14T10:17:19.596Z [DEBUG] Stream started - received first chunk
+2026-01-14T10:17:22.265Z [DEBUG] Stream started - received first chunk
+2026-01-14T10:17:24.539Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T10:17:24.541Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T10:17:24.541Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:17:24.541Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T10:17:24.573Z [DEBUG] [SLOW OPERATION DETECTED] fs.readFileBytesSync (23.0ms)
+2026-01-14T10:17:24.589Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T10:17:24.589Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:17:24.589Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T10:17:24.594Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-14T10:17:24.594Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-14T10:17:24.594Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-14T10:17:24.594Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-14T10:17:24.606Z [DEBUG] [SLOW OPERATION DETECTED] fs.appendFileSync (5.1ms)
+2026-01-14T10:17:48.173Z [DEBUG] Stream started - received first chunk
+2026-01-14T10:18:04.050Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-14T10:18:04.050Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:18:04.050Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T10:18:04.051Z [DEBUG] Getting matching hook commands for PreCompact with query: auto
+2026-01-14T10:18:04.051Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:18:04.051Z [DEBUG] Matched 0 unique hooks for query "auto" (0 before deduplication)
+2026-01-14T10:18:04.072Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385884072
+2026-01-14T10:18:04.072Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:18:04.123Z [DEBUG] [SLOW OPERATION DETECTED] fs.writeFileSync (51.3ms)
+2026-01-14T10:18:04.123Z [DEBUG] Temp file written successfully, size: 77584 bytes
+2026-01-14T10:18:04.123Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:18:04.123Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385884072 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:18:04.123Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:18:04.125Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385884125
+2026-01-14T10:18:04.125Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:18:04.126Z [DEBUG] Temp file written successfully, size: 77612 bytes
+2026-01-14T10:18:04.126Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:18:04.126Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768385884125 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:18:04.126Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:18:33.745Z [DEBUG] Stream started - received first chunk
+2026-01-14T10:18:54.414Z [DEBUG] Getting matching hook commands for SessionStart with query: compact
+2026-01-14T10:18:54.414Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:18:54.414Z [DEBUG] Matched 0 unique hooks for query "compact" (0 before deduplication)
+2026-01-14T10:18:56.680Z [DEBUG] Stream started - received first chunk
+2026-01-14T10:19:04.177Z [DEBUG] Getting matching hook commands for Notification with query: idle_prompt
+2026-01-14T10:19:04.177Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:19:04.177Z [DEBUG] Matched 0 unique hooks for query "idle_prompt" (0 before deduplication)
+2026-01-14T10:19:07.411Z [DEBUG] Streaming aborted by user: Request was aborted.
+2026-01-14T10:19:07.411Z [ERROR] Error in non-streaming fallback: Request was aborted.
+2026-01-14T10:19:07.411Z [ERROR] Error: Error: Request was aborted.
+    at _createMessage (/$bunfs/root/claude:455:3157)
+    at processTicksAndRejections (native:7:39)
+2026-01-14T10:19:49.421Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-14T10:19:49.421Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-14T10:19:49.421Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-14T10:19:49.421Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-14T10:19:49.428Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-14T10:19:49.428Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:19:49.428Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T10:19:49.428Z [DEBUG] FileHistory: Making snapshot for message 22c79ca3-37f7-4fbc-9946-155dfa4a280c
+2026-01-14T10:19:49.428Z [DEBUG] FileHistory: Added snapshot for 22c79ca3-37f7-4fbc-9946-155dfa4a280c, tracking 0 files
+2026-01-14T10:19:49.445Z [DEBUG] Getting matching hook commands for PreCompact with query: auto
+2026-01-14T10:19:49.445Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:19:49.445Z [DEBUG] Matched 0 unique hooks for query "auto" (0 before deduplication)
+2026-01-14T10:19:49.776Z [DEBUG] Stream started - received first chunk
+2026-01-14T10:19:59.658Z [DEBUG] Stream started - received first chunk
+2026-01-14T10:20:25.702Z [DEBUG] Getting matching hook commands for SessionStart with query: compact
+2026-01-14T10:20:25.702Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:20:25.702Z [DEBUG] Matched 0 unique hooks for query "compact" (0 before deduplication)
+2026-01-14T10:20:25.714Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768386025714
+2026-01-14T10:20:25.714Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:20:25.736Z [DEBUG] [SLOW OPERATION DETECTED] fs.writeFileSync (21.6ms)
+2026-01-14T10:20:25.736Z [DEBUG] Temp file written successfully, size: 77539 bytes
+2026-01-14T10:20:25.736Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:20:25.736Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768386025714 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:20:25.736Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:20:25.739Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768386025739
+2026-01-14T10:20:25.739Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:20:25.740Z [DEBUG] Temp file written successfully, size: 77612 bytes
+2026-01-14T10:20:25.741Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:20:25.741Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768386025739 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:20:25.741Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:20:28.433Z [ERROR] Error streaming, falling back to non-streaming mode: {"type":"error","error":{"details":null,"type":"overloaded_error","message":"Overloaded"},"request_id":"req_011CX76t8MQatCY13CWanerv"}
+2026-01-14T10:20:35.098Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T10:20:35.104Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T10:20:35.104Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:20:35.104Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T10:20:35.132Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T10:20:35.132Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:20:35.132Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T10:20:35.138Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-14T10:20:35.138Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-14T10:20:35.138Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-14T10:20:35.138Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-14T10:20:35.150Z [DEBUG] [SLOW OPERATION DETECTED] fs.appendFileSync (5.0ms)
+2026-01-14T10:21:02.328Z [DEBUG] Stream started - received first chunk
+2026-01-14T10:21:21.757Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-14T10:21:21.848Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-14T10:21:21.848Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:21:21.848Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T10:21:21.849Z [DEBUG] Getting matching hook commands for PreCompact with query: auto
+2026-01-14T10:21:21.849Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:21:21.849Z [DEBUG] Matched 0 unique hooks for query "auto" (0 before deduplication)
+2026-01-14T10:21:21.860Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768386081860
+2026-01-14T10:21:21.860Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:21:21.903Z [DEBUG] [SLOW OPERATION DETECTED] fs.writeFileSync (42.6ms)
+2026-01-14T10:21:21.903Z [DEBUG] Temp file written successfully, size: 77630 bytes
+2026-01-14T10:21:21.903Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:21:21.903Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768386081860 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:21:21.903Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:21:21.905Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768386081905
+2026-01-14T10:21:21.905Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:21:21.907Z [DEBUG] Temp file written successfully, size: 77651 bytes
+2026-01-14T10:21:21.907Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:21:21.907Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768386081905 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:21:21.907Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:21:41.756Z [DEBUG] Stream started - received first chunk
+2026-01-14T10:22:12.830Z [DEBUG] Getting matching hook commands for SessionStart with query: compact
+2026-01-14T10:22:12.830Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:22:12.830Z [DEBUG] Matched 0 unique hooks for query "compact" (0 before deduplication)
+2026-01-14T10:22:15.623Z [ERROR] Error streaming, falling back to non-streaming mode: {"type":"error","error":{"details":null,"type":"overloaded_error","message":"Overloaded"},"request_id":"req_011CX7722FGUPUPUW8YeuCZd"}
+2026-01-14T10:22:21.929Z [DEBUG] Getting matching hook commands for Notification with query: idle_prompt
+2026-01-14T10:22:21.929Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:22:21.929Z [DEBUG] Matched 0 unique hooks for query "idle_prompt" (0 before deduplication)
+2026-01-14T10:22:23.292Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T10:22:23.294Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T10:22:23.294Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:22:23.294Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T10:22:25.925Z [DEBUG] Stream started - received first chunk
+2026-01-14T10:22:27.041Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T10:22:27.043Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T10:22:27.043Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:22:27.043Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T10:22:30.447Z [ERROR] Error streaming, falling back to non-streaming mode: {"type":"error","error":{"details":null,"type":"overloaded_error","message":"Overloaded"},"request_id":"req_011CX7734zVv9nyCASc28AAE"}
+2026-01-14T10:22:45.541Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T10:22:45.543Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T10:22:45.543Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:22:45.543Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T10:22:49.518Z [ERROR] Error streaming, falling back to non-streaming mode: {"type":"error","error":{"details":null,"type":"overloaded_error","message":"Overloaded"},"request_id":"req_011CX774S7mQ7LGKc6z3yd9e"}
+2026-01-14T10:22:56.850Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T10:22:56.851Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T10:22:56.851Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:22:56.851Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T10:23:00.274Z [DEBUG] Stream started - received first chunk
+2026-01-14T10:23:24.480Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-14T10:23:24.480Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:23:24.480Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T10:24:17.834Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-14T10:24:17.834Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-14T10:24:17.834Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-14T10:24:17.834Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-14T10:24:17.842Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-14T10:24:17.842Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:24:17.842Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T10:24:17.842Z [DEBUG] FileHistory: Making snapshot for message f0388a2e-6959-4383-9b53-4efc60edb1bc
+2026-01-14T10:24:17.842Z [DEBUG] FileHistory: Added snapshot for f0388a2e-6959-4383-9b53-4efc60edb1bc, tracking 0 files
+2026-01-14T10:24:17.855Z [DEBUG] Getting matching hook commands for PreCompact with query: auto
+2026-01-14T10:24:17.855Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:24:17.855Z [DEBUG] Matched 0 unique hooks for query "auto" (0 before deduplication)
+2026-01-14T10:24:18.244Z [DEBUG] Stream started - received first chunk
+2026-01-14T10:24:29.386Z [DEBUG] Stream started - received first chunk
+2026-01-14T10:25:00.534Z [DEBUG] Getting matching hook commands for SessionStart with query: compact
+2026-01-14T10:25:00.534Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:25:00.534Z [DEBUG] Matched 0 unique hooks for query "compact" (0 before deduplication)
+2026-01-14T10:25:00.546Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768386300546
+2026-01-14T10:25:00.546Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:25:00.550Z [DEBUG] Temp file written successfully, size: 77578 bytes
+2026-01-14T10:25:00.550Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:25:00.550Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768386300546 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:25:00.550Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:25:00.552Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768386300552
+2026-01-14T10:25:00.552Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:25:00.554Z [DEBUG] Temp file written successfully, size: 77651 bytes
+2026-01-14T10:25:00.554Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:25:00.554Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768386300552 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:25:00.554Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:25:03.847Z [DEBUG] [SLOW OPERATION DETECTED] fs.existsSync (5.8ms)
+2026-01-14T10:25:04.613Z [DEBUG] Stream started - received first chunk
+2026-01-14T10:25:26.306Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-14T10:25:26.306Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:25:26.306Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T10:25:26.313Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768386326313
+2026-01-14T10:25:26.313Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T10:25:26.317Z [DEBUG] Temp file written successfully, size: 77651 bytes
+2026-01-14T10:25:26.317Z [DEBUG] Applied original permissions to temp file
+2026-01-14T10:25:26.317Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.6696.1768386326313 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T10:25:26.317Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T10:25:29.292Z [DEBUG] Stream started - received first chunk
+2026-01-14T10:25:32.718Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-14T10:25:32.718Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:25:32.718Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T10:26:26.324Z [DEBUG] Getting matching hook commands for Notification with query: idle_prompt
+2026-01-14T10:26:26.324Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T10:26:26.324Z [DEBUG] Matched 0 unique hooks for query "idle_prompt" (0 before deduplication)
