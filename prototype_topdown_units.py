@@ -375,14 +375,13 @@ def main():
         test_sentences = [args.sentence]
     else:
         test_sentences = [
-            "did you go out with sarah",
-            "i go out the door",
-            "i lost my money yesterday",
-            "i lost my mind completely",
-            "go out together tonight",
-            "my money is gone",
-            "the bank by the river",
-            "i went to the bank",
+            "how do you do",
+            "we sail tomorrow",
+            "what is the weather like",
+            "thar she blows",
+            "spent my silver",
+            "that whale is the scourge of the seas",
+            "the wide open sea",
         ]
 
     parser = TopDownUnitParser(catalog)
