@@ -34,6 +34,16 @@ class Prediction:
 
 
 @dataclass
+class UnitPrediction:
+    """A predicted multi-token unit with score and explanation."""
+    unit_text: str
+    tokens: List[str]
+    score: float
+    context_overlap: float  # How well unit's left-context matches prompt
+    frequency: int  # How often this unit appears in corpus
+
+
+@dataclass
 class ContextSignature:
     """
     Dynamic 'embedding' computed from context.
@@ -63,7 +73,7 @@ class SubstitutionPredictor:
     def __init__(self, catalog: UnitCatalog,
                  context_window: int = 5,
                  top_k_context: int = 20,
-                 min_unit_freq: int = 5):
+                 min_unit_freq: int = 10):  # Raised from 5
         self.catalog = catalog
         self.context_window = context_window
         self.top_k_context = top_k_context
@@ -78,10 +88,19 @@ class SubstitutionPredictor:
 
         # Index: context word -> units with that context
         self.left_context_index = defaultdict(set)
-        self.right_context_index = defaultdict(set)
+        self.right_context_index = defaultdict(set)  # For finding substitution classes
+
+        # Track word document frequency for IDF weighting
+        self.word_doc_freq = Counter()  # How many units have this word in context
 
         # Store right-context distributions for prediction
         self.unit_right_contexts = {}
+
+        # Store left-context distributions (normalized) for better matching
+        self.unit_left_contexts = {}
+
+        # Store raw context patterns for substitution class computation
+        self.unit_patterns = {}
 
         # Filter to frequent units only for speed
         freq_units = {
@@ -90,21 +109,47 @@ class SubstitutionPredictor:
         }
         print(f"  Filtering to {len(freq_units):,} units with freq >= {self.min_unit_freq}")
 
+        total_units = len(freq_units)
+
         for i, (unit_text, pattern) in enumerate(freq_units.items()):
             if i % 5000 == 0:
                 print(f"  Processing unit {i:,}...")
 
-            # Index by top left context words only
-            for word, count in pattern.left_words.most_common(self.top_k_context):
+            # Store raw pattern for substitution class computation
+            self.unit_patterns[unit_text] = pattern
+
+            # Index by top left context words
+            top_left = pattern.left_words.most_common(self.top_k_context)
+            for word, count in top_left:
                 self.left_context_index[word].add(unit_text)
+                self.word_doc_freq[word] += 1
+
+            # Index by top right context words (for substitution class lookup)
+            top_right = pattern.right_words.most_common(self.top_k_context)
+            for word, count in top_right:
+                self.right_context_index[word].add(unit_text)
+
+            # Store normalized left-context distribution
+            left_total = sum(pattern.left_words.values())
+            if left_total > 0:
+                self.unit_left_contexts[unit_text] = {
+                    word: count / left_total
+                    for word, count in top_left
+                }
 
             # Store normalized right-context distribution
-            total = sum(pattern.right_words.values())
-            if total > 0:
+            right_total = sum(pattern.right_words.values())
+            if right_total > 0:
                 self.unit_right_contexts[unit_text] = {
-                    word: count / total
-                    for word, count in pattern.right_words.most_common(30)
+                    word: count / right_total
+                    for word, count in top_right
                 }
+
+        # Compute IDF weights
+        self.word_idf = {}
+        for word, doc_freq in self.word_doc_freq.items():
+            # IDF = log(N / df), capped to avoid extreme values
+            self.word_idf[word] = min(math.log(total_units / (doc_freq + 1)) + 1, 5.0)
 
         print(f"  Indexed {len(self.unit_right_contexts):,} units")
         print(f"  Left context vocabulary: {len(self.left_context_index):,} words")
@@ -114,16 +159,34 @@ class SubstitutionPredictor:
         """
         Compute the dynamic 'embedding' at a position.
         This aggregates context from the tokens preceding this position.
+
+        Position weighting: Immediate context words get higher weight.
         """
-        # Get left context
+        # Get left context with position weighting
         start = max(0, position - self.context_window)
         left_tokens = tokens[start:position]
-        left_words = Counter(left_tokens)
+        left_words = Counter()
+
+        # Weight by position: closer = higher weight
+        for i, token in enumerate(left_tokens):
+            # Distance from prediction position (1 = immediate, higher = further)
+            distance = len(left_tokens) - i
+            # Exponential decay: immediate context weighted ~3x more than distant
+            position_weight = math.exp(-0.3 * (distance - 1))
+            # Also apply IDF weight if available
+            idf_weight = self.word_idf.get(token, 1.0)
+            left_words[token] += position_weight * idf_weight
 
         # Get right context (what we have so far, for partial matching)
         end = min(len(tokens), position + self.context_window)
         right_tokens = tokens[position:end]
-        right_words = Counter(right_tokens)
+        right_words = Counter()
+
+        for i, token in enumerate(right_tokens):
+            distance = i + 1
+            position_weight = math.exp(-0.3 * (distance - 1))
+            idf_weight = self.word_idf.get(token, 1.0)
+            right_words[token] += position_weight * idf_weight
 
         return ContextSignature(
             left_words=left_words,
@@ -133,10 +196,11 @@ class SubstitutionPredictor:
         )
 
     def find_matching_units(self, context_sig: ContextSignature,
-                           threshold: float = 0.1,
-                           max_units: int = 100) -> List[Tuple[str, float]]:
+                           threshold: float = 0.15,
+                           max_units: int = 50) -> List[Tuple[str, float]]:
         """
         Find units whose left-context overlaps with current context.
+        Uses IDF-weighted cosine similarity for tighter matching.
         Returns: [(unit_text, overlap_score), ...]
         """
         # Find candidate units via index
@@ -144,20 +208,42 @@ class SubstitutionPredictor:
         for word in context_sig.left_words:
             candidates.update(self.left_context_index.get(word, set()))
 
-        # Score candidates by context overlap
+        # Score candidates by IDF-weighted cosine similarity
         scored = []
+        query_words = context_sig.left_words
+
+        # Compute query norm for cosine similarity
+        query_norm_sq = sum(v * v for v in query_words.values())
+        if query_norm_sq == 0:
+            return []
+        query_norm = math.sqrt(query_norm_sq)
+
         for unit_text in candidates:
-            pattern = self.catalog.get_unit(unit_text)
-            if not pattern:
+            unit_left = self.unit_left_contexts.get(unit_text, {})
+            if not unit_left:
                 continue
 
-            overlap = context_similarity_aggregated(
-                context_sig.left_words,
-                pattern.left_words
-            )
+            # IDF-weighted cosine similarity
+            dot_product = 0.0
+            for word, query_weight in query_words.items():
+                if word in unit_left:
+                    # Unit weight is normalized probability * IDF
+                    unit_weight = unit_left[word] * self.word_idf.get(word, 1.0)
+                    dot_product += query_weight * unit_weight
 
-            if overlap >= threshold:
-                scored.append((unit_text, overlap))
+            # Unit norm
+            unit_norm_sq = sum(
+                (prob * self.word_idf.get(w, 1.0)) ** 2
+                for w, prob in unit_left.items()
+            )
+            if unit_norm_sq == 0:
+                continue
+            unit_norm = math.sqrt(unit_norm_sq)
+
+            similarity = dot_product / (query_norm * unit_norm)
+
+            if similarity >= threshold:
+                scored.append((unit_text, similarity))
 
         # Sort by overlap score
         scored.sort(key=lambda x: -x[1])
@@ -180,13 +266,14 @@ class SubstitutionPredictor:
         # 1. Compute context signature at prediction position
         context_sig = self.compute_context_signature(tokens, len(tokens))
 
-        # 2. Find matching units
-        matching_units = self.find_matching_units(context_sig, threshold=0.05)
+        # 2. Find matching units (higher threshold for tighter matching)
+        matching_units = self.find_matching_units(context_sig, threshold=0.15)
 
         if not matching_units:
             return [Prediction("<unk>", 1.0, [])]
 
         # 3. Aggregate predictions from matching units
+        # Apply IDF weighting to predictions too - downweight common words
         prediction_scores = defaultdict(float)
         prediction_sources = defaultdict(list)
 
@@ -199,7 +286,9 @@ class SubstitutionPredictor:
             weight = overlap_score * freq_weight
 
             for word, prob in right_dist.items():
-                contribution = weight * prob
+                # Apply IDF to downweight common predicted words
+                idf = self.word_idf.get(word, 1.0)
+                contribution = weight * prob * idf
                 prediction_scores[word] += contribution
                 prediction_sources[word].append((unit_text, contribution))
 
@@ -224,6 +313,186 @@ class SubstitutionPredictor:
             ))
 
         return predictions
+
+    def predict_units(self, tokens: List[str],
+                      top_k: int = 10,
+                      min_unit_length: int = 1,
+                      max_unit_length: int = 5) -> List[UnitPrediction]:
+        """
+        Predict next units (multi-token sequences) rather than single tokens.
+
+        This is analogous to beam search in transformers - we're finding
+        coherent multi-token continuations rather than individual words.
+
+        The key insight: A unit U can follow the prompt if U's left-context
+        matches what typically follows the prompt's ending context.
+        """
+        if not tokens:
+            return []
+
+        # 1. Get the context signature at the end of the prompt
+        # This tells us what kind of words/patterns typically follow this context
+        context_sig = self.compute_context_signature(tokens, len(tokens))
+
+        # 2. Find units whose left-context matches this signature
+        # These are units that could plausibly follow the prompt
+        candidate_units = []
+
+        # Get the last few tokens as immediate context
+        immediate_context = tokens[-min(3, len(tokens)):]
+        immediate_set = set(immediate_context)
+
+        for unit_text, pattern in self.catalog.units.items():
+            if pattern.count < self.min_unit_freq:
+                continue
+
+            # Check unit length
+            unit_tokens = unit_text.split()
+            if len(unit_tokens) < min_unit_length or len(unit_tokens) > max_unit_length:
+                continue
+
+            # Score by how well unit's left-context matches our context
+            unit_left = self.unit_left_contexts.get(unit_text, {})
+            if not unit_left:
+                continue
+
+            # IDF-weighted similarity between prompt context and unit's left-context
+            overlap_score = 0.0
+            for word, query_weight in context_sig.left_words.items():
+                if word in unit_left:
+                    unit_weight = unit_left[word] * self.word_idf.get(word, 1.0)
+                    overlap_score += query_weight * unit_weight
+
+            # Bonus: if unit's left-context contains immediate context words
+            immediate_bonus = 0.0
+            for word in immediate_set:
+                if word in unit_left:
+                    immediate_bonus += unit_left[word] * 2.0
+
+            total_score = overlap_score + immediate_bonus
+
+            if total_score > 0.1:  # Threshold
+                candidate_units.append((
+                    unit_text,
+                    unit_tokens,
+                    total_score,
+                    overlap_score,
+                    pattern.count
+                ))
+
+        # 3. Sort by score and return top-k
+        candidate_units.sort(key=lambda x: -x[2])
+
+        predictions = []
+        for unit_text, unit_tokens, score, overlap, freq in candidate_units[:top_k]:
+            predictions.append(UnitPrediction(
+                unit_text=unit_text,
+                tokens=unit_tokens,
+                score=score,
+                context_overlap=overlap,
+                frequency=freq
+            ))
+
+        return predictions
+
+    def generate_with_units(self, prompt: List[str],
+                            max_tokens: int = 20,
+                            beam_width: int = 3,
+                            length_penalty: float = 0.6,
+                            no_repeat_ngram_size: int = 2) -> List[Tuple[List[str], float]]:
+        """
+        Generate text using unit-level beam search.
+
+        Instead of predicting one token at a time, predict whole units
+        and maintain multiple beams. Score sequences by cumulative
+        context overlap, normalized by length.
+
+        Args:
+            no_repeat_ngram_size: Block n-grams of this size from repeating
+
+        Returns: List of (generated_tokens, score) tuples for each beam.
+        """
+        def get_ngrams(tokens: List[str], n: int) -> Set[Tuple[str, ...]]:
+            """Extract all n-grams from a token list."""
+            return {tuple(tokens[i:i+n]) for i in range(len(tokens) - n + 1)}
+
+        def would_repeat_ngram(existing: List[str], new_tokens: List[str], n: int) -> bool:
+            """Check if adding new_tokens would create a repeated n-gram."""
+            if n <= 0:
+                return False
+            # Check for consecutive word repetition (single token repeated)
+            if existing and new_tokens:
+                if existing[-1] == new_tokens[0]:
+                    return True
+                # Check if new_tokens start appears recently
+                for i in range(1, min(4, len(existing) + 1)):
+                    if existing[-i] == new_tokens[0]:
+                        return True
+            existing_ngrams = get_ngrams(existing, n)
+            # Check n-grams that span the boundary or are in new_tokens
+            combined = existing[-(n-1):] + new_tokens if len(existing) >= n-1 else existing + new_tokens
+            new_ngrams = get_ngrams(combined, n)
+            return bool(existing_ngrams & new_ngrams)
+
+        # Initialize beams: (tokens, cumulative_score, num_units)
+        beams = [(list(prompt), 0.0, 0)]
+
+        for _ in range(max_tokens // 2):  # Rough iteration count
+            new_beams = []
+
+            for tokens, cum_score, num_units in beams:
+                if len(tokens) - len(prompt) >= max_tokens:
+                    new_beams.append((tokens, cum_score, num_units))
+                    continue
+
+                # Get unit predictions for this beam
+                unit_preds = self.predict_units(tokens, top_k=beam_width * 4)
+
+                if not unit_preds:
+                    # No predictions - keep beam as is
+                    new_beams.append((tokens, cum_score, num_units))
+                    continue
+
+                added = 0
+                for pred in unit_preds:
+                    if added >= beam_width:
+                        break
+                    # N-gram blocking: skip if this would repeat an n-gram
+                    if would_repeat_ngram(tokens, pred.tokens, no_repeat_ngram_size):
+                        continue
+                    new_tokens = tokens + pred.tokens
+                    new_score = cum_score + math.log(pred.score + 1e-10)
+                    new_beams.append((new_tokens, new_score, num_units + 1))
+                    added += 1
+
+            # Prune to top beams, normalized by length
+            def beam_score(beam):
+                tokens, score, n_units = beam
+                gen_len = len(tokens) - len(prompt)
+                if gen_len == 0:
+                    return float('-inf')
+                # Length-normalized score (Wu et al. 2016 style)
+                length_norm = ((5 + gen_len) / 6) ** length_penalty
+                return score / length_norm
+
+            new_beams.sort(key=beam_score, reverse=True)
+            beams = new_beams[:beam_width]
+
+            # Check if all beams have reached max length
+            if all(len(b[0]) - len(prompt) >= max_tokens for b in beams):
+                break
+
+        # Return generated portions with scores
+        results = []
+        for tokens, score, n_units in beams:
+            gen_tokens = tokens[len(prompt):]
+            if gen_tokens:
+                # Compute final normalized score
+                length_norm = ((5 + len(gen_tokens)) / 6) ** length_penalty
+                norm_score = score / length_norm if score != 0 else 0
+                results.append((gen_tokens, norm_score))
+
+        return results
 
     def predict_with_hierarchy(self, tokens: List[str],
                                parser: SimpleBidirParser,
@@ -261,7 +530,9 @@ class SubstitutionPredictor:
                 freq_weight = math.log(pattern.count + 1)
 
                 for word, prob in right_dist.items():
-                    contribution = level_weight * freq_weight * prob
+                    # Apply IDF to downweight common predicted words
+                    idf = self.word_idf.get(word, 1.0)
+                    contribution = level_weight * freq_weight * prob * idf
                     prediction_scores[word] += contribution
                     prediction_sources[word].append(
                         (f"L{level}:{unit_text}", contribution)
@@ -311,6 +582,275 @@ class SubstitutionPredictor:
                     result[lvl].extend(units)
 
         return result
+
+    def find_substitution_class(self, unit_text: str,
+                                 max_members: int = 30,
+                                 threshold: float = 0.20) -> List[Tuple[str, float]]:
+        """
+        Find the substitution class for a unit.
+
+        The substitution class includes ALL units that share context patterns,
+        regardless of length. This means:
+        - "rain" can be in the class of "the rain in spain" (abstraction)
+        - "the heavy rain" can be in the class of "rain" (elaboration)
+
+        Returns: [(member_unit, centrality_score), ...]
+        """
+        # Check cache first
+        if not hasattr(self, '_subclass_cache'):
+            self._subclass_cache = {}
+        if unit_text in self._subclass_cache:
+            return self._subclass_cache[unit_text]
+
+        pattern = self.unit_patterns.get(unit_text)
+        if not pattern:
+            # Unit not in catalog
+            return []
+
+        # Find candidates via both left and right context indices
+        # Use only top context words for efficiency
+        candidates = set()
+        for word, _ in pattern.left_words.most_common(5):
+            cands = self.left_context_index.get(word, set())
+            candidates.update(list(cands)[:500])  # Limit per word
+        for word, _ in pattern.right_words.most_common(5):
+            cands = self.right_context_index.get(word, set())
+            candidates.update(list(cands)[:500])
+
+        # Limit total candidates
+        if len(candidates) > 2000:
+            candidates = set(list(candidates)[:2000])
+
+        # Score candidates by context overlap
+        class_members = []
+        for candidate_text in candidates:
+            if candidate_text == unit_text:
+                continue
+
+            candidate_pattern = self.unit_patterns.get(candidate_text)
+            if not candidate_pattern:
+                continue
+
+            # Compute bidirectional context overlap
+            # This is the core of substitutability: shared contexts
+            left_sim = context_similarity_aggregated(
+                pattern.left_words, candidate_pattern.left_words
+            )
+            right_sim = context_similarity_aggregated(
+                pattern.right_words, candidate_pattern.right_words
+            )
+
+            # Average similarity (both contexts must overlap for true substitutability)
+            avg_sim = (left_sim + right_sim) / 2.0
+
+            if avg_sim >= threshold:
+                class_members.append((candidate_text, avg_sim))
+
+        # Sort by centrality and limit
+        class_members.sort(key=lambda x: -x[1])
+        result = class_members[:max_members]
+
+        # Cache the result
+        self._subclass_cache[unit_text] = result
+        return result
+
+    def predict_with_substitution_class(self, tokens: List[str],
+                                         parser: SimpleBidirParser,
+                                         top_k: int = 10) -> List[UnitPrediction]:
+        """
+        Predict using full substitution class expansion at all hierarchy levels.
+
+        This is the "attention-like" mechanism:
+        1. Parse prompt into hierarchy
+        2. At each node, find its substitution class (including shorter abstractions)
+        3. Aggregate predictions from ALL class members at ALL levels
+
+        The key insight: "rain" is in the substitution class of "the rain in spain"
+        because they share context patterns. So predictions from "rain" (which are
+        thematically coherent) flow to the full phrase.
+        """
+        if len(tokens) < 2:
+            return self.predict_units(tokens, top_k)
+
+        # 1. Parse the prompt into a hierarchy
+        tree = parser.parse(tokens)
+
+        # 2. Collect substitution classes at each level
+        all_class_members = []  # [(unit_text, level, centrality), ...]
+        self._collect_substitution_classes_recursive(tree, all_class_members, level=0)
+
+        # 3. Aggregate predictions from all class members
+        prediction_scores = defaultdict(float)
+        prediction_sources = defaultdict(list)
+
+        for unit_text, level, centrality in all_class_members:
+            right_dist = self.unit_right_contexts.get(unit_text, {})
+            if not right_dist:
+                continue
+
+            # Weight by:
+            # - Level: higher (more abstract) = captures broader theme
+            # - Centrality: how central this member is to its class
+            # - Unit frequency: reliability
+            pattern = self.unit_patterns.get(unit_text)
+            freq_weight = math.log(pattern.count + 1) if pattern else 1.0
+
+            # Higher levels (leaves) get more weight as they're more specific
+            # But also include abstract (shorter) class members
+            level_weight = 1.0 + 0.3 * level
+
+            for word, prob in right_dist.items():
+                # IDF weight on predictions
+                idf = self.word_idf.get(word, 1.0)
+                contribution = level_weight * centrality * freq_weight * prob * idf
+                prediction_scores[word] += contribution
+                prediction_sources[word].append((f"L{level}:{unit_text}", contribution))
+
+        # 4. Return top predictions as UnitPrediction objects
+        if not prediction_scores:
+            return self.predict_units(tokens, top_k)
+
+        total = sum(prediction_scores.values())
+        predictions = []
+
+        for word, score in sorted(prediction_scores.items(), key=lambda x: -x[1])[:top_k]:
+            # Find best unit prediction starting with this word
+            unit_pred = self._find_unit_starting_with(word, tokens)
+            if unit_pred:
+                predictions.append(UnitPrediction(
+                    unit_text=unit_pred[0],
+                    tokens=unit_pred[0].split(),
+                    score=score / total,
+                    context_overlap=unit_pred[1],
+                    frequency=unit_pred[2]
+                ))
+            else:
+                # Fall back to single token
+                predictions.append(UnitPrediction(
+                    unit_text=word,
+                    tokens=[word],
+                    score=score / total,
+                    context_overlap=0.0,
+                    frequency=0
+                ))
+
+        return predictions
+
+    def _collect_substitution_classes_recursive(self, node: ParseNode,
+                                                  result: List[Tuple[str, int, float]],
+                                                  level: int = 0):
+        """
+        Recursively collect substitution class members for each node in the parse tree.
+
+        For each node:
+        1. Add the node's unit itself
+        2. Find its substitution class (units with overlapping contexts)
+        3. This naturally includes shorter abstractions like "rain" for "the rain in spain"
+        """
+        unit_text = node.span.text
+
+        # Add the unit itself with full centrality
+        if unit_text in self.unit_patterns:
+            result.append((unit_text, level, 1.0))
+
+            # Find substitution class for this node
+            sub_class = self.find_substitution_class(unit_text, max_members=20)
+            for member_text, centrality in sub_class:
+                result.append((member_text, level, centrality))
+
+        # Recurse into children
+        if node.left:
+            self._collect_substitution_classes_recursive(node.left, result, level + 1)
+        if node.right:
+            self._collect_substitution_classes_recursive(node.right, result, level + 1)
+
+    def _find_unit_starting_with(self, word: str, context: List[str]) -> Optional[Tuple[str, float, int]]:
+        """
+        Find a multi-token unit that starts with the given word and fits the context.
+        Returns: (unit_text, context_overlap, frequency) or None
+        """
+        # Find units starting with this word
+        candidates = []
+        for unit_text, pattern in self.unit_patterns.items():
+            if unit_text.startswith(word + " ") or unit_text == word:
+                # Score by context overlap
+                context_counter = Counter(context[-5:])
+                left_sim = context_similarity_aggregated(context_counter, pattern.left_words)
+                if left_sim > 0.05:
+                    candidates.append((unit_text, left_sim, pattern.count))
+
+        if not candidates:
+            return None
+
+        # Return best match (highest overlap × frequency)
+        candidates.sort(key=lambda x: -x[1] * math.log(x[2] + 1))
+        return candidates[0]
+
+    def generate_with_substitution(self, prompt: List[str],
+                                    parser: SimpleBidirParser,
+                                    max_tokens: int = 20,
+                                    beam_width: int = 3) -> List[Tuple[List[str], float]]:
+        """
+        Generate text using iterative substitution class prediction.
+
+        Each step:
+        1. Predict best unit using full substitution class method
+        2. Append unit to sequence
+        3. Re-parse and repeat
+
+        The "attention" comes from the substitution class at each step,
+        which includes abstract representations that maintain thematic coherence.
+        """
+        beams = [(list(prompt), 0.0)]
+
+        for _ in range(max_tokens // 2):
+            new_beams = []
+
+            for tokens, cum_score in beams:
+                if len(tokens) - len(prompt) >= max_tokens:
+                    new_beams.append((tokens, cum_score))
+                    continue
+
+                # Get predictions using substitution class method
+                unit_preds = self.predict_with_substitution_class(tokens, parser, top_k=beam_width * 2)
+
+                if not unit_preds:
+                    new_beams.append((tokens, cum_score))
+                    continue
+
+                added = 0
+                seen_starts = set()
+                for pred in unit_preds:
+                    if added >= beam_width:
+                        break
+                    # Avoid repetition
+                    first_word = pred.tokens[0] if pred.tokens else ""
+                    if first_word in seen_starts:
+                        continue
+                    if any(t in tokens[-4:] for t in pred.tokens[:2]):
+                        continue
+
+                    seen_starts.add(first_word)
+                    new_tokens = tokens + pred.tokens
+                    new_score = cum_score + math.log(pred.score + 1e-10)
+                    new_beams.append((new_tokens, new_score))
+                    added += 1
+
+            if not new_beams:
+                break
+
+            # Prune beams
+            new_beams.sort(key=lambda x: -x[1])
+            beams = new_beams[:beam_width]
+
+        # Return generated portions
+        results = []
+        for tokens, score in beams:
+            gen_tokens = tokens[len(prompt):]
+            if gen_tokens:
+                results.append((gen_tokens, score))
+
+        return results
 
     def generate(self, prompt: List[str],
                  max_tokens: int = 10,
@@ -432,6 +972,101 @@ def main():
         print(f"  {i}. '{pred.token}' (score: {pred.score:.3f})")
         for source in pred.contributing_units[:2]:
             print(f"      ← {source[0]}")
+
+    print("\n" + "=" * 80)
+    print("UNIT-LEVEL PREDICTION (Multi-token sequences)")
+    print("=" * 80)
+    print("\nInstead of predicting single tokens, predict whole units.")
+    print("This is analogous to beam search in transformers.")
+
+    for prompt in test_prompts[:3]:  # Just first 3 for brevity
+        print(f"\n{'-' * 60}")
+        print(f"PROMPT: \"{' '.join(prompt)}\"")
+        print('-' * 60)
+
+        # Unit-level predictions
+        unit_preds = predictor.predict_units(prompt, top_k=5, min_unit_length=2)
+        print("\nTop unit predictions (multi-token):")
+        for i, pred in enumerate(unit_preds, 1):
+            print(f"  {i}. \"{pred.unit_text}\" (score: {pred.score:.3f}, freq: {pred.frequency})")
+
+    print("\n" + "=" * 80)
+    print("UNIT-LEVEL BEAM SEARCH GENERATION")
+    print("=" * 80)
+
+    test_prompts_gen = [
+        ["i", "want", "to"],
+        ["do", "you", "want", "to"],
+        ["she", "said", "that"],
+    ]
+
+    for prompt in test_prompts_gen:
+        print(f"\n{'-' * 60}")
+        print(f"PROMPT: \"{' '.join(prompt)}\"")
+        print('-' * 60)
+
+        # Generate with unit-level beam search
+        beams = predictor.generate_with_units(prompt, max_tokens=15, beam_width=3)
+        print("\nBeam search results (unit-level):")
+        for i, (gen_tokens, score) in enumerate(beams, 1):
+            full_text = ' '.join(prompt + gen_tokens)
+            print(f"  {i}. \"{full_text}\" (score: {score:.3f})")
+
+    print("\n" + "=" * 80, flush=True)
+    print("SUBSTITUTION CLASS PREDICTION (with 'attention'-like coherence)", flush=True)
+    print("=" * 80, flush=True)
+    print("\nKey insight: The substitution class of 'the rain in spain' includes 'rain'.", flush=True)
+    print("Predictions from 'rain' (thematically coherent) flow to the full phrase.", flush=True)
+    print("This is analogous to transformer attention over abstract representations.", flush=True)
+
+    test_prompts_sub = [
+        ["i", "want", "to"],
+        ["she", "said", "that"],
+        ["we", "should", "go"],
+    ]
+
+    for prompt in test_prompts_sub:
+        print(f"\n{'-' * 60}", flush=True)
+        print(f"PROMPT: \"{' '.join(prompt)}\"", flush=True)
+        print('-' * 60, flush=True)
+
+        # Show the substitution class for the full phrase
+        full_phrase = ' '.join(prompt)
+        print(f"\nSubstitution class for \"{full_phrase}\":", flush=True)
+        sub_class = predictor.find_substitution_class(full_phrase, max_members=10)
+        if sub_class:
+            for member, centrality in sub_class[:5]:
+                print(f"  - \"{member}\" (centrality: {centrality:.3f})", flush=True)
+        else:
+            print("  (phrase not in catalog, showing component classes)", flush=True)
+            # Show classes for components
+            for token in prompt[-2:]:
+                tc = predictor.find_substitution_class(token, max_members=5)
+                if tc:
+                    print(f"  '{token}' class: {[m[0] for m in tc[:3]]}", flush=True)
+
+        # Predictions using substitution class method
+        print(f"\nComputing predictions (substitution class method)...", flush=True)
+        preds = predictor.predict_with_substitution_class(prompt, parser, top_k=5)
+        print(f"Predictions:", flush=True)
+        for i, pred in enumerate(preds, 1):
+            print(f"  {i}. \"{pred.unit_text}\" (score: {pred.score:.3f})", flush=True)
+
+    print("\n" + "=" * 80)
+    print("ITERATIVE GENERATION WITH SUBSTITUTION CLASSES")
+    print("=" * 80)
+    print("\nGenerate by iteratively predicting units using substitution class 'attention'.")
+
+    for prompt in test_prompts_sub:
+        print(f"\n{'-' * 60}")
+        print(f"PROMPT: \"{' '.join(prompt)}\"")
+        print('-' * 60)
+
+        beams = predictor.generate_with_substitution(prompt, parser, max_tokens=15, beam_width=3)
+        print("\nGenerated (substitution class method):")
+        for i, (gen_tokens, score) in enumerate(beams, 1):
+            full_text = ' '.join(prompt + gen_tokens)
+            print(f"  {i}. \"{full_text}\" (score: {score:.3f})")
 
 
 if __name__ == "__main__":
