@@ -17,6 +17,9 @@ from typing import List, Dict, Tuple, Optional, Set
 import math
 import pickle
 import heapq
+import numpy as np
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+import multiprocessing
 
 # Import from existing parser
 from bidir_simple import (
@@ -153,6 +156,74 @@ class SubstitutionPredictor:
 
         print(f"  Indexed {len(self.unit_right_contexts):,} units")
         print(f"  Left context vocabulary: {len(self.left_context_index):,} words")
+
+        # Build vectorized representations for fast batch similarity computation
+        print("  Building vectorized context representations...")
+        self._build_vectorized_contexts()
+        print(f"  Vectorized {len(self.unit_list)} units with {len(self.vocab_to_idx)} vocabulary")
+
+    def _build_vectorized_contexts(self):
+        """
+        Build NumPy arrays for fast batch similarity computation.
+
+        Instead of computing Jaccard similarity one pair at a time,
+        we can compute many similarities in parallel using matrix operations.
+        """
+        # Build vocabulary index
+        all_context_words = set()
+        for pattern in self.unit_patterns.values():
+            all_context_words.update(w for w, _ in pattern.left_words.most_common(20))
+            all_context_words.update(w for w, _ in pattern.right_words.most_common(20))
+
+        self.vocab_to_idx = {word: i for i, word in enumerate(sorted(all_context_words))}
+        vocab_size = len(self.vocab_to_idx)
+
+        # Build unit list and matrices
+        self.unit_list = list(self.unit_patterns.keys())
+        self.unit_to_idx = {unit: i for i, unit in enumerate(self.unit_list)}
+        n_units = len(self.unit_list)
+
+        # Sparse representation: store top-k indices and values for each unit
+        # This is more memory efficient than dense matrices
+        self.left_context_topk = {}  # unit_idx -> (word_indices, values)
+        self.right_context_topk = {}
+
+        for unit_text, pattern in self.unit_patterns.items():
+            unit_idx = self.unit_to_idx[unit_text]
+
+            # Left context top-k
+            left_items = pattern.left_words.most_common(10)
+            if left_items:
+                indices = np.array([self.vocab_to_idx.get(w, 0) for w, _ in left_items])
+                values = np.array([c for _, c in left_items], dtype=np.float32)
+                values = values / (values.sum() + 1e-10)  # Normalize
+                self.left_context_topk[unit_idx] = (indices, values)
+
+            # Right context top-k
+            right_items = pattern.right_words.most_common(10)
+            if right_items:
+                indices = np.array([self.vocab_to_idx.get(w, 0) for w, _ in right_items])
+                values = np.array([c for _, c in right_items], dtype=np.float32)
+                values = values / (values.sum() + 1e-10)
+                self.right_context_topk[unit_idx] = (indices, values)
+
+    def _batch_jaccard_similarity(self, query_indices: np.ndarray,
+                                   candidate_indices_list: List[np.ndarray]) -> np.ndarray:
+        """
+        Compute Jaccard similarity between a query and multiple candidates.
+
+        Uses set operations on indices for efficiency.
+        """
+        query_set = set(query_indices)
+        similarities = np.zeros(len(candidate_indices_list), dtype=np.float32)
+
+        for i, cand_indices in enumerate(candidate_indices_list):
+            cand_set = set(cand_indices)
+            intersection = len(query_set & cand_set)
+            union = len(query_set | cand_set)
+            similarities[i] = intersection / union if union > 0 else 0.0
+
+        return similarities
 
     def compute_context_signature(self, tokens: List[str],
                                    position: int) -> ContextSignature:
@@ -587,7 +658,7 @@ class SubstitutionPredictor:
                                  max_members: int = 30,
                                  threshold: float = 0.20) -> List[Tuple[str, float]]:
         """
-        Find the substitution class for a unit.
+        Find the substitution class for a unit using vectorized batch computation.
 
         The substitution class includes ALL units that share context patterns,
         regardless of length. This means:
@@ -602,51 +673,69 @@ class SubstitutionPredictor:
         if unit_text in self._subclass_cache:
             return self._subclass_cache[unit_text]
 
-        pattern = self.unit_patterns.get(unit_text)
-        if not pattern:
-            # Unit not in catalog
+        # Check if unit exists
+        if unit_text not in self.unit_to_idx:
             return []
 
-        # Find candidates via both left and right context indices
-        # Use only top context words for efficiency
+        unit_idx = self.unit_to_idx[unit_text]
+
+        # Get query's context indices
+        if unit_idx not in self.left_context_topk or unit_idx not in self.right_context_topk:
+            return []
+
+        query_left_indices = self.left_context_topk[unit_idx][0]
+        query_right_indices = self.right_context_topk[unit_idx][0]
+
+        # Find candidates via context indices (same as before, but faster lookup)
+        pattern = self.unit_patterns.get(unit_text)
         candidates = set()
         for word, _ in pattern.left_words.most_common(5):
             cands = self.left_context_index.get(word, set())
-            candidates.update(list(cands)[:500])  # Limit per word
+            candidates.update(list(cands)[:500])
         for word, _ in pattern.right_words.most_common(5):
             cands = self.right_context_index.get(word, set())
             candidates.update(list(cands)[:500])
 
-        # Limit total candidates
-        if len(candidates) > 2000:
-            candidates = set(list(candidates)[:2000])
+        # Limit and filter candidates
+        candidates.discard(unit_text)
+        candidate_list = [c for c in list(candidates)[:2000]
+                         if c in self.unit_to_idx]
 
-        # Score candidates by context overlap
-        class_members = []
-        for candidate_text in candidates:
-            if candidate_text == unit_text:
-                continue
+        if not candidate_list:
+            return []
 
-            candidate_pattern = self.unit_patterns.get(candidate_text)
-            if not candidate_pattern:
-                continue
+        # VECTORIZED: Batch compute similarities for all candidates
+        candidate_indices = [self.unit_to_idx[c] for c in candidate_list]
 
-            # Compute bidirectional context overlap
-            # This is the core of substitutability: shared contexts
-            left_sim = context_similarity_aggregated(
-                pattern.left_words, candidate_pattern.left_words
-            )
-            right_sim = context_similarity_aggregated(
-                pattern.right_words, candidate_pattern.right_words
-            )
+        # Collect candidate context vectors
+        left_indices_list = []
+        right_indices_list = []
+        valid_candidates = []
 
-            # Average similarity (both contexts must overlap for true substitutability)
-            avg_sim = (left_sim + right_sim) / 2.0
+        for cand_idx, cand_text in zip(candidate_indices, candidate_list):
+            if cand_idx in self.left_context_topk and cand_idx in self.right_context_topk:
+                left_indices_list.append(self.left_context_topk[cand_idx][0])
+                right_indices_list.append(self.right_context_topk[cand_idx][0])
+                valid_candidates.append(cand_text)
 
-            if avg_sim >= threshold:
-                class_members.append((candidate_text, avg_sim))
+        if not valid_candidates:
+            return []
 
-        # Sort by centrality and limit
+        # Batch compute Jaccard similarities
+        left_sims = self._batch_jaccard_similarity(query_left_indices, left_indices_list)
+        right_sims = self._batch_jaccard_similarity(query_right_indices, right_indices_list)
+
+        # Average similarities
+        avg_sims = (left_sims + right_sims) / 2.0
+
+        # Filter by threshold and sort
+        mask = avg_sims >= threshold
+        filtered_indices = np.where(mask)[0]
+
+        class_members = [
+            (valid_candidates[i], float(avg_sims[i]))
+            for i in filtered_indices
+        ]
         class_members.sort(key=lambda x: -x[1])
         result = class_members[:max_members]
 
@@ -656,7 +745,9 @@ class SubstitutionPredictor:
 
     def predict_with_substitution_class(self, tokens: List[str],
                                          parser: SimpleBidirParser,
-                                         top_k: int = 10) -> List[UnitPrediction]:
+                                         top_k: int = 10,
+                                         parallel: bool = True,
+                                         n_workers: int = 4) -> List[UnitPrediction]:
         """
         Predict using full substitution class expansion at all hierarchy levels.
 
@@ -668,6 +759,10 @@ class SubstitutionPredictor:
         The key insight: "rain" is in the substitution class of "the rain in spain"
         because they share context patterns. So predictions from "rain" (which are
         thematically coherent) flow to the full phrase.
+
+        Args:
+            parallel: If True, use parallel processing for substitution class computation
+            n_workers: Number of parallel workers (default 4)
         """
         if len(tokens) < 2:
             return self.predict_units(tokens, top_k)
@@ -675,9 +770,12 @@ class SubstitutionPredictor:
         # 1. Parse the prompt into a hierarchy
         tree = parser.parse(tokens)
 
-        # 2. Collect substitution classes at each level
-        all_class_members = []  # [(unit_text, level, centrality), ...]
-        self._collect_substitution_classes_recursive(tree, all_class_members, level=0)
+        # 2. Collect substitution classes at each level (parallel or sequential)
+        if parallel:
+            all_class_members = self._collect_substitution_classes_parallel(tree, n_workers)
+        else:
+            all_class_members = []
+            self._collect_substitution_classes_recursive(tree, all_class_members, level=0)
 
         # 3. Aggregate predictions from all class members
         prediction_scores = defaultdict(float)
@@ -736,11 +834,54 @@ class SubstitutionPredictor:
 
         return predictions
 
+    def _collect_all_nodes(self, node: ParseNode, level: int = 0) -> List[Tuple[str, int]]:
+        """Collect all nodes from parse tree as (unit_text, level) pairs."""
+        nodes = [(node.span.text, level)]
+        if node.left:
+            nodes.extend(self._collect_all_nodes(node.left, level + 1))
+        if node.right:
+            nodes.extend(self._collect_all_nodes(node.right, level + 1))
+        return nodes
+
+    def _compute_node_substitution_class(self, args: Tuple[str, int]) -> List[Tuple[str, int, float]]:
+        """Compute substitution class for a single node. Used for parallel processing."""
+        unit_text, level = args
+        result = []
+
+        if unit_text in self.unit_patterns:
+            result.append((unit_text, level, 1.0))
+            sub_class = self.find_substitution_class(unit_text, max_members=20)
+            for member_text, centrality in sub_class:
+                result.append((member_text, level, centrality))
+
+        return result
+
+    def _collect_substitution_classes_parallel(self, tree: ParseNode,
+                                                n_workers: int = 4) -> List[Tuple[str, int, float]]:
+        """
+        Collect substitution classes for all nodes in parallel.
+
+        Uses ThreadPoolExecutor since the heavy lifting is in NumPy operations
+        which release the GIL.
+        """
+        # Collect all nodes first
+        nodes = self._collect_all_nodes(tree)
+
+        # Process nodes in parallel
+        all_results = []
+        with ThreadPoolExecutor(max_workers=n_workers) as executor:
+            results = executor.map(self._compute_node_substitution_class, nodes)
+            for node_results in results:
+                all_results.extend(node_results)
+
+        return all_results
+
     def _collect_substitution_classes_recursive(self, node: ParseNode,
                                                   result: List[Tuple[str, int, float]],
                                                   level: int = 0):
         """
         Recursively collect substitution class members for each node in the parse tree.
+        (Non-parallel version, kept for compatibility)
 
         For each node:
         1. Add the node's unit itself
