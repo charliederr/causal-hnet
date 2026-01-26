@@ -95,11 +95,13 @@ class SubstitutionPredictor:
     def __init__(self, catalog: UnitCatalog,
                  context_window: int = 5,
                  top_k_context: int = 20,
-                 min_unit_freq: int = 10):  # Raised from 5
+                 min_unit_freq: int = 10,  # Raised from 5
+                 share_gpu_with_catalog: bool = True):
         self.catalog = catalog
         self.context_window = context_window
         self.top_k_context = top_k_context
         self.min_unit_freq = min_unit_freq
+        self.share_gpu = share_gpu_with_catalog
 
         # Build reverse index: left_word -> units that have this left context
         self._build_indices()
@@ -228,8 +230,35 @@ class SubstitutionPredictor:
 
         # Build GPU tensors if PyTorch is available
         if HAS_TORCH and DEVICE is not None:
-            print(f"  Building GPU tensors on {DEVICE}...")
-            self._build_gpu_tensors(vocab_size, n_units)
+            # Check if we can share GPU tensors with catalog
+            if self.share_gpu and hasattr(self.catalog, 'gpu_ready') and self.catalog.gpu_ready:
+                print(f"  Sharing GPU tensors with catalog...")
+                self._share_catalog_gpu_tensors()
+            else:
+                print(f"  Building GPU tensors on {DEVICE}...")
+                self._build_gpu_tensors(vocab_size, n_units)
+
+    def _share_catalog_gpu_tensors(self):
+        """
+        Share GPU tensors with the catalog instead of building our own.
+        This saves ~12GB of GPU memory.
+        """
+        # Use catalog's GPU tensors directly
+        self.gpu_left = self.catalog.gpu_left
+        self.gpu_right = self.catalog.gpu_right
+        self.n_units = len(self.catalog.unit_list)
+        self.compact_vocab_size = self.gpu_left.shape[1]
+
+        # Build unit index mapping from our unit list to catalog's
+        # (they should be the same, but let's be safe)
+        self.unit_to_gpu_idx = {}
+        for unit_text in self.unit_patterns:
+            if unit_text in self.catalog.unit_to_idx:
+                self.unit_to_gpu_idx[unit_text] = self.catalog.unit_to_idx[unit_text]
+
+        self.gpu_available = True
+        mem_mb = (self.gpu_left.numel() + self.gpu_right.numel()) * 2 / (1024 * 1024)
+        print(f"  Shared GPU matrices: {self.n_units} units × {self.compact_vocab_size} vocab ({mem_mb:.1f} MB)")
 
     def _build_gpu_tensors(self, vocab_size: int, n_units: int):
         """
@@ -842,22 +871,43 @@ class SubstitutionPredictor:
         if not candidate_list:
             return []
 
-        # Get candidate indices for batch processing
-        candidate_indices = [self.unit_to_idx[c] for c in candidate_list]
+        # When sharing GPU with catalog, use catalog's indices for GPU operations
+        if hasattr(self, 'unit_to_gpu_idx') and self.unit_to_gpu_idx:
+            # Shared GPU mode - translate to catalog indices
+            if unit_text not in self.unit_to_gpu_idx:
+                return []
+            gpu_query_idx = self.unit_to_gpu_idx[unit_text]
 
-        # Filter to candidates that have both left and right contexts
-        valid_indices = []
-        valid_candidates = []
-        for cand_idx, cand_text in zip(candidate_indices, candidate_list):
-            if cand_idx in self.left_context_topk and cand_idx in self.right_context_topk:
-                valid_indices.append(cand_idx)
-                valid_candidates.append(cand_text)
+            valid_gpu_indices = []
+            valid_candidates = []
+            for cand_text in candidate_list:
+                cand_idx = self.unit_to_idx[cand_text]
+                if cand_idx in self.left_context_topk and cand_idx in self.right_context_topk:
+                    if cand_text in self.unit_to_gpu_idx:
+                        valid_gpu_indices.append(self.unit_to_gpu_idx[cand_text])
+                        valid_candidates.append(cand_text)
 
-        if not valid_candidates:
-            return []
+            if not valid_candidates:
+                return []
 
-        # GPU-ACCELERATED: Batch compute similarities for all candidates
-        avg_sims = self._gpu_batch_similarity(unit_idx, valid_indices)
+            avg_sims = self._gpu_batch_similarity(gpu_query_idx, valid_gpu_indices)
+        else:
+            # Own GPU tensors - use our indices
+            candidate_indices = [self.unit_to_idx[c] for c in candidate_list]
+
+            # Filter to candidates that have both left and right contexts
+            valid_indices = []
+            valid_candidates = []
+            for cand_idx, cand_text in zip(candidate_indices, candidate_list):
+                if cand_idx in self.left_context_topk and cand_idx in self.right_context_topk:
+                    valid_indices.append(cand_idx)
+                    valid_candidates.append(cand_text)
+
+            if not valid_candidates:
+                return []
+
+            # GPU-ACCELERATED: Batch compute similarities for all candidates
+            avg_sims = self._gpu_batch_similarity(unit_idx, valid_indices)
 
         # Filter by threshold and sort
         mask = avg_sims >= threshold

@@ -27,12 +27,19 @@ except FileNotFoundError:
     print("Error: unit_catalog.pkl not found. Run bidir_simple.py first.")
     sys.exit(1)
 
+# Build GPU index for catalog (used by parser)
+print("\nBuilding GPU index for catalog...")
+start = time.time()
+catalog.build_gpu_index()
+gpu_index_time = time.time() - start
+print(f"GPU index time: {gpu_index_time:.2f}s")
+
 # Create predictor
 print("\nCreating predictor (building GPU tensors)...")
 start = time.time()
 predictor = SubstitutionPredictor(catalog)
 init_time = time.time() - start
-print(f"Initialization time: {init_time:.2f}s")
+print(f"Predictor initialization time: {init_time:.2f}s")
 
 # Create parser
 parser = SimpleBidirParser(catalog, debug=False)
