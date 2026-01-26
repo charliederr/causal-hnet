@@ -7,7 +7,7 @@ Uses aggregated context patterns (Counter objects) from the prototype.
 """
 
 from collections import Counter
-from typing import Set, Tuple, List
+from typing import Set, Tuple, List, Dict, Optional
 import math
 import pickle
 import numpy as np
@@ -211,6 +211,9 @@ class UnitCatalog:
 
         # Process in batches to avoid memory issues
         all_results = []
+        query_left_f = query_left.float()
+        query_right_f = query_right.float()
+
         for batch_start in range(0, len(candidates), batch_size):
             batch_end = min(batch_start + batch_size, len(candidates))
             batch_candidates = candidates[batch_start:batch_end]
@@ -218,23 +221,31 @@ class UnitCatalog:
             cand_indices = torch.tensor([self.unit_to_idx[t] for t in batch_candidates],
                                         dtype=torch.long, device=DEVICE)
 
-            # Gather candidate vectors
-            cand_left = self.gpu_left[cand_indices]
-            cand_right = self.gpu_right[cand_indices]
+            # Gather candidate vectors and compute similarity
+            with torch.no_grad():
+                cand_left = self.gpu_left[cand_indices].float()
+                cand_right = self.gpu_right[cand_indices].float()
 
-            # Cosine similarity (vectors are normalized)
-            left_sim = torch.mv(cand_left.float(), query_left.float())
-            right_sim = torch.mv(cand_right.float(), query_right.float())
-            avg_sim = (left_sim + right_sim) / 2.0
+                # Cosine similarity (vectors are normalized)
+                left_sim = torch.mv(cand_left, query_left_f)
+                right_sim = torch.mv(cand_right, query_right_f)
+                avg_sim = (left_sim + right_sim) / 2.0
 
-            # Filter by threshold within this batch
-            mask = avg_sim >= threshold
-            batch_matching_indices = torch.where(mask)[0]
-            batch_matching_sims = avg_sim[mask]
+                # Filter by threshold within this batch
+                mask = avg_sim >= threshold
+                batch_matching_indices = torch.where(mask)[0]
+                batch_matching_sims = avg_sim[mask]
 
-            for i, sim in zip(batch_matching_indices.cpu().tolist(),
-                              batch_matching_sims.cpu().tolist()):
-                all_results.append((batch_candidates[i], sim))
+                for i, sim in zip(batch_matching_indices.cpu().tolist(),
+                                  batch_matching_sims.cpu().tolist()):
+                    all_results.append((batch_candidates[i], sim))
+
+                # Free GPU memory
+                del cand_left, cand_right, left_sim, right_sim, avg_sim
+
+            # Clear MPS cache periodically
+            if batch_start > 0 and batch_start % (batch_size * 5) == 0:
+                torch.mps.empty_cache()
 
         # Sort all results and return top
         all_results.sort(key=lambda x: -x[1])
@@ -268,6 +279,291 @@ class UnitCatalog:
 
         results.sort(key=lambda x: -x[1])
         return results[:max_results]
+
+    def gpu_batch_expansion_sizes(self, unit_texts: List[str], threshold: float = 0.3,
+                                    same_length: bool = True) -> Dict[str, int]:
+        """
+        FAST: Compute expansion SIZES for multiple units in ONE matrix operation.
+
+        This is much faster than full expansion because:
+        1. Single pass - no iterative expansion
+        2. Only counts matches - no tracking of actual members
+        3. Batched matrix multiply per length group
+
+        Returns:
+            Dict mapping each unit to its expansion size (count of similar units)
+        """
+        if not self.gpu_ready:
+            # Fall back to sequential
+            result = {}
+            for unit in unit_texts:
+                similar = self.gpu_find_similar(unit, threshold, same_length, 1000)
+                result[unit] = 1 + len(similar)  # Include self
+            return result
+
+        # Clear GPU cache
+        torch.mps.empty_cache()
+
+        # Initialize all units with size 1 (themselves)
+        result = {u: 1 for u in unit_texts}
+
+        # Filter to units in our index
+        valid_units = [u for u in unit_texts if u in self.unit_to_idx]
+        if not valid_units:
+            return result
+
+        # Group queries by length
+        queries_by_length = {}
+        for u in valid_units:
+            length = u.count(' ') + 1
+            if length not in queries_by_length:
+                queries_by_length[length] = []
+            queries_by_length[length].append(u)
+
+        # Process each length group
+        for length, length_queries in queries_by_length.items():
+            if length not in self.units_by_length:
+                continue
+
+            # Get candidates of this length
+            length_cands = [c for c in self.units_by_length[length] if c in self.unit_to_idx]
+            if not length_cands:
+                continue
+
+            # Build query tensor
+            q_indices = torch.tensor([self.unit_to_idx[q] for q in length_queries],
+                                    dtype=torch.long, device=DEVICE)
+
+            # Process candidates in large batches (can be bigger since we only need counts)
+            cand_batch_size = 10000
+            match_counts = np.zeros(len(length_queries), dtype=np.int32)
+
+            for cand_start in range(0, len(length_cands), cand_batch_size):
+                cand_end = min(cand_start + cand_batch_size, len(length_cands))
+                batch_cands = length_cands[cand_start:cand_end]
+
+                c_indices = torch.tensor([self.unit_to_idx[c] for c in batch_cands],
+                                        dtype=torch.long, device=DEVICE)
+
+                with torch.no_grad():
+                    q_left = self.gpu_left[q_indices].float()
+                    q_right = self.gpu_right[q_indices].float()
+                    c_left = self.gpu_left[c_indices].float()
+                    c_right = self.gpu_right[c_indices].float()
+
+                    # Matrix multiply: (n_q, vocab) @ (vocab, n_c) -> (n_q, n_c)
+                    left_sim = torch.mm(q_left, c_left.T)
+                    right_sim = torch.mm(q_right, c_right.T)
+                    avg_sim = (left_sim + right_sim) / 2.0
+
+                    # Count matches per query (sum of booleans)
+                    batch_counts = (avg_sim >= threshold).sum(dim=1).cpu().numpy()
+                    match_counts += batch_counts
+
+                    del q_left, q_right, c_left, c_right, left_sim, right_sim, avg_sim
+
+                torch.mps.empty_cache()
+
+            # Update results
+            for qi, query in enumerate(length_queries):
+                result[query] = 1 + int(match_counts[qi])  # +1 for self
+
+        return result
+
+    def gpu_batch_expand(self, unit_texts: List[str], threshold: float = 0.3,
+                         same_length: bool = True, max_per_unit: int = 100,
+                         max_iters: int = 2) -> Dict[str, Set[str]]:
+        """
+        Compute bidirectional expansions for MULTIPLE units in ONE matrix operation.
+
+        This is the key optimization: instead of processing spans one by one,
+        we process ALL spans simultaneously using matrix multiplication.
+
+        Args:
+            unit_texts: List of units to expand
+            threshold: Minimum similarity for expansion
+            same_length: Only expand to same-length units
+            max_per_unit: Max expansions per unit
+            max_iters: Number of expansion iterations
+
+        Returns:
+            Dict mapping each input unit to its expansion set
+        """
+        if not self.gpu_ready:
+            # Fall back to sequential processing
+            result = {}
+            for unit in unit_texts:
+                similar = self.gpu_find_similar(unit, threshold, same_length, max_per_unit)
+                result[unit] = {unit} | {s[0] for s in similar}
+            return result
+
+        # Clear GPU cache before batch operation
+        torch.mps.empty_cache()
+
+        # Filter to units that exist in our GPU index
+        valid_units = [u for u in unit_texts if u in self.unit_to_idx]
+        if not valid_units:
+            return {u: {u} for u in unit_texts}
+
+        # Get query indices
+        query_indices = torch.tensor([self.unit_to_idx[u] for u in valid_units],
+                                     dtype=torch.long, device=DEVICE)
+
+        # Get query vectors - shape: (n_queries, vocab_size)
+        query_left = self.gpu_left[query_indices]
+        query_right = self.gpu_right[query_indices]
+
+        # Initialize expansions with the units themselves
+        expansions = {u: {u} for u in unit_texts}
+
+        # Track which units we've already found (to avoid re-adding)
+        all_found = {u: {u} for u in valid_units}
+
+        for iteration in range(max_iters):
+            # Collect all current expansion members that need similarity search
+            current_queries = []
+            query_to_original = []  # Map back to original unit
+
+            for orig_unit in valid_units:
+                for member in all_found[orig_unit]:
+                    if member in self.unit_to_idx:
+                        current_queries.append(member)
+                        query_to_original.append(orig_unit)
+
+            if not current_queries:
+                break
+
+            # Get unique queries (avoid duplicate computation)
+            unique_queries = list(set(current_queries))
+            unique_indices = torch.tensor([self.unit_to_idx[u] for u in unique_queries],
+                                          dtype=torch.long, device=DEVICE)
+
+            # Get query vectors for this iteration
+            iter_query_left = self.gpu_left[unique_indices]  # (n_unique, vocab)
+            iter_query_right = self.gpu_right[unique_indices]
+
+            # Group candidates by length if needed
+            if same_length:
+                # Process each length group separately
+                new_found = {u: set() for u in valid_units}
+
+                for length, length_units in self.units_by_length.items():
+                    # Get queries of this length
+                    length_queries = [q for q in unique_queries
+                                     if q.count(' ') + 1 == length]
+                    if not length_queries:
+                        continue
+
+                    # Get candidates of this length
+                    length_cands = [c for c in length_units if c in self.unit_to_idx]
+                    if not length_cands:
+                        continue
+
+                    # Build query tensors (queries are usually small)
+                    q_indices = torch.tensor([self.unit_to_idx[q] for q in length_queries],
+                                            dtype=torch.long, device=DEVICE)
+
+                    # Build query-to-original mapping for this length
+                    query_to_orig_map = {}
+                    for qi, query in enumerate(length_queries):
+                        query_to_orig_map[qi] = []
+                        for cq, orig in zip(current_queries, query_to_original):
+                            if cq == query:
+                                query_to_orig_map[qi].append(orig)
+
+                    # Process candidates in batches to avoid OOM
+                    cand_batch_size = 2000
+                    for cand_start in range(0, len(length_cands), cand_batch_size):
+                        cand_end = min(cand_start + cand_batch_size, len(length_cands))
+                        batch_cands = length_cands[cand_start:cand_end]
+
+                        c_indices = torch.tensor([self.unit_to_idx[c] for c in batch_cands],
+                                                dtype=torch.long, device=DEVICE)
+
+                        with torch.no_grad():
+                            q_left = self.gpu_left[q_indices].float()   # (n_q, vocab)
+                            q_right = self.gpu_right[q_indices].float()
+                            c_left = self.gpu_left[c_indices].float()   # (n_c, vocab)
+                            c_right = self.gpu_right[c_indices].float()
+
+                            # MATRIX MULTIPLY: compute ALL similarities at once
+                            # (n_q, vocab) @ (vocab, n_c) -> (n_q, n_c)
+                            left_sim = torch.mm(q_left, c_left.T)
+                            right_sim = torch.mm(q_right, c_right.T)
+                            avg_sim = (left_sim + right_sim) / 2.0
+
+                            # Find matches above threshold
+                            matches = (avg_sim >= threshold).cpu().numpy()
+
+                            # Clean up GPU memory
+                            del q_left, q_right, c_left, c_right, left_sim, right_sim, avg_sim
+
+                        torch.mps.empty_cache()
+
+                        # Map matches back to original units
+                        for qi in range(len(length_queries)):
+                            for ci in range(len(batch_cands)):
+                                if matches[qi, ci]:
+                                    cand = batch_cands[ci]
+                                    for orig in query_to_orig_map[qi]:
+                                        if cand not in all_found[orig]:
+                                            new_found[orig].add(cand)
+
+                # Update expansions with newly found units
+                for orig in valid_units:
+                    all_found[orig].update(new_found[orig])
+                    expansions[orig].update(new_found[orig])
+            else:
+                # No length filtering - compute against all candidates in batches
+                # Build query-to-original mapping
+                query_to_orig_map = {}
+                for qi, query in enumerate(unique_queries):
+                    query_to_orig_map[qi] = []
+                    for cq, orig in zip(current_queries, query_to_original):
+                        if cq == query:
+                            query_to_orig_map[qi].append(orig)
+
+                cand_batch_size = 2000
+                for cand_start in range(0, len(self.unit_list), cand_batch_size):
+                    cand_end = min(cand_start + cand_batch_size, len(self.unit_list))
+                    batch_cands = self.unit_list[cand_start:cand_end]
+
+                    c_indices = torch.tensor(list(range(cand_start, cand_end)),
+                                            dtype=torch.long, device=DEVICE)
+
+                    with torch.no_grad():
+                        q_left = iter_query_left.float()
+                        q_right = iter_query_right.float()
+                        c_left = self.gpu_left[c_indices].float()
+                        c_right = self.gpu_right[c_indices].float()
+
+                        left_sim = torch.mm(q_left, c_left.T)
+                        right_sim = torch.mm(q_right, c_right.T)
+                        avg_sim = (left_sim + right_sim) / 2.0
+
+                        matches = (avg_sim >= threshold).cpu().numpy()
+
+                        del q_left, q_right, c_left, c_right, left_sim, right_sim, avg_sim
+
+                    torch.mps.empty_cache()
+
+                    for qi in range(len(unique_queries)):
+                        for ci in range(len(batch_cands)):
+                            if matches[qi, ci]:
+                                cand = batch_cands[ci]
+                                for orig in query_to_orig_map[qi]:
+                                    if cand not in all_found[orig]:
+                                        all_found[orig].add(cand)
+                                        expansions[orig].add(cand)
+
+        # Limit expansions per unit
+        for unit in expansions:
+            if len(expansions[unit]) > max_per_unit:
+                # Keep original unit + top matches (we don't have scores here, so just truncate)
+                exp_list = list(expansions[unit])
+                expansions[unit] = {unit} | set(exp_list[:max_per_unit])
+
+        return expansions
 
 def context_similarity_aggregated(ctx1_counter: Counter, ctx2_counter: Counter) -> float:
     """
@@ -428,6 +724,112 @@ class SimpleBidirParser:
             node = ParseNode(span, best_split_energy, split_point=m,
                            left=left_child, right=right_child)
             return node
+
+    def parse_batch(self, tokens):
+        """
+        Parse using batch GPU computation for ALL spans simultaneously.
+
+        Instead of computing expansions one span at a time (slow),
+        this method:
+        1. Enumerates ALL possible spans upfront
+        2. Computes ALL expansions in ONE batch GPU operation
+        3. Computes energies from pre-computed expansions
+        4. Does CKY-style DP using pre-computed energies
+
+        This should be MUCH faster than the recursive approach.
+        """
+        n = len(tokens)
+        if n == 0:
+            return None
+
+        # Step 1: Enumerate all possible spans
+        all_spans = []
+        span_to_idx = {}
+        for i in range(n):
+            for j in range(i + 1, n + 1):
+                span_text = " ".join(tokens[i:j])
+                span = Span(i, j, tokens[i:j])
+                span_to_idx[(i, j)] = len(all_spans)
+                all_spans.append((span, span_text))
+
+        # Step 2: Batch compute all expansion SIZES using GPU (fast single-pass)
+        span_texts = [text for _, text in all_spans]
+        expansion_sizes = self.catalog.gpu_batch_expansion_sizes(
+            span_texts,
+            threshold=0.30,
+            same_length=True
+        )
+
+        # Step 3: Compute energy for each span from its expansion size
+        span_energies = {}
+        span_exp_sizes = {}
+        for (span, span_text) in all_spans:
+            unit_exp_size = expansion_sizes.get(span_text, 1)
+
+            # Context expansion size approximated by unit expansion size
+            # (since similar units have similar contexts)
+            ctx_exp_size = unit_exp_size
+
+            if unit_exp_size == 0:
+                energy = 100.0
+            else:
+                combined = unit_exp_size * math.log(ctx_exp_size + 1)
+                energy = -math.log(combined + 1)
+
+            span_energies[(span.start, span.end)] = energy
+            span_exp_sizes[(span.start, span.end)] = (unit_exp_size, ctx_exp_size)
+
+        # Step 4: CKY-style DP to find best parse
+        # best[i][j] = (energy, ParseNode) for span [i, j)
+        best = {}
+
+        # Base case: single tokens
+        for i in range(n):
+            j = i + 1
+            span = Span(i, j, tokens[i:j])
+            energy = span_energies[(i, j)]
+            u_exp, c_exp = span_exp_sizes[(i, j)]
+            node = ParseNode(span, energy)
+            node.unit_expansion = u_exp
+            node.context_expansion = c_exp
+            best[(i, j)] = (energy, node)
+
+        # Fill in longer spans
+        for length in range(2, n + 1):
+            for i in range(n - length + 1):
+                j = i + length
+                span = Span(i, j, tokens[i:j])
+
+                # Option 1: treat as single unit
+                unit_energy = span_energies[(i, j)]
+                u_exp, c_exp = span_exp_sizes[(i, j)]
+
+                # Option 2: best split
+                best_split_energy = float('inf')
+                best_split = None
+                for m in range(i + 1, j):
+                    left_energy, left_node = best[(i, m)]
+                    right_energy, right_node = best[(m, j)]
+                    split_energy = left_energy + right_energy + 2.0
+                    if split_energy < best_split_energy:
+                        best_split_energy = split_energy
+                        best_split = (m, left_node, right_node)
+
+                # Choose best option
+                if best_split is None or unit_energy <= best_split_energy:
+                    node = ParseNode(span, unit_energy)
+                    node.unit_expansion = u_exp
+                    node.context_expansion = c_exp
+                    best[(i, j)] = (unit_energy, node)
+                else:
+                    m, left_node, right_node = best_split
+                    node = ParseNode(span, best_split_energy, split_point=m,
+                                   left=left_node, right=right_node)
+                    best[(i, j)] = (best_split_energy, node)
+
+        # Return the parse for the full span
+        _, root = best[(0, n)]
+        return root
 
 def main():
     print("=" * 80)

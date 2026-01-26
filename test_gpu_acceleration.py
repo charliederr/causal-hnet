@@ -72,17 +72,18 @@ for prompt in test_prompts:
     if sub_class:
         print(f"  Top members: {[m[0] for m in sub_class[:5]]}")
 
-    # Now test with parsing (slow)
-    if hasattr(predictor, '_subclass_cache'):
-        predictor._subclass_cache.clear()
+    # Test BATCH parsing (new fast method)
     t2 = time.time()
-    preds = predictor.predict_with_substitution_class(prompt, parser, top_k=5)
+    tree_batch = parser.parse_batch(prompt)
     t3 = time.time()
+    print(f"  Batch parse time: {t3-t2:.3f}s")
 
-    print(f"  Full prediction (with parsing): {t3-t2:.3f}s")
-    print(f"  Predictions:")
-    for i, pred in enumerate(preds[:3], 1):
-        print(f"    {i}. \"{pred.unit_text}\" (score: {pred.score:.3f})")
+    # Test OLD sequential parsing for comparison
+    t4 = time.time()
+    tree_seq = parser.parse(prompt)
+    t5 = time.time()
+    print(f"  Sequential parse time: {t5-t4:.3f}s")
+    print(f"  Speedup: {(t5-t4)/(t3-t2+0.001):.1f}x")
 
 # Compare with cached (should be near-instant)
 print("\n" + "=" * 60)
