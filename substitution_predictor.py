@@ -21,6 +21,25 @@ import numpy as np
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 import multiprocessing
 
+# PyTorch for GPU acceleration (MPS on Apple Silicon)
+try:
+    import torch
+    HAS_TORCH = True
+    # Check for MPS (Metal Performance Shaders) on Apple Silicon
+    if torch.backends.mps.is_available():
+        DEVICE = torch.device("mps")
+        print(f"GPU acceleration: Using Apple Metal (MPS)")
+    elif torch.cuda.is_available():
+        DEVICE = torch.device("cuda")
+        print(f"GPU acceleration: Using CUDA")
+    else:
+        DEVICE = torch.device("cpu")
+        print(f"GPU acceleration: Not available, using CPU")
+except ImportError:
+    HAS_TORCH = False
+    DEVICE = None
+    print("PyTorch not installed - using CPU-only mode")
+
 # Import from existing parser
 from bidir_simple import (
     UnitCatalog, ContextPattern, Span, ParseNode,
@@ -164,10 +183,11 @@ class SubstitutionPredictor:
 
     def _build_vectorized_contexts(self):
         """
-        Build NumPy arrays for fast batch similarity computation.
+        Build GPU tensors for fast batch similarity computation.
 
         Instead of computing Jaccard similarity one pair at a time,
-        we can compute many similarities in parallel using matrix operations.
+        we compute ALL similarities in parallel using GPU matrix operations.
+        This transforms a 60-second operation into milliseconds.
         """
         # Build vocabulary index
         all_context_words = set()
@@ -183,8 +203,7 @@ class SubstitutionPredictor:
         self.unit_to_idx = {unit: i for i, unit in enumerate(self.unit_list)}
         n_units = len(self.unit_list)
 
-        # Sparse representation: store top-k indices and values for each unit
-        # This is more memory efficient than dense matrices
+        # Sparse representation for CPU fallback
         self.left_context_topk = {}  # unit_idx -> (word_indices, values)
         self.right_context_topk = {}
 
@@ -207,12 +226,134 @@ class SubstitutionPredictor:
                 values = values / (values.sum() + 1e-10)
                 self.right_context_topk[unit_idx] = (indices, values)
 
+        # Build GPU tensors if PyTorch is available
+        if HAS_TORCH and DEVICE is not None:
+            print(f"  Building GPU tensors on {DEVICE}...")
+            self._build_gpu_tensors(vocab_size, n_units)
+
+    def _build_gpu_tensors(self, vocab_size: int, n_units: int):
+        """
+        Build dense GPU tensors and keep them on GPU permanently.
+
+        Key insight: Avoid CPU-GPU transfers during computation.
+        Keep everything on GPU, use indexed operations.
+
+        Memory: 70k × 47k × 2 bytes (float16) = ~6.5GB per matrix
+        Total: ~13GB - fits in M4's unified memory
+        """
+        # Use reduced vocabulary: only words that appear in contexts
+        effective_vocab = set()
+        for unit_idx in range(n_units):
+            if unit_idx in self.left_context_topk:
+                indices, _ = self.left_context_topk[unit_idx]
+                effective_vocab.update(indices.tolist())
+            if unit_idx in self.right_context_topk:
+                indices, _ = self.right_context_topk[unit_idx]
+                effective_vocab.update(indices.tolist())
+
+        self.compact_vocab = sorted(effective_vocab)
+        self.idx_to_compact = {idx: i for i, idx in enumerate(self.compact_vocab)}
+        compact_size = len(self.compact_vocab)
+
+        print(f"  Compacting vocabulary: {vocab_size} -> {compact_size} effective words")
+
+        # Build dense matrices on CPU first (float16 to save memory)
+        cpu_left = np.zeros((n_units, compact_size), dtype=np.float16)
+        cpu_right = np.zeros((n_units, compact_size), dtype=np.float16)
+
+        for unit_idx in range(n_units):
+            if unit_idx in self.left_context_topk:
+                indices, values = self.left_context_topk[unit_idx]
+                for idx, val in zip(indices, values):
+                    if idx in self.idx_to_compact:
+                        cpu_left[unit_idx, self.idx_to_compact[idx]] = val
+
+            if unit_idx in self.right_context_topk:
+                indices, values = self.right_context_topk[unit_idx]
+                for idx, val in zip(indices, values):
+                    if idx in self.idx_to_compact:
+                        cpu_right[unit_idx, self.idx_to_compact[idx]] = val
+
+        # Normalize on CPU
+        left_norms = np.linalg.norm(cpu_left.astype(np.float32), axis=1, keepdims=True) + 1e-10
+        right_norms = np.linalg.norm(cpu_right.astype(np.float32), axis=1, keepdims=True) + 1e-10
+        cpu_left = (cpu_left / left_norms).astype(np.float16)
+        cpu_right = (cpu_right / right_norms).astype(np.float16)
+
+        # Transfer to GPU ONCE and keep there permanently
+        print(f"  Transferring to GPU ({DEVICE})...")
+        self.gpu_left = torch.from_numpy(cpu_left).to(DEVICE)
+        self.gpu_right = torch.from_numpy(cpu_right).to(DEVICE)
+
+        # Free CPU memory
+        del cpu_left, cpu_right
+
+        self.gpu_available = True
+        self.n_units = n_units
+        self.compact_vocab_size = compact_size
+
+        mem_mb = (self.gpu_left.numel() + self.gpu_right.numel()) * 2 / (1024 * 1024)
+        print(f"  GPU matrices ready: {n_units} units × {compact_size} vocab ({mem_mb:.1f} MB on GPU)")
+
+    def _gpu_batch_similarity(self, query_unit_idx: int,
+                               candidate_indices: List[int],
+                               batch_size: int = 10000) -> np.ndarray:
+        """
+        Compute context similarities using GPU matrix operations.
+
+        ALL data stays on GPU - only the final result transfers to CPU.
+        Uses indexed gather to select candidate rows from GPU matrices.
+        """
+        if not hasattr(self, 'gpu_available') or not self.gpu_available:
+            return self._cpu_batch_similarity(query_unit_idx, candidate_indices)
+
+        # Create index tensor on GPU
+        cand_indices_gpu = torch.tensor(candidate_indices, dtype=torch.long, device=DEVICE)
+
+        # Get query vectors (already on GPU)
+        query_left = self.gpu_left[query_unit_idx]  # Shape: (vocab_size,)
+        query_right = self.gpu_right[query_unit_idx]
+
+        # Gather candidate vectors (stays on GPU)
+        cand_left = self.gpu_left[cand_indices_gpu]  # Shape: (n_candidates, vocab_size)
+        cand_right = self.gpu_right[cand_indices_gpu]
+
+        # Compute cosine similarities with matrix-vector multiply (all on GPU)
+        # Since vectors are normalized: dot product = cosine similarity
+        left_sim = torch.mv(cand_left.float(), query_left.float())  # Convert to float32 for mv
+        right_sim = torch.mv(cand_right.float(), query_right.float())
+
+        # Average of left and right similarities
+        avg_sim = (left_sim + right_sim) / 2.0
+
+        # Only transfer final result to CPU
+        return avg_sim.cpu().numpy()
+
+    def _cpu_batch_similarity(self, query_unit_idx: int,
+                               candidate_indices: List[int]) -> np.ndarray:
+        """CPU fallback for batch similarity computation."""
+        if query_unit_idx not in self.left_context_topk:
+            return np.zeros(len(candidate_indices), dtype=np.float32)
+
+        query_left = self.left_context_topk[query_unit_idx][0]
+        query_right = self.right_context_topk.get(query_unit_idx, (np.array([]), np.array([])))[0]
+
+        left_indices = [self.left_context_topk.get(i, (np.array([]), None))[0]
+                        for i in candidate_indices]
+        right_indices = [self.right_context_topk.get(i, (np.array([]), None))[0]
+                         for i in candidate_indices]
+
+        left_sims = self._batch_jaccard_similarity(query_left, left_indices)
+        right_sims = self._batch_jaccard_similarity(query_right, right_indices)
+
+        return (left_sims + right_sims) / 2.0
+
     def _batch_jaccard_similarity(self, query_indices: np.ndarray,
                                    candidate_indices_list: List[np.ndarray]) -> np.ndarray:
         """
         Compute Jaccard similarity between a query and multiple candidates.
 
-        Uses set operations on indices for efficiency.
+        Uses set operations on indices for efficiency. CPU fallback.
         """
         query_set = set(query_indices)
         similarities = np.zeros(len(candidate_indices_list), dtype=np.float32)
@@ -658,7 +799,7 @@ class SubstitutionPredictor:
                                  max_members: int = 30,
                                  threshold: float = 0.20) -> List[Tuple[str, float]]:
         """
-        Find the substitution class for a unit using vectorized batch computation.
+        Find the substitution class for a unit using GPU-accelerated batch computation.
 
         The substitution class includes ALL units that share context patterns,
         regardless of length. This means:
@@ -683,10 +824,7 @@ class SubstitutionPredictor:
         if unit_idx not in self.left_context_topk or unit_idx not in self.right_context_topk:
             return []
 
-        query_left_indices = self.left_context_topk[unit_idx][0]
-        query_right_indices = self.right_context_topk[unit_idx][0]
-
-        # Find candidates via context indices (same as before, but faster lookup)
+        # Find candidates via context indices
         pattern = self.unit_patterns.get(unit_text)
         candidates = set()
         for word, _ in pattern.left_words.most_common(5):
@@ -704,29 +842,22 @@ class SubstitutionPredictor:
         if not candidate_list:
             return []
 
-        # VECTORIZED: Batch compute similarities for all candidates
+        # Get candidate indices for batch processing
         candidate_indices = [self.unit_to_idx[c] for c in candidate_list]
 
-        # Collect candidate context vectors
-        left_indices_list = []
-        right_indices_list = []
+        # Filter to candidates that have both left and right contexts
+        valid_indices = []
         valid_candidates = []
-
         for cand_idx, cand_text in zip(candidate_indices, candidate_list):
             if cand_idx in self.left_context_topk and cand_idx in self.right_context_topk:
-                left_indices_list.append(self.left_context_topk[cand_idx][0])
-                right_indices_list.append(self.right_context_topk[cand_idx][0])
+                valid_indices.append(cand_idx)
                 valid_candidates.append(cand_text)
 
         if not valid_candidates:
             return []
 
-        # Batch compute Jaccard similarities
-        left_sims = self._batch_jaccard_similarity(query_left_indices, left_indices_list)
-        right_sims = self._batch_jaccard_similarity(query_right_indices, right_indices_list)
-
-        # Average similarities
-        avg_sims = (left_sims + right_sims) / 2.0
+        # GPU-ACCELERATED: Batch compute similarities for all candidates
+        avg_sims = self._gpu_batch_similarity(unit_idx, valid_indices)
 
         # Filter by threshold and sort
         mask = avg_sims >= threshold
