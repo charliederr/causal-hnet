@@ -1,0 +1,1997 @@
+================================================================================
+HNET STEP 5 (v4) — START
+================================================================================
+Input: input.txt  size=1.15 MB  cwd=/home/ni/repos/h/causal-hnet/chatgpt-generated
+Loaded tokens: 208,455  (time 0.02s)
+Vocab size: 11,862   MIN_FREQ=2
+In-vocab stream length: 189,519
+
+Building directional co-occurrence (fast)...
+Cooc unique edges: 472,735  (time 0.42s)
+Edges arrays: E=472,735
+Sparse assoc built: topk=64
+Running role discovery (balanced + inertial sweeps)...
+  sweep  1/40  nonempty=16  counts(min/med/max)=620/647/1911
+  sweep 10/40  nonempty=16  counts(min/med/max)=305/477/2254
+  sweep 20/40  nonempty=16  counts(min/med/max)=169/455/2351
+  sweep 30/40  nonempty=16  counts(min/med/max)=123/495/2415
+  sweep 40/40  nonempty=16  counts(min/med/max)=107/459/2568
+Role discovery time: 0.65s
+
+================================================================================
+ROLE SUMMARIES (top words by corpus frequency)
+================================================================================
+c00  size= 416  top=one, some, long, without, few, night, perhaps, sail, goes, deck, captain,, business, close, themselves, whatever
+c01  size=1880  top=a, it, but, for, not, be, had, were, their, whale, if, these, its, very, down
+c02  size= 140  top=whale,, far, sort, which,, life, quite, air,, says, there., fell, below, blow, it!, remain, ocean,
+c03  size=1515  top=as, they, when, into, more, then, over, only, other, me, man, round, last, time, it.
+c04  size= 850  top=i, by, you, what, out, been, white, sea, whole, man,, high, sometimes, world, stand, put
+c05  size= 247  top=all, yet, ahab’s, living, oh,, live, fine, man’s, taken, coming, got, mere, more,, none, huge
+c06  size=2568  top=is, from, on, so, an, my, are, upon, old, any, though, those, about, most, must
+c07  size= 117  top=said, tell, between, get, known, looking, best, book, caught, waters, away,, according, door, captain’s, midnight
+c08  size= 143  top=to, under, another, seem, crew, often, forth, wide, gone, sudden, flask,, speaking, needs, sun,, kings
+c09  size= 503  top=of, in, have, now, who, two, before, much, good, let, he’s, ship’s, always, give, call
+c10  size= 628  top=him, which, no, than, do, sperm, see, almost, way, thought, thus, both, right, again, she
+c11  size=1262  top=the, and, his, with, he, at, like, would, seemed, your, it,, thou, did, while, every
+c12  size= 222  top=there, we, dead, moment, rather, general, hear, turning, knew, board, famous, ship., again., possibly, object
+c13  size= 972  top=that, was, this, or, up, will, still, great, has, her, after, ahab, three, ship, captain
+c14  size= 107  top=such, where, head,, vast, taking, name, sat, there;, seamen, sailor, gold, quick, carries, line., indirectly
+c15  size= 292  top=them, against, boat, certain, entire, length, eye, felt, indeed, fishery,, considerable, can’t, *, became, darkness
+
+================================================================================
+TOP ROLE→ROLE COMPATIBILITIES (J_cc)
+================================================================================
+c11 → c11  J_cc=1.0000
+c11 → c06  J_cc=0.8039
+c06 → c11  J_cc=0.8007
+c11 → c01  J_cc=0.7883
+c01 → c11  J_cc=0.7753
+c01 → c01  J_cc=0.6711
+c01 → c06  J_cc=0.6279
+c06 → c01  J_cc=0.6202
+c06 → c06  J_cc=0.5986
+c11 → c03  J_cc=0.4691
+c03 → c11  J_cc=0.4666
+c09 → c11  J_cc=0.4641
+c11 → c13  J_cc=0.4539
+c13 → c11  J_cc=0.4369
+c11 → c09  J_cc=0.4344
+c01 → c13  J_cc=0.3665
+c13 → c01  J_cc=0.3662
+c03 → c01  J_cc=0.3592
+c01 → c03  J_cc=0.3576
+c06 → c03  J_cc=0.3491
+c13 → c06  J_cc=0.3482
+c06 → c13  J_cc=0.3445
+c03 → c06  J_cc=0.3444
+c01 → c09  J_cc=0.3297
+c06 → c09  J_cc=0.3290
+c09 → c01  J_cc=0.3286
+c09 → c06  J_cc=0.3268
+c11 → c04  J_cc=0.2861
+c04 → c11  J_cc=0.2768
+c01 → c04  J_cc=0.2383
+
+================================================================================
+SLOT / ROLE-FILLING REPORT (unsupervised)
+================================================================================
+
+--------------------------------------------------------------------------------
+[01] SLOT: c11 → c11   score=195.00   count=156   J_cc=1.000
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  the               n=34
+  and               n=26
+  with              n=14
+  at                n=11
+  his               n=7
+  like              n=5
+  among             n=4
+  how               n=3
+  it,               n=3
+  seemed            n=2
+  he                n=2
+  bulwarks,         n=2
+  whale.            n=1
+  loftiest          n=1
+  mark,             n=1
+  sailing           n=1
+  rocky             n=1
+  would             n=1
+  warp              n=1
+  resting           n=1
+
+Top TARGET fillers:
+  the               n=46
+  and               n=24
+  his               n=9
+  with              n=5
+  he                n=5
+  at                n=4
+  second            n=3
+  every             n=3
+  ghosts            n=2
+  spare             n=2
+  bulwarks,         n=2
+  thou              n=2
+  would             n=2
+  yonder            n=1
+  loftiest          n=1
+  how               n=1
+  closely           n=1
+  way,              n=1
+  cross-trees       n=1
+  ordered           n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  1->11->11->6        n=9
+  1->11->11->3        n=6
+  9->11->11->13       n=6
+  11->11->11->6       n=5
+  6->11->11->11       n=5
+  6->11->11->1        n=5
+  6->11->11->6        n=5
+  1->11->11->1        n=4
+  13->11->11->6       n=4
+  3->11->11->11       n=4
+
+Top SPAN fillers bridging c_i ... c_j:
+  "and the"   n=9
+  "with the"   n=7
+  "at the"   n=7
+  "the and"   n=4
+  "among the"   n=4
+  "with his"   n=4
+  "the the"   n=4
+  "and with"   n=3
+  "and he"   n=3
+  "and all the"   n=2
+  "and in the"   n=2
+  "and of the"   n=2
+  "the of the"   n=2
+  "the second"   n=2
+  "the spare"   n=2
+
+--------------------------------------------------------------------------------
+[02] SLOT: c11 → c06   score=180.22   count=171   J_cc=0.804
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  the               n=71
+  and               n=33
+  his               n=12
+  at                n=7
+  he                n=6
+  with              n=3
+  every             n=3
+  like              n=3
+  second            n=2
+  would             n=2
+  predictions       n=1
+  so;               n=1
+  sir.”             n=1
+  thou              n=1
+  board,            n=1
+  sailing           n=1
+  extreme           n=1
+  hook,             n=1
+  flask?”           n=1
+  cabin;            n=1
+
+Top TARGET fillers:
+  so                n=7
+  first             n=4
+  those             n=4
+  made              n=4
+  head              n=4
+  boat,             n=3
+  same              n=3
+  came              n=2
+  why               n=2
+  last,             n=2
+  deep              n=2
+  lord              n=2
+  iron              n=2
+  from              n=2
+  harpooneers,      n=2
+  rest              n=2
+  is                n=2
+  here’s            n=2
+  water             n=2
+  any               n=2
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  1->11->6->1         n=7
+  6->11->6->6         n=6
+  11->11->6->9        n=5
+  9->11->6->3         n=5
+  1->11->6->3         n=4
+  9->11->6->6         n=4
+  11->11->6->6        n=4
+  1->11->6->8         n=4
+  9->11->6->11        n=4
+  6->11->6->1         n=4
+
+Top SPAN fillers bridging c_i ... c_j:
+  "the first"   n=4
+  "and so"   n=4
+  "and made"   n=4
+  "the same"   n=3
+  "he came"   n=2
+  "at last,"   n=2
+  "the lord"   n=2
+  "the second iron"   n=2
+  "second iron"   n=2
+  "the boat,"   n=2
+  "and those"   n=2
+  "the rest"   n=2
+  "and hoisted on"   n=2
+  "the of a thing"   n=2
+  "the head"   n=2
+
+--------------------------------------------------------------------------------
+[03] SLOT: c06 → c11   score=170.21   count=162   J_cc=0.801
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  on                n=13
+  from              n=12
+  upon              n=6
+  an                n=6
+  about             n=5
+  is                n=4
+  my                n=3
+  though            n=3
+  across            n=2
+  cried             n=2
+  else              n=2
+  ye                n=2
+  harpooneers,      n=2
+  ancient           n=2
+  old               n=2
+  boat,             n=2
+  here’s            n=2
+  why               n=2
+  are               n=2
+  think             n=1
+
+Top TARGET fillers:
+  the               n=56
+  and               n=35
+  his               n=9
+  with              n=7
+  at                n=5
+  it,               n=5
+  he                n=4
+  like              n=4
+  board,            n=3
+  did               n=3
+  while             n=2
+  unless            n=1
+  god!              n=1
+  predictions       n=1
+  necessities       n=1
+  ahab.             n=1
+  lance             n=1
+  england           n=1
+  bildad,           n=1
+  ambergris.        n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  11->6->11->11       n=7
+  1->6->11->11        n=6
+  6->6->11->3         n=6
+  6->6->11->6         n=6
+  11->6->11->6        n=6
+  1->6->11->3         n=5
+  1->6->11->1         n=5
+  11->6->11->1        n=4
+  1->6->11->6         n=4
+  1->6->11->4         n=4
+
+Top SPAN fillers bridging c_i ... c_j:
+  "on the"   n=10
+  "from the"   n=9
+  "upon the"   n=6
+  "is the"   n=3
+  "on board,"   n=3
+  "about it,"   n=3
+  "else the"   n=2
+  "knowledge of the"   n=2
+  "ancient and"   n=2
+  "may it not be,"   n=2
+  "though the"   n=2
+  "here’s his"   n=2
+  "think of it,"   n=2
+  "why did"   n=2
+  "can but by some invisible power; how"   n=1
+
+--------------------------------------------------------------------------------
+[04] SLOT: c11 → c01   score=169.25   count=163   J_cc=0.788
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  the               n=67
+  and               n=22
+  with              n=18
+  like              n=6
+  at                n=5
+  his               n=5
+  he                n=4
+  would             n=3
+  but,              n=2
+  did               n=2
+  giving            n=2
+  all.              n=2
+  visible,          n=1
+  engage            n=1
+  obtain            n=1
+  say               n=1
+  painted           n=1
+  painting          n=1
+  last.             n=1
+  storms,           n=1
+
+Top TARGET fillers:
+  a                 n=24
+  whale             n=8
+  it                n=7
+  not               n=5
+  sea.              n=4
+  but               n=4
+  be                n=3
+  for               n=3
+  line              n=3
+  very              n=3
+  open              n=2
+  four              n=2
+  cried,            n=2
+  keep              n=2
+  proper            n=2
+  case              n=2
+  privilege         n=2
+  soon              n=2
+  arm               n=2
+  fate              n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  6->11->1->11        n=6
+  9->11->1->6         n=6
+  9->11->1->11        n=5
+  8->11->1->11        n=5
+  9->11->1->9         n=5
+  9->11->1->3         n=4
+  6->11->1->6         n=4
+  11->11->1->6        n=4
+  11->11->1->11       n=4
+  1->11->1->6         n=4
+
+Top SPAN fillers bridging c_i ... c_j:
+  "with a"   n=12
+  "the whale"   n=8
+  "like a"   n=5
+  "and not"   n=4
+  "and a"   n=3
+  "the of a"   n=3
+  "the line"   n=3
+  "the sea."   n=2
+  "the open"   n=2
+  "would be"   n=2
+  "the four"   n=2
+  "he cried,"   n=2
+  "and keep"   n=2
+  "and with a"   n=2
+  "and made a"   n=2
+
+--------------------------------------------------------------------------------
+[05] SLOT: c01 → c11   score=154.82   count=151   J_cc=0.775
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  for               n=12
+  a                 n=11
+  but               n=10
+  not               n=6
+  him,              n=6
+  down              n=4
+  it                n=4
+  these             n=3
+  being             n=3
+  were              n=3
+  sea.              n=2
+  including         n=2
+  towards           n=2
+  ahab,             n=2
+  teeth,            n=2
+  who,              n=2
+  signs             n=2
+  pacing            n=2
+  case              n=2
+  power;            n=1
+
+Top TARGET fillers:
+  the               n=42
+  and               n=31
+  at                n=13
+  like              n=7
+  with              n=6
+  every             n=4
+  he                n=3
+  how               n=2
+  that,             n=2
+  would             n=2
+  be,               n=2
+  his               n=2
+  too-favouring     n=2
+  i.                n=1
+  mark,             n=1
+  seemed            n=1
+  reserved          n=1
+  so;               n=1
+  plenty;           n=1
+  stubb,            n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  11->1->11->11       n=7
+  6->1->11->11        n=6
+  1->1->11->1         n=6
+  1->1->11->13        n=6
+  11->1->11->1        n=6
+  13->1->11->11       n=5
+  3->1->11->6         n=5
+  11->1->11->6        n=5
+  3->1->11->3         n=4
+  11->1->11->4        n=3
+
+Top SPAN fillers bridging c_i ... c_j:
+  "for the"   n=9
+  "him, and"   n=4
+  "but the"   n=4
+  "were the"   n=3
+  "sea. the"   n=2
+  "but at"   n=2
+  "towards the"   n=2
+  "ahab, and"   n=2
+  "it not be,"   n=2
+  "not be,"   n=2
+  "signs and"   n=2
+  "not the"   n=2
+  "pacing the"   n=2
+  "but like"   n=2
+  "these too-favouring"   n=2
+
+--------------------------------------------------------------------------------
+[06] SLOT: c01 → c01   score=122.51   count=133   J_cc=0.671
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  a                 n=23
+  it                n=14
+  for               n=11
+  but               n=6
+  be                n=6
+  were              n=6
+  whale             n=4
+  their             n=4
+  if                n=4
+  make              n=4
+  water,            n=3
+  soon              n=3
+  called            n=2
+  not               n=2
+  very              n=2
+  had               n=2
+  these             n=2
+  never             n=2
+  single            n=1
+  longer            n=1
+
+Top TARGET fillers:
+  a                 n=18
+  but               n=9
+  it                n=9
+  for               n=9
+  not               n=5
+  little            n=3
+  had               n=3
+  very              n=3
+  if                n=3
+  were              n=2
+  never             n=2
+  stubb             n=2
+  being             n=2
+  star              n=1
+  tilted            n=1
+  whale             n=1
+  dark              n=1
+  including         n=1
+  “i                n=1
+  cluster           n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  1->1->1->1          n=7
+  6->1->1->11         n=6
+  1->1->1->11         n=5
+  6->1->1->9          n=4
+  13->1->1->6         n=4
+  4->1->1->1          n=4
+  1->1->1->6          n=4
+  6->1->1->6          n=4
+  9->1->1->6          n=4
+  4->1->1->9          n=3
+
+Top SPAN fillers bridging c_i ... c_j:
+  "make a"   n=4
+  "a little"   n=3
+  "but a"   n=3
+  "a very"   n=3
+  "it not"   n=3
+  "called a"   n=2
+  "a but"   n=2
+  "if it"   n=2
+  "a hundred feet"   n=2
+  "had never"   n=2
+  "it but"   n=2
+  "a thing writ in water,"   n=2
+  "a thing writ in water, a"   n=2
+  "water, a"   n=2
+  "single star"   n=1
+
+--------------------------------------------------------------------------------
+[07] SLOT: c01 → c06   score=121.16   count=138   J_cc=0.628
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  a                 n=25
+  it                n=14
+  for               n=9
+  not               n=4
+  these             n=3
+  be                n=3
+  but               n=3
+  little            n=2
+  office            n=2
+  line              n=2
+  were              n=2
+  down              n=2
+  come              n=2
+  their             n=2
+  soon              n=2
+  ahab,             n=2
+  star              n=1
+  fate              n=1
+  dark              n=1
+  then?             n=1
+
+Top TARGET fillers:
+  is                n=13
+  on                n=9
+  so                n=6
+  an                n=6
+  from              n=3
+  may               n=3
+  thing             n=3
+  can               n=2
+  small             n=2
+  any               n=2
+  lord              n=2
+  are               n=2
+  no,               n=2
+  cast              n=2
+  upon              n=2
+  word              n=2
+  went              n=2
+  whale.”           n=1
+  flask             n=1
+  ashore.           n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  1->1->6->11         n=7
+  11->1->6->1         n=6
+  11->1->6->6         n=6
+  6->1->6->11         n=6
+  1->1->6->1          n=5
+  11->1->6->11        n=4
+  3->1->6->3          n=4
+  1->1->6->3          n=4
+  13->1->6->6         n=4
+  9->1->6->1          n=3
+
+Top SPAN fillers bridging c_i ... c_j:
+  "it is"   n=6
+  "a small"   n=2
+  "a thing"   n=2
+  "water, a wake, is"   n=2
+  "a wake, is"   n=2
+  "for an"   n=2
+  "single star can"   n=1
+  "star can"   n=1
+  "power; how then can"   n=1
+  "power; how then can this one small"   n=1
+  "not i. by heaven, man, we are"   n=1
+  "world, like yonder windlass, and fate is"   n=1
+  "fate is"   n=1
+  "these can"   n=1
+  "for the first"   n=1
+
+--------------------------------------------------------------------------------
+[08] SLOT: c06 → c06   score=106.93   count=126   J_cc=0.599
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  is                n=10
+  are               n=6
+  an                n=6
+  those             n=4
+  so                n=4
+  my                n=4
+  our               n=3
+  any               n=3
+  water             n=2
+  first             n=2
+  ships             n=2
+  upon              n=2
+  must              n=2
+  thing             n=2
+  on                n=2
+  heaven;           n=1
+  whale.”           n=1
+  awful             n=1
+  half              n=1
+  pequod’s          n=1
+
+Top TARGET fillers:
+  is                n=6
+  on                n=6
+  old               n=5
+  are               n=5
+  from              n=4
+  about             n=4
+  upon              n=4
+  an                n=3
+  my                n=3
+  so                n=3
+  nor               n=2
+  things            n=2
+  ye                n=2
+  knowledge         n=2
+  same              n=2
+  thy               n=2
+  turned            n=1
+  made              n=1
+  replied           n=1
+  side;             n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  1->6->6->1          n=6
+  11->6->6->6         n=6
+  11->6->6->11        n=5
+  1->6->6->11         n=5
+  1->6->6->9          n=4
+  6->6->6->6          n=4
+  6->6->6->11         n=4
+  6->6->6->13         n=4
+  11->6->6->4         n=3
+  6->6->6->9          n=3
+
+Top SPAN fillers bridging c_i ... c_j:
+  "an old"   n=4
+  "those same"   n=2
+  "thing writ in water, a wake, is"   n=2
+  "is to all desired purposes well"   n=2
+  "well nigh as reliable"   n=2
+  "is so"   n=2
+  "is about"   n=2
+  "he’ll get from"   n=2
+  "an in heaven;"   n=1
+  "an in heaven; nor"   n=1
+  "heaven; nor"   n=1
+  "heaven; nor one single star can"   n=1
+  "nor one single star can"   n=1
+  "can this one small"   n=1
+  "small heart this one small"   n=1
+
+--------------------------------------------------------------------------------
+[09] SLOT: c06 → c01   score=100.07   count=115   J_cc=0.620
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  is                n=7
+  ye                n=4
+  about             n=4
+  can               n=3
+  are               n=3
+  may               n=3
+  so                n=3
+  cried             n=3
+  think             n=2
+  things            n=2
+  time.             n=2
+  old               n=2
+  made              n=2
+  those             n=2
+  an                n=2
+  on                n=2
+  replied           n=1
+  fellow’s          n=1
+  ashore.           n=1
+  small             n=1
+
+Top TARGET fillers:
+  a                 n=16
+  it                n=14
+  but               n=11
+  not               n=5
+  be                n=3
+  were              n=3
+  ahab,             n=3
+  for               n=3
+  starbuck,         n=2
+  come              n=2
+  their             n=2
+  could             n=2
+  down              n=2
+  towards           n=2
+  very              n=2
+  lightning-rod     n=1
+  behind            n=1
+  massive           n=1
+  preluding         n=1
+  called            n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  1->6->1->11         n=5
+  1->6->1->1          n=5
+  11->6->1->11        n=4
+  6->6->1->1          n=4
+  1->6->1->13         n=4
+  6->6->1->3          n=3
+  4->6->1->11         n=3
+  11->6->1->4         n=3
+  1->6->1->6          n=3
+  11->6->1->1         n=3
+
+Top SPAN fillers bridging c_i ... c_j:
+  "is a"   n=3
+  "think it"   n=2
+  "about a"   n=2
+  "time. but"   n=2
+  "made a"   n=2
+  "is a very"   n=2
+  "may it"   n=2
+  "may it not"   n=2
+  "thing writ in water,"   n=2
+  "thing writ in water, a"   n=2
+  "on a"   n=2
+  "cried ahab,"   n=2
+  "an in heaven; nor one single"   n=1
+  "an in heaven; nor one single star"   n=1
+  "heaven; nor one single"   n=1
+
+--------------------------------------------------------------------------------
+[10] SLOT: c09 → c11   score=97.83   count=137   J_cc=0.464
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  of                n=71
+  in                n=42
+  have              n=3
+  now               n=3
+  much              n=2
+  unprovided        n=2
+  settle            n=1
+  sensible,         n=1
+  before            n=1
+  prey,             n=1
+  good              n=1
+  two               n=1
+  ship’s            n=1
+  “look             n=1
+  speechless        n=1
+  anchors           n=1
+  let               n=1
+  backstays         n=1
+  can’st            n=1
+  nor,              n=1
+
+Top TARGET fillers:
+  the               n=91
+  his               n=7
+  and               n=5
+  with              n=4
+  at                n=3
+  it,               n=3
+  giving            n=2
+  every             n=1
+  flask?            n=1
+  reply.            n=1
+  rocky             n=1
+  predictions       n=1
+  extracting        n=1
+  curious           n=1
+  among             n=1
+  standing          n=1
+  days,             n=1
+  seemed            n=1
+  purpose           n=1
+  day.              n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  3->9->11->1         n=5
+  11->9->11->6        n=5
+  11->9->11->11       n=5
+  1->9->11->1         n=5
+  6->9->11->1         n=5
+  6->9->11->11        n=5
+  3->9->11->6         n=4
+  11->9->11->3        n=4
+  10->9->11->1        n=4
+  6->9->11->6         n=4
+
+Top SPAN fillers bridging c_i ... c_j:
+  "of the"   n=51
+  "in the"   n=36
+  "in his"   n=4
+  "of his"   n=3
+  "of it,"   n=3
+  "of in the"   n=2
+  "unprovided with"   n=2
+  "of giving"   n=2
+  "now that i think of it,"   n=2
+  "invisible power; how"   n=1
+  "in this world, like"   n=1
+  "in this world, like yonder"   n=1
+  "in this world, like yonder windlass, and"   n=1
+  "who for the"   n=1
+  "of the hunted sperm whale."   n=1
+
+--------------------------------------------------------------------------------
+[11] SLOT: c11 → c03   score=74.79   count=104   J_cc=0.469
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  the               n=44
+  and               n=20
+  his               n=7
+  at                n=5
+  how               n=2
+  it,               n=2
+  men.              n=2
+  he                n=2
+  i’ll              n=2
+  yonder            n=1
+  except            n=1
+  closely           n=1
+  every             n=1
+  reply.            n=1
+  painted           n=1
+  board,            n=1
+  previously        n=1
+  captured          n=1
+  curious           n=1
+  prehensile        n=1
+
+Top TARGET fillers:
+  as                n=6
+  last              n=6
+  then              n=5
+  when              n=4
+  other             n=4
+  round             n=2
+  they              n=2
+  other,            n=2
+  only              n=2
+  till              n=2
+  line,             n=2
+  each              n=2
+  present           n=2
+  coast             n=2
+  windlass,         n=1
+  time,             n=1
+  stronger          n=1
+  more              n=1
+  profits           n=1
+  man               n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  11->11->3->11       n=6
+  6->11->3->1         n=4
+  1->11->3->11        n=4
+  1->11->3->6         n=3
+  11->11->3->3        n=3
+  6->11->3->11        n=3
+  13->11->3->6        n=3
+  13->11->3->9        n=3
+  8->11->3->6         n=3
+  3->11->3->9         n=2
+
+Top SPAN fillers bridging c_i ... c_j:
+  "and as"   n=4
+  "the other"   n=4
+  "and then"   n=4
+  "the other,"   n=2
+  "at last"   n=2
+  "the line,"   n=2
+  "the last"   n=2
+  "and when"   n=2
+  "the present"   n=2
+  "the coast"   n=2
+  "the of a thing writ"   n=2
+  "how then"   n=1
+  "how then can this one small heart"   n=1
+  "and round"   n=1
+  "like yonder windlass,"   n=1
+
+--------------------------------------------------------------------------------
+[12] SLOT: c11 → c13   score=69.68   count=99   J_cc=0.454
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  the               n=27
+  and               n=18
+  he                n=8
+  at                n=5
+  his               n=5
+  spare             n=2
+  be,               n=2
+  perhaps,          n=2
+  quadrant          n=2
+  with              n=2
+  flask?            n=1
+  knocking          n=1
+  writers           n=1
+  how               n=1
+  lance             n=1
+  stubb,            n=1
+  days              n=1
+  your              n=1
+  standing          n=1
+  it,               n=1
+
+Top TARGET fillers:
+  that              n=10
+  this              n=7
+  was               n=7
+  ship              n=6
+  or                n=5
+  up                n=3
+  will              n=3
+  told              n=3
+  all,              n=2
+  great             n=2
+  boats             n=2
+  after             n=2
+  her               n=2
+  might             n=2
+  least             n=2
+  has               n=2
+  ahab              n=2
+  intense           n=1
+  it’s              n=1
+  air.              n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  11->11->13->11      n=7
+  1->11->13->1        n=4
+  3->11->13->1        n=4
+  11->11->13->9       n=4
+  6->11->13->11       n=4
+  1->11->13->6        n=3
+  3->11->13->6        n=3
+  9->11->13->11       n=3
+  6->11->13->1        n=3
+  13->11->13->1       n=3
+
+Top SPAN fillers bridging c_i ... c_j:
+  "the ship"   n=5
+  "and this"   n=3
+  "the great"   n=2
+  "be, that"   n=2
+  "and her"   n=2
+  "at least"   n=2
+  "quadrant was"   n=2
+  "and was"   n=2
+  "with that"   n=2
+  "he told"   n=2
+  "he was"   n=2
+  "how then can this"   n=1
+  "unless god does"   n=1
+  "unless god does that"   n=1
+  "unless god does that does"   n=1
+
+--------------------------------------------------------------------------------
+[13] SLOT: c13 → c11   score=63.88   count=93   J_cc=0.437
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  that              n=8
+  or                n=6
+  was               n=6
+  after             n=5
+  her               n=4
+  up                n=3
+  this              n=3
+  through           n=3
+  mates,            n=3
+  wild              n=2
+  great             n=2
+  last;             n=2
+  pull,             n=2
+  seems             n=2
+  should            n=1
+  inquire           n=1
+  marvellous        n=1
+  bright,           n=1
+  winter            n=1
+  them.             n=1
+
+Top TARGET fillers:
+  the               n=25
+  and               n=20
+  at                n=8
+  would             n=5
+  with              n=3
+  he                n=3
+  like              n=2
+  sailing           n=2
+  how               n=2
+  all.              n=2
+  his               n=2
+  something         n=1
+  painting          n=1
+  but,              n=1
+  cuvier,           n=1
+  while             n=1
+  companions        n=1
+  prehensile        n=1
+  night,            n=1
+  domestic          n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  1->13->11->1        n=5
+  11->13->11->11      n=5
+  11->13->11->3       n=4
+  6->13->11->4        n=3
+  11->13->11->13      n=3
+  6->13->11->13       n=3
+  9->13->11->6        n=3
+  11->13->11->10      n=3
+  6->13->11->9        n=2
+  13->13->11->1       n=2
+
+Top SPAN fillers bridging c_i ... c_j:
+  "that the"   n=5
+  "after the"   n=3
+  "through the"   n=3
+  "mates, and"   n=3
+  "that in the"   n=2
+  "was sailing"   n=2
+  "or at"   n=2
+  "that i think of it,"   n=2
+  "seems the"   n=2
+  "this one small brain think unless"   n=1
+  "that does that does that living, and"   n=1
+  "does that does that living, and"   n=1
+  "that does that living, and"   n=1
+  "that does that living, and not i."   n=1
+  "does that living, and"   n=1
+
+--------------------------------------------------------------------------------
+[14] SLOT: c03 → c11   score=61.63   count=86   J_cc=0.467
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  as                n=9
+  when              n=7
+  into              n=4
+  more              n=3
+  other             n=3
+  round             n=2
+  man               n=2
+  then              n=2
+  me                n=2
+  till              n=2
+  over              n=2
+  windlass,         n=1
+  hand,             n=1
+  hat,              n=1
+  glass             n=1
+  riotous           n=1
+  holding           n=1
+  line,             n=1
+  somehow           n=1
+  “the              n=1
+
+Top TARGET fillers:
+  the               n=29
+  and               n=17
+  with              n=8
+  his               n=6
+  he                n=5
+  at                n=3
+  say               n=2
+  visible,          n=1
+  like              n=1
+  knocking          n=1
+  resting           n=1
+  something         n=1
+  painted           n=1
+  every             n=1
+  wounded           n=1
+  how               n=1
+  i’ll              n=1
+  viciously         n=1
+  weigh             n=1
+  attached          n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  11->3->11->1        n=5
+  6->3->11->6         n=5
+  6->3->11->3         n=4
+  11->3->11->11       n=4
+  9->3->11->1         n=4
+  13->3->11->6        n=2
+  11->3->11->13       n=2
+  6->3->11->1         n=2
+  10->3->11->11       n=2
+  6->3->11->5         n=2
+
+Top SPAN fillers bridging c_i ... c_j:
+  "as the"   n=8
+  "into the"   n=4
+  "when the"   n=4
+  "heart this one small brain think unless"   n=1
+  "round and"   n=1
+  "round and round in this world, like"   n=1
+  "round in this world, like"   n=1
+  "round in this world, like yonder"   n=1
+  "windlass, and"   n=1
+  "windlass, and fate is the"   n=1
+  "windlass, and fate is the and"   n=1
+  "man does, who for the"   n=1
+  "time finds himself pulling into the"   n=1
+  "into the churned circle of the"   n=1
+  "circle of the"   n=1
+
+--------------------------------------------------------------------------------
+[15] SLOT: c11 → c09   score=52.70   count=77   J_cc=0.434
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  the               n=26
+  and               n=11
+  would             n=2
+  ghosts            n=2
+  purpose           n=2
+  leviathan         n=2
+  standing          n=2
+  something         n=1
+  god!              n=1
+  here?             n=1
+  cross-trees       n=1
+  necessities       n=1
+  lines             n=1
+  curious           n=1
+  every             n=1
+  one,              n=1
+  member            n=1
+  ambergris.        n=1
+  article           n=1
+  wounded           n=1
+
+Top TARGET fillers:
+  of                n=26
+  in                n=13
+  now               n=7
+  have              n=4
+  two               n=4
+  ship’s            n=4
+  hoisted           n=3
+  middle            n=2
+  let               n=2
+  who               n=1
+  headed            n=1
+  articles,         n=1
+  shook             n=1
+  leg               n=1
+  sunset            n=1
+  angular           n=1
+  dick!”            n=1
+  rigging,          n=1
+  world’s           n=1
+  sky               n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  6->11->9->6         n=4
+  11->11->9->1        n=4
+  4->11->9->11        n=3
+  1->11->9->11        n=3
+  9->11->9->1         n=3
+  6->11->9->11        n=3
+  1->11->9->1         n=3
+  9->11->9->9         n=2
+  10->11->9->11       n=2
+  11->11->9->6        n=2
+
+Top SPAN fillers bridging c_i ... c_j:
+  "the of"   n=9
+  "the ship’s"   n=4
+  "the two"   n=3
+  "the middle"   n=2
+  "the middle of"   n=2
+  "would have"   n=2
+  "and now"   n=2
+  "and in"   n=2
+  "and of"   n=2
+  "ghosts of"   n=2
+  "and hoisted"   n=2
+  "the of a thing writ in"   n=2
+  "the privilege of"   n=2
+  "the now"   n=2
+  "and have"   n=2
+
+--------------------------------------------------------------------------------
+[16] SLOT: c13 → c01   score=48.68   count=79   J_cc=0.366
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  that              n=12
+  this              n=9
+  was               n=6
+  captain           n=4
+  will              n=3
+  up                n=2
+  or                n=2
+  wild              n=2
+  after             n=2
+  does              n=2
+  has               n=2
+  ship              n=2
+  great             n=2
+  desperate         n=1
+  primal            n=1
+  indications       n=1
+  thee              n=1
+  whalemen’s        n=1
+  heeded            n=1
+  least             n=1
+
+Top TARGET fillers:
+  a                 n=13
+  but               n=5
+  not               n=4
+  it                n=4
+  for               n=4
+  had               n=3
+  be                n=3
+  these             n=2
+  towards           n=2
+  soon              n=2
+  world,            n=1
+  smiling           n=1
+  sort;             n=1
+  scene.            n=1
+  called            n=1
+  office            n=1
+  afric             n=1
+  species.          n=1
+  authority,        n=1
+  letting           n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  11->13->1->6        n=5
+  6->13->1->6         n=5
+  9->13->1->11        n=4
+  11->13->1->11       n=3
+  9->13->1->1         n=3
+  6->13->1->13        n=3
+  11->13->1->9        n=2
+  3->13->1->11        n=2
+  1->13->1->13        n=2
+  11->13->1->13       n=2
+
+Top SPAN fillers bridging c_i ... c_j:
+  "was a"   n=3
+  "that these"   n=2
+  "does not"   n=2
+  "captain had"   n=2
+  "does that does that living, and not"   n=1
+  "that does that living, and not"   n=1
+  "does that living, and not"   n=1
+  "that living, and not"   n=1
+  "this world,"   n=1
+  "this world, like yonder windlass, and fate"   n=1
+  "that smiling"   n=1
+  "that man does, who for"   n=1
+  "does, who for"   n=1
+  "or something of that sort;"   n=1
+  "that sort;"   n=1
+
+--------------------------------------------------------------------------------
+[17] SLOT: c01 → c13   score=46.86   count=76   J_cc=0.367
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  it                n=8
+  a                 n=8
+  but               n=5
+  for               n=5
+  whale             n=3
+  these             n=3
+  very              n=3
+  four              n=2
+  feet              n=2
+  if                n=2
+  lo!               n=1
+  know,             n=1
+  massive           n=1
+  striding          n=1
+  authority,        n=1
+  peleg,            n=1
+  towards           n=1
+  christian         n=1
+  not               n=1
+  case              n=1
+
+Top TARGET fillers:
+  that              n=12
+  was               n=8
+  still             n=4
+  this              n=4
+  has               n=3
+  great             n=2
+  prey.             n=2
+  after             n=2
+  through           n=2
+  her               n=2
+  here,             n=2
+  then,             n=2
+  or                n=1
+  will              n=1
+  enough            n=1
+  bottle            n=1
+  bright,           n=1
+  primal            n=1
+  indications       n=1
+  above             n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  1->1->13->1         n=5
+  11->1->13->1        n=4
+  13->1->13->6        n=3
+  13->1->13->11       n=3
+  1->1->13->11        n=2
+  6->1->13->4         n=2
+  6->1->13->9         n=2
+  11->1->13->6        n=2
+  6->1->13->3         n=2
+  1->1->13->6         n=2
+
+Top SPAN fillers bridging c_i ... c_j:
+  "it was"   n=5
+  "it not be, that"   n=2
+  "not be, that"   n=2
+  "very that"   n=2
+  "but still"   n=2
+  "power; how then can this"   n=1
+  "lo! that"   n=1
+  "for the first time finds himself pulling"   n=1
+  "a whale or"   n=1
+  "a whale or something of that"   n=1
+  "whale or"   n=1
+  "whale or something of that"   n=1
+  "sort; and this"   n=1
+  "open ocean is as easy"   n=1
+  "swimmer as to ride"   n=1
+
+--------------------------------------------------------------------------------
+[18] SLOT: c06 → c03   score=46.73   count=78   J_cc=0.349
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  any               n=5
+  is                n=4
+  are               n=3
+  thing             n=3
+  so                n=3
+  well              n=3
+  first             n=2
+  drew              n=2
+  lord              n=2
+  now,              n=2
+  on                n=2
+  reliable          n=2
+  rest              n=2
+  small             n=1
+  turned            n=1
+  churned           n=1
+  this:             n=1
+  calm              n=1
+  crossed           n=1
+  forebodings       n=1
+
+Top TARGET fillers:
+  as                n=14
+  time              n=3
+  when              n=3
+  near              n=3
+  into              n=3
+  man               n=2
+  remember          n=2
+  they              n=2
+  other             n=2
+  writ              n=2
+  nigh              n=2
+  heart             n=1
+  round             n=1
+  circle            n=1
+  go                n=1
+  bathe             n=1
+  struck            n=1
+  each              n=1
+  holding           n=1
+  become            n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  1->6->3->11         n=5
+  11->6->3->11        n=4
+  11->6->3->13        n=4
+  1->6->3->9          n=4
+  3->6->3->13         n=3
+  3->6->3->11         n=3
+  1->6->3->1          n=3
+  11->6->3->3         n=3
+  6->6->3->11         n=2
+  11->6->3->9         n=2
+
+Top SPAN fillers bridging c_i ... c_j:
+  "is as"   n=2
+  "drew near"   n=2
+  "any other"   n=2
+  "now, as"   n=2
+  "thing writ"   n=2
+  "is to all desired purposes well nigh"   n=2
+  "well nigh"   n=2
+  "well nigh as"   n=2
+  "well nigh as reliable as"   n=2
+  "reliable as"   n=2
+  "can this one small heart"   n=1
+  "small heart"   n=1
+  "are turned round"   n=1
+  "are turned round and round"   n=1
+  "turned round"   n=1
+
+--------------------------------------------------------------------------------
+[19] SLOT: c09 → c01   score=45.71   count=79   J_cc=0.329
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  of                n=24
+  in                n=20
+  have              n=4
+  now               n=4
+  before            n=3
+  hundred           n=2
+  he’s              n=2
+  invisible         n=1
+  who               n=1
+  saying,           n=1
+  importance        n=1
+  two               n=1
+  box               n=1
+  “my               n=1
+  give              n=1
+  articles,         n=1
+  always            n=1
+  strike            n=1
+  nation            n=1
+  leg               n=1
+
+Top TARGET fillers:
+  a                 n=16
+  these             n=5
+  for               n=4
+  their             n=4
+  him,              n=3
+  it                n=3
+  line              n=2
+  feet              n=2
+  water,            n=2
+  queer;            n=2
+  power;            n=1
+  sir?”             n=1
+  pertaining        n=1
+  captains          n=1
+  raised            n=1
+  down              n=1
+  body,             n=1
+  robes             n=1
+  including         n=1
+  be                n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  13->9->1->6         n=5
+  1->9->1->11         n=4
+  11->9->1->1         n=4
+  11->9->1->11        n=3
+  11->9->1->6         n=3
+  1->9->1->6          n=3
+  11->9->1->9         n=3
+  13->9->1->11        n=2
+  1->9->1->13         n=2
+  1->9->1->3          n=2
+
+Top SPAN fillers bridging c_i ... c_j:
+  "of a"   n=8
+  "in a"   n=6
+  "in these"   n=3
+  "of it"   n=3
+  "in their"   n=3
+  "in the open"   n=2
+  "of these"   n=2
+  "unprovided with a"   n=2
+  "hundred feet"   n=2
+  "of a thing writ in water,"   n=2
+  "of a thing writ in water, a"   n=2
+  "in water,"   n=2
+  "in water, a"   n=2
+  "he’s queer;"   n=2
+  "in heaven; nor one single"   n=1
+
+--------------------------------------------------------------------------------
+[20] SLOT: c01 → c09   score=44.64   count=77   J_cc=0.330
+--------------------------------------------------------------------------------
+Top SOURCE fillers:
+  a                 n=9
+  sight             n=5
+  whale             n=5
+  but               n=3
+  thoughts          n=3
+  not               n=3
+  be                n=2
+  line              n=2
+  could             n=2
+  privilege         n=2
+  it                n=2
+  captains          n=1
+  little            n=1
+  cluster           n=1
+  unnatural         n=1
+  cried,            n=1
+  gradual           n=1
+  speak             n=1
+  had               n=1
+  ensue             n=1
+
+Top TARGET fillers:
+  of                n=26
+  in                n=21
+  have              n=2
+  hundred           n=2
+  good              n=2
+  now               n=2
+  sensible,         n=1
+  peaceable         n=1
+  hitherto          n=1
+  strike            n=1
+  hereafter         n=1
+  exalted           n=1
+  always            n=1
+  he’s              n=1
+  stick             n=1
+  leg               n=1
+  let               n=1
+  child,            n=1
+  entirely          n=1
+  jackets           n=1
+
+Most diagnostic local ROLE contexts (left->ci->cj->right):
+  11->1->9->11        n=6
+  11->1->9->1         n=5
+  1->1->9->11         n=4
+  3->1->9->1          n=3
+  9->1->9->11         n=3
+  11->1->9->13        n=3
+  6->1->9->11         n=2
+  6->1->9->1          n=2
+  -1->1->9->1         n=2
+  1->1->9->3          n=2
+
+Top SPAN fillers bridging c_i ... c_j:
+  "sight of"   n=5
+  "a sort of"   n=4
+  "thoughts of"   n=3
+  "line in"   n=2
+  "a hundred"   n=2
+  "whale of"   n=2
+  "whale in"   n=2
+  "a of"   n=2
+  "a thing writ in"   n=2
+  "privilege of"   n=2
+  "but in"   n=2
+  "not in"   n=2
+  "single star can but by some invisible"   n=1
+  "star can but by some invisible"   n=1
+  "but by some invisible"   n=1
+
+================================================================================
+PARSING EXAMPLES (binary tree by association similarity + role-compat)
+================================================================================
+
+--------------------------------------------------------------------------------
+Example 1: preview: as an in heaven; nor one single star can but by some invisible power; how then can this one small heart this one small brain think unless...
+[0:64] c11 score=-1.704  "as an in heaven; nor one single star can but by some invisible power; how then can this one small..."
+  [0:57] c11 score=-1.354  "as an in heaven; nor one single star can but by some invisible power; how then can this one small..."
+    [0:36] c11 score=-0.410  "as an in heaven; nor one single star can but by some invisible power; how then can this one small..."
+      [0:33] c06 score=-0.367  "as an in heaven; nor one single star can but by some invisible power; how then can this one small..."
+        [0:8] c06 score=+0.722  "as an in heaven; nor one single star"
+          [0:2] c03 score=+0.985  "as an"
+            [0:1] c03  as
+            [1:2] c06  an
+          [2:8] c06 score=+0.896  "in heaven; nor one single star"
+            [2:4] c06 score=+0.157  "in heaven;"
+              [2:3] c09  in
+              [3:4] c06  heaven;
+            [4:8] c06 score=+0.555  "nor one single star"
+              [4:5] c06  nor
+              [5:8] c00 score=+0.512  "one single star"
+                [5:6] c00  one
+                [6:8] c01 score=+0.341  "single star"
+                  [6:7] c01  single
+                  [7:8] c01  star
+        [8:33] c06 score=-0.091  "can but by some invisible power; how then can this one small heart this one small brain think unl..."
+          [8:15] c01 score=+0.968  "can but by some invisible power; how"
+            [8:10] c01 score=+1.016  "can but"
+              [8:9] c06  can
+              [9:10] c01  but
+            [10:15] c11 score=+0.701  "by some invisible power; how"
+              [10:14] c04 score=+0.716  "by some invisible power;"
+                [10:11] c04  by
+                [11:14] c00 score=+0.592  "some invisible power;"
+                  [11:12] c00  some
+                  [12:14] c01 score=+0.566  "invisible power;"
+                    [12:13] c09  invisible
+                    [13:14] c01  power;
+              [14:15] c11  how
+          [15:33] c13 score=+0.240  "then can this one small heart this one small brain think unless god does that does that does"
+            [15:20] c06 score=+0.838  "then can this one small"
+              [15:19] c03 score=+0.712  "then can this one"
+                [15:16] c03  then
+                [16:19] c00 score=+0.779  "can this one"
+                  [16:18] c06 score=+0.819  "can this"
+                    [16:17] c06  can
+                    [17:18] c13  this
+                  [18:19] c00  one
+              [19:20] c06  small
+            [20:33] c13 score=+0.403  "heart this one small brain think unless god does that does that does"
+              [20:31] c13 score=+0.512  "heart this one small brain think unless god does that does"
+                [20:22] c03 score=+0.739  "heart this"
+                  [20:21] c03  heart
+                  [21:22] c13  this
+                [22:31] c13 score=+0.476  "one small brain think unless god does that does"
+                  [22:25] c00 score=+0.736  "one small brain"
+                    [22:23] c00  one
+                    [23:25] c06 score=+0.437  "small brain"
+                      [23:24] c06  small
+                      [24:25] c10  brain
+                  [25:31] c13 score=+0.753  "think unless god does that does"
+                    [25:29] c06 score=+0.681  "think unless god does"
+                      [25:26] c06  think
+                      [26:29] c13 score=+0.596  "unless god does"
+                        [26:28] c10 score=+0.558  "unless god"
+                          [26:27] c11  unless
+                          [27:28] c10  god
+                        [28:29] c13  does
+                    [29:31] c13 score=+0.765  "that does"
+                      [29:30] c13  that
+                      [30:31] c13  does
+              [31:33] c13 score=+0.765  "that does"
+                [31:32] c13  that
+                [32:33] c13  does
+      [33:36] c11 score=+0.866  "that living, and"
+        [33:35] c00 score=+0.129  "that living,"
+          [33:34] c13  that
+          [34:35] c00  living,
+        [35:36] c11  and
+    [36:57] c11 score=+0.441  "not i. by heaven, man, we are turned round and round in this world, like yonder windlass, and fat..."
+      [36:46] c11 score=+0.868  "not i. by heaven, man, we are turned round and"
+        [36:45] c01 score=+0.658  "not i. by heaven, man, we are turned round"
+          [36:39] c01 score=+0.845  "not i. by"
+            [36:37] c01  not
+            [37:39] c04 score=+0.588  "i. by"
+              [37:38] c11  i.
+              [38:39] c04  by
+          [39:45] c03 score=+0.798  "heaven, man, we are turned round"
+            [39:44] c06 score=+0.736  "heaven, man, we are turned"
+              [39:41] c04 score=+0.440  "heaven, man,"
+                [39:40] c14  heaven,
+                [40:41] c04  man,
+              [41:44] c06 score=+0.985  "we are turned"
+                [41:43] c06 score=+0.811  "we are"
+                  [41:42] c12  we
+                  [42:43] c06  are
+                [43:44] c06  turned
+            [44:45] c03  round
+        [45:46] c11  and
+      [46:57] c11 score=+0.925  "round in this world, like yonder windlass, and fate is the"
+        [46:53] c11 score=+0.934  "round in this world, like yonder windlass,"
+          [46:50] c01 score=+0.885  "round in this world,"
+            [46:48] c03 score=+0.924  "round in"
+              [46:47] c03  round
+              [47:48] c09  in
+            [48:50] c01 score=+0.836  "this world,"
+              [48:49] c13  this
+              [49:50] c01  world,
+          [50:53] c11 score=+0.689  "like yonder windlass,"
+            [50:51] c11  like
+            [51:53] c03 score=+0.543  "yonder windlass,"
+              [51:52] c11  yonder
+              [52:53] c03  windlass,
+        [53:57] c11 score=+1.253  "and fate is the"
+          [53:54] c11  and
+          [54:57] c11 score=+1.155  "fate is the"
+            [54:56] c01 score=+0.886  "fate is"
+              [54:55] c01  fate
+              [55:56] c06  is
+            [56:57] c11  the
+  [57:64] c11 score=+1.012  "and all the time, lo! that smiling"
+    [57:60] c11 score=+0.849  "and all the"
+      [57:58] c11  and
+      [58:60] c05 score=+0.883  "all the"
+        [58:59] c05  all
+        [59:60] c11  the
+    [60:64] c01 score=+1.011  "time, lo! that smiling"
+      [60:62] c01 score=+0.663  "time, lo!"
+        [60:61] c03  time,
+        [61:62] c01  lo!
+      [62:64] c01 score=+0.493  "that smiling"
+        [62:63] c13  that
+        [63:64] c01  smiling
+
+
+--------------------------------------------------------------------------------
+Example 2: preview: these can feel stranger and stronger emotions than that man does, who for the first time finds himself pulling into the churned circle of...
+[0:64] c11 score=-1.700  "these can feel stranger and stronger emotions than that man does, who for the first time finds hi..."
+  [0:36] c11 score=-0.301  "these can feel stranger and stronger emotions than that man does, who for the first time finds hi..."
+    [0:21] c11 score=+0.435  "these can feel stranger and stronger emotions than that man does, who for the first time finds hi..."
+      [0:16] c11 score=+0.558  "these can feel stranger and stronger emotions than that man does, who for the first time"
+        [0:8] c01 score=+0.911  "these can feel stranger and stronger emotions than"
+          [0:4] c01 score=+0.881  "these can feel stranger"
+            [0:1] c01  these
+            [1:4] c06 score=+0.638  "can feel stranger"
+              [1:2] c06  can
+              [2:4] c04 score=+0.447  "feel stranger"
+                [2:3] c04  feel
+                [3:4] c10  stranger
+          [4:8] c11 score=+0.917  "and stronger emotions than"
+            [4:5] c11  and
+            [5:8] c03 score=+0.415  "stronger emotions than"
+              [5:6] c03  stronger
+              [6:8] c03 score=+0.438  "emotions than"
+                [6:7] c03  emotions
+                [7:8] c10  than
+        [8:16] c11 score=+0.753  "that man does, who for the first time"
+          [8:13] c13 score=+0.903  "that man does, who for"
+            [8:11] c13 score=+0.854  "that man does,"
+              [8:9] c13  that
+              [9:11] c03 score=+0.454  "man does,"
+                [9:10] c03  man
+                [10:11] c13  does,
+            [11:13] c01 score=+0.926  "who for"
+              [11:12] c09  who
+              [12:13] c01  for
+          [13:16] c11 score=+1.018  "the first time"
+            [13:14] c11  the
+            [14:16] c03 score=+0.981  "first time"
+              [14:15] c06  first
+              [15:16] c03  time
+      [16:21] c11 score=+0.876  "finds himself pulling into the"
+        [16:20] c03 score=+0.805  "finds himself pulling into"
+          [16:19] c13 score=+0.638  "finds himself pulling"
+            [16:18] c02 score=+0.566  "finds himself"
+              [16:17] c02  finds
+              [17:18] c06  himself
+            [18:19] c13  pulling
+          [19:20] c03  into
+        [20:21] c11  the
+    [21:36] c11 score=+0.745  "churned circle of the hunted sperm whale. the dancing white water made by the chase"
+      [21:25] c11 score=+0.945  "churned circle of the"
+        [21:24] c09 score=+0.522  "churned circle of"
+          [21:23] c03 score=+0.431  "churned circle"
+            [21:22] c06  churned
+            [22:23] c03  circle
+          [23:24] c09  of
+        [24:25] c11  the
+      [25:36] c11 score=+0.848  "hunted sperm whale. the dancing white water made by the chase"
+        [25:30] c11 score=+1.131  "hunted sperm whale. the dancing"
+          [25:28] c11 score=+0.940  "hunted sperm whale."
+            [25:27] c06 score=+0.473  "hunted sperm"
+              [25:26] c06  hunted
+              [26:27] c10  sperm
+            [27:28] c11  whale.
+          [28:30] c11 score=+0.325  "the dancing"
+            [28:29] c11  the
+            [29:30] c12  dancing
+        [30:36] c06 score=+0.899  "white water made by the chase"
+          [30:35] c11 score=+0.837  "white water made by the"
+            [30:34] c04 score=+0.824  "white water made by"
+              [30:33] c06 score=+0.793  "white water made"
+                [30:32] c04 score=+0.780  "white water"
+                  [30:31] c04  white
+                  [31:32] c06  water
+                [32:33] c06  made
+              [33:34] c04  by
+            [34:35] c11  the
+          [35:36] c06  chase
+  [36:64] c11 score=+0.099  "was now becoming more and more visible, owing to the increasing darkness of the flung upon the se..."
+    [36:50] c11 score=+0.796  "was now becoming more and more visible, owing to the increasing darkness of the"
+      [36:46] c11 score=+0.932  "was now becoming more and more visible, owing to the"
+        [36:45] c11 score=+0.743  "was now becoming more and more visible, owing to"
+          [36:42] c03 score=+0.779  "was now becoming more and more"
+            [36:40] c13 score=+0.783  "was now becoming more"
+              [36:37] c13  was
+              [37:40] c03 score=+0.761  "now becoming more"
+                [37:39] c09 score=+0.348  "now becoming"
+                  [37:38] c09  now
+                  [38:39] c10  becoming
+                [39:40] c03  more
+            [40:42] c03 score=+0.938  "and more"
+              [40:41] c11  and
+              [41:42] c03  more
+          [42:45] c11 score=+0.810  "visible, owing to"
+            [42:43] c11  visible,
+            [43:45] c01 score=+0.633  "owing to"
+              [43:44] c01  owing
+              [44:45] c08  to
+        [45:46] c11  the
+      [46:50] c11 score=+0.942  "increasing darkness of the"
+        [46:49] c09 score=+0.768  "increasing darkness of"
+          [46:48] c06 score=+0.413  "increasing darkness"
+            [46:47] c06  increasing
+            [47:48] c15  darkness
+          [48:49] c09  of
+        [49:50] c11  the
+    [50:64] c11 score=+0.666  "flung upon the sea. the jets of vapor no longer but tilted everywhere to"
+      [50:53] c11 score=+1.135  "flung upon the"
+        [50:52] c06 score=+0.619  "flung upon"
+          [50:51] c12  flung
+          [51:52] c06  upon
+        [52:53] c11  the
+      [53:64] c01 score=+0.749  "sea. the jets of vapor no longer but tilted everywhere to"
+        [53:60] c01 score=+0.855  "sea. the jets of vapor no longer"
+          [53:57] c01 score=+1.003  "sea. the jets of"
+            [53:54] c01  sea.
+            [54:57] c11 score=+0.976  "the jets of"
+              [54:55] c11  the
+              [55:57] c09 score=+0.507  "jets of"
+                [55:56] c10  jets
+                [56:57] c09  of
+          [57:60] c01 score=+0.699  "vapor no longer"
+            [57:59] c09 score=+0.415  "vapor no"
+              [57:58] c09  vapor
+              [58:59] c10  no
+            [59:60] c01  longer
+        [60:64] c01 score=+0.848  "but tilted everywhere to"
+          [60:62] c01 score=+0.663  "but tilted"
+            [60:61] c01  but
+            [61:62] c01  tilted
+          [62:64] c04 score=+0.427  "everywhere to"
+            [62:63] c04  everywhere
+            [63:64] c08  to
+
+
+--------------------------------------------------------------------------------
+Example 3: preview: a whale.” replied starbuck, “only don’t hit him again, “oh, i never hurt when i except when i hit a whale or something of that sort; and ...
+[0:64] c11 score=-1.705  "a whale.” replied starbuck, “only don’t hit him again, “oh, i never hurt when i except when i hit..."
+  [0:27] c11 score=+0.028  "a whale.” replied starbuck, “only don’t hit him again, “oh, i never hurt when i except when i hit..."
+    [0:25] c11 score=+0.119  "a whale.” replied starbuck, “only don’t hit him again, “oh, i never hurt when i except when i hit..."
+      [0:16] c11 score=+0.501  "a whale.” replied starbuck, “only don’t hit him again, “oh, i never hurt when i except"
+        [0:13] c01 score=+0.623  "a whale.” replied starbuck, “only don’t hit him again, “oh, i never hurt"
+          [0:3] c01 score=+0.587  "a whale.” replied"
+            [0:1] c01  a
+            [1:3] c06 score=+0.501  "whale.” replied"
+              [1:2] c06  whale.”
+              [2:3] c06  replied
+          [3:13] c01 score=+0.504  "starbuck, “only don’t hit him again, “oh, i never hurt"
+            [3:7] c01 score=+0.532  "starbuck, “only don’t hit"
+              [3:4] c01  starbuck,
+              [4:7] c04 score=+0.264  "“only don’t hit"
+                [4:6] c03 score=+0.081  "“only don’t"
+                  [4:5] c03  “only
+                  [5:6] c10  don’t
+                [6:7] c04  hit
+            [7:13] c04 score=+0.685  "him again, “oh, i never hurt"
+              [7:9] c04 score=+0.798  "him again,"
+                [7:8] c10  him
+                [8:9] c04  again,
+              [9:13] c01 score=+0.724  "“oh, i never hurt"
+                [9:11] c04 score=+0.392  "“oh, i"
+                  [9:10] c06  “oh,
+                  [10:11] c04  i
+                [11:13] c01 score=+0.229  "never hurt"
+                  [11:12] c01  never
+                  [12:13] c03  hurt
+        [13:16] c11 score=+0.815  "when i except"
+          [13:15] c03 score=+0.753  "when i"
+            [13:14] c03  when
+            [14:15] c04  i
+          [15:16] c11  except
+      [16:25] c01 score=+0.900  "when i hit a whale or something of that"
+        [16:22] c01 score=+1.000  "when i hit a whale or"
+          [16:20] c01 score=+0.857  "when i hit a"
+            [16:19] c03 score=+0.737  "when i hit"
+              [16:17] c03  when
+              [17:19] c04 score=+0.474  "i hit"
+                [17:18] c04  i
+                [18:19] c04  hit
+            [19:20] c01  a
+          [20:22] c01 score=+1.005  "whale or"
+            [20:21] c01  whale
+            [21:22] c13  or
+        [22:25] c11 score=+0.907  "something of that"
+          [22:23] c11  something
+          [23:25] c09 score=+0.923  "of that"
+            [23:24] c09  of
+            [24:25] c13  that
+    [25:27] c01 score=+0.794  "sort; and"
+      [25:26] c01  sort;
+      [26:27] c11  and
+  [27:64] c11 score=-0.365  "this fellow’s a what were you about saying, sir?” “only this: go down with him, and get what thou..."
+    [27:43] c11 score=+0.580  "this fellow’s a what were you about saying, sir?” “only this: go down with him, and"
+      [27:34] c06 score=+0.913  "this fellow’s a what were you about"
+        [27:33] c01 score=+0.968  "this fellow’s a what were you"
+          [27:31] c01 score=+1.053  "this fellow’s a what"
+            [27:29] c06 score=+0.430  "this fellow’s"
+              [27:28] c13  this
+              [28:29] c06  fellow’s
+            [29:31] c01 score=+0.881  "a what"
+              [29:30] c01  a
+              [30:31] c04  what
+          [31:33] c01 score=+0.845  "were you"
+            [31:32] c01  were
+            [32:33] c04  you
+        [33:34] c06  about
+      [34:43] c11 score=+0.913  "saying, sir?” “only this: go down with him, and"
+        [34:42] c01 score=+0.873  "saying, sir?” “only this: go down with him,"
+          [34:41] c11 score=+0.965  "saying, sir?” “only this: go down with"
+            [34:40] c01 score=+0.717  "saying, sir?” “only this: go down"
+              [34:39] c03 score=+0.345  "saying, sir?” “only this: go"
+                [34:38] c09 score=+0.400  "saying, sir?” “only this:"
+                  [34:35] c09  saying,
+                  [35:38] c06 score=+0.318  "sir?” “only this:"
+                    [35:37] c01 score=+0.280  "sir?” “only"
+                      [35:36] c01  sir?”
+                      [36:37] c03  “only
+                    [37:38] c06  this:
+                [38:39] c03  go
+              [39:40] c01  down
+            [40:41] c11  with
+          [41:42] c01  him,
+        [42:43] c11  and
+    [43:64] c11 score=+0.427  "get what thou wantest when stubb he came with a dark flask in one hand, and a sort of in the"
+      [43:57] c11 score=+0.637  "get what thou wantest when stubb he came with a dark flask in one"
+        [43:49] c01 score=+0.960  "get what thou wantest when stubb"
+          [43:46] c11 score=+0.763  "get what thou"
+            [43:45] c04 score=+0.710  "get what"
+              [43:44] c07  get
+              [44:45] c04  what
+            [45:46] c11  thou
+          [46:49] c01 score=+0.860  "wantest when stubb"
+            [46:48] c03 score=+0.136  "wantest when"
+              [46:47] c12  wantest
+              [47:48] c03  when
+            [48:49] c01  stubb
+        [49:57] c11 score=+0.922  "he came with a dark flask in one"
+          [49:52] c11 score=+1.157  "he came with"
+            [49:50] c11  he
+            [50:52] c06 score=+1.131  "came with"
+              [50:51] c06  came
+              [51:52] c11  with
+          [52:57] c01 score=+0.741  "a dark flask in one"
+            [52:53] c01  a
+            [53:57] c00 score=+0.742  "dark flask in one"
+              [53:56] c01 score=+0.963  "dark flask in"
+                [53:54] c01  dark
+                [54:56] c06 score=+0.869  "flask in"
+                  [54:55] c06  flask
+                  [55:56] c09  in
+              [56:57] c00  one
+      [57:64] c11 score=+1.005  "hand, and a sort of in the"
+        [57:60] c01 score=+0.965  "hand, and a"
+          [57:59] c03 score=+1.017  "hand, and"
+            [57:58] c03  hand,
+            [58:59] c11  and
+          [59:60] c01  a
+        [60:64] c11 score=+0.976  "sort of in the"
+          [60:63] c09 score=+0.846  "sort of in"
+            [60:62] c02 score=+0.341  "sort of"
+              [60:61] c02  sort
+              [61:62] c09  of
+            [62:63] c09  in
+          [63:64] c11  the
+
+
+Wrote: /home/ni/repos/h/causal-hnet/chatgpt-generated/slot_report.json
+Done.
