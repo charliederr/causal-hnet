@@ -1,0 +1,566 @@
+================================================================================
+HNET STEP 6A — CEBS CONTEXTUAL ENERGY SLOTTING (TEXT) — IMPROVED
+================================================================================
+Loaded: input.txt
+Raw tokens: 259,265
+Vocab size (min_count=2): 10,084
+In-vocab token stream length: 250,892
+Building directional co-occurrence (fast)...
+Cooc unique edges: 4,764,614  (time 13.31s)
+Edges arrays: E=4,764,614
+Sparse assoc built: topk=64  (time 1.61s)
+Running role discovery (balanced + inertial sweeps)...
+  sweep 1/40  nonempty=16
+  sweep 10/40  nonempty=16
+  sweep 20/40  nonempty=15
+  sweep 30/40  nonempty=5
+  sweep 40/40  nonempty=1
+
+--------------------------------------------------------------------------------
+TOP ROLE→ROLE DIRECTIONAL COUPLINGS (J_cc)
+--------------------------------------------------------------------------------
+c06 → c06   J_cc=1.0000
+c00 → c00   J_cc=0.0000
+c00 → c01   J_cc=0.0000
+c00 → c02   J_cc=0.0000
+c00 → c03   J_cc=0.0000
+c00 → c04   J_cc=0.0000
+c00 → c05   J_cc=0.0000
+c00 → c06   J_cc=0.0000
+c00 → c07   J_cc=0.0000
+c00 → c08   J_cc=0.0000
+c00 → c09   J_cc=0.0000
+c00 → c10   J_cc=0.0000
+c00 → c11   J_cc=0.0000
+c00 → c12   J_cc=0.0000
+c00 → c13   J_cc=0.0000
+c00 → c14   J_cc=0.0000
+c00 → c15   J_cc=0.0000
+c01 → c00   J_cc=0.0000
+c01 → c01   J_cc=0.0000
+c01 → c02   J_cc=0.0000
+
+--------------------------------------------------------------------------------
+ROLE LABELS (global top tokens per role; punctuation-skipped)
+--------------------------------------------------------------------------------
+c00: <empty>
+c01: <empty>
+c02: <empty>
+c03: <empty>
+c04: <empty>
+c05: <empty>
+c06: the of and a to in
+c07: <empty>
+c08: <empty>
+c09: <empty>
+c10: <empty>
+c11: <empty>
+c12: <empty>
+c13: <empty>
+c14: <empty>
+c15: <empty>
+
+================================================================================
+CEBS-STYLE ENTITY REGISTRY ANALYSIS OVER SAMPLED SEGMENTS
+================================================================================
+
+--------------------------------------------------------------------------------
+[segment 01/32]  start=220,318  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 1  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, Perth, and, one, that, to, into, Ahab
+
+--------------------------------------------------------------------------------
+[segment 02/32]  start=164,978  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0068
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, of, to, Vishnoo, in, a, and, our
+
+--------------------------------------------------------------------------------
+[segment 03/32]  start=132,388  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0066
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, is, to, its, at, and, that, in
+
+--------------------------------------------------------------------------------
+[segment 04/32]  start=69,876  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0065
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, of, that, in, is, and, Louis, stands
+
+--------------------------------------------------------------------------------
+[segment 05/32]  start=79,730  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0065
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, there, of, they, all, to, white, shirr
+
+--------------------------------------------------------------------------------
+[segment 06/32]  start=10,612  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0064
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, he, to, and, his, in, a, of
+
+--------------------------------------------------------------------------------
+[segment 07/32]  start=19,487  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0063
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, and, in, his, Jonah, of, lamp, room
+
+--------------------------------------------------------------------------------
+[segment 08/32]  start=4,280  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0062
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: of, and, the, a, that, you, to, by
+
+--------------------------------------------------------------------------------
+[segment 09/32]  start=45,395  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0061
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, of, to, and, in, Queequeg, he, his
+
+--------------------------------------------------------------------------------
+[segment 10/32]  start=210,643  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0060
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: of, and, the, in, his, a, to, was
+
+--------------------------------------------------------------------------------
+[segment 11/32]  start=168,203  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0059
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, of, to, that, it, no, and, be
+
+--------------------------------------------------------------------------------
+[segment 12/32]  start=236,410  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0058
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, and, in, a, I, of, as, sir
+
+--------------------------------------------------------------------------------
+[segment 13/32]  start=130,443  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0057
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, his, of, into, out, that, from, in
+
+--------------------------------------------------------------------------------
+[segment 14/32]  start=157,123  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0056
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, in, of, is, Sperm, Whale, to, and
+
+--------------------------------------------------------------------------------
+[segment 15/32]  start=251,430  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0055
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, and, his, to, a, of, him, it
+
+--------------------------------------------------------------------------------
+[segment 16/32]  start=188,945  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0055
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, of, to, is, I, and, it, It
+
+--------------------------------------------------------------------------------
+[segment 17/32]  start=163,763  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0054
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, of, and, to, I, that, in, so
+
+--------------------------------------------------------------------------------
+[segment 18/32]  start=140,803  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0053
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, a, and, to, s, of, this, head
+
+--------------------------------------------------------------------------------
+[segment 19/32]  start=145,023  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0052
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: I, that, of, the, and, in, you, was
+
+--------------------------------------------------------------------------------
+[segment 20/32]  start=242,191  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0051
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, and, of, with, to, was, that, sea
+
+--------------------------------------------------------------------------------
+[segment 21/32]  start=71,835  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0051
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, and, in, of, they, young, to, are
+
+--------------------------------------------------------------------------------
+[segment 22/32]  start=211,312  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0050
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: of, a, to, or, the, by, his, had
+
+--------------------------------------------------------------------------------
+[segment 23/32]  start=173,762  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0049
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, and, of, in, they, to, their, that
+
+--------------------------------------------------------------------------------
+[segment 24/32]  start=709  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0048
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, a, of, and, is, to, in, his
+
+--------------------------------------------------------------------------------
+[segment 25/32]  start=102,087  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0048
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, and, to, of, The, were, we, in
+
+--------------------------------------------------------------------------------
+[segment 26/32]  start=222,074  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0047
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, and, had, of, her, in, a, for
+
+--------------------------------------------------------------------------------
+[segment 27/32]  start=143,571  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0046
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, of, to, and, a, in, which, is
+
+--------------------------------------------------------------------------------
+[segment 28/32]  start=8,698  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0046
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, a, and, to, bed, I, of, on
+
+--------------------------------------------------------------------------------
+[segment 29/32]  start=198,112  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0045
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, it, on, and, his, to, all, of
+
+--------------------------------------------------------------------------------
+[segment 30/32]  start=188,986  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0044
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, of, is, and, a, to, an, which
+
+--------------------------------------------------------------------------------
+[segment 31/32]  start=219,269  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0044
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, and, of, to, hither, is, death, in
+
+--------------------------------------------------------------------------------
+[segment 32/32]  start=45,496  len=256  time=2026-01-27 09:57:34
+--------------------------------------------------------------------------------
+Active roles (count >= 6): 1  |  births: 0  retired: 0
+Top active roles by count: c06(256)
+Entities alive: 1
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0043
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e000→e000 (active→active)
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e000  seg_reps: the, in, to, and, his, of, a, it
+
+================================================================================
+FINAL ENTITY REGISTRY SUMMARY (top 25 by bindings, then confidence)
+================================================================================
+e000  bound_role=c06  conf=0.718  bindings=  32  last_seen_seg=31
+
+Wrote JSON report: step6a_out/step6a_results.json
+Wrote text summary: step6a_out/step6a_summary.txt
+Wrote plot: step6a_out/entity_count.png
+Wrote plot: step6a_out/avg_stability.png
+Wrote plot: step6a_out/relational_surprise.png
+Wrote plot: step6a_out/births.png
+Wrote plot: step6a_out/retired.png
+Wrote plot: step6a_out/active_roles.png
+
+Done.
+
+
+ran command:
+
+python hnet_step6a_cebs_contextual_energy_slotting_text_improved.py   --input input.txt   --n_clusters 16   --n_sweeps 40   --seg_len 256   --n_segs 32   --min_role_count 6 > results_hnet_step6a_cebs_contextual_energy_slotting_text_improved.txt

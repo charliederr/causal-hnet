@@ -1,0 +1,47 @@
+HNET STEP 6A SUMMARY
+time: 2026-01-27 09:57:34
+vocab_size: 10084
+edges: 4764614
+
+ROLE LABELS:
+c00: <empty>
+c01: <empty>
+c02: <empty>
+c03: <empty>
+c04: <empty>
+c05: <empty>
+c06: the of and a to in
+c07: <empty>
+c08: <empty>
+c09: <empty>
+c10: <empty>
+c11: <empty>
+c12: <empty>
+c13: <empty>
+c14: <empty>
+c15: <empty>
+
+TOP J_cc:
+c06 -> c06   J=1.0000
+c00 -> c00   J=0.0000
+c00 -> c01   J=0.0000
+c00 -> c02   J=0.0000
+c00 -> c03   J=0.0000
+c00 -> c04   J=0.0000
+c00 -> c05   J=0.0000
+c00 -> c06   J=0.0000
+c00 -> c07   J=0.0000
+c00 -> c08   J=0.0000
+c00 -> c09   J=0.0000
+c00 -> c10   J=0.0000
+c00 -> c11   J=0.0000
+c00 -> c12   J=0.0000
+c00 -> c13   J=0.0000
+c00 -> c14   J=0.0000
+c00 -> c15   J=0.0000
+c01 -> c00   J=0.0000
+c01 -> c01   J=0.0000
+c01 -> c02   J=0.0000
+
+FINAL ENTITIES (top 50 by bindings/conf):
+e000  role=c06  conf=0.718  bindings=32  last_seen=31

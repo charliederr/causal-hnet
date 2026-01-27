@@ -1,0 +1,578 @@
+================================================================================
+HNET STEP 6 — CEBS-INSPIRED CONTEXTUAL ENERGY-BASED SLOTTING (TEXT)
+================================================================================
+Loaded: input.txt
+Raw tokens: 259,265
+Vocab size (min_count=2): 10,084
+In-vocab token stream length: 250,892
+Building directional co-occurrence (fast)...
+Cooc unique edges: 4,764,614  (time 13.26s)
+Edges arrays: E=4,764,614
+Sparse assoc built: topk=64  (time 1.57s)
+Running role discovery (balanced + inertial sweeps)...
+  sweep 1/40  nonempty=16
+  sweep 10/40  nonempty=16
+  sweep 20/40  nonempty=15
+  sweep 30/40  nonempty=5
+  sweep 40/40  nonempty=1
+
+--------------------------------------------------------------------------------
+TOP ROLE→ROLE DIRECTIONAL COUPLINGS (J_cc)
+--------------------------------------------------------------------------------
+c06 → c06   J_cc=1.0000
+c00 → c00   J_cc=0.0000
+c00 → c01   J_cc=0.0000
+c00 → c02   J_cc=0.0000
+c00 → c03   J_cc=0.0000
+c00 → c04   J_cc=0.0000
+c00 → c05   J_cc=0.0000
+c00 → c06   J_cc=0.0000
+c00 → c07   J_cc=0.0000
+c00 → c08   J_cc=0.0000
+c00 → c09   J_cc=0.0000
+c00 → c10   J_cc=0.0000
+c00 → c11   J_cc=0.0000
+c00 → c12   J_cc=0.0000
+c00 → c13   J_cc=0.0000
+c00 → c14   J_cc=0.0000
+c00 → c15   J_cc=0.0000
+c01 → c00   J_cc=0.0000
+c01 → c01   J_cc=0.0000
+c01 → c02   J_cc=0.0000
+
+--------------------------------------------------------------------------------
+ROLE LABELS (top freq tokens per role)
+--------------------------------------------------------------------------------
+c00: <empty>
+c01: <empty>
+c02: <empty>
+c03: <empty>
+c04: <empty>
+c05: <empty>
+c06: , the . of and
+c07: <empty>
+c08: <empty>
+c09: <empty>
+c10: <empty>
+c11: <empty>
+c12: <empty>
+c13: <empty>
+c14: <empty>
+c15: <empty>
+
+================================================================================
+CEBS-STYLE ENTITY REGISTRY ANALYSIS OVER SAMPLED SEGMENTS
+================================================================================
+
+--------------------------------------------------------------------------------
+[segment 01/32]  start=220,318  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 16   births: 16   retired: 0
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c04  entity=e004  reps: 
+  slot(role)=c05  entity=e005  reps: 
+  slot(role)=c07  entity=e007  reps: 
+
+--------------------------------------------------------------------------------
+[segment 02/32]  start=164,978  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 31   births: 15   retired: 0
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c02  entity=e018  reps: 
+  slot(role)=c14  entity=e029  reps: 
+  slot(role)=c04  entity=e020  reps: 
+
+--------------------------------------------------------------------------------
+[segment 03/32]  start=132,388  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 46   births: 15   retired: 0
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c07  entity=e037  reps: 
+  slot(role)=c11  entity=e041  reps: 
+  slot(role)=c00  entity=e031  reps: 
+
+--------------------------------------------------------------------------------
+[segment 04/32]  start=69,876  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 61   births: 15   retired: 0
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e006  reps: ,, the, ., of, and, a, to, ;
+  slot(role)=c11  entity=e056  reps: 
+  slot(role)=c05  entity=e051  reps: 
+
+--------------------------------------------------------------------------------
+[segment 05/32]  start=79,730  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 76   births: 15   retired: 0
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c04  entity=e065  reps: 
+  slot(role)=c06  entity=e006  reps: ,, the, ., of, and, a, to, ;
+  slot(role)=c11  entity=e071  reps: 
+
+--------------------------------------------------------------------------------
+[segment 06/32]  start=10,612  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 91   births: 15   retired: 0
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c15  entity=e090  reps: 
+  slot(role)=c01  entity=e077  reps: 
+  slot(role)=c05  entity=e081  reps: 
+
+--------------------------------------------------------------------------------
+[segment 07/32]  start=19,487  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 106   births: 15   retired: 0
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c11  entity=e101  reps: 
+  slot(role)=c00  entity=e091  reps: 
+  slot(role)=c05  entity=e096  reps: 
+
+--------------------------------------------------------------------------------
+[segment 08/32]  start=4,280  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 121   births: 15   retired: 0
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c04  entity=e110  reps: 
+  slot(role)=c01  entity=e107  reps: 
+  slot(role)=c10  entity=e115  reps: 
+
+--------------------------------------------------------------------------------
+[segment 09/32]  start=45,395  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 136   births: 15   retired: 0
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e006  reps: ,, the, ., of, and, a, to, ;
+  slot(role)=c10  entity=e130  reps: 
+  slot(role)=c08  entity=e128  reps: 
+
+--------------------------------------------------------------------------------
+[segment 10/32]  start=210,643  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 151   births: 15   retired: 0
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c15  entity=e150  reps: 
+  slot(role)=c10  entity=e145  reps: 
+  slot(role)=c02  entity=e138  reps: 
+
+--------------------------------------------------------------------------------
+[segment 11/32]  start=168,203  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 0
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c04  entity=e155  reps: 
+  slot(role)=c00  entity=e151  reps: 
+  slot(role)=c05  entity=e156  reps: 
+
+--------------------------------------------------------------------------------
+[segment 12/32]  start=236,410  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c11  entity=e176  reps: 
+  slot(role)=c05  entity=e171  reps: 
+  slot(role)=c13  entity=e178  reps: 
+
+--------------------------------------------------------------------------------
+[segment 13/32]  start=130,443  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c04  entity=e185  reps: 
+  slot(role)=c07  entity=e187  reps: 
+  slot(role)=c11  entity=e191  reps: 
+
+--------------------------------------------------------------------------------
+[segment 14/32]  start=157,123  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c00  entity=e196  reps: 
+  slot(role)=c11  entity=e206  reps: 
+  slot(role)=c06  entity=e006  reps: ,, the, ., of, and, a, to, ;
+
+--------------------------------------------------------------------------------
+[segment 15/32]  start=251,430  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c04  entity=e215  reps: 
+  slot(role)=c15  entity=e225  reps: 
+  slot(role)=c12  entity=e222  reps: 
+
+--------------------------------------------------------------------------------
+[segment 16/32]  start=188,945  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c08  entity=e233  reps: 
+  slot(role)=c06  entity=e006  reps: ,, the, ., of, and, a, to, ;
+  slot(role)=c02  entity=e228  reps: 
+
+--------------------------------------------------------------------------------
+[segment 17/32]  start=163,763  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c01  entity=e242  reps: 
+  slot(role)=c04  entity=e245  reps: 
+  slot(role)=c03  entity=e244  reps: 
+
+--------------------------------------------------------------------------------
+[segment 18/32]  start=140,803  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c06  entity=e006  reps: ,, the, ., of, and, a, to, ;
+  slot(role)=c13  entity=e268  reps: 
+  slot(role)=c00  entity=e256  reps: 
+
+--------------------------------------------------------------------------------
+[segment 19/32]  start=145,023  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c03  entity=e274  reps: 
+  slot(role)=c15  entity=e285  reps: 
+  slot(role)=c04  entity=e275  reps: 
+
+--------------------------------------------------------------------------------
+[segment 20/32]  start=242,191  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c13  entity=e298  reps: 
+  slot(role)=c08  entity=e293  reps: 
+  slot(role)=c14  entity=e299  reps: 
+
+--------------------------------------------------------------------------------
+[segment 21/32]  start=71,835  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c03  entity=e304  reps: 
+  slot(role)=c00  entity=e301  reps: 
+  slot(role)=c08  entity=e308  reps: 
+
+--------------------------------------------------------------------------------
+[segment 22/32]  start=211,312  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c03  entity=e319  reps: 
+  slot(role)=c13  entity=e328  reps: 
+  slot(role)=c06  entity=e006  reps: ,, the, ., of, and, a, to, ;
+
+--------------------------------------------------------------------------------
+[segment 23/32]  start=173,762  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c11  entity=e341  reps: 
+  slot(role)=c13  entity=e343  reps: 
+  slot(role)=c07  entity=e337  reps: 
+
+--------------------------------------------------------------------------------
+[segment 24/32]  start=709  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c13  entity=e358  reps: 
+  slot(role)=c03  entity=e349  reps: 
+  slot(role)=c08  entity=e353  reps: 
+
+--------------------------------------------------------------------------------
+[segment 25/32]  start=102,087  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c07  entity=e367  reps: 
+  slot(role)=c01  entity=e362  reps: 
+  slot(role)=c03  entity=e364  reps: 
+
+--------------------------------------------------------------------------------
+[segment 26/32]  start=222,074  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c03  entity=e379  reps: 
+  slot(role)=c07  entity=e382  reps: 
+  slot(role)=c01  entity=e377  reps: 
+
+--------------------------------------------------------------------------------
+[segment 27/32]  start=143,571  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c13  entity=e403  reps: 
+  slot(role)=c12  entity=e402  reps: 
+  slot(role)=c00  entity=e391  reps: 
+
+--------------------------------------------------------------------------------
+[segment 28/32]  start=8,698  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c01  entity=e407  reps: 
+  slot(role)=c11  entity=e416  reps: 
+  slot(role)=c13  entity=e418  reps: 
+
+--------------------------------------------------------------------------------
+[segment 29/32]  start=198,112  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c10  entity=e430  reps: 
+  slot(role)=c01  entity=e422  reps: 
+  slot(role)=c09  entity=e429  reps: 
+
+--------------------------------------------------------------------------------
+[segment 30/32]  start=188,986  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c00  entity=e436  reps: 
+  slot(role)=c05  entity=e441  reps: 
+  slot(role)=c10  entity=e445  reps: 
+
+--------------------------------------------------------------------------------
+[segment 31/32]  start=219,269  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c04  entity=e455  reps: 
+  slot(role)=c11  entity=e461  reps: 
+  slot(role)=c08  entity=e458  reps: 
+
+--------------------------------------------------------------------------------
+[segment 32/32]  start=45,496  len=256  time=2026-01-27 09:40:39
+--------------------------------------------------------------------------------
+Entities alive: 166   births: 15   retired: 15
+Avg stability (context overlap): 1.0000
+Relational surprise: 0.0000
+
+ROLE→ROLE FLOWS (top 10 within this segment)
+  c06→c06  count= 255  J_cc=1.000  e006→e006
+
+ROLE 'SLOTS' (example fillings)
+  slot(role)=c07  entity=e472  reps: 
+  slot(role)=c10  entity=e475  reps: 
+  slot(role)=c09  entity=e474  reps: 
+
+================================================================================
+FINAL ENTITY REGISTRY SUMMARY
+================================================================================
+e006  bound_role=c06  conf=0.733  last_seen_seg=31
+e316  bound_role=c00  conf=0.500  last_seen_seg=21
+e317  bound_role=c01  conf=0.500  last_seen_seg=21
+e318  bound_role=c02  conf=0.500  last_seen_seg=21
+e319  bound_role=c03  conf=0.500  last_seen_seg=21
+e320  bound_role=c04  conf=0.500  last_seen_seg=21
+e321  bound_role=c05  conf=0.500  last_seen_seg=21
+e322  bound_role=c07  conf=0.500  last_seen_seg=21
+e323  bound_role=c08  conf=0.500  last_seen_seg=21
+e324  bound_role=c09  conf=0.500  last_seen_seg=21
+e325  bound_role=c10  conf=0.500  last_seen_seg=21
+e326  bound_role=c11  conf=0.500  last_seen_seg=21
+e327  bound_role=c12  conf=0.500  last_seen_seg=21
+e328  bound_role=c13  conf=0.500  last_seen_seg=21
+e329  bound_role=c14  conf=0.500  last_seen_seg=21
+e330  bound_role=c15  conf=0.500  last_seen_seg=21
+e331  bound_role=c00  conf=0.500  last_seen_seg=22
+e332  bound_role=c01  conf=0.500  last_seen_seg=22
+e333  bound_role=c02  conf=0.500  last_seen_seg=22
+e334  bound_role=c03  conf=0.500  last_seen_seg=22
+
+Wrote JSON report: step6_out/step6_results.json
+Wrote plot: step6_out/entity_count.png
+Wrote plot: step6_out/avg_stability.png
+Wrote plot: step6_out/relational_surprise.png
+Wrote plot: step6_out/births.png
+Wrote plot: step6_out/retired.png
+
+Done.
