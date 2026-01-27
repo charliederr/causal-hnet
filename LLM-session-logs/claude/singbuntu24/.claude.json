@@ -1,5 +1,5 @@
 {
-  "numStartups": 1,
+  "numStartups": 3,
   "tipsHistory": {
     "new-user-warmup": 1,
     "plan-mode-for-complex-tasks": 1,
@@ -8,11 +8,35 @@
     "theme-command": 1,
     "status-line": 1,
     "stickers-command": 1,
-    "prompt-queue": 1
+    "prompt-queue": 1,
+    "enter-to-steer-in-relatime": 1,
+    "todo-list": 1,
+    "install-github-app": 1,
+    "install-slack-app": 1,
+    "drag-and-drop-images": 1,
+    "double-esc-code-restore": 1,
+    "continue": 1,
+    "shift-tab": 1,
+    "image-paste": 1,
+    "ultrathink-keyword": 1,
+    "web-app": 1,
+    "mobile-app": 1,
+    "guest-passes": 2,
+    "ide-upsell-external-terminal": 3
   },
-  "promptQueueUseCount": 1,
+  "promptQueueUseCount": 2,
   "cachedStatsigGates": {
-    "tengu_prompt_suggestion": true
+    "tengu_prompt_suggestion": true,
+    "tengu_session_memory": false,
+    "tengu_vscode_review_upsell": false,
+    "tengu_year_end_2025_campaign_promo": false
+  },
+  "cachedDynamicConfigs": {
+    "tengu_1p_event_batch_config": {
+      "scheduledDelayMillis": 5000,
+      "maxExportBatchSize": 200,
+      "maxQueueSize": 8192
+    }
   },
   "cachedGrowthBookFeatures": {
     "tengu_1p_event_batch_config": {
@@ -20,7 +44,7 @@
       "maxExportBatchSize": 200,
       "maxQueueSize": 8192
     },
-    "tengu_mcp_tool_search": false,
+    "tengu_mcp_tool_search": true,
     "tengu_scratch": false,
     "tengu_disable_bypass_permissions_mode": false,
     "tengu_log_segment_events": false,
@@ -29,7 +53,7 @@
     "tengu_tool_pear": false,
     "tengu_thinkback": false,
     "tengu_pid_based_version_locking": true,
-    "tengu_sumi": false,
+    "tengu_sumi": true,
     "tengu_c4w_usage_limit_notifications_enabled": true,
     "tengu-top-of-feed-tip": {
       "tip": "",
@@ -41,7 +65,12 @@
     "tengu_tool_search_unsupported_models": null,
     "tengu_ant_attribution_header_new": true,
     "tengu_accept_with_feedback": true,
-    "tengu_permission_explainer": false
+    "tengu_permission_explainer": false,
+    "strawberry_granite_flag": "N/A",
+    "persimmon_marble_flag": "N/A",
+    "enhanced_telemetry_beta": false,
+    "tengu_vscode_review_upsell": false,
+    "tengu_vscode_onboarding": false
   },
   "userID": "11de482ffbb950bcbad23fbef82a13c8c6e708e078193095f96ef31ec2d8acd8",
   "firstStartTime": "2026-01-12T09:54:24.242Z",
@@ -80,6 +109,124 @@
         "version": null,
         "packageManager": null
       }
+    },
+    "/home/ni/vscode-ish/FabricPC": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": false,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false,
+      "exampleFiles": [
+        "base.py",
+        "graph_net.py",
+        "train.py",
+        "types.py",
+        "multi_gpu.py"
+      ],
+      "exampleFilesGeneratedAt": 1768481609206
+    },
+    "/home/ni": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": false,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false,
+      "exampleFiles": [],
+      "reactVulnerabilityCache": {
+        "detected": false,
+        "package": null,
+        "packageName": null,
+        "version": null,
+        "packageManager": null
+      },
+      "lastCost": 1.1820302500000002,
+      "lastAPIDuration": 302868,
+      "lastAPIDurationWithoutRetries": 302804,
+      "lastToolDuration": 12553,
+      "lastDuration": 196585116,
+      "lastLinesAdded": 39,
+      "lastLinesRemoved": 1,
+      "lastTotalInputTokens": 64054,
+      "lastTotalOutputTokens": 11069,
+      "lastTotalCacheCreationInputTokens": 65625,
+      "lastTotalCacheReadInputTokens": 1011090,
+      "lastTotalWebSearchRequests": 0,
+      "lastModelUsage": {
+        "claude-opus-4-5-20251101": {
+          "inputTokens": 4305,
+          "outputTokens": 9119,
+          "cacheReadInputTokens": 1011090,
+          "cacheCreationInputTokens": 55091,
+          "webSearchRequests": 0,
+          "costUSD": 1.0993637500000002
+        },
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 59749,
+          "outputTokens": 1950,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 10534,
+          "webSearchRequests": 0,
+          "costUSD": 0.08266649999999999
+        }
+      },
+      "lastSessionId": "7f193c4e-4cb0-49d6-8e6e-e63790115c6c"
+    },
+    "/home/ni/c": {
+      "allowedTools": [],
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 0,
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false,
+      "reactVulnerabilityCache": {
+        "detected": false,
+        "package": null,
+        "packageName": null,
+        "version": null,
+        "packageManager": null
+      },
+      "lastCost": 0.17338049999999997,
+      "lastAPIDuration": 29238,
+      "lastAPIDurationWithoutRetries": 29235,
+      "lastToolDuration": 0,
+      "lastDuration": 714743,
+      "lastLinesAdded": 0,
+      "lastLinesRemoved": 0,
+      "lastTotalInputTokens": 4195,
+      "lastTotalOutputTokens": 993,
+      "lastTotalCacheCreationInputTokens": 26876,
+      "lastTotalCacheReadInputTokens": 31707,
+      "lastTotalWebSearchRequests": 0,
+      "lastModelUsage": {
+        "claude-opus-4-5-20251101": {
+          "inputTokens": 4068,
+          "outputTokens": 840,
+          "cacheReadInputTokens": 31707,
+          "cacheCreationInputTokens": 16340,
+          "webSearchRequests": 0,
+          "costUSD": 0.1593185
+        },
+        "claude-haiku-4-5-20251001": {
+          "inputTokens": 127,
+          "outputTokens": 153,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 10536,
+          "webSearchRequests": 0,
+          "costUSD": 0.014062000000000002
+        }
+      },
+      "lastSessionId": "551e8618-d1dd-42f6-a012-3028c274a109"
     }
   },
   "lastReleaseNotesSeen": "2.1.5",
@@ -89,16 +236,28 @@
   "groveConfigCache": {
     "0cd8c3c8-c315-44bd-97d5-c29da7a09fdd": {
       "grove_enabled": true,
-      "timestamp": 1768211697659
+      "timestamp": 1768753855008
     }
   },
   "s1mAccessCache": {
     "2402dae7-8213-4e26-8630-89e0eaaf6b43": {
-      "hasAccess": false,
+      "hasAccess": true,
       "hasAccessNotAsDefault": false,
-      "timestamp": 1768211697888
+      "timestamp": 1768753856147
     }
   },
   "officialMarketplaceAutoInstallAttempted": true,
-  "officialMarketplaceAutoInstalled": true
+  "officialMarketplaceAutoInstalled": true,
+  "opusProMigrationComplete": true,
+  "passesEligibilityCache": {
+    "2402dae7-8213-4e26-8630-89e0eaaf6b43": {
+      "eligible": true,
+      "referral_code_details": {
+        "code": "k2dfWx1law",
+        "campaign": "claude_code_guest_pass",
+        "referral_link": "https://claude.ai/referral/k2dfWx1law"
+      },
+      "timestamp": 1768753856213
+    }
+  }
 }

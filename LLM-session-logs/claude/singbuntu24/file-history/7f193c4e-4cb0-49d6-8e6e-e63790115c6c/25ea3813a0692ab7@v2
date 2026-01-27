@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Fix Audio Settings
+Exec=sh -c "sleep 2 && amixer -c 2 sset 'Speaker' unmute && amixer -c 2 sset 'Auto-Mute Mode' Enabled"
+Hidden=false
+NoDisplay=true
+X-GNOME-Autostart-enabled=true
+X-KDE-autostart-after=panel

@@ -1,0 +1,28 @@
+monitor.alsa.rules = [
+  {
+    matches = [
+      {
+        node.name = "alsa_output.pci-0000_05_00.6.HiFi__hw_Generic_1__sink"
+      }
+    ]
+    actions = {
+      update-props = {
+        priority.driver = 2000
+        priority.session = 2000
+      }
+    }
+  }
+  {
+    matches = [
+      {
+        node.name = "alsa_input.pci-0000_05_00.6.HiFi__hw_acp63__source"
+      }
+    ]
+    actions = {
+      update-props = {
+        priority.driver = 2000
+        priority.session = 2000
+      }
+    }
+  }
+]
