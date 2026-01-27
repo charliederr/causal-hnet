@@ -1,0 +1,647 @@
+2026-01-14T18:30:05.418Z [DEBUG] [LSP MANAGER] initializeLspServerManager() called
+2026-01-14T18:30:05.418Z [DEBUG] [LSP MANAGER] Created manager instance, state=pending
+2026-01-14T18:30:05.418Z [DEBUG] [LSP MANAGER] Starting async initialization (generation 1)
+2026-01-14T18:30:05.420Z [DEBUG] LSP server manager initialized successfully
+2026-01-14T18:30:05.420Z [DEBUG] LSP notification handlers registered successfully for all 0 server(s)
+2026-01-14T18:30:05.420Z [DEBUG] Found 0 plugins (0 enabled, 0 disabled)
+2026-01-14T18:30:05.423Z [DEBUG] Stats cache is up to date
+2026-01-14T18:30:05.428Z [DEBUG] [SLOW OPERATION DETECTED] execSyncWithDefaults_DEPRECATED (5.0ms): ldd /bin/ls 2>/dev/null
+2026-01-14T18:30:05.451Z [DEBUG] [SLOW OPERATION DETECTED] execSyncWithDefaults_DEPRECATED (22.9ms): ps -o command= -p 6696
+2026-01-14T18:30:05.451Z [DEBUG] Cannot acquire lock for 2.0.76 - held by PID 6696
+2026-01-14T18:30:05.454Z [DEBUG] Loading skills from: managed=/etc/claude-code/.claude/skills, user=/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/skills, project=[]
+2026-01-14T18:30:05.454Z [DEBUG] Passes: Using fresh cached eligibility data
+2026-01-14T18:30:05.477Z [DEBUG] [SLOW OPERATION DETECTED] execSyncWithDefaults_DEPRECATED (21.9ms): ps aux | grep -E "code|cursor|windsurf|idea|pycharm|webstorm|phpstorm|rubymine|clion|goland|rider|da
+2026-01-14T18:30:05.478Z [DEBUG] installed_plugins.json doesn't exist, returning empty V2 object
+2026-01-14T18:30:05.483Z [DEBUG] Creating shell snapshot for bash (/bin/bash)
+2026-01-14T18:30:05.483Z [DEBUG] Looking for shell config file: /home/ni/.bashrc
+2026-01-14T18:30:05.483Z [DEBUG] Snapshots directory: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/shell-snapshots
+2026-01-14T18:30:05.483Z [DEBUG] Creating snapshot at: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/shell-snapshots/snapshot-bash-1768415405483-8oydj1.sh
+2026-01-14T18:30:05.483Z [DEBUG] Shell binary exists: true
+2026-01-14T18:30:05.483Z [DEBUG] Execution timeout: 10000ms
+2026-01-14T18:30:05.484Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/todos/2eb358a9-3161-454f-acd1-c0d7834876c9-agent-2eb358a9-3161-454f-acd1-c0d7834876c9.json.tmp.42832.1768415405484
+2026-01-14T18:30:05.508Z [DEBUG] [SLOW OPERATION DETECTED] fs.writeFileSync (23.8ms)
+2026-01-14T18:30:05.508Z [DEBUG] Temp file written successfully, size: 2 bytes
+2026-01-14T18:30:05.508Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/todos/2eb358a9-3161-454f-acd1-c0d7834876c9-agent-2eb358a9-3161-454f-acd1-c0d7834876c9.json.tmp.42832.1768415405484 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/todos/2eb358a9-3161-454f-acd1-c0d7834876c9-agent-2eb358a9-3161-454f-acd1-c0d7834876c9.json
+2026-01-14T18:30:05.508Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/todos/2eb358a9-3161-454f-acd1-c0d7834876c9-agent-2eb358a9-3161-454f-acd1-c0d7834876c9.json written atomically
+2026-01-14T18:30:05.512Z [DEBUG] getPluginSkills: Processing 0 enabled plugins
+2026-01-14T18:30:05.512Z [DEBUG] Total plugin skills loaded: 0
+2026-01-14T18:30:05.512Z [DEBUG] Total plugin commands loaded: 0
+2026-01-14T18:30:05.512Z [DEBUG] Registered 0 hooks from 0 plugins
+2026-01-14T18:30:05.513Z [ERROR] Error: Error: NON-FATAL: Lock acquisition failed for /home/ni/.local/share/claude/versions/2.0.76 (expected in multi-process scenarios)
+    at W3$ (/$bunfs/root/claude:2427:2165)
+    at TTA (/$bunfs/root/claude:2427:1276)
+    at processTicksAndRejections (native:7:39)
+2026-01-14T18:30:05.515Z [DEBUG] Total plugin agents loaded: 0
+2026-01-14T18:30:05.515Z [DEBUG] Loaded 0 unique skills (managed: 0, user: 0, project: 0, legacy commands: 0)
+2026-01-14T18:30:05.515Z [DEBUG] getSkills returning: 0 skill dir commands, 0 plugin skills
+2026-01-14T18:30:05.544Z [DEBUG] Git remote URL: https://github.com/matthewbehrend/FabricPC.git
+2026-01-14T18:30:05.544Z [DEBUG] Parsed repository: matthewbehrend/FabricPC from https://github.com/matthewbehrend/FabricPC.git
+2026-01-14T18:30:05.544Z [DEBUG] Parsed repository: matthewbehrend/FabricPC from URL: https://github.com/matthewbehrend/FabricPC.git
+2026-01-14T18:30:05.544Z [DEBUG] Path /home/ni/repos/vsc/FabricPC already tracked for repo matthewbehrend/fabricpc
+2026-01-14T18:30:05.548Z [DEBUG] Shell snapshot created successfully (4538 bytes)
+2026-01-14T18:30:05.607Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.42832.1768415405607
+2026-01-14T18:30:05.607Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T18:30:05.609Z [DEBUG] Temp file written successfully, size: 80096 bytes
+2026-01-14T18:30:05.609Z [DEBUG] Applied original permissions to temp file
+2026-01-14T18:30:05.609Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.42832.1768415405607 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T18:30:05.609Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T18:30:05.739Z [DEBUG] Metrics opt-out API response: enabled=true, vcsLinking=false
+2026-01-14T18:30:05.801Z [DEBUG] Ripgrep first use test: PASSED (mode=builtin, path=/home/ni/.local/share/claude/versions/2.0.76)
+2026-01-14T18:30:06.310Z [DEBUG] Passes: Using fresh cached eligibility data
+2026-01-14T18:30:06.315Z [DEBUG] Initialized versioned plugins system with 0 plugins
+2026-01-14T18:30:06.317Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.42832.1768415406317
+2026-01-14T18:30:06.317Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T18:30:06.324Z [DEBUG] [SLOW OPERATION DETECTED] fs.writeFileSync (6.8ms)
+2026-01-14T18:30:06.324Z [DEBUG] Temp file written successfully, size: 80096 bytes
+2026-01-14T18:30:06.324Z [DEBUG] Applied original permissions to temp file
+2026-01-14T18:30:06.324Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.42832.1768415406317 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T18:30:06.324Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T18:30:06.327Z [DEBUG] Getting matching hook commands for SessionStart with query: startup
+2026-01-14T18:30:06.327Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:06.327Z [DEBUG] Matched 0 unique hooks for query "startup" (0 before deduplication)
+2026-01-14T18:30:06.331Z [DEBUG] Skills and commands included in Skill tool:
+2026-01-14T18:30:06.333Z [DEBUG] Summarizing all 9 messages (~0 tokens)
+2026-01-14T18:30:06.337Z [DEBUG] Getting matching hook commands for SubagentStart with query: Explore
+2026-01-14T18:30:06.337Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:06.337Z [DEBUG] Matched 0 unique hooks for query "Explore" (0 before deduplication)
+2026-01-14T18:30:06.339Z [DEBUG] Getting matching hook commands for SubagentStart with query: Plan
+2026-01-14T18:30:06.339Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:06.339Z [DEBUG] Matched 0 unique hooks for query "Plan" (0 before deduplication)
+2026-01-14T18:30:06.359Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.42832.1768415406359
+2026-01-14T18:30:06.359Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T18:30:06.360Z [DEBUG] Temp file written successfully, size: 80023 bytes
+2026-01-14T18:30:06.360Z [DEBUG] Applied original permissions to temp file
+2026-01-14T18:30:06.360Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.42832.1768415406359 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T18:30:06.360Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T18:30:06.362Z [DEBUG] Official marketplace auto-install skipped: already_attempted
+2026-01-14T18:30:06.362Z [DEBUG] performStartupChecks called
+2026-01-14T18:30:06.362Z [DEBUG] Starting background plugin installations
+2026-01-14T18:30:06.362Z [DEBUG] performBackgroundPluginInstallations called
+2026-01-14T18:30:06.366Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-14T18:30:06.368Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.42832.1768415406368
+2026-01-14T18:30:06.368Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T18:30:06.369Z [DEBUG] Temp file written successfully, size: 80096 bytes
+2026-01-14T18:30:06.369Z [DEBUG] Applied original permissions to temp file
+2026-01-14T18:30:06.369Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.42832.1768415406368 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T18:30:06.369Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T18:30:06.370Z [DEBUG] Setting installation status: 0 marketplaces, 0 installable plugins, 0 uninstallable plugins
+2026-01-14T18:30:06.370Z [DEBUG] Loaded plugins - Enabled: 0, Disabled: 0, Commands: 0, Agents: 0, Errors: 0
+2026-01-14T18:30:06.373Z [DEBUG] Successfully refreshed marketplace: claude-plugins-official
+2026-01-14T18:30:06.373Z [DEBUG] Plugin autoupdate: checking installed plugins
+2026-01-14T18:30:06.394Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.42832.1768415406394
+2026-01-14T18:30:06.394Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T18:30:06.395Z [DEBUG] Temp file written successfully, size: 80096 bytes
+2026-01-14T18:30:06.395Z [DEBUG] Applied original permissions to temp file
+2026-01-14T18:30:06.395Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.42832.1768415406394 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T18:30:06.395Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T18:30:06.796Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:07.995Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-14T18:30:07.995Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:07.995Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T18:30:08.279Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:08.855Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:09.618Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-14T18:30:09.618Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:09.618Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T18:30:14.689Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-14T18:30:14.689Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-14T18:30:14.689Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-14T18:30:14.689Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-14T18:30:14.700Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-14T18:30:14.700Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:14.700Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T18:30:14.704Z [DEBUG] FileHistory: Added snapshot for a8ae549e-70dd-4bcf-ac3e-70215285d208, tracking 0 files
+2026-01-14T18:30:14.713Z [DEBUG] Total plugin output styles loaded: 0
+2026-01-14T18:30:15.123Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:17.057Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:21.546Z [DEBUG] executePreToolHooks called for tool: Task
+2026-01-14T18:30:21.549Z [DEBUG] Getting matching hook commands for PreToolUse with query: Task
+2026-01-14T18:30:21.549Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:21.549Z [DEBUG] Matched 0 unique hooks for query "Task" (0 before deduplication)
+2026-01-14T18:30:21.570Z [DEBUG] Getting matching hook commands for SubagentStart with query: Explore
+2026-01-14T18:30:21.570Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:21.570Z [DEBUG] Matched 0 unique hooks for query "Explore" (0 before deduplication)
+2026-01-14T18:30:22.177Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:23.327Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T18:30:23.327Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T18:30:23.334Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T18:30:23.334Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:23.334Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:30:23.334Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T18:30:23.334Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:23.335Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:30:23.335Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:30:23.338Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:30:23.338Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:23.338Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:23.362Z [ERROR] Error: Error: EISDIR: illegal operation on a directory, read
+    at readFileSync (unknown)
+    at <anonymous> (/$bunfs/root/claude:12:500)
+    at t4 (/$bunfs/root/claude:11:8463)
+    at readFileSync (/$bunfs/root/claude:12:465)
+    at sqI (/$bunfs/root/claude:4694:22550)
+    at call (/$bunfs/root/claude:963:945)
+    at call (/$bunfs/root/claude:959:6251)
+    at Ua9 (/$bunfs/root/claude:2139:17437)
+    at processTicksAndRejections (native:7:39)
+2026-01-14T18:30:23.366Z [DEBUG] tree-sitter: loaded from embedded
+2026-01-14T18:30:23.377Z [DEBUG] Getting matching hook commands for PostToolUseFailure with query: Read
+2026-01-14T18:30:23.377Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:23.377Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:23.379Z [DEBUG] No session environment scripts found
+2026-01-14T18:30:23.422Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-14T18:30:23.422Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:23.422Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:30:23.511Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-14T18:30:23.511Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:23.511Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:30:23.883Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:23.976Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:25.143Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:26.244Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T18:30:26.248Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T18:30:26.248Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:26.248Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:30:26.248Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:30:26.248Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:30:26.254Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:30:26.254Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:26.254Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:26.254Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:30:26.254Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:26.254Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:26.278Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:30:26.278Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:26.278Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:26.278Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:30:26.278Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:26.278Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:26.306Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-14T18:30:26.306Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:26.306Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:30:26.699Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:27.587Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:29.144Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T18:30:29.144Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T18:30:29.144Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T18:30:29.151Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T18:30:29.151Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:29.151Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:30:29.151Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T18:30:29.151Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:29.151Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:30:29.151Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T18:30:29.151Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:29.151Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:30:29.221Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-14T18:30:29.221Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:29.221Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:30:29.229Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-14T18:30:29.229Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:29.229Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:30:29.249Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-14T18:30:29.249Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:29.249Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:30:29.676Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:29.746Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:29.812Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:29.812Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:30.810Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:30:30.811Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:30:30.811Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:30:30.817Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:30:30.817Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:30.817Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:30.817Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:30:30.817Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:30.817Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:30.817Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:30:30.817Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:30.817Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:30.837Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:30:30.837Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:30.837Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:30.837Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:30:30.837Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:30.837Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:30.837Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:30:30.837Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:30.837Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:32.474Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:33.848Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:30:33.848Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:30:33.849Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:30:33.856Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:30:33.856Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:33.856Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:33.856Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:30:33.856Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:33.856Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:33.856Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:30:33.856Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:33.856Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:33.879Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:30:33.879Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:33.879Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:33.879Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:30:33.879Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:33.879Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:33.879Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:30:33.879Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:33.879Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:35.592Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:37.072Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:30:37.072Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:30:37.072Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:30:37.076Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:30:37.076Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:37.076Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:37.076Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:30:37.076Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:37.076Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:37.076Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:30:37.076Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:37.076Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:37.098Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:30:37.098Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:37.098Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:37.098Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:30:37.098Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:37.098Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:37.098Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:30:37.098Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:37.098Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:38.473Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:39.758Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T18:30:39.762Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T18:30:39.762Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:39.762Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:30:39.762Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:30:39.762Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:30:39.771Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:30:39.771Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:39.771Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:39.771Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:30:39.771Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:39.771Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:39.795Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:30:39.795Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:39.795Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:39.795Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:30:39.795Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:39.795Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:39.825Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-14T18:30:39.825Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:39.825Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:30:40.221Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:41.635Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:42.696Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:30:42.696Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:30:42.699Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:30:42.699Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:42.699Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:42.699Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:30:42.699Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:42.699Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:42.721Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:30:42.721Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:42.721Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:42.721Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:30:42.721Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:42.721Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:44.475Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:45.895Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T18:30:45.898Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T18:30:45.898Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:45.898Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:30:45.898Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:30:45.899Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:30:45.905Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:30:45.905Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:45.905Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:45.905Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:30:45.905Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:45.905Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:45.930Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:30:45.930Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:45.930Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:45.930Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:30:45.930Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:45.930Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:30:46.052Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-14T18:30:46.052Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:30:46.052Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:30:46.471Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:30:47.894Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:31:14.352Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-14T18:31:14.352Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:31:14.352Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T18:31:14.358Z [DEBUG] Getting matching hook commands for PostToolUse with query: Task
+2026-01-14T18:31:14.358Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:31:14.358Z [DEBUG] Matched 0 unique hooks for query "Task" (0 before deduplication)
+2026-01-14T18:31:14.368Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-14T18:31:14.368Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-14T18:31:14.368Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-14T18:31:14.368Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-14T18:31:17.372Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:31:27.814Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-14T18:31:27.840Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-14T18:31:27.840Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:31:27.840Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T18:31:27.846Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.42832.1768415487846
+2026-01-14T18:31:27.846Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T18:31:27.850Z [DEBUG] Temp file written successfully, size: 80096 bytes
+2026-01-14T18:31:27.850Z [DEBUG] Applied original permissions to temp file
+2026-01-14T18:31:27.850Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.42832.1768415487846 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T18:31:27.850Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T18:31:30.070Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:31:36.242Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-14T18:31:36.242Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:31:36.242Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T18:32:27.859Z [DEBUG] Getting matching hook commands for Notification with query: idle_prompt
+2026-01-14T18:32:27.859Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:32:27.859Z [DEBUG] Matched 0 unique hooks for query "idle_prompt" (0 before deduplication)
+2026-01-14T18:32:55.117Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-14T18:32:55.117Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-14T18:32:55.117Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-14T18:32:55.117Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-14T18:32:55.123Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-14T18:32:55.123Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:32:55.123Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T18:32:55.123Z [DEBUG] FileHistory: Making snapshot for message c830af89-e14f-4853-8e2b-30468cb9be00
+2026-01-14T18:32:55.123Z [DEBUG] FileHistory: Added snapshot for c830af89-e14f-4853-8e2b-30468cb9be00, tracking 0 files
+2026-01-14T18:32:56.086Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:32:57.589Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:33:00.260Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:33:00.261Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:33:00.263Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:33:00.263Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:33:00.263Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:33:00.263Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:33:00.263Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:33:00.263Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:33:00.280Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:33:00.280Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:33:00.280Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:33:00.280Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:33:00.280Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:33:00.280Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:33:00.288Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-14T18:33:00.288Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-14T18:33:00.288Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-14T18:33:00.288Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-14T18:33:02.736Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:33:05.099Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:33:05.100Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:33:05.105Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:33:05.105Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:33:05.105Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:33:05.105Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:33:05.105Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:33:05.105Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:33:05.122Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:33:05.122Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:33:05.122Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:33:05.122Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:33:05.122Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:33:05.122Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:33:05.128Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-14T18:33:05.128Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-14T18:33:05.128Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-14T18:33:05.128Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-14T18:33:08.056Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:33:23.306Z [DEBUG] [SLOW OPERATION DETECTED] fs.existsSync (5.4ms)
+2026-01-14T18:33:38.137Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-14T18:33:38.201Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-14T18:33:38.201Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:33:38.201Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T18:33:41.347Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:33:46.674Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-14T18:33:46.674Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:33:46.674Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T18:34:38.217Z [DEBUG] Getting matching hook commands for Notification with query: idle_prompt
+2026-01-14T18:34:38.217Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:34:38.217Z [DEBUG] Matched 0 unique hooks for query "idle_prompt" (0 before deduplication)
+2026-01-14T18:39:49.099Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-14T18:39:49.099Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-14T18:39:49.099Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-14T18:39:49.099Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-14T18:39:49.107Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-14T18:39:49.107Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:39:49.107Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T18:39:49.110Z [DEBUG] FileHistory: Making snapshot for message 4d396f37-7c37-48bc-9787-25e2a609b8ad
+2026-01-14T18:39:49.110Z [DEBUG] FileHistory: Added snapshot for 4d396f37-7c37-48bc-9787-25e2a609b8ad, tracking 0 files
+2026-01-14T18:39:49.613Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:39:51.423Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:39:53.481Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:39:53.483Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:39:53.483Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:39:53.483Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:39:53.499Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:39:53.499Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:39:53.499Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:39:53.504Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-14T18:39:53.504Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-14T18:39:53.504Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-14T18:39:53.504Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-14T18:39:56.440Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:40:46.984Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-14T18:40:46.985Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-14T18:40:46.987Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-14T18:40:47.173Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-14T18:40:47.173Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:40:47.173Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T18:40:49.589Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:40:57.828Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-14T18:40:57.828Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:40:57.828Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T18:41:47.186Z [DEBUG] Getting matching hook commands for Notification with query: idle_prompt
+2026-01-14T18:41:47.186Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:41:47.186Z [DEBUG] Matched 0 unique hooks for query "idle_prompt" (0 before deduplication)
+2026-01-15T00:30:21.405Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T00:30:21.405Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T00:32:18.497Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.42832.1768437138497
+2026-01-15T00:32:18.497Z [DEBUG] Preserving file permissions: 100644
+2026-01-15T00:32:18.499Z [DEBUG] Temp file written successfully, size: 80096 bytes
+2026-01-15T00:32:18.499Z [DEBUG] Applied original permissions to temp file
+2026-01-15T00:32:18.499Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.42832.1768437138497 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-15T00:32:18.499Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-15T01:00:21.402Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T01:00:21.402Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T01:30:21.402Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T01:30:21.402Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T02:00:21.403Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T02:00:21.403Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T02:30:21.400Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T02:30:21.400Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T03:00:21.402Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T03:00:21.402Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T03:30:21.403Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T03:30:21.403Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T04:00:21.401Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T04:00:21.402Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T04:30:21.403Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T04:30:21.403Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T05:00:21.403Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T05:00:21.403Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T05:30:21.403Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T05:30:21.403Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T06:00:21.404Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T06:00:21.404Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T06:30:21.405Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T06:30:21.406Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T06:32:20.821Z [DEBUG] [SLOW OPERATION DETECTED] fs.copyFileSync (22.2ms)
+2026-01-15T06:32:20.821Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.42832.1768458740821
+2026-01-15T06:32:20.821Z [DEBUG] Preserving file permissions: 100644
+2026-01-15T06:32:20.841Z [DEBUG] [SLOW OPERATION DETECTED] fs.writeFileSync (19.4ms)
+2026-01-15T06:32:20.841Z [DEBUG] Temp file written successfully, size: 80096 bytes
+2026-01-15T06:32:20.841Z [DEBUG] Applied original permissions to temp file
+2026-01-15T06:32:20.841Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.42832.1768458740821 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-15T06:32:20.841Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-15T07:00:21.404Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T07:00:21.404Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T07:30:21.403Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T07:30:21.403Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T08:00:21.406Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T08:00:21.406Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T08:30:21.405Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T08:30:21.405Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T14:37:07.270Z [DEBUG] Getting matching hook commands for SessionEnd with query: prompt_input_exit
+2026-01-15T14:37:07.270Z [DEBUG] Found 0 hook matchers in settings
+2026-01-15T14:37:07.270Z [DEBUG] Matched 0 unique hooks for query "prompt_input_exit" (0 before deduplication)

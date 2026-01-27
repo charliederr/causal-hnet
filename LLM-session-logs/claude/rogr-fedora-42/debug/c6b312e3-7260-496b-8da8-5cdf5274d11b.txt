@@ -373,3 +373,186 @@
 2026-01-14T10:26:26.324Z [DEBUG] Getting matching hook commands for Notification with query: idle_prompt
 2026-01-14T10:26:26.324Z [DEBUG] Found 0 hook matchers in settings
 2026-01-14T10:26:26.324Z [DEBUG] Matched 0 unique hooks for query "idle_prompt" (0 before deduplication)
+2026-01-15T00:15:42.683Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T00:15:42.683Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T00:45:42.682Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T00:45:42.682Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T01:15:42.684Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T01:15:42.685Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T01:45:42.683Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T01:45:42.683Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T02:15:42.683Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T02:15:42.683Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T02:45:42.685Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T02:45:42.685Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T03:15:42.685Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T03:15:42.685Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T03:45:42.684Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T03:45:42.684Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T04:15:42.685Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T04:15:42.685Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T04:45:42.686Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T04:45:42.686Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T05:15:42.685Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T05:15:42.685Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T05:45:42.687Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T05:45:42.687Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T06:15:42.686Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T06:15:42.686Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T06:45:42.685Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T06:45:42.685Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T07:15:42.684Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T07:15:42.684Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T07:45:42.685Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T07:45:42.685Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T08:15:42.687Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T08:15:42.687Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T08:45:42.687Z [ERROR] Error: Error: 1P event logging: 2 events failed to export
+    at queueFailedEvents (/$bunfs/root/claude:187:35345)
+    at doExport (/$bunfs/root/claude:187:34453)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T08:45:42.687Z [ERROR] Error: Error: {"message":"Failed to export 2 events","originalLine":"187","originalColumn":"34532","line":"187","column":"34532","sourceURL":"/$bunfs/root/claude","stack":"Error: Failed to export 2 events\n    at doExport (/$bunfs/root/claude:187:34532)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (/$bunfs/root/claude:1615:25028)
+    at <anonymous> (/$bunfs/root/claude:186:61116)
+    at tT0 (/$bunfs/root/claude:186:61660)
+    at <anonymous> (/$bunfs/root/claude:187:17366)
+    at processTicksAndRejections (native:7:39)
+2026-01-15T14:36:51.362Z [DEBUG] Getting matching hook commands for SessionEnd with query: prompt_input_exit
+2026-01-15T14:36:51.362Z [DEBUG] Found 0 hook matchers in settings
+2026-01-15T14:36:51.362Z [DEBUG] Matched 0 unique hooks for query "prompt_input_exit" (0 before deduplication)

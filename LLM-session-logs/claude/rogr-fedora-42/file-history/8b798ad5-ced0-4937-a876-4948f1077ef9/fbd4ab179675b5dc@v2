@@ -1,0 +1,290 @@
+#!/usr/bin/env python3
+"""
+WordNet to MM2 converter.
+Parses WordNet 3.0 data files and outputs MM2 S-expressions.
+"""
+
+import os
+import re
+import sys
+from pathlib import Path
+
+WORDNET_DIR = "/usr/share/wordnet-3.0/dict"
+
+# Pointer symbol to relation name mapping
+POINTER_RELATIONS = {
+    "!": "antonym",
+    "@": "hypernym",
+    "@i": "instance-hypernym",
+    "~": "hyponym",
+    "~i": "instance-hyponym",
+    "#m": "holonym-member",
+    "#s": "holonym-substance",
+    "#p": "holonym-part",
+    "%m": "meronym-member",
+    "%s": "meronym-substance",
+    "%p": "meronym-part",
+    "=": "attribute",
+    "+": "derivation",
+    ";c": "domain-topic",
+    "-c": "domain-member-topic",
+    ";r": "domain-region",
+    "-r": "domain-member-region",
+    ";u": "domain-usage",
+    "-u": "domain-member-usage",
+    "*": "entailment",
+    ">": "cause",
+    "^": "also-see",
+    "$": "verb-group",
+    "&": "similar-to",
+    "<": "participle",
+    "\\": "pertainym",
+}
+
+# POS code to letter mapping
+POS_MAP = {
+    "n": "n",
+    "v": "v",
+    "a": "a",
+    "s": "a",  # adjective satellite -> adjective
+    "r": "r",
+}
+
+
+def escape_string(s):
+    """Escape a string for MM2 output."""
+    # Replace backslashes first, then quotes
+    s = s.replace("\\", "\\\\")
+    s = s.replace('"', '\\"')
+    return s
+
+
+def parse_data_line(line):
+    """
+    Parse a single line from a WordNet data file.
+    Returns dict with synset info or None for header lines.
+    """
+    # Skip header lines (start with spaces)
+    if line.startswith("  "):
+        return None
+
+    line = line.strip()
+    if not line:
+        return None
+
+    # Split off the gloss (after |)
+    if "|" in line:
+        data_part, gloss = line.split("|", 1)
+    else:
+        data_part = line
+        gloss = ""
+
+    parts = data_part.split()
+    if len(parts) < 6:
+        return None
+
+    synset_offset = parts[0]  # 8-digit offset
+    lex_filenum = parts[1]    # lexicographer file number
+    ss_type = parts[2]        # n, v, a, s, r
+    w_cnt = int(parts[3], 16) # word count (hex)
+
+    pos = POS_MAP.get(ss_type, ss_type)
+    synset_id = f"{synset_offset}-{pos}"
+
+    # Parse words
+    idx = 4
+    words = []
+    for _ in range(w_cnt):
+        if idx >= len(parts):
+            break
+        word = parts[idx]
+        lex_id = parts[idx + 1] if idx + 1 < len(parts) else "0"
+        # Clean up word (remove syntactic markers for adjectives)
+        word = re.sub(r'\([^)]*\)$', '', word)
+        words.append((word, lex_id))
+        idx += 2
+
+    # Parse pointer count
+    if idx >= len(parts):
+        return {
+            "synset_id": synset_id,
+            "pos": pos,
+            "lex_filenum": lex_filenum,
+            "words": words,
+            "pointers": [],
+        }
+
+    p_cnt = int(parts[idx])
+    idx += 1
+
+    # Parse pointers
+    pointers = []
+    for _ in range(p_cnt):
+        if idx + 3 >= len(parts):
+            break
+        ptr_symbol = parts[idx]
+        target_offset = parts[idx + 1]
+        target_pos = parts[idx + 2]
+        source_target = parts[idx + 3]  # source/target word numbers (0000 = all)
+
+        target_pos_mapped = POS_MAP.get(target_pos, target_pos)
+        target_id = f"{target_offset}-{target_pos_mapped}"
+
+        # Parse source/target word indices
+        src_word_num = int(source_target[:2], 16)
+        tgt_word_num = int(source_target[2:], 16)
+
+        pointers.append({
+            "symbol": ptr_symbol,
+            "target_id": target_id,
+            "src_word_num": src_word_num,
+            "tgt_word_num": tgt_word_num,
+        })
+        idx += 4
+
+    return {
+        "synset_id": synset_id,
+        "pos": pos,
+        "lex_filenum": lex_filenum,
+        "words": words,
+        "pointers": pointers,
+    }
+
+
+def parse_exception_file(filepath):
+    """Parse a morphological exception file."""
+    exceptions = []
+    with open(filepath, "r") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("  "):
+                continue
+            parts = line.split()
+            if len(parts) >= 2:
+                inflected = parts[0]
+                base_forms = parts[1:]
+                exceptions.append((inflected, base_forms))
+    return exceptions
+
+
+def generate_mm2(output_file):
+    """Generate MM2 S-expressions from WordNet data."""
+
+    data_files = [
+        ("data.noun", "n"),
+        ("data.verb", "v"),
+        ("data.adj", "a"),
+        ("data.adv", "r"),
+    ]
+
+    exception_files = [
+        ("noun.exc", "n"),
+        ("verb.exc", "v"),
+        ("adj.exc", "a"),
+        ("adv.exc", "r"),
+    ]
+
+    synset_count = 0
+    word_count = 0
+    relation_count = 0
+    exception_count = 0
+
+    with open(output_file, "w") as out:
+        out.write("; WordNet 3.0 in MM2 format\n")
+        out.write("; Generated by wordnet_to_mm2.py\n")
+        out.write(";\n")
+        out.write("; Synsets: (synset <id> <pos> <lex-filenum>)\n")
+        out.write("; Words: (word <synset-id> <lemma> <lex-id>)\n")
+        out.write("; Relations: (<relation> <source-id> <target-id>)\n")
+        out.write("; Word-level relations: (<relation> <src-id> <src-word> <tgt-id> <tgt-word>)\n")
+        out.write(";\n\n")
+
+        # Process each data file
+        for data_file, pos in data_files:
+            filepath = os.path.join(WORDNET_DIR, data_file)
+            if not os.path.exists(filepath):
+                print(f"Warning: {filepath} not found, skipping", file=sys.stderr)
+                continue
+
+            out.write(f"; === {data_file} ===\n")
+
+            with open(filepath, "r") as f:
+                for line in f:
+                    synset = parse_data_line(line)
+                    if synset is None:
+                        continue
+
+                    # Output synset
+                    out.write(f"(synset {synset['synset_id']} {synset['pos']} {synset['lex_filenum']})\n")
+                    synset_count += 1
+
+                    # Output words
+                    for word, lex_id in synset["words"]:
+                        escaped_word = escape_string(word)
+                        out.write(f'(word {synset["synset_id"]} "{escaped_word}" {lex_id})\n')
+                        word_count += 1
+
+                    # Output relations
+                    for ptr in synset["pointers"]:
+                        rel_name = POINTER_RELATIONS.get(ptr["symbol"], f"rel-{ptr['symbol']}")
+
+                        # Word-level relations (antonym, derivation, pertainym, etc.)
+                        if ptr["src_word_num"] != 0 or ptr["tgt_word_num"] != 0:
+                            # Get source and target words
+                            src_word = ""
+                            if ptr["src_word_num"] > 0 and ptr["src_word_num"] <= len(synset["words"]):
+                                src_word = synset["words"][ptr["src_word_num"] - 1][0]
+
+                            out.write(f'({rel_name} {synset["synset_id"]} "{escape_string(src_word)}" {ptr["target_id"]} {ptr["src_word_num"]} {ptr["tgt_word_num"]})\n')
+                        else:
+                            # Synset-level relation
+                            out.write(f"({rel_name} {synset['synset_id']} {ptr['target_id']})\n")
+
+                        relation_count += 1
+
+            out.write("\n")
+
+        # Process exception files
+        out.write("; === Morphological Exceptions ===\n")
+        for exc_file, pos in exception_files:
+            filepath = os.path.join(WORDNET_DIR, exc_file)
+            if not os.path.exists(filepath):
+                continue
+
+            exceptions = parse_exception_file(filepath)
+            for inflected, base_forms in exceptions:
+                for base in base_forms:
+                    out.write(f'(morph-exception {pos} "{escape_string(inflected)}" "{escape_string(base)}")\n')
+                    exception_count += 1
+
+        out.write("\n; === End of WordNet data ===\n")
+
+    return {
+        "synsets": synset_count,
+        "words": word_count,
+        "relations": relation_count,
+        "exceptions": exception_count,
+    }
+
+
+def main():
+    if len(sys.argv) > 1:
+        output_file = sys.argv[1]
+    else:
+        output_file = "wordnet.mm2"
+
+    print(f"Parsing WordNet from {WORDNET_DIR}")
+    print(f"Output file: {output_file}")
+
+    stats = generate_mm2(output_file)
+
+    print(f"\nGenerated {output_file}:")
+    print(f"  Synsets: {stats['synsets']:,}")
+    print(f"  Words: {stats['words']:,}")
+    print(f"  Relations: {stats['relations']:,}")
+    print(f"  Morph exceptions: {stats['exceptions']:,}")
+    print(f"  Total expressions: {sum(stats.values()):,}")
+
+
+if __name__ == "__main__":
+    main()

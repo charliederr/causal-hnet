@@ -1,0 +1,12 @@
+rule = {
+  matches = {
+    {
+      { "device.name", "equals", "alsa_card.pci-0000_69_00.6" },
+    },
+  },
+  apply_properties = {
+    ["device.profile"] = "output:analog-stereo+input:analog-stereo",
+  },
+}
+
+table.insert(alsa_monitor.rules, rule)

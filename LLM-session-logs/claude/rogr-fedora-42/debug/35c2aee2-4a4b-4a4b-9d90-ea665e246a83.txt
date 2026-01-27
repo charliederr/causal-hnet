@@ -1,0 +1,392 @@
+2026-01-14T18:28:16.916Z [DEBUG] [LSP MANAGER] initializeLspServerManager() called
+2026-01-14T18:28:16.916Z [DEBUG] [LSP MANAGER] Created manager instance, state=pending
+2026-01-14T18:28:16.916Z [DEBUG] [LSP MANAGER] Starting async initialization (generation 1)
+2026-01-14T18:28:16.917Z [DEBUG] LSP server manager initialized successfully
+2026-01-14T18:28:16.917Z [DEBUG] LSP notification handlers registered successfully for all 0 server(s)
+2026-01-14T18:28:16.917Z [DEBUG] Found 0 plugins (0 enabled, 0 disabled)
+2026-01-14T18:28:16.920Z [DEBUG] Stats cache is up to date
+2026-01-14T18:28:16.947Z [DEBUG] [SLOW OPERATION DETECTED] execSyncWithDefaults_DEPRECATED (21.5ms): ps -o command= -p 6696
+2026-01-14T18:28:16.947Z [DEBUG] Cannot acquire lock for 2.0.76 - held by PID 6696
+2026-01-14T18:28:16.949Z [DEBUG] Loading skills from: managed=/etc/claude-code/.claude/skills, user=/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/skills, project=[]
+2026-01-14T18:28:16.949Z [DEBUG] Passes: Using fresh cached eligibility data
+2026-01-14T18:28:16.974Z [DEBUG] [SLOW OPERATION DETECTED] execSyncWithDefaults_DEPRECATED (23.0ms): ps aux | grep -E "code|cursor|windsurf|idea|pycharm|webstorm|phpstorm|rubymine|clion|goland|rider|da
+2026-01-14T18:28:16.974Z [DEBUG] installed_plugins.json doesn't exist, returning empty V2 object
+2026-01-14T18:28:16.977Z [DEBUG] Creating shell snapshot for bash (/bin/bash)
+2026-01-14T18:28:16.977Z [DEBUG] Looking for shell config file: /home/ni/.bashrc
+2026-01-14T18:28:16.977Z [DEBUG] Snapshots directory: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/shell-snapshots
+2026-01-14T18:28:16.978Z [DEBUG] Creating snapshot at: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/shell-snapshots/snapshot-bash-1768415296977-1t47dh.sh
+2026-01-14T18:28:16.978Z [DEBUG] Shell binary exists: true
+2026-01-14T18:28:16.978Z [DEBUG] Execution timeout: 10000ms
+2026-01-14T18:28:16.979Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/todos/35c2aee2-4a4b-4a4b-9d90-ea665e246a83-agent-35c2aee2-4a4b-4a4b-9d90-ea665e246a83.json.tmp.41377.1768415296979
+2026-01-14T18:28:17.002Z [DEBUG] [SLOW OPERATION DETECTED] fs.writeFileSync (23.5ms)
+2026-01-14T18:28:17.002Z [DEBUG] Temp file written successfully, size: 2 bytes
+2026-01-14T18:28:17.002Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/todos/35c2aee2-4a4b-4a4b-9d90-ea665e246a83-agent-35c2aee2-4a4b-4a4b-9d90-ea665e246a83.json.tmp.41377.1768415296979 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/todos/35c2aee2-4a4b-4a4b-9d90-ea665e246a83-agent-35c2aee2-4a4b-4a4b-9d90-ea665e246a83.json
+2026-01-14T18:28:17.002Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/todos/35c2aee2-4a4b-4a4b-9d90-ea665e246a83-agent-35c2aee2-4a4b-4a4b-9d90-ea665e246a83.json written atomically
+2026-01-14T18:28:17.006Z [DEBUG] getPluginSkills: Processing 0 enabled plugins
+2026-01-14T18:28:17.006Z [DEBUG] Total plugin skills loaded: 0
+2026-01-14T18:28:17.006Z [DEBUG] Total plugin commands loaded: 0
+2026-01-14T18:28:17.006Z [DEBUG] Registered 0 hooks from 0 plugins
+2026-01-14T18:28:17.007Z [ERROR] Error: Error: NON-FATAL: Lock acquisition failed for /home/ni/.local/share/claude/versions/2.0.76 (expected in multi-process scenarios)
+    at W3$ (/$bunfs/root/claude:2427:2165)
+    at TTA (/$bunfs/root/claude:2427:1276)
+    at processTicksAndRejections (native:7:39)
+2026-01-14T18:28:17.009Z [DEBUG] Total plugin agents loaded: 0
+2026-01-14T18:28:17.009Z [DEBUG] Loaded 0 unique skills (managed: 0, user: 0, project: 0, legacy commands: 0)
+2026-01-14T18:28:17.010Z [DEBUG] getSkills returning: 0 skill dir commands, 0 plugin skills
+2026-01-14T18:28:17.049Z [DEBUG] Git remote URL: https://github.com/matthewbehrend/FabricPC.git
+2026-01-14T18:28:17.049Z [DEBUG] Parsed repository: matthewbehrend/FabricPC from https://github.com/matthewbehrend/FabricPC.git
+2026-01-14T18:28:17.049Z [DEBUG] Parsed repository: matthewbehrend/FabricPC from URL: https://github.com/matthewbehrend/FabricPC.git
+2026-01-14T18:28:17.050Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415297050
+2026-01-14T18:28:17.050Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T18:28:17.052Z [DEBUG] Temp file written successfully, size: 7119 bytes
+2026-01-14T18:28:17.052Z [DEBUG] Applied original permissions to temp file
+2026-01-14T18:28:17.052Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415297050 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T18:28:17.052Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T18:28:17.052Z [DEBUG] Added /home/ni/repos/vsc/FabricPC to tracked paths for repo matthewbehrend/fabricpc
+2026-01-14T18:28:17.088Z [DEBUG] Shell snapshot created successfully (4516 bytes)
+2026-01-14T18:28:17.131Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415297131
+2026-01-14T18:28:17.131Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T18:28:17.135Z [DEBUG] Temp file written successfully, size: 7120 bytes
+2026-01-14T18:28:17.135Z [DEBUG] Applied original permissions to temp file
+2026-01-14T18:28:17.135Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415297131 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T18:28:17.135Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T18:28:17.140Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415297140
+2026-01-14T18:28:17.140Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T18:28:17.141Z [DEBUG] Temp file written successfully, size: 78800 bytes
+2026-01-14T18:28:17.141Z [DEBUG] Applied original permissions to temp file
+2026-01-14T18:28:17.141Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415297140 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T18:28:17.142Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T18:28:17.157Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415297157
+2026-01-14T18:28:17.157Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T18:28:17.158Z [DEBUG] Temp file written successfully, size: 78800 bytes
+2026-01-14T18:28:17.158Z [DEBUG] Applied original permissions to temp file
+2026-01-14T18:28:17.158Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415297157 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T18:28:17.158Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T18:28:17.295Z [DEBUG] Ripgrep first use test: PASSED (mode=builtin, path=/home/ni/.local/share/claude/versions/2.0.76)
+2026-01-14T18:28:17.808Z [DEBUG] Successfully refreshed marketplace: claude-plugins-official
+2026-01-14T18:28:17.808Z [DEBUG] Plugin autoupdate: checking installed plugins
+2026-01-14T18:28:19.410Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415299410
+2026-01-14T18:28:19.410Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T18:28:19.414Z [DEBUG] Temp file written successfully, size: 78799 bytes
+2026-01-14T18:28:19.414Z [DEBUG] Applied original permissions to temp file
+2026-01-14T18:28:19.414Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415299410 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T18:28:19.414Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T18:28:19.560Z [DEBUG] Metrics opt-out API response: enabled=true, vcsLinking=false
+2026-01-14T18:28:19.669Z [DEBUG] Passes: Using fresh cached eligibility data
+2026-01-14T18:28:19.674Z [DEBUG] Initialized versioned plugins system with 0 plugins
+2026-01-14T18:28:19.678Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415299678
+2026-01-14T18:28:19.678Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T18:28:19.680Z [DEBUG] Temp file written successfully, size: 78799 bytes
+2026-01-14T18:28:19.680Z [DEBUG] Applied original permissions to temp file
+2026-01-14T18:28:19.680Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415299678 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T18:28:19.680Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T18:28:19.683Z [DEBUG] Getting matching hook commands for SessionStart with query: startup
+2026-01-14T18:28:19.683Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:28:19.683Z [DEBUG] Matched 0 unique hooks for query "startup" (0 before deduplication)
+2026-01-14T18:28:19.687Z [DEBUG] Skills and commands included in Skill tool:
+2026-01-14T18:28:19.690Z [DEBUG] Getting matching hook commands for SubagentStart with query: Explore
+2026-01-14T18:28:19.690Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:28:19.690Z [DEBUG] Matched 0 unique hooks for query "Explore" (0 before deduplication)
+2026-01-14T18:28:19.692Z [DEBUG] Getting matching hook commands for SubagentStart with query: Plan
+2026-01-14T18:28:19.692Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:28:19.692Z [DEBUG] Matched 0 unique hooks for query "Plan" (0 before deduplication)
+2026-01-14T18:28:19.709Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415299709
+2026-01-14T18:28:19.709Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T18:28:19.711Z [DEBUG] Temp file written successfully, size: 78726 bytes
+2026-01-14T18:28:19.711Z [DEBUG] Applied original permissions to temp file
+2026-01-14T18:28:19.711Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415299709 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T18:28:19.711Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T18:28:19.713Z [DEBUG] Official marketplace auto-install skipped: already_attempted
+2026-01-14T18:28:19.713Z [DEBUG] performStartupChecks called
+2026-01-14T18:28:19.713Z [DEBUG] Starting background plugin installations
+2026-01-14T18:28:19.713Z [DEBUG] performBackgroundPluginInstallations called
+2026-01-14T18:28:19.717Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-14T18:28:19.719Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415299719
+2026-01-14T18:28:19.719Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T18:28:19.720Z [DEBUG] Temp file written successfully, size: 78799 bytes
+2026-01-14T18:28:19.720Z [DEBUG] Applied original permissions to temp file
+2026-01-14T18:28:19.720Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415299719 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T18:28:19.720Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T18:28:19.720Z [DEBUG] Setting installation status: 0 marketplaces, 0 installable plugins, 0 uninstallable plugins
+2026-01-14T18:28:19.721Z [DEBUG] Loaded plugins - Enabled: 0, Disabled: 0, Commands: 0, Agents: 0, Errors: 0
+2026-01-14T18:28:19.735Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415299735
+2026-01-14T18:28:19.735Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T18:28:19.736Z [DEBUG] Temp file written successfully, size: 78980 bytes
+2026-01-14T18:28:19.736Z [DEBUG] Applied original permissions to temp file
+2026-01-14T18:28:19.736Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415299735 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T18:28:19.736Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T18:28:20.936Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:28:21.813Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:28:22.086Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-14T18:28:22.086Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:28:22.086Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T18:29:14.510Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-14T18:29:14.510Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-14T18:29:14.510Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-14T18:29:14.510Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-14T18:29:14.534Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-14T18:29:14.534Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:14.534Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-14T18:29:14.534Z [DEBUG] FileHistory: Added snapshot for e1a6dcf1-4876-4f71-b91c-da919d69dc27, tracking 0 files
+2026-01-14T18:29:14.546Z [DEBUG] Total plugin output styles loaded: 0
+2026-01-14T18:29:14.938Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:16.870Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:21.065Z [DEBUG] executePreToolHooks called for tool: Task
+2026-01-14T18:29:21.068Z [DEBUG] Getting matching hook commands for PreToolUse with query: Task
+2026-01-14T18:29:21.068Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:21.068Z [DEBUG] Matched 0 unique hooks for query "Task" (0 before deduplication)
+2026-01-14T18:29:21.086Z [DEBUG] Getting matching hook commands for SubagentStart with query: Explore
+2026-01-14T18:29:21.086Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:21.086Z [DEBUG] Matched 0 unique hooks for query "Explore" (0 before deduplication)
+2026-01-14T18:29:21.125Z [DEBUG] [SLOW OPERATION DETECTED] fs.writeFileSync (33.1ms)
+2026-01-14T18:29:21.936Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:23.548Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T18:29:23.549Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T18:29:23.549Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T18:29:23.555Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T18:29:23.555Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:23.555Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:23.555Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T18:29:23.555Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:23.555Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:23.555Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T18:29:23.555Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:23.555Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:23.583Z [DEBUG] tree-sitter: loaded from embedded
+2026-01-14T18:29:23.603Z [DEBUG] No session environment scripts found
+2026-01-14T18:29:23.712Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-14T18:29:23.712Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:23.712Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:23.726Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-14T18:29:23.726Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:23.726Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:23.797Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-14T18:29:23.797Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:23.797Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:24.106Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:24.251Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:24.469Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:25.376Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:26.563Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T18:29:26.566Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T18:29:26.566Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:26.566Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:26.566Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:29:26.566Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:29:26.569Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:29:26.569Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:26.569Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:26.569Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:29:26.569Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:26.569Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:26.597Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:29:26.597Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:26.597Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:26.597Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:29:26.597Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:26.597Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:26.663Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-14T18:29:26.663Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:26.663Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:27.266Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:27.774Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:28.375Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:29:28.375Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:29:28.376Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:29:28.382Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:29:28.382Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:28.383Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:28.383Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:29:28.383Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:28.383Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:28.383Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:29:28.383Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:28.383Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:28.403Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:29:28.403Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:28.403Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:28.403Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:29:28.403Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:28.403Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:28.403Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:29:28.403Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:28.403Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:29.226Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:30.669Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:29:30.670Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:29:30.670Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:29:30.678Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:29:30.678Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:30.678Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:30.678Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:29:30.678Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:30.678Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:30.678Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:29:30.678Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:30.678Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:30.700Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:29:30.700Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:30.700Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:30.700Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:29:30.700Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:30.700Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:30.700Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:29:30.700Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:30.700Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:31.439Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:33.092Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T18:29:33.098Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T18:29:33.098Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:33.098Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:33.098Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:29:33.098Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:29:33.102Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:29:33.102Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:33.102Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:33.102Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:29:33.102Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:33.102Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:33.131Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:29:33.131Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:33.131Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:33.131Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:29:33.131Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:33.131Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:33.167Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-14T18:29:33.167Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:33.167Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:33.565Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:34.219Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:35.610Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:29:35.610Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:29:35.610Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:29:35.614Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:29:35.614Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:35.614Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:35.614Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:29:35.614Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:35.614Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:35.614Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:29:35.614Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:35.614Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:35.636Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:29:35.636Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:35.636Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:35.636Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:29:35.636Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:35.636Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:35.636Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:29:35.636Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:35.636Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:37.022Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:38.496Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T18:29:38.497Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T18:29:38.497Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T18:29:38.500Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T18:29:38.500Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:38.500Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:38.500Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T18:29:38.500Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:38.500Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:38.500Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T18:29:38.500Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:38.500Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:38.558Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-14T18:29:38.558Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:38.558Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:38.571Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-14T18:29:38.571Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:38.571Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:38.597Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-14T18:29:38.597Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:38.597Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:39.025Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:39.032Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:39.178Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:40.010Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:41.200Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T18:29:41.203Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T18:29:41.203Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:41.203Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:41.203Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:29:41.204Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:29:41.206Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:29:41.206Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:41.206Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:41.206Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:29:41.206Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:41.206Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:41.227Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:29:41.227Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:41.227Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:41.227Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:29:41.227Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:41.227Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:41.262Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-14T18:29:41.262Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:41.262Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:41.843Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:42.662Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:43.926Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:29:43.927Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-14T18:29:43.930Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:29:43.930Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:43.930Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:43.930Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-14T18:29:43.930Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:43.930Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:43.950Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:29:43.950Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:43.950Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:43.950Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-14T18:29:43.950Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:43.950Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-14T18:29:45.380Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:46.634Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-14T18:29:46.636Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-14T18:29:46.637Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:46.637Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:47.307Z [DEBUG] Stream started - received first chunk
+2026-01-14T18:29:47.492Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Bash",
+        "ruleContent": "tree:*"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "localSettings"
+  }
+]
+2026-01-14T18:29:47.507Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-01-14T18:29:47.512Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-01-14T18:29:47.512Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:47.512Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-14T18:29:52.481Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-14T18:29:52.483Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415392483
+2026-01-14T18:29:52.483Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T18:29:52.523Z [DEBUG] [SLOW OPERATION DETECTED] fs.writeFileSync (40.6ms)
+2026-01-14T18:29:52.523Z [DEBUG] Temp file written successfully, size: 79004 bytes
+2026-01-14T18:29:52.523Z [DEBUG] Applied original permissions to temp file
+2026-01-14T18:29:52.523Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415392483 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T18:29:52.523Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T18:29:52.542Z [DEBUG] Getting matching hook commands for PostToolUseFailure with query: Task
+2026-01-14T18:29:52.542Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:52.542Z [DEBUG] Matched 0 unique hooks for query "Task" (0 before deduplication)
+2026-01-14T18:29:52.545Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415392545
+2026-01-14T18:29:52.545Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T18:29:52.548Z [DEBUG] Temp file written successfully, size: 79027 bytes
+2026-01-14T18:29:52.548Z [DEBUG] Applied original permissions to temp file
+2026-01-14T18:29:52.548Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415392545 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T18:29:52.548Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T18:29:52.558Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415392558
+2026-01-14T18:29:52.558Z [DEBUG] Preserving file permissions: 100644
+2026-01-14T18:29:52.560Z [DEBUG] Temp file written successfully, size: 79027 bytes
+2026-01-14T18:29:52.560Z [DEBUG] Applied original permissions to temp file
+2026-01-14T18:29:52.560Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.41377.1768415392558 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-14T18:29:52.560Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-14T18:29:54.951Z [DEBUG] Getting matching hook commands for SessionEnd with query: prompt_input_exit
+2026-01-14T18:29:54.951Z [DEBUG] Found 0 hook matchers in settings
+2026-01-14T18:29:54.951Z [DEBUG] Matched 0 unique hooks for query "prompt_input_exit" (0 before deduplication)

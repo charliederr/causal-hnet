@@ -1,0 +1,1293 @@
+2026-01-17T23:50:50.756Z [DEBUG] [LSP MANAGER] initializeLspServerManager() called
+2026-01-17T23:50:50.756Z [DEBUG] [LSP MANAGER] Created manager instance, state=pending
+2026-01-17T23:50:50.756Z [DEBUG] [LSP MANAGER] Starting async initialization (generation 1)
+2026-01-17T23:50:50.758Z [DEBUG] LSP server manager initialized successfully
+2026-01-17T23:50:50.758Z [DEBUG] LSP notification handlers registered successfully for all 0 server(s)
+2026-01-17T23:50:50.758Z [DEBUG] Found 0 plugins (0 enabled, 0 disabled)
+2026-01-17T23:50:50.769Z [DEBUG] Stats cache stale (2026-01-13), processing 2026-01-14 to 2026-01-16 in background
+2026-01-17T23:50:50.775Z [DEBUG] [SLOW OPERATION DETECTED] execSyncWithDefaults_DEPRECATED (5.4ms): ldd /bin/ls 2>/dev/null
+2026-01-17T23:50:50.778Z [DEBUG] Acquired PID lock for 2.0.76 (PID 72823)
+2026-01-17T23:50:50.780Z [DEBUG] Loading skills from: managed=/etc/claude-code/.claude/skills, user=/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/skills, project=[]
+2026-01-17T23:50:50.780Z [DEBUG] Passes: Cache stale, returning cached data and refreshing in background
+2026-01-17T23:50:50.816Z [DEBUG] [SLOW OPERATION DETECTED] execSyncWithDefaults_DEPRECATED (34.4ms): ps aux | grep -E "code|cursor|windsurf|idea|pycharm|webstorm|phpstorm|rubymine|clion|goland|rider|da
+2026-01-17T23:50:50.817Z [DEBUG] installed_plugins.json doesn't exist, returning empty V2 object
+2026-01-17T23:50:50.822Z [DEBUG] Creating shell snapshot for bash (/bin/bash)
+2026-01-17T23:50:50.822Z [DEBUG] Looking for shell config file: /home/ni/.bashrc
+2026-01-17T23:50:50.822Z [DEBUG] Snapshots directory: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/shell-snapshots
+2026-01-17T23:50:50.823Z [DEBUG] Creating snapshot at: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/shell-snapshots/snapshot-bash-1768693850822-86k2xt.sh
+2026-01-17T23:50:50.823Z [DEBUG] Shell binary exists: true
+2026-01-17T23:50:50.823Z [DEBUG] Execution timeout: 10000ms
+2026-01-17T23:50:50.824Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/todos/a185c8bd-7930-41b0-a7bf-2307d308e30f-agent-a185c8bd-7930-41b0-a7bf-2307d308e30f.json.tmp.72823.1768693850824
+2026-01-17T23:50:50.825Z [DEBUG] Temp file written successfully, size: 2 bytes
+2026-01-17T23:50:50.825Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/todos/a185c8bd-7930-41b0-a7bf-2307d308e30f-agent-a185c8bd-7930-41b0-a7bf-2307d308e30f.json.tmp.72823.1768693850824 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/todos/a185c8bd-7930-41b0-a7bf-2307d308e30f-agent-a185c8bd-7930-41b0-a7bf-2307d308e30f.json
+2026-01-17T23:50:50.825Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/todos/a185c8bd-7930-41b0-a7bf-2307d308e30f-agent-a185c8bd-7930-41b0-a7bf-2307d308e30f.json written atomically
+2026-01-17T23:50:50.827Z [DEBUG] getPluginSkills: Processing 0 enabled plugins
+2026-01-17T23:50:50.827Z [DEBUG] Total plugin skills loaded: 0
+2026-01-17T23:50:50.827Z [DEBUG] Total plugin commands loaded: 0
+2026-01-17T23:50:50.827Z [DEBUG] Registered 0 hooks from 0 plugins
+2026-01-17T23:50:50.829Z [DEBUG] Acquired PID lock on running version: /home/ni/.local/share/claude/versions/2.0.76
+2026-01-17T23:50:50.833Z [DEBUG] Total plugin agents loaded: 0
+2026-01-17T23:50:50.833Z [DEBUG] Loaded 0 unique skills (managed: 0, user: 0, project: 0, legacy commands: 0)
+2026-01-17T23:50:50.834Z [DEBUG] getSkills returning: 0 skill dir commands, 0 plugin skills
+2026-01-17T23:50:50.872Z [DEBUG] Stats cache saved successfully (lastComputedDate: 2026-01-16)
+2026-01-17T23:50:50.872Z [DEBUG] Stats cache updated with 4 new sessions
+2026-01-17T23:50:50.907Z [DEBUG] Git remote URL: git@github.com:matthewbehrend/FabricPC.git
+2026-01-17T23:50:50.907Z [DEBUG] Parsed repository: matthewbehrend/FabricPC from git@github.com:matthewbehrend/FabricPC.git
+2026-01-17T23:50:50.907Z [DEBUG] Parsed repository: matthewbehrend/FabricPC from URL: git@github.com:matthewbehrend/FabricPC.git
+2026-01-17T23:50:50.908Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693850908
+2026-01-17T23:50:50.908Z [DEBUG] Preserving file permissions: 100644
+2026-01-17T23:50:50.910Z [DEBUG] Temp file written successfully, size: 81222 bytes
+2026-01-17T23:50:50.910Z [DEBUG] Applied original permissions to temp file
+2026-01-17T23:50:50.910Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693850908 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-17T23:50:50.910Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-17T23:50:50.910Z [DEBUG] Added /home/ni/repos/FabricPC to tracked paths for repo matthewbehrend/fabricpc
+2026-01-17T23:50:50.929Z [DEBUG] Shell snapshot created successfully (4516 bytes)
+2026-01-17T23:50:50.945Z [ERROR] AxiosError: Error
+    at ry (/$bunfs/root/claude:58:1144)
+    at <anonymous> (/$bunfs/root/claude:59:10093)
+    at emit (node:events:92:22)
+    at endReadableNT (internal:streams/readable:862:50)
+    at processTicksAndRejections (native:7:39)
+    at request (/$bunfs/root/claude:61:2149)
+    at processTicksAndRejections (native:7:39)
+2026-01-17T23:50:50.982Z [DEBUG] Failed to fetch and cache passes eligibility
+2026-01-17T23:50:50.982Z [ERROR] AxiosError: Error
+    at ry (/$bunfs/root/claude:58:1144)
+    at <anonymous> (/$bunfs/root/claude:59:10093)
+    at emit (node:events:92:22)
+    at endReadableNT (internal:streams/readable:862:50)
+    at processTicksAndRejections (native:7:39)
+    at request (/$bunfs/root/claude:61:2149)
+    at processTicksAndRejections (native:7:39)
+2026-01-17T23:50:50.993Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693850993
+2026-01-17T23:50:50.993Z [DEBUG] Preserving file permissions: 100644
+2026-01-17T23:50:50.994Z [DEBUG] Temp file written successfully, size: 81222 bytes
+2026-01-17T23:50:50.994Z [DEBUG] Applied original permissions to temp file
+2026-01-17T23:50:50.994Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693850993 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-17T23:50:50.994Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-17T23:50:51.126Z [DEBUG] Ripgrep first use test: PASSED (mode=builtin, path=/home/ni/.local/share/claude/versions/2.0.76)
+2026-01-17T23:50:51.647Z [DEBUG] Successfully refreshed marketplace: claude-plugins-official
+2026-01-17T23:50:51.648Z [DEBUG] Plugin autoupdate: checking installed plugins
+2026-01-17T23:50:53.361Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693853361
+2026-01-17T23:50:53.361Z [DEBUG] Preserving file permissions: 100644
+2026-01-17T23:50:53.365Z [DEBUG] Temp file written successfully, size: 81595 bytes
+2026-01-17T23:50:53.365Z [DEBUG] Applied original permissions to temp file
+2026-01-17T23:50:53.365Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693853361 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-17T23:50:53.366Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-17T23:50:53.450Z [DEBUG] Failed to fetch Grove notice config: AxiosError: Request failed with status code 401
+2026-01-17T23:50:53.451Z [DEBUG] Passes: Cache stale, returning cached data and refreshing in background
+2026-01-17T23:50:53.456Z [DEBUG] Initialized versioned plugins system with 0 plugins
+2026-01-17T23:50:53.458Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693853458
+2026-01-17T23:50:53.458Z [DEBUG] Preserving file permissions: 100644
+2026-01-17T23:50:53.459Z [DEBUG] Temp file written successfully, size: 81595 bytes
+2026-01-17T23:50:53.459Z [DEBUG] Applied original permissions to temp file
+2026-01-17T23:50:53.459Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693853458 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-17T23:50:53.459Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-17T23:50:53.463Z [DEBUG] Getting matching hook commands for SessionStart with query: startup
+2026-01-17T23:50:53.463Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:50:53.463Z [DEBUG] Matched 0 unique hooks for query "startup" (0 before deduplication)
+2026-01-17T23:50:53.466Z [DEBUG] Skills and commands included in Skill tool:
+2026-01-17T23:50:53.481Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693853481
+2026-01-17T23:50:53.481Z [DEBUG] Preserving file permissions: 100644
+2026-01-17T23:50:53.483Z [DEBUG] Temp file written successfully, size: 81522 bytes
+2026-01-17T23:50:53.483Z [DEBUG] Applied original permissions to temp file
+2026-01-17T23:50:53.483Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693853481 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-17T23:50:53.483Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-17T23:50:53.485Z [DEBUG] Official marketplace auto-install skipped: already_attempted
+2026-01-17T23:50:53.485Z [DEBUG] performStartupChecks called
+2026-01-17T23:50:53.485Z [DEBUG] Starting background plugin installations
+2026-01-17T23:50:53.485Z [DEBUG] performBackgroundPluginInstallations called
+2026-01-17T23:50:53.489Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-17T23:50:53.491Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693853491
+2026-01-17T23:50:53.491Z [DEBUG] Preserving file permissions: 100644
+2026-01-17T23:50:53.492Z [DEBUG] Temp file written successfully, size: 81595 bytes
+2026-01-17T23:50:53.492Z [DEBUG] Applied original permissions to temp file
+2026-01-17T23:50:53.492Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693853491 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-17T23:50:53.492Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-17T23:50:53.492Z [DEBUG] Setting installation status: 0 marketplaces, 0 installable plugins, 0 uninstallable plugins
+2026-01-17T23:50:53.493Z [DEBUG] Loaded plugins - Enabled: 0, Disabled: 0, Commands: 0, Agents: 0, Errors: 0
+2026-01-17T23:50:53.495Z [DEBUG] Getting matching hook commands for SubagentStart with query: Explore
+2026-01-17T23:50:53.495Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:50:53.495Z [DEBUG] Matched 0 unique hooks for query "Explore" (0 before deduplication)
+2026-01-17T23:50:53.497Z [DEBUG] Getting matching hook commands for SubagentStart with query: Plan
+2026-01-17T23:50:53.497Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:50:53.497Z [DEBUG] Matched 0 unique hooks for query "Plan" (0 before deduplication)
+2026-01-17T23:50:53.500Z [DEBUG] Failed to check metrics opt-out status: Request failed with status code 401
+2026-01-17T23:50:53.500Z [ERROR] AxiosError: Error
+    at ry (/$bunfs/root/claude:58:1144)
+    at <anonymous> (/$bunfs/root/claude:59:10093)
+    at emit (node:events:92:22)
+    at endReadableNT (internal:streams/readable:862:50)
+    at processTicksAndRejections (native:7:39)
+    at request (/$bunfs/root/claude:61:2149)
+    at processTicksAndRejections (native:7:39)
+2026-01-17T23:50:53.509Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693853509
+2026-01-17T23:50:53.509Z [DEBUG] Preserving file permissions: 100644
+2026-01-17T23:50:53.510Z [DEBUG] Temp file written successfully, size: 81776 bytes
+2026-01-17T23:50:53.510Z [DEBUG] Applied original permissions to temp file
+2026-01-17T23:50:53.510Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693853509 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-17T23:50:53.510Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-17T23:50:53.537Z [DEBUG] Failed to fetch and cache passes eligibility
+2026-01-17T23:50:53.537Z [ERROR] AxiosError: Error
+    at ry (/$bunfs/root/claude:58:1144)
+    at <anonymous> (/$bunfs/root/claude:59:10093)
+    at emit (node:events:92:22)
+    at endReadableNT (internal:streams/readable:862:50)
+    at processTicksAndRejections (native:7:39)
+    at request (/$bunfs/root/claude:61:2149)
+    at processTicksAndRejections (native:7:39)
+2026-01-17T23:50:53.558Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693853558
+2026-01-17T23:50:53.558Z [DEBUG] Preserving file permissions: 100644
+2026-01-17T23:50:53.560Z [DEBUG] Temp file written successfully, size: 81776 bytes
+2026-01-17T23:50:53.560Z [DEBUG] Applied original permissions to temp file
+2026-01-17T23:50:53.560Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693853558 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-17T23:50:53.560Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-17T23:50:54.012Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693854012
+2026-01-17T23:50:54.012Z [DEBUG] Preserving file permissions: 100644
+2026-01-17T23:50:54.016Z [DEBUG] Temp file written successfully, size: 81776 bytes
+2026-01-17T23:50:54.016Z [DEBUG] Applied original permissions to temp file
+2026-01-17T23:50:54.016Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693854012 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-17T23:50:54.017Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-17T23:50:55.581Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:50:55.787Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:50:56.013Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693856013
+2026-01-17T23:50:56.013Z [DEBUG] Preserving file permissions: 100644
+2026-01-17T23:50:56.017Z [DEBUG] Temp file written successfully, size: 81964 bytes
+2026-01-17T23:50:56.017Z [DEBUG] Applied original permissions to temp file
+2026-01-17T23:50:56.017Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768693856013 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-17T23:50:56.017Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-17T23:50:56.913Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-17T23:50:56.913Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:50:56.913Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-17T23:50:56.968Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:53:32.180Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-17T23:53:32.180Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-17T23:53:32.180Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-17T23:53:32.180Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-17T23:53:32.197Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-17T23:53:32.197Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:32.197Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-17T23:53:32.199Z [DEBUG] FileHistory: Added snapshot for cd9374cd-b244-4ac7-b258-2645198941a5, tracking 0 files
+2026-01-17T23:53:32.208Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:53:32.210Z [DEBUG] Total plugin output styles loaded: 0
+2026-01-17T23:53:32.212Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:53:32.594Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:53:34.083Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:53:39.962Z [DEBUG] executePreToolHooks called for tool: Task
+2026-01-17T23:53:39.964Z [DEBUG] Getting matching hook commands for PreToolUse with query: Task
+2026-01-17T23:53:39.964Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:39.964Z [DEBUG] Matched 0 unique hooks for query "Task" (0 before deduplication)
+2026-01-17T23:53:39.981Z [DEBUG] Getting matching hook commands for SubagentStart with query: Explore
+2026-01-17T23:53:39.981Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:39.981Z [DEBUG] Matched 0 unique hooks for query "Explore" (0 before deduplication)
+2026-01-17T23:53:39.990Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:53:40.820Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:53:42.051Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-17T23:53:42.051Z [DEBUG] executePreToolHooks called for tool: Glob
+2026-01-17T23:53:42.054Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-17T23:53:42.054Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:42.054Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-17T23:53:42.054Z [DEBUG] Getting matching hook commands for PreToolUse with query: Glob
+2026-01-17T23:53:42.054Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:42.054Z [DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+2026-01-17T23:53:42.097Z [DEBUG] tree-sitter: loaded from embedded
+2026-01-17T23:53:42.126Z [DEBUG] No session environment scripts found
+2026-01-17T23:53:42.235Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:53:42.242Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-17T23:53:42.242Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:42.242Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-17T23:53:42.392Z [DEBUG] Getting matching hook commands for PostToolUse with query: Glob
+2026-01-17T23:53:42.392Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:42.392Z [DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+2026-01-17T23:53:42.410Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:53:42.726Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:53:42.953Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:53:44.154Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-17T23:53:44.154Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-17T23:53:44.154Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-17T23:53:44.158Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-17T23:53:44.158Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:44.158Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:44.158Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-17T23:53:44.158Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:44.158Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:44.158Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-17T23:53:44.158Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:44.158Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:44.182Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-17T23:53:44.182Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:44.182Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:44.182Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-17T23:53:44.182Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:44.182Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:44.182Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-17T23:53:44.182Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:44.182Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:44.207Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:53:45.148Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:53:46.467Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-17T23:53:46.467Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-17T23:53:46.467Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-17T23:53:46.470Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-17T23:53:46.470Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:46.470Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:46.470Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-17T23:53:46.470Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:46.470Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:46.470Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-17T23:53:46.470Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:46.470Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:46.490Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-17T23:53:46.490Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:46.490Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:46.490Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-17T23:53:46.490Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:46.490Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:46.490Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-17T23:53:46.490Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:46.490Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:46.516Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:53:47.227Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:53:48.292Z [DEBUG] executePreToolHooks called for tool: Grep
+2026-01-17T23:53:48.295Z [DEBUG] Getting matching hook commands for PreToolUse with query: Grep
+2026-01-17T23:53:48.295Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:48.295Z [DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+2026-01-17T23:53:48.295Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-17T23:53:48.298Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-17T23:53:48.298Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:48.298Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:48.317Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-17T23:53:48.317Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:48.317Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:48.605Z [DEBUG] Getting matching hook commands for PostToolUse with query: Grep
+2026-01-17T23:53:48.605Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:48.605Z [DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+2026-01-17T23:53:48.623Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:53:50.111Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:53:51.171Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-17T23:53:51.174Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-17T23:53:51.174Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:51.174Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-17T23:53:51.174Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-17T23:53:51.177Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-17T23:53:51.177Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:51.177Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:51.198Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-17T23:53:51.198Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:51.198Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:51.257Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:53:51.264Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-17T23:53:51.264Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:51.264Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-17T23:53:51.284Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:53:51.612Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:53:51.956Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:53:52.877Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-17T23:53:52.878Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-17T23:53:52.880Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-17T23:53:52.880Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:52.880Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:52.880Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-17T23:53:52.880Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:52.880Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:52.899Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-17T23:53:52.899Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:52.899Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:52.899Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-17T23:53:52.899Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:52.899Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:52.920Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:53:53.588Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:53:54.969Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-17T23:53:54.969Z [DEBUG] executePreToolHooks called for tool: Grep
+2026-01-17T23:53:54.973Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-17T23:53:54.973Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:54.973Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-17T23:53:54.973Z [DEBUG] Getting matching hook commands for PreToolUse with query: Grep
+2026-01-17T23:53:54.973Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:54.973Z [DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+2026-01-17T23:53:55.029Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:53:55.038Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-17T23:53:55.038Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:55.038Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-17T23:53:55.289Z [DEBUG] Getting matching hook commands for PostToolUse with query: Grep
+2026-01-17T23:53:55.289Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:55.289Z [DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+2026-01-17T23:53:55.305Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:53:55.703Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:53:56.032Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:53:57.026Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-17T23:53:57.029Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-17T23:53:57.029Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:57.029Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-17T23:53:57.029Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-17T23:53:57.032Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-17T23:53:57.032Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:57.032Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:57.054Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-17T23:53:57.054Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:57.054Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:57.100Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:53:57.106Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-17T23:53:57.106Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:57.106Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-17T23:53:57.124Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:53:57.680Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:53:57.980Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:53:59.098Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-17T23:53:59.101Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-17T23:53:59.101Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:59.101Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:59.119Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-17T23:53:59.119Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:53:59.119Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-17T23:53:59.134Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:53:59.766Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:54:25.306Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-17T23:54:25.306Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:54:25.306Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-17T23:54:25.315Z [DEBUG] Getting matching hook commands for PostToolUse with query: Task
+2026-01-17T23:54:25.315Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:54:25.315Z [DEBUG] Matched 0 unique hooks for query "Task" (0 before deduplication)
+2026-01-17T23:54:25.322Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-17T23:54:25.322Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-17T23:54:25.323Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-17T23:54:25.323Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-17T23:54:25.329Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:54:27.293Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:54:34.886Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-17T23:54:34.886Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:54:34.886Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-17T23:54:34.889Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:54:34.893Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768694074893
+2026-01-17T23:54:34.893Z [DEBUG] Preserving file permissions: 100644
+2026-01-17T23:54:34.896Z [DEBUG] Temp file written successfully, size: 10283 bytes
+2026-01-17T23:54:34.896Z [DEBUG] Applied original permissions to temp file
+2026-01-17T23:54:34.896Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768694074893 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-17T23:54:34.896Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-17T23:54:36.860Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:54:42.026Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-17T23:54:42.026Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:54:42.026Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-17T23:55:20.883Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-17T23:55:20.883Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:55:20.883Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-17T23:55:35.825Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-17T23:55:35.825Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-17T23:55:35.825Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-17T23:55:35.825Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-17T23:55:35.831Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-17T23:55:35.831Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:55:35.831Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-17T23:55:35.831Z [DEBUG] FileHistory: Making snapshot for message f78a9b85-fd10-4391-8930-8553d3ce43a3
+2026-01-17T23:55:35.831Z [DEBUG] FileHistory: Added snapshot for f78a9b85-fd10-4391-8930-8553d3ce43a3, tracking 0 files
+2026-01-17T23:55:35.837Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:55:35.841Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:55:36.187Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:55:37.797Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:55:50.356Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-17T23:55:50.359Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-17T23:55:50.359Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-17T23:55:50.359Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-17T23:55:50.359Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-17T23:55:50.379Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-17T23:55:50.379Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:55:50.379Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-17T23:55:50.381Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:55:52.463Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:55:58.048Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-17T23:55:58.048Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:55:58.048Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-17T23:56:50.387Z [DEBUG] Getting matching hook commands for Notification with query: idle_prompt
+2026-01-17T23:56:50.387Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:56:50.387Z [DEBUG] Matched 0 unique hooks for query "idle_prompt" (0 before deduplication)
+2026-01-17T23:58:26.516Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-17T23:58:26.516Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-17T23:58:26.516Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-17T23:58:26.516Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-17T23:58:26.522Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-17T23:58:26.522Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:58:26.522Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-17T23:58:26.522Z [DEBUG] FileHistory: Making snapshot for message bd3d6d42-c17c-4196-87da-566a2d742378
+2026-01-17T23:58:26.522Z [DEBUG] FileHistory: Added snapshot for bd3d6d42-c17c-4196-87da-566a2d742378, tracking 0 files
+2026-01-17T23:58:26.529Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:58:26.532Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:58:27.163Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:58:28.523Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:58:44.276Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-17T23:58:44.277Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-17T23:58:44.278Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-17T23:58:44.313Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-17T23:58:44.313Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:58:44.313Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-17T23:58:44.316Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-17T23:58:46.413Z [DEBUG] Stream started - received first chunk
+2026-01-17T23:58:53.569Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-17T23:58:53.569Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:58:53.569Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-17T23:59:44.325Z [DEBUG] Getting matching hook commands for Notification with query: idle_prompt
+2026-01-17T23:59:44.325Z [DEBUG] Found 0 hook matchers in settings
+2026-01-17T23:59:44.325Z [DEBUG] Matched 0 unique hooks for query "idle_prompt" (0 before deduplication)
+2026-01-18T00:01:32.913Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:01:32.913Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:01:32.913Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:01:32.913Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:01:32.921Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-18T00:01:32.921Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:01:32.921Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:01:32.924Z [DEBUG] FileHistory: Making snapshot for message 0716d520-c040-4f02-a69d-9006679cca36
+2026-01-18T00:01:32.924Z [DEBUG] FileHistory: Added snapshot for 0716d520-c040-4f02-a69d-9006679cca36, tracking 0 files
+2026-01-18T00:01:32.931Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:01:32.934Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:01:33.709Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:01:35.189Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:02:00.564Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-18T00:02:00.603Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-18T00:02:00.603Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:02:00.603Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:02:00.607Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:02:02.785Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:02:13.652Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-18T00:02:13.652Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:02:13.652Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:03:00.616Z [DEBUG] Getting matching hook commands for Notification with query: idle_prompt
+2026-01-18T00:03:00.616Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:03:00.616Z [DEBUG] Matched 0 unique hooks for query "idle_prompt" (0 before deduplication)
+2026-01-18T00:04:07.300Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:04:07.300Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:04:07.300Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:04:07.300Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:04:07.305Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-18T00:04:07.305Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:04:07.305Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:04:07.306Z [DEBUG] FileHistory: Making snapshot for message 6232e6be-cba1-4653-8245-eb2f600568be
+2026-01-18T00:04:07.306Z [DEBUG] FileHistory: Added snapshot for 6232e6be-cba1-4653-8245-eb2f600568be, tracking 0 files
+2026-01-18T00:04:07.312Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:04:07.316Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:04:07.833Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:04:09.195Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:04:26.520Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-18T00:04:26.546Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-18T00:04:26.546Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:04:26.546Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:04:26.549Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:04:28.554Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:04:40.617Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-18T00:04:40.617Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:04:40.617Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:05:26.560Z [DEBUG] Getting matching hook commands for Notification with query: idle_prompt
+2026-01-18T00:05:26.560Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:05:26.560Z [DEBUG] Matched 0 unique hooks for query "idle_prompt" (0 before deduplication)
+2026-01-18T00:06:38.786Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:06:38.786Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:06:38.786Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:06:38.786Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:06:38.793Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-18T00:06:38.793Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:06:38.793Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:06:38.793Z [DEBUG] FileHistory: Making snapshot for message 18edbe15-4cea-4c4b-b227-7677a14246fb
+2026-01-18T00:06:38.793Z [DEBUG] FileHistory: Added snapshot for 18edbe15-4cea-4c4b-b227-7677a14246fb, tracking 0 files
+2026-01-18T00:06:38.800Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:06:38.804Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:06:39.406Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:06:40.750Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:06:56.077Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-18T00:06:56.077Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:06:56.077Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:06:56.080Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:06:58.182Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:07:01.618Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-18T00:07:01.618Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:07:01.618Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:07:56.089Z [DEBUG] Getting matching hook commands for Notification with query: idle_prompt
+2026-01-18T00:07:56.089Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:07:56.089Z [DEBUG] Matched 0 unique hooks for query "idle_prompt" (0 before deduplication)
+2026-01-18T00:08:52.031Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:08:52.031Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:08:52.031Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:08:52.031Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:08:52.040Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-18T00:08:52.040Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:08:52.040Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:08:52.043Z [DEBUG] FileHistory: Making snapshot for message a91e0659-fb84-4b45-8bee-43354fdcd2e4
+2026-01-18T00:08:52.043Z [DEBUG] FileHistory: Added snapshot for a91e0659-fb84-4b45-8bee-43354fdcd2e4, tracking 0 files
+2026-01-18T00:08:52.051Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:08:52.055Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:08:53.053Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:08:53.995Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:09:17.658Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-18T00:09:17.658Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-18T00:09:17.688Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-18T00:09:17.688Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:09:17.688Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:09:17.692Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:09:19.700Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:09:27.135Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-18T00:09:27.135Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:09:27.135Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:11:03.700Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:11:03.700Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:11:03.700Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:11:03.700Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:11:03.709Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-18T00:11:03.709Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:11:03.709Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:11:03.709Z [DEBUG] FileHistory: Making snapshot for message 8418360d-58a8-416e-b8d5-66ff2520449b
+2026-01-18T00:11:03.710Z [DEBUG] FileHistory: Added snapshot for 8418360d-58a8-416e-b8d5-66ff2520449b, tracking 0 files
+2026-01-18T00:11:03.718Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:11:03.722Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:11:04.443Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:11:05.867Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:11:26.980Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-18T00:11:26.980Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-18T00:11:26.981Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-18T00:11:26.981Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-18T00:11:26.981Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-18T00:11:27.013Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-18T00:11:27.013Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:11:27.013Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:11:27.017Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:11:29.126Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:11:40.912Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-18T00:11:40.912Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:11:40.912Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:12:27.028Z [DEBUG] Getting matching hook commands for Notification with query: idle_prompt
+2026-01-18T00:12:27.028Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:12:27.028Z [DEBUG] Matched 0 unique hooks for query "idle_prompt" (0 before deduplication)
+2026-01-18T00:14:44.276Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:14:44.276Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:14:44.276Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:14:44.276Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:14:44.282Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-18T00:14:44.282Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:14:44.282Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:14:44.282Z [DEBUG] FileHistory: Making snapshot for message 60374049-7653-49c6-9bcb-2c5d2dd574c4
+2026-01-18T00:14:44.283Z [DEBUG] FileHistory: Added snapshot for 60374049-7653-49c6-9bcb-2c5d2dd574c4, tracking 0 files
+2026-01-18T00:14:44.289Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:14:44.293Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:14:45.105Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:14:46.194Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:15:05.061Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-18T00:15:05.063Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-18T00:15:05.102Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-18T00:15:05.102Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:15:05.102Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:15:05.105Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:15:07.194Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:15:14.656Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-18T00:15:14.656Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:15:14.656Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:16:05.112Z [DEBUG] Getting matching hook commands for Notification with query: idle_prompt
+2026-01-18T00:16:05.112Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:16:05.112Z [DEBUG] Matched 0 unique hooks for query "idle_prompt" (0 before deduplication)
+2026-01-18T00:16:55.514Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:16:55.514Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:16:55.514Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:16:55.514Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:16:55.520Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-18T00:16:55.520Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:16:55.520Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:16:55.520Z [DEBUG] FileHistory: Making snapshot for message e149265f-3a86-448f-8a7d-efebddb4ff85
+2026-01-18T00:16:55.520Z [DEBUG] FileHistory: Added snapshot for e149265f-3a86-448f-8a7d-efebddb4ff85, tracking 0 files
+2026-01-18T00:16:55.527Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:16:55.531Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:16:56.238Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:16:57.584Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:17:25.297Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-18T00:17:25.297Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-18T00:17:25.298Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-18T00:17:25.298Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-18T00:17:25.298Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-18T00:17:25.326Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-18T00:17:25.326Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:17:25.326Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:17:25.331Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:17:27.489Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:17:35.129Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-18T00:17:35.129Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:17:35.129Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:18:25.340Z [DEBUG] Getting matching hook commands for Notification with query: idle_prompt
+2026-01-18T00:18:25.340Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:18:25.340Z [DEBUG] Matched 0 unique hooks for query "idle_prompt" (0 before deduplication)
+2026-01-18T00:19:57.296Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:19:57.296Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:19:57.296Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:19:57.296Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:19:57.302Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-18T00:19:57.302Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:19:57.302Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:19:57.302Z [DEBUG] FileHistory: Making snapshot for message 1e3a9f56-d261-42dc-84e1-8176640610be
+2026-01-18T00:19:57.303Z [DEBUG] FileHistory: Added snapshot for 1e3a9f56-d261-42dc-84e1-8176640610be, tracking 0 files
+2026-01-18T00:19:57.310Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:19:57.314Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:19:58.100Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:19:59.358Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:20:33.516Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-18T00:20:33.552Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-18T00:20:33.552Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:20:33.552Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:20:33.557Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:20:35.631Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:20:44.323Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-18T00:20:44.323Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:20:44.323Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:22:21.154Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:22:21.154Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:22:21.154Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:22:21.154Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:22:21.160Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-18T00:22:21.160Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:22:21.160Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:22:21.160Z [DEBUG] FileHistory: Making snapshot for message 26da7fe3-a1d0-4d96-9e79-a8b3b528148f
+2026-01-18T00:22:21.160Z [DEBUG] FileHistory: Added snapshot for 26da7fe3-a1d0-4d96-9e79-a8b3b528148f, tracking 0 files
+2026-01-18T00:22:21.168Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:22:21.172Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:22:22.049Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:22:23.460Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:22:25.928Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-18T00:22:25.931Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-18T00:22:25.931Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:22:25.931Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:22:25.941Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:22:25.942Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:22:25.942Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:22:26.719Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:22:26.732Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:22:26.838Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:22:26.980Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Bash",
+        "ruleContent": "source:*"
+      },
+      {
+        "toolName": "Bash",
+        "ruleContent": "python examples/transformer_demo.py:*"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "localSettings"
+  }
+]
+2026-01-18T00:22:26.991Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-01-18T00:22:26.997Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-01-18T00:22:26.997Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:22:26.997Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:22:31.321Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-18T00:22:31.946Z [DEBUG] Getting matching hook commands for PostToolUseFailure with query: Bash
+2026-01-18T00:22:31.946Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:22:31.946Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:22:31.952Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:22:31.952Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:22:31.952Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:22:31.952Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:22:31.960Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:22:33.932Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:22:36.646Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-18T00:22:36.649Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-18T00:22:36.649Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:22:36.649Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:22:36.662Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:22:36.663Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:22:37.457Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:22:37.489Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:22:37.691Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Bash",
+        "ruleContent": "source:*"
+      },
+      {
+        "toolName": "Bash",
+        "ruleContent": "pip install:*"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "localSettings"
+  }
+]
+2026-01-18T00:22:37.699Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-01-18T00:22:37.703Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-01-18T00:22:37.703Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:22:37.703Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:22:40.932Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-18T00:22:42.710Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:22:42.717Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-18T00:22:42.717Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:22:42.717Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:22:42.724Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:22:42.724Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:22:42.724Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:22:42.724Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:22:42.734Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:22:43.633Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:22:44.789Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:22:46.276Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-18T00:22:46.279Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-18T00:22:46.279Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:22:46.279Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:22:46.297Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Bash",
+        "ruleContent": "source:*"
+      },
+      {
+        "toolName": "Bash",
+        "ruleContent": "python examples/transformer_demo.py:*"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "localSettings"
+  }
+]
+2026-01-18T00:22:46.307Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-01-18T00:22:46.312Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-01-18T00:22:46.312Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:22:46.312Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:22:50.509Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-18T00:27:50.851Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:27:50.864Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-18T00:27:50.864Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:27:50.864Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:27:50.870Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:27:50.870Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:27:50.870Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:27:50.870Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:27:50.884Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:27:51.353Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:27:53.233Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:27:54.663Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-18T00:27:54.670Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-18T00:27:54.670Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:27:54.670Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:27:54.682Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Read",
+        "ruleContent": "//tmp/claude/-home-ni-repos-FabricPC/tasks/**"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "session"
+  }
+]
+2026-01-18T00:27:54.693Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-01-18T00:27:54.698Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-01-18T00:27:54.698Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:27:54.698Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:28:00.696Z [DEBUG] Getting matching hook commands for Notification with query: permission_prompt
+2026-01-18T00:28:00.696Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:28:00.696Z [DEBUG] Matched 0 unique hooks for query "permission_prompt" (0 before deduplication)
+2026-01-18T00:28:42.299Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-18T00:28:42.409Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:28:42.418Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-18T00:28:42.418Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:28:42.418Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:28:42.428Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:28:42.428Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:28:42.428Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:28:42.428Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:28:42.444Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:28:42.764Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:28:44.395Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:28:46.625Z [DEBUG] executePreToolHooks called for tool: TaskOutput
+2026-01-18T00:28:46.628Z [DEBUG] Getting matching hook commands for PreToolUse with query: TaskOutput
+2026-01-18T00:28:46.628Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:28:46.628Z [DEBUG] Matched 0 unique hooks for query "TaskOutput" (0 before deduplication)
+2026-01-18T00:30:06.600Z [DEBUG] Getting matching hook commands for PostToolUseFailure with query: TaskOutput
+2026-01-18T00:30:06.600Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:30:06.600Z [DEBUG] Matched 0 unique hooks for query "TaskOutput" (0 before deduplication)
+2026-01-18T00:33:43.852Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:33:43.852Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:33:43.852Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:33:43.852Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:33:43.862Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-18T00:33:43.862Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:33:43.862Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:33:43.865Z [DEBUG] FileHistory: Making snapshot for message 1b47a536-68e0-47c7-9acc-e0b9d79dfd29
+2026-01-18T00:33:43.865Z [DEBUG] FileHistory: Added snapshot for 1b47a536-68e0-47c7-9acc-e0b9d79dfd29, tracking 0 files
+2026-01-18T00:33:43.873Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:33:43.877Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:33:44.945Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:33:45.885Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:33:47.103Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-18T00:33:47.107Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-18T00:33:47.107Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:33:47.107Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:33:47.123Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Read",
+        "ruleContent": "//tmp/claude/-home-ni-repos-FabricPC/tasks/**"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "session"
+  }
+]
+2026-01-18T00:33:47.135Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-01-18T00:33:47.142Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-01-18T00:33:47.142Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:33:47.142Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:33:50.615Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-18T00:33:50.729Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:33:50.738Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-18T00:33:50.738Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:33:50.738Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:33:50.745Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:33:50.745Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:33:50.745Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:33:50.745Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:33:50.759Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:33:51.089Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:33:53.282Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:33:54.849Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-18T00:33:54.855Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-18T00:33:54.855Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:33:54.855Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:33:54.971Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:33:54.979Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-18T00:33:54.979Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:33:54.979Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:33:54.986Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:33:54.986Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:33:54.986Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:33:54.986Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:33:54.995Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:33:55.595Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:33:57.036Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:34:00.187Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-18T00:34:00.190Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-18T00:34:00.190Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:34:00.190Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:34:00.221Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Read",
+        "ruleContent": "//tmp/claude/-home-ni-repos-FabricPC/tasks/**"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "session"
+  }
+]
+2026-01-18T00:34:00.230Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-01-18T00:34:00.236Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-01-18T00:34:00.236Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:34:00.236Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:34:06.232Z [DEBUG] Getting matching hook commands for Notification with query: permission_prompt
+2026-01-18T00:34:06.232Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:34:06.232Z [DEBUG] Matched 0 unique hooks for query "permission_prompt" (0 before deduplication)
+2026-01-18T00:34:07.772Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-18T00:34:07.815Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:34:07.826Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-18T00:34:07.826Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:34:07.826Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:34:07.833Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:34:07.833Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:34:07.833Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:34:07.833Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:34:07.849Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:34:08.175Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:34:10.056Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:34:12.781Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-18T00:34:12.785Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-18T00:34:12.785Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:34:12.785Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:34:12.801Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Read",
+        "ruleContent": "//tmp/claude/-home-ni-repos-FabricPC/tasks/**"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "session"
+  }
+]
+2026-01-18T00:34:12.816Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-01-18T00:34:12.820Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-01-18T00:34:12.820Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:34:12.820Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:34:17.490Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-18T00:34:17.567Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:34:17.576Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-18T00:34:17.576Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:34:17.576Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:34:17.582Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:34:17.582Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:34:17.582Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:34:17.582Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:34:17.592Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:34:18.203Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:34:19.724Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:34:22.093Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-18T00:34:22.099Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-18T00:34:22.099Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:34:22.099Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:34:22.108Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:34:22.108Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:34:22.108Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:34:22.454Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:34:22.714Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:34:22.901Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:34:23.136Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Bash",
+        "ruleContent": "nvidia-smi:*"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "localSettings"
+  }
+]
+2026-01-18T00:34:23.147Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-01-18T00:34:23.155Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-01-18T00:34:23.155Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:34:23.155Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:34:29.152Z [DEBUG] Getting matching hook commands for Notification with query: permission_prompt
+2026-01-18T00:34:29.152Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:34:29.152Z [DEBUG] Matched 0 unique hooks for query "permission_prompt" (0 before deduplication)
+2026-01-18T00:34:48.161Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-18T00:34:48.293Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:34:48.305Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-18T00:34:48.305Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:34:48.305Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:34:48.312Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:34:48.312Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:34:48.312Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:34:48.312Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:34:48.325Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:34:48.664Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:34:50.377Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:34:53.711Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-18T00:34:53.715Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-18T00:34:53.715Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:34:53.715Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:34:53.730Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Read",
+        "ruleContent": "//tmp/claude/-home-ni-repos-FabricPC/tasks/**"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "session"
+  }
+]
+2026-01-18T00:34:53.743Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-01-18T00:34:53.747Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-01-18T00:34:53.747Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:34:53.747Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:34:59.745Z [DEBUG] Getting matching hook commands for Notification with query: permission_prompt
+2026-01-18T00:34:59.745Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:34:59.745Z [DEBUG] Matched 0 unique hooks for query "permission_prompt" (0 before deduplication)
+2026-01-18T00:35:00.390Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-18T00:35:30.432Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:35:30.440Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-18T00:35:30.440Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:35:30.440Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:35:30.448Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:35:30.448Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:35:30.448Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:35:30.448Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:35:30.459Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:35:31.083Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:35:33.081Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:35:34.784Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-18T00:35:34.790Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-18T00:35:34.790Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:35:34.790Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:35:34.960Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:35:34.970Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-18T00:35:34.970Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:35:34.970Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:35:34.976Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:35:34.977Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:35:34.977Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:35:34.977Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:35:34.986Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:35:35.431Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:35:37.412Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:35:40.754Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-18T00:35:40.758Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-18T00:35:40.758Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:35:40.758Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:35:40.774Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Read",
+        "ruleContent": "//tmp/claude/-home-ni-repos-FabricPC/tasks/**"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "session"
+  }
+]
+2026-01-18T00:35:40.786Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-01-18T00:35:40.791Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-01-18T00:35:40.791Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:35:40.791Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:35:46.788Z [DEBUG] Getting matching hook commands for Notification with query: permission_prompt
+2026-01-18T00:35:46.788Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:35:46.788Z [DEBUG] Matched 0 unique hooks for query "permission_prompt" (0 before deduplication)
+2026-01-18T00:35:56.242Z [DEBUG] Applying permission update: Adding 1 allow rule(s) to destination 'session': ["Read(//tmp/claude/-home-ni-repos-FabricPC/tasks/**)"]
+2026-01-18T00:35:56.250Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-18T00:36:56.284Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:36:56.295Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-18T00:36:56.295Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:36:56.295Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:36:56.311Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:36:56.311Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:36:56.311Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:36:56.311Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:36:56.323Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:36:56.742Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:36:58.267Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:37:00.006Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-18T00:37:00.008Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-18T00:37:00.008Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:37:00.008Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:37:00.043Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:37:00.044Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:37:00.408Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:37:00.623Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:37:01.024Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Bash",
+        "ruleContent": "nvidia-smi:*"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "localSettings"
+  }
+]
+2026-01-18T00:37:01.034Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-01-18T00:37:01.041Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-01-18T00:37:01.041Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:37:01.041Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:37:07.039Z [DEBUG] Getting matching hook commands for Notification with query: permission_prompt
+2026-01-18T00:37:07.039Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:37:07.039Z [DEBUG] Matched 0 unique hooks for query "permission_prompt" (0 before deduplication)
+2026-01-18T00:47:47.836Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768697267836
+2026-01-18T00:47:47.836Z [DEBUG] Preserving file permissions: 100644
+2026-01-18T00:47:47.837Z [DEBUG] Temp file written successfully, size: 10311 bytes
+2026-01-18T00:47:47.837Z [DEBUG] Applied original permissions to temp file
+2026-01-18T00:47:47.837Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.72823.1768697267836 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-18T00:47:47.837Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-18T00:50:15.316Z [DEBUG] Persisting permission update: addRules to source 'localSettings'
+2026-01-18T00:50:15.316Z [DEBUG] Persisting 1 allow rule(s) to localSettings
+2026-01-18T00:50:15.316Z [DEBUG] Writing to temp file: /home/ni/repos/FabricPC/.claude/settings.local.json.tmp.72823.1768697415316
+2026-01-18T00:50:15.320Z [DEBUG] Temp file written successfully, size: 75 bytes
+2026-01-18T00:50:15.320Z [DEBUG] Renaming /home/ni/repos/FabricPC/.claude/settings.local.json.tmp.72823.1768697415316 to /home/ni/repos/FabricPC/.claude/settings.local.json
+2026-01-18T00:50:15.320Z [DEBUG] File /home/ni/repos/FabricPC/.claude/settings.local.json written atomically
+2026-01-18T00:50:15.322Z [DEBUG] Applying permission update: Adding 1 allow rule(s) to destination 'localSettings': ["Bash(nvidia-smi:*)"]
+2026-01-18T00:50:15.333Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-18T00:50:15.464Z [DEBUG] Getting matching hook commands for PostToolUseFailure with query: Bash
+2026-01-18T00:50:15.464Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:50:15.464Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:50:15.472Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:50:15.472Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:50:15.472Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:50:15.472Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:50:15.485Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:50:17.627Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:50:19.383Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-01-18T00:50:19.389Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-01-18T00:50:19.389Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:50:19.389Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:50:19.398Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:50:19.961Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:50:20.044Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Bash",
+        "ruleContent": "cat:*"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "localSettings"
+  }
+]
+2026-01-18T00:50:20.054Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-01-18T00:50:20.059Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-01-18T00:50:20.059Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:50:20.059Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:50:22.014Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-18T00:50:22.052Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:50:22.063Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-01-18T00:50:22.063Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:50:22.063Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-01-18T00:50:22.071Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:50:22.071Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:50:22.071Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:50:22.071Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:50:22.082Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:50:23.566Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:50:24.029Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:50:38.080Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-18T00:50:38.080Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:50:38.080Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:50:38.081Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:50:40.326Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:50:48.982Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-18T00:50:48.982Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:50:48.982Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:51:04.227Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:51:04.227Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:51:04.227Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:51:04.227Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:51:04.234Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-01-18T00:51:04.234Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:51:04.234Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:51:04.236Z [DEBUG] FileHistory: Making snapshot for message 25aa10e4-96e1-4aee-a60a-9b7561d9b305
+2026-01-18T00:51:04.236Z [DEBUG] FileHistory: Added snapshot for 25aa10e4-96e1-4aee-a60a-9b7561d9b305, tracking 0 files
+2026-01-18T00:51:04.244Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:51:04.248Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:51:04.809Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:51:06.605Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:51:07.917Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-18T00:51:07.920Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-18T00:51:07.920Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:51:07.920Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-18T00:51:07.937Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-18T00:51:07.937Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:51:07.937Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-18T00:51:07.942Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:51:07.942Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:51:07.942Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:51:07.942Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:51:07.951Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:51:10.334Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:51:12.621Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-18T00:51:12.624Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-18T00:51:12.624Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:51:12.624Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-18T00:51:12.837Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-18T00:51:12.837Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:51:12.837Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-18T00:51:12.842Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:51:12.842Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:51:12.842Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:51:12.842Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:51:12.854Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:51:15.548Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:51:18.389Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-18T00:51:18.389Z [DEBUG] executePreToolHooks called for tool: Read
+2026-01-18T00:51:18.394Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-18T00:51:18.394Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:51:18.394Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-18T00:51:18.394Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-01-18T00:51:18.394Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:51:18.394Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-18T00:51:18.412Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-18T00:51:18.412Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:51:18.412Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-18T00:51:18.412Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-01-18T00:51:18.412Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:51:18.412Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-01-18T00:51:18.418Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-01-18T00:51:18.418Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-01-18T00:51:18.418Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-01-18T00:51:18.418Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-01-18T00:51:18.427Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:51:21.005Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:51:46.430Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-01-18T00:51:46.430Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:51:46.430Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:51:46.431Z [DEBUG] Tool search enabled: 0 MCP tools will be deferred
+2026-01-18T00:51:49.000Z [DEBUG] Stream started - received first chunk
+2026-01-18T00:51:56.566Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-18T00:51:56.566Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:51:56.566Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-18T00:53:00.606Z [DEBUG] Getting matching hook commands for SessionEnd with query: prompt_input_exit
+2026-01-18T00:53:00.606Z [DEBUG] Found 0 hook matchers in settings
+2026-01-18T00:53:00.606Z [DEBUG] Matched 0 unique hooks for query "prompt_input_exit" (0 before deduplication)
+2026-01-22T12:51:23.985Z [DEBUG] Getting matching hook commands for SessionStart with query: resume
+2026-01-22T12:51:23.985Z [DEBUG] Found 0 hook matchers in settings
+2026-01-22T12:51:23.985Z [DEBUG] Matched 0 unique hooks for query "resume" (0 before deduplication)
+2026-01-22T12:51:23.990Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.100787.1769086283990
+2026-01-22T12:51:23.990Z [DEBUG] Preserving file permissions: 100644
+2026-01-22T12:51:23.994Z [DEBUG] Temp file written successfully, size: 87757 bytes
+2026-01-22T12:51:23.994Z [DEBUG] Applied original permissions to temp file
+2026-01-22T12:51:23.994Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.100787.1769086283990 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-22T12:51:23.994Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-22T12:51:24.009Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.012Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.013Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.013Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.013Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.017Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.017Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.017Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.021Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.025Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.035Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.035Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.042Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.042Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.042Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.042Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.042Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.046Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.048Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.054Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.054Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.055Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.055Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.055Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.060Z [DEBUG] Language not supported while highlighting code, falling back to markdown:
+2026-01-22T12:51:24.087Z [DEBUG] UserCommandMessage rendering: "exit" (args: "none")
+2026-01-22T12:51:24.087Z [DEBUG] isSkillFormat: false
+2026-01-22T12:51:24.243Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.100787.1769086284243
+2026-01-22T12:51:24.243Z [DEBUG] Preserving file permissions: 100644
+2026-01-22T12:51:24.244Z [DEBUG] Temp file written successfully, size: 87684 bytes
+2026-01-22T12:51:24.244Z [DEBUG] Applied original permissions to temp file
+2026-01-22T12:51:24.244Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.100787.1769086284243 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-22T12:51:24.244Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-22T12:51:24.252Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.100787.1769086284252
+2026-01-22T12:51:24.252Z [DEBUG] Preserving file permissions: 100644
+2026-01-22T12:51:24.254Z [DEBUG] Temp file written successfully, size: 87757 bytes
+2026-01-22T12:51:24.254Z [DEBUG] Applied original permissions to temp file
+2026-01-22T12:51:24.254Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.100787.1769086284252 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-22T12:51:24.254Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-22T12:51:24.254Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-01-22T12:51:24.257Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.100787.1769086284257
+2026-01-22T12:51:24.257Z [DEBUG] Preserving file permissions: 100644
+2026-01-22T12:51:24.258Z [DEBUG] Temp file written successfully, size: 87757 bytes
+2026-01-22T12:51:24.258Z [DEBUG] Applied original permissions to temp file
+2026-01-22T12:51:24.258Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json.tmp.100787.1769086284257 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json
+2026-01-22T12:51:24.258Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/rogr-fedora-42/.claude.json written atomically
+2026-01-22T12:52:50.100Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-01-22T12:52:50.100Z [DEBUG] Found 0 hook matchers in settings
+2026-01-22T12:52:50.100Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-01-22T14:48:10.727Z [DEBUG] Getting matching hook commands for SessionEnd with query: prompt_input_exit
+2026-01-22T14:48:10.727Z [DEBUG] Found 0 hook matchers in settings
+2026-01-22T14:48:10.727Z [DEBUG] Matched 0 unique hooks for query "prompt_input_exit" (0 before deduplication)

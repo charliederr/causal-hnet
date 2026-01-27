@@ -1,0 +1,327 @@
+#!/usr/bin/env python3
+"""
+WordNet to MM2 converter (v2) - Word-centric schema.
+Words are primary entries, relationships connect words directly.
+No offsets exposed.
+"""
+
+import os
+import re
+import sys
+from collections import defaultdict
+from pathlib import Path
+
+WORDNET_DIR = "/usr/share/wordnet-3.0/dict"
+
+# Pointer symbol to relation name mapping
+POINTER_RELATIONS = {
+    "!": "antonym",
+    "@": "hypernym",
+    "@i": "instance-hypernym",
+    "~": "hyponym",
+    "~i": "instance-hyponym",
+    "#m": "holonym-member",
+    "#s": "holonym-substance",
+    "#p": "holonym-part",
+    "%m": "meronym-member",
+    "%s": "meronym-substance",
+    "%p": "meronym-part",
+    "=": "attribute",
+    "+": "derivation",
+    ";c": "domain-topic",
+    "-c": "domain-member-topic",
+    ";r": "domain-region",
+    "-r": "domain-member-region",
+    ";u": "domain-usage",
+    "-u": "domain-member-usage",
+    "*": "entailment",
+    ">": "cause",
+    "^": "also-see",
+    "$": "verb-group",
+    "&": "similar-to",
+    "<": "participle",
+    "\\": "pertainym",
+}
+
+# POS code to letter mapping
+POS_MAP = {
+    "n": "n",
+    "v": "v",
+    "a": "a",
+    "s": "a",  # adjective satellite -> adjective
+    "r": "r",
+}
+
+
+def clean_word(word):
+    """Clean a word for use as an MM2 symbol."""
+    # Remove syntactic markers for adjectives (stuff in parens at end)
+    word = re.sub(r'\([^)]*\)$', '', word)
+    # Replace spaces/underscores with hyphens for readability
+    word = word.replace('_', '-').replace(' ', '-')
+    # Remove any characters that would break S-expression parsing
+    word = re.sub(r'["\(\)\[\]\{\}]', '', word)
+    return word.lower()
+
+
+def parse_data_file(filepath):
+    """
+    Parse a WordNet data file.
+    Returns list of synset dicts.
+    """
+    synsets = []
+
+    with open(filepath, "r") as f:
+        for line in f:
+            # Skip header lines (start with spaces)
+            if line.startswith("  "):
+                continue
+
+            line = line.strip()
+            if not line:
+                continue
+
+            # Split off the gloss (after |)
+            if "|" in line:
+                data_part, _ = line.split("|", 1)
+            else:
+                data_part = line
+
+            parts = data_part.split()
+            if len(parts) < 6:
+                continue
+
+            synset_offset = parts[0]
+            ss_type = parts[2]
+            w_cnt = int(parts[3], 16)
+
+            pos = POS_MAP.get(ss_type, ss_type)
+
+            # Parse words
+            idx = 4
+            words = []
+            for _ in range(w_cnt):
+                if idx >= len(parts):
+                    break
+                word = clean_word(parts[idx])
+                if word:  # Skip empty after cleaning
+                    words.append(word)
+                idx += 2  # Skip lex_id
+
+            # Parse pointer count
+            if idx >= len(parts):
+                synsets.append({
+                    "offset": synset_offset,
+                    "pos": pos,
+                    "words": words,
+                    "pointers": [],
+                })
+                continue
+
+            p_cnt = int(parts[idx])
+            idx += 1
+
+            # Parse pointers
+            pointers = []
+            for _ in range(p_cnt):
+                if idx + 3 >= len(parts):
+                    break
+                ptr_symbol = parts[idx]
+                target_offset = parts[idx + 1]
+                target_pos = parts[idx + 2]
+                source_target = parts[idx + 3]
+
+                target_pos_mapped = POS_MAP.get(target_pos, target_pos)
+
+                # Parse source/target word indices
+                src_word_num = int(source_target[:2], 16)
+                tgt_word_num = int(source_target[2:], 16)
+
+                pointers.append({
+                    "symbol": ptr_symbol,
+                    "target_offset": target_offset,
+                    "target_pos": target_pos_mapped,
+                    "src_word_num": src_word_num,
+                    "tgt_word_num": tgt_word_num,
+                })
+                idx += 4
+
+            synsets.append({
+                "offset": synset_offset,
+                "pos": pos,
+                "words": words,
+                "pointers": pointers,
+            })
+
+    return synsets
+
+
+def parse_exception_file(filepath):
+    """Parse a morphological exception file."""
+    exceptions = []
+    with open(filepath, "r") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("  "):
+                continue
+            parts = line.split()
+            if len(parts) >= 2:
+                inflected = clean_word(parts[0])
+                base_forms = [clean_word(b) for b in parts[1:]]
+                exceptions.append((inflected, base_forms))
+    return exceptions
+
+
+def generate_mm2(output_file):
+    """Generate MM2 S-expressions with word-centric schema."""
+
+    data_files = [
+        ("data.noun", "n"),
+        ("data.verb", "v"),
+        ("data.adj", "a"),
+        ("data.adv", "r"),
+    ]
+
+    exception_files = [
+        ("noun.exc", "n"),
+        ("verb.exc", "v"),
+        ("adj.exc", "a"),
+        ("adv.exc", "r"),
+    ]
+
+    # First pass: load all synsets and build offset->synset lookup
+    all_synsets = {}  # (offset, pos) -> synset
+
+    print("Pass 1: Loading synsets...")
+    for data_file, pos in data_files:
+        filepath = os.path.join(WORDNET_DIR, data_file)
+        if not os.path.exists(filepath):
+            print(f"Warning: {filepath} not found, skipping", file=sys.stderr)
+            continue
+
+        synsets = parse_data_file(filepath)
+        for s in synsets:
+            key = (s["offset"], s["pos"])
+            all_synsets[key] = s
+        print(f"  {data_file}: {len(synsets)} synsets")
+
+    # Second pass: generate MM2 output
+    print("Pass 2: Generating MM2...")
+
+    word_decls = set()  # (pos, word) pairs
+    relations = set()   # relation tuples to dedupe
+
+    for (offset, pos), synset in all_synsets.items():
+        # Add word declarations
+        for word in synset["words"]:
+            word_decls.add((pos, word))
+
+        # Process pointers
+        for ptr in synset["pointers"]:
+            rel_name = POINTER_RELATIONS.get(ptr["symbol"])
+            if not rel_name:
+                continue  # Skip unknown relation types
+
+            target_key = (ptr["target_offset"], ptr["target_pos"])
+            target_synset = all_synsets.get(target_key)
+            if not target_synset or not target_synset["words"]:
+                continue
+
+            # Determine source and target words
+            if ptr["src_word_num"] > 0 and ptr["src_word_num"] <= len(synset["words"]):
+                # Word-specific relation
+                src_words = [synset["words"][ptr["src_word_num"] - 1]]
+            else:
+                # Synset-level relation: use first (canonical) word
+                src_words = [synset["words"][0]] if synset["words"] else []
+
+            if ptr["tgt_word_num"] > 0 and ptr["tgt_word_num"] <= len(target_synset["words"]):
+                # Word-specific target
+                tgt_words = [target_synset["words"][ptr["tgt_word_num"] - 1]]
+            else:
+                # Synset-level: use first word
+                tgt_words = [target_synset["words"][0]] if target_synset["words"] else []
+
+            src_pos = pos
+            tgt_pos = ptr["target_pos"]
+
+            # Generate relation(s)
+            for src_word in src_words:
+                for tgt_word in tgt_words:
+                    if src_pos == tgt_pos:
+                        # Same POS: (relation pos src tgt)
+                        relations.add((rel_name, src_pos, src_word, tgt_word))
+                    else:
+                        # Cross-POS: (relation src-pos src tgt-pos tgt)
+                        relations.add((rel_name, src_pos, src_word, tgt_pos, tgt_word))
+
+    # Write output
+    print(f"Writing {output_file}...")
+
+    word_count = 0
+    relation_count = 0
+    exception_count = 0
+
+    with open(output_file, "w") as out:
+        out.write("; WordNet 3.0 in MM2 format (word-centric)\n")
+        out.write("; Generated by wordnet_to_mm2_v2.py\n")
+        out.write(";\n")
+        out.write("; Word declarations: (<pos> <word>)\n")
+        out.write("; Same-POS relations: (<relation> <pos> <src-word> <tgt-word>)\n")
+        out.write("; Cross-POS relations: (<relation> <src-pos> <src-word> <tgt-pos> <tgt-word>)\n")
+        out.write(";\n\n")
+
+        # Write word declarations sorted by POS then word
+        out.write("; === Word Declarations ===\n")
+        for pos, word in sorted(word_decls):
+            out.write(f"({pos} {word})\n")
+            word_count += 1
+
+        out.write("\n; === Relations ===\n")
+        for rel_tuple in sorted(relations):
+            rel_str = " ".join(rel_tuple)
+            out.write(f"({rel_str})\n")
+            relation_count += 1
+
+        # Process exception files
+        out.write("\n; === Morphological Exceptions ===\n")
+        for exc_file, pos in exception_files:
+            filepath = os.path.join(WORDNET_DIR, exc_file)
+            if not os.path.exists(filepath):
+                continue
+
+            exceptions = parse_exception_file(filepath)
+            for inflected, base_forms in exceptions:
+                for base in base_forms:
+                    out.write(f"(morph {pos} {inflected} {base})\n")
+                    exception_count += 1
+
+        out.write("\n; === End of WordNet data ===\n")
+
+    return {
+        "words": word_count,
+        "relations": relation_count,
+        "exceptions": exception_count,
+    }
+
+
+def main():
+    if len(sys.argv) > 1:
+        output_file = sys.argv[1]
+    else:
+        output_file = "wordnet2.mm2"
+
+    print(f"Parsing WordNet from {WORDNET_DIR}")
+    print(f"Output file: {output_file}")
+
+    stats = generate_mm2(output_file)
+
+    print(f"\nGenerated {output_file}:")
+    print(f"  Words: {stats['words']:,}")
+    print(f"  Relations: {stats['relations']:,}")
+    print(f"  Morph exceptions: {stats['exceptions']:,}")
+    print(f"  Total expressions: {sum(stats.values()):,}")
+
+
+if __name__ == "__main__":
+    main()
