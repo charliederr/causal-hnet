@@ -96,12 +96,14 @@ class SubstitutionPredictor:
                  context_window: int = 5,
                  top_k_context: int = 20,
                  min_unit_freq: int = 10,  # Raised from 5
-                 share_gpu_with_catalog: bool = True):
+                 share_gpu_with_catalog: bool = True,
+                 similarity_method: str = "lin"):  # "lin" or "cosine"
         self.catalog = catalog
         self.context_window = context_window
         self.top_k_context = top_k_context
         self.min_unit_freq = min_unit_freq
         self.share_gpu = share_gpu_with_catalog
+        self.similarity_method = similarity_method
 
         # Build reverse index: left_word -> units that have this left context
         self._build_indices()
@@ -175,8 +177,22 @@ class SubstitutionPredictor:
             # IDF = log(N / df), capped to avoid extreme values
             self.word_idf[word] = min(math.log(total_units / (doc_freq + 1)) + 1, 5.0)
 
+        # Compute Lin's information content: I(word) = -log P(word)
+        # P(word) = (units with word in context) / (total units)
+        # Clamp to [0, 15] to avoid overflow and handle words appearing in many units
+        self.word_info_content = {}
+        for word, doc_freq in self.word_doc_freq.items():
+            # Cap doc_freq at total_units to handle words in both left/right contexts
+            capped_df = min(doc_freq, total_units)
+            p_word = capped_df / total_units
+            # Information content: -log(P) - higher for rare words
+            info = -math.log(p_word + 1e-10)
+            self.word_info_content[word] = max(0.0, min(info, 15.0))
+
         print(f"  Indexed {len(self.unit_right_contexts):,} units")
         print(f"  Left context vocabulary: {len(self.left_context_index):,} words")
+        if self.similarity_method == "lin":
+            print(f"  Using Lin's information-theoretic similarity")
 
         # Build vectorized representations for fast batch similarity computation
         print("  Building vectorized context representations...")
@@ -231,7 +247,12 @@ class SubstitutionPredictor:
         # Build GPU tensors if PyTorch is available
         if HAS_TORCH and DEVICE is not None:
             # Check if we can share GPU tensors with catalog
-            if self.share_gpu and hasattr(self.catalog, 'gpu_ready') and self.catalog.gpu_ready:
+            # (Lin similarity needs its own binary tensors, so don't share in that case)
+            can_share = (self.share_gpu and
+                        hasattr(self.catalog, 'gpu_ready') and
+                        self.catalog.gpu_ready and
+                        self.similarity_method != "lin")
+            if can_share:
                 print(f"  Sharing GPU tensors with catalog...")
                 self._share_catalog_gpu_tensors()
             else:
@@ -241,23 +262,86 @@ class SubstitutionPredictor:
     def _share_catalog_gpu_tensors(self):
         """
         Share GPU tensors with the catalog instead of building our own.
-        This saves ~12GB of GPU memory.
+        This saves ~12GB of GPU memory for cosine similarity.
+
+        For Lin's similarity, we need to build binary tensors separately.
         """
-        # Use catalog's GPU tensors directly
+        # Use catalog's GPU tensors directly (for cosine similarity)
         self.gpu_left = self.catalog.gpu_left
         self.gpu_right = self.catalog.gpu_right
         self.n_units = len(self.catalog.unit_list)
         self.compact_vocab_size = self.gpu_left.shape[1]
 
         # Build unit index mapping from our unit list to catalog's
-        # (they should be the same, but let's be safe)
         self.unit_to_gpu_idx = {}
         for unit_text in self.unit_patterns:
             if unit_text in self.catalog.unit_to_idx:
                 self.unit_to_gpu_idx[unit_text] = self.catalog.unit_to_idx[unit_text]
 
+        # For Lin's similarity, build binary tensors and info content
+        if self.similarity_method == "lin":
+            print(f"  Building Lin similarity tensors...")
+            n_units = self.n_units
+            compact_size = self.compact_vocab_size
+
+            # Build binary context matrices
+            cpu_left_binary = np.zeros((n_units, compact_size), dtype=np.float16)
+            cpu_right_binary = np.zeros((n_units, compact_size), dtype=np.float16)
+
+            # Use catalog's vocabulary mapping
+            catalog_vocab = self.catalog.vocab_to_idx
+            idx_to_word = {v: k for k, v in catalog_vocab.items()}
+
+            for unit_text in self.unit_patterns:
+                if unit_text not in self.catalog.unit_to_idx:
+                    continue
+                unit_idx = self.catalog.unit_to_idx[unit_text]
+                pattern = self.unit_patterns[unit_text]
+
+                # Mark context words as present (binary 1)
+                for word, _ in pattern.left_words.most_common(10):
+                    if word in catalog_vocab:
+                        word_idx = catalog_vocab[word]
+                        if word_idx < compact_size:
+                            cpu_left_binary[unit_idx, word_idx] = 1.0
+
+                for word, _ in pattern.right_words.most_common(10):
+                    if word in catalog_vocab:
+                        word_idx = catalog_vocab[word]
+                        if word_idx < compact_size:
+                            cpu_right_binary[unit_idx, word_idx] = 1.0
+
+            # Build word information content vector
+            cpu_info_content = np.zeros(compact_size, dtype=np.float32)
+            for word_idx in range(compact_size):
+                word = idx_to_word.get(word_idx)
+                if word and word in self.word_info_content:
+                    cpu_info_content[word_idx] = self.word_info_content[word]
+
+            # Pre-compute I(description) for each unit (on CPU to avoid MPS buffer limits)
+            batch_size = 5000
+            desc_info_cpu = np.zeros(n_units, dtype=np.float32)
+            for start in range(0, n_units, batch_size):
+                end = min(start + batch_size, n_units)
+                left_batch = cpu_left_binary[start:end].astype(np.float32)
+                right_batch = cpu_right_binary[start:end].astype(np.float32)
+                desc_info_cpu[start:end] = (
+                    left_batch @ cpu_info_content +
+                    right_batch @ cpu_info_content
+                )
+
+            # Transfer to GPU
+            self.gpu_left_binary = torch.from_numpy(cpu_left_binary).to(DEVICE)
+            self.gpu_right_binary = torch.from_numpy(cpu_right_binary).to(DEVICE)
+            self.gpu_info_content = torch.from_numpy(cpu_info_content).to(DEVICE)
+            self.gpu_desc_info = torch.from_numpy(desc_info_cpu).to(DEVICE)
+
+            del cpu_left_binary, cpu_right_binary, cpu_info_content, desc_info_cpu
+
         self.gpu_available = True
         mem_mb = (self.gpu_left.numel() + self.gpu_right.numel()) * 2 / (1024 * 1024)
+        if self.similarity_method == "lin":
+            mem_mb += (self.gpu_left_binary.numel() + self.gpu_right_binary.numel()) * 2 / (1024 * 1024)
         print(f"  Shared GPU matrices: {self.n_units} units × {self.compact_vocab_size} vocab ({mem_mb:.1f} MB)")
 
     def _build_gpu_tensors(self, vocab_size: int, n_units: int):
@@ -267,8 +351,8 @@ class SubstitutionPredictor:
         Key insight: Avoid CPU-GPU transfers during computation.
         Keep everything on GPU, use indexed operations.
 
-        Memory: 70k × 47k × 2 bytes (float16) = ~6.5GB per matrix
-        Total: ~13GB - fits in M4's unified memory
+        For Lin similarity: only build binary matrices (presence/absence)
+        For cosine similarity: build weighted matrices (normalized counts)
         """
         # Use reduced vocabulary: only words that appear in contexts
         effective_vocab = set()
@@ -286,43 +370,95 @@ class SubstitutionPredictor:
 
         print(f"  Compacting vocabulary: {vocab_size} -> {compact_size} effective words")
 
-        # Build dense matrices on CPU first (float16 to save memory)
-        cpu_left = np.zeros((n_units, compact_size), dtype=np.float16)
-        cpu_right = np.zeros((n_units, compact_size), dtype=np.float16)
+        use_lin = (self.similarity_method == "lin")
 
-        for unit_idx in range(n_units):
-            if unit_idx in self.left_context_topk:
-                indices, values = self.left_context_topk[unit_idx]
-                for idx, val in zip(indices, values):
-                    if idx in self.idx_to_compact:
-                        cpu_left[unit_idx, self.idx_to_compact[idx]] = val
+        if use_lin:
+            # Lin similarity only needs binary matrices (presence/absence)
+            cpu_left_binary = np.zeros((n_units, compact_size), dtype=np.float16)
+            cpu_right_binary = np.zeros((n_units, compact_size), dtype=np.float16)
 
-            if unit_idx in self.right_context_topk:
-                indices, values = self.right_context_topk[unit_idx]
-                for idx, val in zip(indices, values):
-                    if idx in self.idx_to_compact:
-                        cpu_right[unit_idx, self.idx_to_compact[idx]] = val
+            for unit_idx in range(n_units):
+                if unit_idx in self.left_context_topk:
+                    indices, _ = self.left_context_topk[unit_idx]
+                    for idx in indices:
+                        if idx in self.idx_to_compact:
+                            cpu_left_binary[unit_idx, self.idx_to_compact[idx]] = 1.0
 
-        # Normalize on CPU
-        left_norms = np.linalg.norm(cpu_left.astype(np.float32), axis=1, keepdims=True) + 1e-10
-        right_norms = np.linalg.norm(cpu_right.astype(np.float32), axis=1, keepdims=True) + 1e-10
-        cpu_left = (cpu_left / left_norms).astype(np.float16)
-        cpu_right = (cpu_right / right_norms).astype(np.float16)
+                if unit_idx in self.right_context_topk:
+                    indices, _ = self.right_context_topk[unit_idx]
+                    for idx in indices:
+                        if idx in self.idx_to_compact:
+                            cpu_right_binary[unit_idx, self.idx_to_compact[idx]] = 1.0
 
-        # Transfer to GPU ONCE and keep there permanently
-        print(f"  Transferring to GPU ({DEVICE})...")
-        self.gpu_left = torch.from_numpy(cpu_left).to(DEVICE)
-        self.gpu_right = torch.from_numpy(cpu_right).to(DEVICE)
+            # Build word information content vector
+            idx_to_word = {v: k for k, v in self.vocab_to_idx.items()}
+            cpu_info_content = np.zeros(compact_size, dtype=np.float32)
+            for compact_idx, orig_idx in enumerate(self.compact_vocab):
+                word = idx_to_word.get(orig_idx)
+                if word and word in self.word_info_content:
+                    cpu_info_content[compact_idx] = self.word_info_content[word]
 
-        # Free CPU memory
-        del cpu_left, cpu_right
+            # Pre-compute I(description) for each unit on CPU
+            batch_size = 5000
+            desc_info_cpu = np.zeros(n_units, dtype=np.float32)
+            for start in range(0, n_units, batch_size):
+                end = min(start + batch_size, n_units)
+                left_batch = cpu_left_binary[start:end].astype(np.float32)
+                right_batch = cpu_right_binary[start:end].astype(np.float32)
+                desc_info_cpu[start:end] = (
+                    left_batch @ cpu_info_content +
+                    right_batch @ cpu_info_content
+                )
+
+            # Transfer to GPU
+            print(f"  Transferring Lin tensors to GPU ({DEVICE})...")
+            self.gpu_left_binary = torch.from_numpy(cpu_left_binary).to(DEVICE)
+            self.gpu_right_binary = torch.from_numpy(cpu_right_binary).to(DEVICE)
+            self.gpu_info_content = torch.from_numpy(cpu_info_content).to(DEVICE)
+            self.gpu_desc_info = torch.from_numpy(desc_info_cpu).to(DEVICE)
+
+            del cpu_left_binary, cpu_right_binary, cpu_info_content, desc_info_cpu
+
+            mem_mb = (self.gpu_left_binary.numel() + self.gpu_right_binary.numel()) * 2 / (1024 * 1024)
+            print(f"  Lin GPU matrices ready: {n_units} units × {compact_size} vocab ({mem_mb:.1f} MB)")
+
+        else:
+            # Cosine similarity needs weighted matrices
+            cpu_left = np.zeros((n_units, compact_size), dtype=np.float16)
+            cpu_right = np.zeros((n_units, compact_size), dtype=np.float16)
+
+            for unit_idx in range(n_units):
+                if unit_idx in self.left_context_topk:
+                    indices, values = self.left_context_topk[unit_idx]
+                    for idx, val in zip(indices, values):
+                        if idx in self.idx_to_compact:
+                            cpu_left[unit_idx, self.idx_to_compact[idx]] = val
+
+                if unit_idx in self.right_context_topk:
+                    indices, values = self.right_context_topk[unit_idx]
+                    for idx, val in zip(indices, values):
+                        if idx in self.idx_to_compact:
+                            cpu_right[unit_idx, self.idx_to_compact[idx]] = val
+
+            # Normalize for cosine similarity
+            left_norms = np.linalg.norm(cpu_left.astype(np.float32), axis=1, keepdims=True) + 1e-10
+            right_norms = np.linalg.norm(cpu_right.astype(np.float32), axis=1, keepdims=True) + 1e-10
+            cpu_left = (cpu_left / left_norms).astype(np.float16)
+            cpu_right = (cpu_right / right_norms).astype(np.float16)
+
+            # Transfer to GPU
+            print(f"  Transferring cosine tensors to GPU ({DEVICE})...")
+            self.gpu_left = torch.from_numpy(cpu_left).to(DEVICE)
+            self.gpu_right = torch.from_numpy(cpu_right).to(DEVICE)
+
+            del cpu_left, cpu_right
+
+            mem_mb = (self.gpu_left.numel() + self.gpu_right.numel()) * 2 / (1024 * 1024)
+            print(f"  Cosine GPU matrices ready: {n_units} units × {compact_size} vocab ({mem_mb:.1f} MB)")
 
         self.gpu_available = True
         self.n_units = n_units
         self.compact_vocab_size = compact_size
-
-        mem_mb = (self.gpu_left.numel() + self.gpu_right.numel()) * 2 / (1024 * 1024)
-        print(f"  GPU matrices ready: {n_units} units × {compact_size} vocab ({mem_mb:.1f} MB on GPU)")
 
     def _gpu_batch_similarity(self, query_unit_idx: int,
                                candidate_indices: List[int],
@@ -332,6 +468,10 @@ class SubstitutionPredictor:
 
         ALL data stays on GPU - only the final result transfers to CPU.
         Uses indexed gather to select candidate rows from GPU matrices.
+
+        Supports two methods:
+        - "cosine": Normalized dot product (original method)
+        - "lin": Lin's information-theoretic similarity
         """
         if not hasattr(self, 'gpu_available') or not self.gpu_available:
             return self._cpu_batch_similarity(query_unit_idx, candidate_indices)
@@ -339,24 +479,60 @@ class SubstitutionPredictor:
         # Create index tensor on GPU
         cand_indices_gpu = torch.tensor(candidate_indices, dtype=torch.long, device=DEVICE)
 
-        # Get query vectors (already on GPU)
-        query_left = self.gpu_left[query_unit_idx]  # Shape: (vocab_size,)
-        query_right = self.gpu_right[query_unit_idx]
+        if self.similarity_method == "lin" and hasattr(self, 'gpu_left_binary'):
+            # Lin's information-theoretic similarity
+            # sim(A,B) = 2 * I(common(A,B)) / (I(desc(A)) + I(desc(B)))
 
-        # Gather candidate vectors (stays on GPU)
-        cand_left = self.gpu_left[cand_indices_gpu]  # Shape: (n_candidates, vocab_size)
-        cand_right = self.gpu_right[cand_indices_gpu]
+            # Get query binary vectors
+            query_left_bin = self.gpu_left_binary[query_unit_idx]
+            query_right_bin = self.gpu_right_binary[query_unit_idx]
 
-        # Compute cosine similarities with matrix-vector multiply (all on GPU)
-        # Since vectors are normalized: dot product = cosine similarity
-        left_sim = torch.mv(cand_left.float(), query_left.float())  # Convert to float32 for mv
-        right_sim = torch.mv(cand_right.float(), query_right.float())
+            # Get candidate binary vectors
+            cand_left_bin = self.gpu_left_binary[cand_indices_gpu]
+            cand_right_bin = self.gpu_right_binary[cand_indices_gpu]
 
-        # Average of left and right similarities
-        avg_sim = (left_sim + right_sim) / 2.0
+            # Compute common features (element-wise AND via multiplication)
+            # common_left[i, j] = 1 if both query and candidate[i] have word j
+            common_left = cand_left_bin * query_left_bin  # Broadcasting: (n_cands, vocab) * (vocab,)
+            common_right = cand_right_bin * query_right_bin
 
-        # Only transfer final result to CPU
-        return avg_sim.cpu().numpy()
+            # I(common) = sum of info content for shared words
+            # (n_cands, vocab) @ (vocab,) -> (n_cands,)
+            I_common_left = torch.mv(common_left.float(), self.gpu_info_content)
+            I_common_right = torch.mv(common_right.float(), self.gpu_info_content)
+            I_common = I_common_left + I_common_right
+
+            # I(description) for query and candidates
+            I_desc_query = self.gpu_desc_info[query_unit_idx]
+            I_desc_cands = self.gpu_desc_info[cand_indices_gpu]
+
+            # Lin's formula: 2 * I(common) / (I(desc_A) + I(desc_B))
+            # Avoid division by zero
+            denominator = I_desc_query + I_desc_cands + 1e-10
+            lin_sim = 2.0 * I_common / denominator
+
+            return lin_sim.cpu().numpy()
+
+        else:
+            # Cosine similarity (original method)
+            # Get query vectors (already on GPU)
+            query_left = self.gpu_left[query_unit_idx]  # Shape: (vocab_size,)
+            query_right = self.gpu_right[query_unit_idx]
+
+            # Gather candidate vectors (stays on GPU)
+            cand_left = self.gpu_left[cand_indices_gpu]  # Shape: (n_candidates, vocab_size)
+            cand_right = self.gpu_right[cand_indices_gpu]
+
+            # Compute cosine similarities with matrix-vector multiply (all on GPU)
+            # Since vectors are normalized: dot product = cosine similarity
+            left_sim = torch.mv(cand_left.float(), query_left.float())
+            right_sim = torch.mv(cand_right.float(), query_right.float())
+
+            # Average of left and right similarities
+            avg_sim = (left_sim + right_sim) / 2.0
+
+            # Only transfer final result to CPU
+            return avg_sim.cpu().numpy()
 
     def _cpu_batch_similarity(self, query_unit_idx: int,
                                candidate_indices: List[int]) -> np.ndarray:

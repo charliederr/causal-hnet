@@ -1,0 +1,270 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{array}
+
+\geometry{margin=1in}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!10}
+}
+
+\title{Substitution Classes as an Attention Mechanism:\\
+A Dynamic Alternative to Learned Embeddings}
+
+\author{Claude Opus 4.5 (claude-opus-4-5-20251101)\\
+prompted by Rob Freeman}
+
+\date{January 28, 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We describe a sequence prediction system that implements an attention-like mechanism through \emph{substitution class expansion} rather than learned attention weights. The key insight is that units (words or phrases) which share context patterns form natural equivalence classes, and predictions can flow from all members of these classes. This achieves the same goal as transformer attention---relating inputs to contextually equivalent forms---but computes the relationships dynamically from corpus statistics rather than learned parameters. We detail the algorithm, recent GPU optimizations achieving 17-20x speedups, and the implementation of Lin's information-theoretic similarity measure for improved structural filtering.
+\end{abstract}
+
+\section{Introduction: The Attention Analogy}
+
+Transformer attention mechanisms work by learning which input positions should contribute to predicting each output position. The attention weights, computed as $\text{softmax}(QK^T/\sqrt{d})$, determine how much each input token ``attends to'' other tokens.
+
+We propose that \textbf{substitution class membership} achieves the same goal through a different mechanism:
+
+\begin{center}
+\begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
+\hline
+\textbf{Transformer Attention} & \textbf{Substitution Classes} \\
+\hline
+Learned weights determine which positions contribute & Class membership determines which expressions contribute \\
+\hline
+Query-key similarity selects relevant context & Context overlap defines substitutability \\
+\hline
+Values from attended positions are aggregated & Predictions from class members are aggregated \\
+\hline
+Static embeddings encode token relationships & Dynamic context signatures encode relationships \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{The Core Insight}
+
+Consider the phrase ``the rain in spain'':
+
+\begin{itemize}
+    \item The word ``rain'' has a \emph{substitution class}---other expressions that appear in similar contexts
+    \item The full phrase ``the rain in spain'' can also be a member of that class (they share context patterns)
+    \item When predicting what follows ``the rain in spain'', predictions come from the \emph{entire substitution class}
+    \item So ``the rain in spain'' inherits predictions from ``rain'', ``the weather'', ``it'', etc.
+\end{itemize}
+
+This \textbf{is} attention: the input ``attends to'' its abstract equivalents, and their predictions contribute proportionally to their centrality in the class.
+
+\section{Algorithm Overview}
+
+\subsection{Unit Catalog}
+
+The system maintains a catalog of \emph{units}---words and multi-word phrases observed in a corpus. Each unit $u$ stores:
+
+\begin{itemize}
+    \item \textbf{Left context distribution} $L_u$: words appearing before $u$
+    \item \textbf{Right context distribution} $R_u$: words appearing after $u$
+    \item \textbf{Frequency count}: how often $u$ appears
+\end{itemize}
+
+\subsection{Bidirectional Parsing}
+
+Given an input sequence, the parser constructs a hierarchical parse tree:
+
+\begin{enumerate}
+    \item Each token is initially a leaf node
+    \item Adjacent spans are merged based on an \emph{energy function} that scores how well the combined span matches a unit in the catalog
+    \item The process continues until a complete tree is formed
+    \item The parse with minimum total energy is selected
+\end{enumerate}
+
+The energy function combines:
+\begin{equation}
+    E(\text{span}) = -\log P(\text{unit}) - \lambda \cdot \text{context\_match}
+\end{equation}
+
+\subsection{Substitution Class Computation}
+
+For a unit $u$, its substitution class contains other units with similar context patterns:
+
+\begin{equation}
+    \text{SubClass}(u) = \{v : \text{sim}(L_u, L_v) + \text{sim}(R_u, R_v) > \theta\}
+\end{equation}
+
+where $\text{sim}$ is a similarity measure (cosine or Lin's measure, discussed below).
+
+\subsection{Prediction via Class Expansion}
+
+To predict continuations after a parsed input:
+
+\medskip
+\noindent\textbf{Algorithm: Prediction with Substitution Class Expansion}
+\begin{enumerate}
+    \item Parse input into hierarchy $T$
+    \item Initialize $\text{predictions} \gets \{\}$
+    \item For each node $n$ in $T$:
+    \begin{enumerate}
+        \item Compute $\text{class} \gets \text{SubClass}(n.\text{unit})$
+        \item For each member $m$ in class:
+        \begin{enumerate}
+            \item For each word $w$ in $m$'s right context:
+            \item[] $\text{predictions}[w] \mathrel{+}= \text{centrality}(m) \cdot P(w|m)$
+        \end{enumerate}
+    \end{enumerate}
+    \item Return top-k predictions
+\end{enumerate}
+\medskip
+
+The key insight is that predictions aggregate from \emph{all hierarchy levels} and \emph{all class members}, allowing abstract representations to contribute alongside specific ones.
+
+\section{Lin's Information-Theoretic Similarity}
+
+\subsection{Motivation}
+
+The original cosine similarity measure sometimes included structurally dissimilar units in substitution classes. For example, ``we should go'' might include ``prefer'' because both appear in conversational contexts (``I think...'', ``maybe...'') even though they have different grammatical structures.
+
+\subsection{Lin's Measure}
+
+We implemented Lin's information-theoretic similarity \cite{lin1998information}:
+
+\begin{equation}
+    \text{sim}(A, B) = \frac{2 \cdot I(\text{common}(A, B))}{I(\text{desc}(A)) + I(\text{desc}(B))}
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $I(x) = -\log P(x)$ is the information content
+    \item $\text{common}(A, B)$ is the set of context words shared by both $A$ and $B$
+    \item $\text{desc}(A)$ is the full description (all context words) of $A$
+\end{itemize}
+
+\subsection{Key Property}
+
+Lin's measure weights \emph{rare} shared features more heavily than common ones. If two units share the rare context word ``meteorological'', this contributes more to their similarity than sharing ``the''.
+
+This naturally filters out units that share only common conversational markers, retaining those with genuine structural similarity.
+
+\subsection{Results}
+
+With Lin similarity, the substitution class for ``we should go'' now contains:
+\begin{itemize}
+    \item ``should go'' (0.678)
+    \item ``you'd better'' (0.398)
+    \item ``you have to go'' (0.350)
+\end{itemize}
+
+Previously problematic matches like ``prefer'' and ``there's a place'' are filtered out.
+
+\section{GPU Optimizations}
+
+\subsection{Challenge}
+
+Computing substitution classes requires comparing a query unit against thousands of candidates. With 70,000 units and vocabulary size 47,000, this was prohibitively slow on CPU.
+
+\subsection{Implementation}
+
+We implemented GPU-accelerated similarity computation using PyTorch with Apple Metal (MPS) support:
+
+\begin{enumerate}
+    \item \textbf{Pre-compute dense matrices}: Store context distributions as GPU tensors
+    \begin{itemize}
+        \item Binary matrices for Lin similarity: $(n\_units \times vocab\_size)$
+        \item Information content vector: $(vocab\_size,)$
+        \item Pre-computed $I(\text{desc})$ for each unit: $(n\_units,)$
+    \end{itemize}
+
+    \item \textbf{Batch similarity computation}: Compute all candidate similarities in parallel
+    \begin{lstlisting}[language=Python]
+# Common features via element-wise multiplication
+common = candidates_binary * query_binary  # (n_cands, vocab)
+
+# I(common) via matrix-vector multiply
+I_common = common @ info_content  # (n_cands,)
+
+# Lin's formula
+similarity = 2 * I_common / (I_desc_query + I_desc_candidates)
+    \end{lstlisting}
+
+    \item \textbf{Memory optimization}: Lin similarity only needs binary matrices (presence/absence), not weighted matrices, reducing memory from 24GB to 12GB
+\end{enumerate}
+
+\subsection{Performance}
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Operation} & \textbf{Before} & \textbf{After} \\
+\hline
+Substitution class lookup & 60+ seconds & $<$1 second \\
+\hline
+Parser span processing & 17-20x slower & Baseline \\
+\hline
+Memory usage (Lin) & N/A & 12.4 GB \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Current Architecture}
+
+\subsection{Files}
+
+\begin{itemize}
+    \item \texttt{bidir\_simple.py}: Core parser, unit catalog, context patterns
+    \item \texttt{substitution\_predictor.py}: Prediction engine with GPU acceleration
+    \item \texttt{analyze\_phrase.py}: User-facing tool for phrase analysis
+\end{itemize}
+
+\subsection{Usage}
+
+\begin{lstlisting}[language=bash]
+python analyze_phrase.py "we should go"
+\end{lstlisting}
+
+Output includes:
+\begin{enumerate}
+    \item Parse tree of the input
+    \item Substitution classes for each sub-span
+    \item Predicted continuations
+\end{enumerate}
+
+\section{Future Directions}
+
+\begin{enumerate}
+    \item \textbf{Prediction quality}: Current predictions aggregate from substitution classes but may still include semantically odd continuations. Further tuning of aggregation weights and thresholds is needed.
+
+    \item \textbf{Sparse unit handling}: Units with low corpus frequency have sparse context distributions, making Lin similarity less effective. Fallback strategies or smoothing techniques may help.
+
+    \item \textbf{Benchmark comparisons}: Systematic comparison with transformer language models on standard benchmarks would quantify the approach's strengths and weaknesses.
+
+    \item \textbf{Incremental updates}: Currently the catalog is static. Supporting incremental updates as new text is observed would enable online learning.
+\end{enumerate}
+
+\section{Conclusion}
+
+Substitution class expansion provides a mechanism analogous to transformer attention: both relate inputs to contextually equivalent forms and aggregate predictions from this broader set. The key difference is that substitution classes are computed dynamically from corpus statistics rather than learned from gradient descent.
+
+Lin's information-theoretic similarity improves structural filtering by weighting rare shared features, and GPU acceleration makes the approach practical for real-time use.
+
+\begin{thebibliography}{9}
+\bibitem{lin1998information}
+Lin, D. (1998). An information-theoretic definition of similarity. In \emph{Proceedings of the 15th International Conference on Machine Learning} (pp. 296-304).
+\end{thebibliography}
+
+\end{document}
