@@ -2,7 +2,7 @@ import os
 import sys
 import data_loader  # Import the module to adjust settings
 from data_loader import CorpusProcessor
-from parser_v1 import JAXParser
+from parser_v2 import JAXParser
 
 def main():
     input_file = "input.txt"
