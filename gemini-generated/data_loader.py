@@ -4,12 +4,16 @@ from transformers import AutoTokenizer, AutoModel
 from sklearn.cluster import MiniBatchKMeans
 from collections import defaultdict, Counter
 from tqdm import tqdm
+import warnings
+
+# Suppress harmless warnings about BERT weights
+warnings.filterwarnings("ignore", category=UserWarning)
 
 # Configuration
 MODEL_NAME = "prajjwal1/bert-tiny"  # Tiny model for fast CPU prototyping
 MAX_NGRAM = 4                       # Max length of units (words)
 CONTEXT_WINDOW = 3                  # Tokens to left/right
-NUM_CLUSTERS = 64                   # Small K for prototype (increase for real data)
+NUM_CLUSTERS = 64                   # Target clusters (will auto-reduce for small data)
 MIN_FREQ = 2                        # Minimum occurrences to keep a unit
 
 class CorpusProcessor:
@@ -110,8 +114,18 @@ class CorpusProcessor:
         
         all_vectors = np.array(all_vectors)
         
+        # --- FIX: Dynamically adjust clusters for small data ---
+        n_samples = all_vectors.shape[0]
+        if n_samples == 0:
+            raise ValueError("No valid contexts found. Input text might be too short or MIN_FREQ too high.")
+            
+        actual_k = min(NUM_CLUSTERS, n_samples)
+        if actual_k < NUM_CLUSTERS:
+            print(f"NOTICE: Dataset too small ({n_samples} samples) for {NUM_CLUSTERS} clusters. Reducing k to {actual_k}.")
+        
         # K-Means Clustering
-        kmeans = MiniBatchKMeans(n_clusters=NUM_CLUSTERS, random_state=42, n_init="auto")
+        # We use n_init=3 to speed up small tests
+        kmeans = MiniBatchKMeans(n_clusters=actual_k, random_state=42, n_init=3, batch_size=256)
         kmeans.fit(all_vectors)
         
         self.centroids = kmeans.cluster_centers_ # This is Matrix C
@@ -124,8 +138,9 @@ class CorpusProcessor:
         self.id_to_unit = {i: u for i, u in enumerate(sorted_units)}
         
         # Build Matrix A (Rows=Units, Cols=Clusters)
+        # Note: We must use actual_k here
         num_units = len(sorted_units)
-        self.adjacency_matrix = np.zeros((num_units, NUM_CLUSTERS), dtype=np.float32)
+        self.adjacency_matrix = np.zeros((num_units, actual_k), dtype=np.float32)
         
         for unit, vectors in self.unit_contexts_map.items():
             u_id = self.unit_to_id[unit]
@@ -139,8 +154,6 @@ class CorpusProcessor:
             for c_id, freq in counts.items():
                 self.adjacency_matrix[u_id, c_id] = freq
                 
-        # Optional: Normalize rows or leave as raw counts?
-        # Raw counts preserve "mass" (more frequent units -> stronger signal)
         print(f"Generated Adjacency Matrix A: shape {self.adjacency_matrix.shape}")
 
     def export(self):

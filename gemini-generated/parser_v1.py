@@ -3,19 +3,17 @@ import jax.numpy as jnp
 import numpy as np
 from transformers import AutoTokenizer, AutoModel
 import torch
+import warnings
 
-# Import our modules (assuming you saved them as files, or paste them in)
-# from data_loader import CorpusProcessor
-# from expansion_engine import run_expansion_pass, compute_energy
-
-# For this standalone script to work, I will include the minimal necessary
-# wrapper classes and the scoring logic inline.
+# Suppress harmless warnings about BERT weights
+warnings.filterwarnings("ignore", category=UserWarning)
 
 class JAXParser:
     def __init__(self, corpus_data):
         """
         Initialize with the artifacts from CorpusProcessor.
         """
+        # Ensure centroids are JAX arrays
         self.centroids = jnp.array(corpus_data['centroids'])
         self.adj_matrix = jnp.array(corpus_data['adj_matrix'])
         
@@ -24,7 +22,6 @@ class JAXParser:
         self.id_to_unit = corpus_data['unit_labels']
         
         # Load BERT for encoding *new* sentences at runtime
-        # (In production, share this instance with data_loader)
         self.tokenizer = AutoTokenizer.from_pretrained("prajjwal1/bert-tiny")
         self.model = AutoModel.from_pretrained("prajjwal1/bert-tiny")
         self.model.eval()
@@ -38,7 +35,7 @@ class JAXParser:
         inputs = self.tokenizer(text, return_tensors="pt", truncation=True)
         with torch.no_grad():
             outputs = self.model(**inputs)
-        # Return numpy array for JAX
+        # Return numpy array for JAX, flattened to 1D
         return outputs.last_hidden_state[:, 0, :].numpy().flatten()
 
     def get_unit_score(self, span_text, left_context, right_context):
@@ -49,33 +46,31 @@ class JAXParser:
         context_vec = self.encode_context(left_context, right_context)
         
         # 2. Run JAX Expansion
-        # Note: We need to convert context_vec to JAX array
         ctx_vec_jax = jnp.array(context_vec)
         
-        # Import or define the engine function here for access
-        # (Assuming it's defined as in the previous step)
-        # For simplicity, I'll inline a synchronous call to the logic
-        
         # A. Expand Contexts
-        # cosine sim
-        c_norm = self.centroids / jnp.linalg.norm(self.centroids, axis=1, keepdims=True)
-        v_norm = ctx_vec_jax / jnp.linalg.norm(ctx_vec_jax)
+        # Cosine similarity: dot product of normalized vectors
+        # (K, D)
+        c_norm = self.centroids / (jnp.linalg.norm(self.centroids, axis=1, keepdims=True) + 1e-9)
+        # (D,)
+        v_norm = ctx_vec_jax / (jnp.linalg.norm(ctx_vec_jax) + 1e-9)
+        
+        # Dot product: (K, D) @ (D,) -> (K,)
         sims = jnp.dot(c_norm, v_norm)
-        ctx_mask = jax.nn.softmax(sims / 0.1) # Temperature
+        
+        # Softmax with temperature to create a probability mask
+        ctx_mask = jax.nn.softmax(sims / 0.1) 
         
         # B. Expand Units
+        # (N_units, K) @ (K,) -> (N_units,)
         unit_acts = jnp.dot(self.adj_matrix, ctx_mask)
         
         # C. Calculate Energy
         # E = -log(volume_units)
-        # We also add a bonus if the span_text ITSELF is in the expansion.
-        # The paper mentions: E = -log(freq) + context_mismatch
-        
         volume_energy = -jnp.log(jnp.sum(unit_acts) + 1e-9)
         
         # Specific Unit Check:
-        # Does the specific span "my money" actually fit this context cluster?
-        # If the span isn't in our catalog, it gets a high energy penalty.
+        # Does the specific span (e.g., "my money") actually fit this context cluster?
         if span_text in self.unit_to_id:
             unit_id = self.unit_to_id[span_text]
             # How much did the expansion "predict" this specific unit?
@@ -86,8 +81,8 @@ class JAXParser:
             # Combine: Total volume (is it a syntactic slot?) + Specific fit (does this word fit?)
             total_energy = 0.7 * specific_energy + 0.3 * volume_energy
         else:
-            # Unknown unit -> High Energy
-            total_energy = 100.0
+            # Unknown unit -> High Energy penalty
+            total_energy = 20.0 # Cap high energy to avoid Infs ruining math
             
         return float(total_energy)
 
@@ -96,8 +91,7 @@ class JAXParser:
         Recursive top-down parser.
         Input: List of tokens e.g., ["I", "lost", "my", "money"]
         """
-        
-        # Memoization cache could go here
+        # Memoization cache could go here for efficiency
         
         def recursive_step(start, end):
             span_text = " ".join(tokens[start:end])
@@ -107,7 +101,6 @@ class JAXParser:
                 return {"type": "leaf", "text": span_text, "energy": 0.0}
 
             # 1. Test as Whole Unit
-            # Get context for this span
             left_ctx = " ".join(tokens[:start])
             right_ctx = " ".join(tokens[end:])
             
@@ -122,23 +115,29 @@ class JAXParser:
                 left_node = recursive_step(start, i)
                 right_node = recursive_step(i, end)
                 
-                # Simple sum of energies for split (Constituency assumption)
-                # You can add a penalty for splitting to encourage grouping
                 split_energy = left_node['energy'] + right_node['energy']
                 
                 if split_energy < best_split_energy:
                     best_split_energy = split_energy
-                    best_split_node = {"type": "split", "left": left_node, "right": right_node, "energy": split_energy}
+                    best_split_node = {
+                        "type": "split", 
+                        "left": left_node, 
+                        "right": right_node, 
+                        "energy": split_energy
+                    }
 
             # 3. Decision
-            # If the unit energy is lower (better) than splitting, keep it whole.
-            # We usually need a bias/threshold because splitting always reduces energy in simple sums.
-            # Let's add a "Composition Penalty" for splitting.
-            SPLIT_PENALTY = 2.0 
+            # If unit_energy is competitive with splitting, keep it.
+            # SPLIT_PENALTY encourages larger units.
+            SPLIT_PENALTY = 3.0 
             
             if unit_energy < (best_split_energy + SPLIT_PENALTY):
-                return {"type": "unit", "text": span_text, "energy": unit_energy, "children": best_split_node} 
-                # Note: We keep children just for visualization, but structurally it's a Unit.
+                return {
+                    "type": "unit", 
+                    "text": span_text, 
+                    "energy": unit_energy, 
+                    "children": best_split_node
+                } 
             else:
                 return best_split_node
 
@@ -150,8 +149,8 @@ class JAXParser:
             print(f"{indent}[{node['text']}]")
         elif node['type'] == 'unit':
             print(f"{indent}(UNIT: {node['text']} | E={node['energy']:.2f})")
-            # If you want to see internal structure of units, uncomment:
-            # self.print_tree(node['children'], depth + 1)
+            # Recursively print children to see internal structure if desired
+            # if node['children']: self.print_tree(node['children'], depth + 1)
         else:
             print(f"{indent}(SPLIT E={node['energy']:.2f})")
             self.print_tree(node['left'], depth + 1)
@@ -159,19 +158,24 @@ class JAXParser:
 
 # --- EXECUTION BLOCK ---
 if __name__ == "__main__":
-    # 1. Load Data (Simulated or from previous step)
-    # Ideally: from data_loader import CorpusProcessor; p = CorpusProcessor(); ...
-    # Here we mock the output of processor.export() for a runnable demo
-    
     print("Initializing Parser...")
     
-    # Mock Data matching the previous script's logic
-    # "my money" (ID 0) fits in Cluster 0
-    # "lost my" (ID 1) fits in Cluster 1 (we make it weaker)
-    mock_centroids = np.random.normal(size=(5, 64)) # 5 clusters
-    mock_adj = np.zeros((3, 5))
-    mock_adj[0, 0] = 10.0 # "my money" strong in cluster 0
-    mock_adj[1, 1] = 2.0  # "lost my" weak in cluster 1
+    # --- MOCK DATA SETUP ---
+    # BERT-tiny uses dimension 128. We MUST match this.
+    EMBEDDING_DIM = 128 
+    NUM_CLUSTERS = 5
+    
+    # Random centroids to simulate context clusters
+    mock_centroids = np.random.normal(size=(NUM_CLUSTERS, EMBEDDING_DIM))
+    
+    # Adjacency Matrix: [Units, Clusters]
+    # Unit 0 ("my money") fits Cluster 0
+    # Unit 1 ("lost my") fits Cluster 1
+    # Unit 2 ("money") fits Cluster 2
+    mock_adj = np.zeros((3, NUM_CLUSTERS))
+    mock_adj[0, 0] = 10.0 
+    mock_adj[1, 1] = 2.0  
+    mock_adj[2, 2] = 5.0
     
     data_pack = {
         'centroids': mock_centroids,
