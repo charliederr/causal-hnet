@@ -1,0 +1,140 @@
+(jax12) ni@singbuntu24:~/repos/h/causal-hnet/gemini-generated/take3$ python analysis_driver.py
+Ingesting 249435 tokens...
+
+============================================================
+ANALYSIS 1: PRODUCTIVE GRAMMATICAL SLOTS
+Contexts that accept the highest variety of units
+============================================================
+Slot: ', ___ ,' | Unique Fillers: 4748
+  Examples: to grim necessity, by great preservation, on my trust, well-a-day ! he's dead, or what i list, ...
+----------------------------------------
+Slot: ': ___ ,' | Unique Fillers: 3037
+  Examples: go , lovel, believe me , sister, that our garments, a herald, please you to do't, ...
+----------------------------------------
+Slot: '. ___ ,' | Unique Fillers: 2198
+  Examples: ariel : all hail, o lancaster, i'll mountebank their loves, menenius : consider further, clifford : soldiers, ...
+----------------------------------------
+Slot: ', ___ the' | Unique Fillers: 1753
+  Examples: be ne'er, and turn, you love, but yield me up, you should have ta'en, ...
+----------------------------------------
+Slot: ', ___ .' | Unique Fillers: 1654
+  Examples: your citizens entreat you, nor england's counted queen, your whole head's length, must help, and no more ado, ...
+----------------------------------------
+Slot: 'the ___ ,' | Unique Fillers: 1564
+  Examples: prince florizel, state nor private friends, law by the nose, general, tables up, ...
+----------------------------------------
+Slot: ', ___ to' | Unique Fillers: 1430
+  Examples: whiles he thought, nor hast thou pleasure, speak not, gentle lady anne ,, to chase us, ...
+----------------------------------------
+Slot: 'and ___ ,' | Unique Fillers: 1424
+  Examples: not love, , that once gotten, thus still doing, you , and mine, nell . antony, ...
+----------------------------------------
+Slot: ', ___ and' | Unique Fillers: 1352
+  Examples: &c . montague :, but milk my ewes, young wanton, the leisure, whatsoe'er . gremio :, ...
+----------------------------------------
+Slot: ', ___ :' | Unique Fillers: 1346
+  Examples: thou art blood, gracious couple , do, 'tis not so much, muster men, general, ...
+----------------------------------------
+
+============================================================
+ANALYSIS 2: UNIT VERSATILITY (High Entropy)
+Units that function in many different environments
+============================================================
+Rank  | Unit                 | Entropy  | Freq
+--------------------------------------------------
+1     | ,                    | 9.4415   | 19846
+2     | .                    | 8.8209   | 7885
+3     | :                    | 8.7744   | 10316
+4     | the                  | 8.4478   | 6279
+5     | to                   | 8.1149   | 4763
+6     | ;                    | 7.9615   | 3628
+7     | a                    | 7.8315   | 2975
+8     | of                   | 7.7847   | 3757
+9     | ?                    | 7.7157   | 2462
+10    | !                    | 7.5978   | 2172
+11    | and                  | 7.5827   | 5681
+12    | , and                | 7.5578   | 1971
+13    | in                   | 7.4559   | 2363
+14    | that                 | 7.3294   | 2568
+15    | your                 | 7.2590   | 1681
+
+============================================================
+ANALYSIS 3: PARSING SAMPLES
+============================================================
+
+--- Sample 1 ---
+Input: 'Where, if you bring not Marcius, we'll proceed'
+(SPLIT E=-26.35)
+  [where]
+  (SPLIT E=-26.35)
+    (UNIT ', if' E=-8.26)
+    (SPLIT E=-18.09)
+      (UNIT 'you bring' E=-9.96)
+      (SPLIT E=-8.13)
+        (UNIT 'not marcius' E=-4.80)
+        (SPLIT E=-3.33)
+          (UNIT ', we'll' E=-3.33)
+          [proceed]
+
+--- Sample 2 ---
+Input: 'They laugh at. O my mother, mother! O!'
+(SPLIT E=-32.60)
+  [they]
+  (SPLIT E=-32.60)
+    (SPLIT E=-22.61)
+      (UNIT 'laugh at' E=-8.04)
+      (SPLIT E=-14.57)
+        (UNIT '. o' E=-5.13)
+        (UNIT 'my mother' E=-9.44)
+    (SPLIT E=-9.99)
+      [,]
+      (SPLIT E=-9.99)
+        (UNIT 'mother ! o' E=-9.99)
+        [!]
+
+--- Sample 3 ---
+Input: 'Some say he is with the Emperor of Russia; other'
+(SPLIT E=-25.23)
+  [some]
+  (SPLIT E=-25.23)
+    (SPLIT E=-23.84)
+      (UNIT 'say he' E=-5.83)
+      (SPLIT E=-18.01)
+        (UNIT 'is with' E=-9.13)
+        (UNIT 'the emperor' E=-8.89)
+    (SPLIT E=-1.39)
+      [of]
+      (SPLIT E=-1.39)
+        (UNIT 'russia ;' E=-1.39)
+        [other]
+
+--- Sample 4 ---
+Input: 'Proclaim you are no less! Can you so stead me'
+(SPLIT E=-31.71)
+  [proclaim]
+  (SPLIT E=-31.71)
+    (UNIT 'you are' E=-5.00)
+    (SPLIT E=-26.70)
+      (UNIT 'no less' E=-8.34)
+      (SPLIT E=-18.36)
+        [!]
+        (SPLIT E=-18.36)
+          (UNIT 'can you' E=-8.88)
+          (SPLIT E=-9.48)
+            (UNIT 'so stead' E=-9.48)
+            [me]
+
+--- Sample 5 ---
+Input: 'Another way I have to man my haggard,'
+(SPLIT E=-29.04)
+  [another]
+  (SPLIT E=-29.04)
+    [way]
+    (SPLIT E=-29.04)
+      (UNIT 'i have' E=-10.10)
+      (SPLIT E=-18.94)
+        (UNIT 'to man' E=-10.57)
+        (SPLIT E=-8.37)
+          (UNIT 'my haggard' E=-8.37)
+          [,]
+(jax12) ni@singbuntu24:~/repos/h/causal-hnet/gemini-generated/take3$
