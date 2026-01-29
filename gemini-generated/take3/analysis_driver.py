@@ -1,158 +1,128 @@
-import os
+import sys
 import random
-import jax.numpy as jnp
-import numpy as np
-from scipy.stats import entropy
-import data_loader  # Import to tweak settings
-from data_loader import CorpusProcessor
-from parser_v2 import JAXParser
+import math
+from collections import Counter
+from tokenizer import SimpleTokenizer
+from catalog import AggregatedCatalog
+from expansion import ExpansionEngine
+from parser_v3 import TopDownParser
 
-def analyze_clusters(adj_matrix, unit_labels, n_top_words=8, num_clusters_to_show=10):
+def analyze_context_slots(catalog, top_n=10):
     """
-    Reverse engineers the 'meaning' of clusters by seeing what words live in them.
-    adj_matrix: (Num_Units, Num_Clusters)
+    Finds the most 'productive' contexts (where many different units fit).
+    This reveals the grammatical 'slots' of the language.
     """
     print(f"\n{'='*60}")
-    print(f"ANALYSIS 1: CONTEXT CLUSTER SEMANTICS")
-    print(f"What kind of 'slots' did the system discover?")
+    print(f"ANALYSIS 1: PRODUCTIVE GRAMMATICAL SLOTS")
+    print(f"Contexts that accept the highest variety of units")
     print(f"{'='*60}")
-
-    num_units, num_clusters = adj_matrix.shape
     
-    # Sort clusters by "volume" (how much text they account for)
-    cluster_volumes = np.sum(adj_matrix, axis=0)
-    sorted_cluster_ids = np.argsort(cluster_volumes)[::-1] # Descending
-
-    # Convert unit labels to list for indexing
-    id_to_unit = unit_labels
+    # Count unique units per context
+    context_productivity = {}
+    for ctx, units in catalog.context_to_units.items():
+        # productivity = number of unique units seen in this slot
+        context_productivity[ctx] = len(units)
+        
+    # Sort by productivity
+    sorted_ctx = sorted(context_productivity.items(), key=lambda x: x[1], reverse=True)[:top_n]
     
-    for i in range(min(num_clusters_to_show, num_clusters)):
-        c_id = sorted_cluster_ids[i]
-        vol = cluster_volumes[c_id]
-        
-        # Get the column for this cluster
-        col_data = adj_matrix[:, c_id]
-        
-        # Find indices of units with highest counts in this cluster
-        top_unit_indices = np.argsort(col_data)[::-1][:n_top_words]
-        
-        # Retrieve words
-        top_words = [id_to_unit[idx] for idx in top_unit_indices if col_data[idx] > 0]
-        
-        if not top_words: continue
+    for (left, right), count in sorted_ctx:
+        # Show examples of what fits there
+        examples = list(catalog.context_to_units[(left, right)])[:5]
+        ex_str = ", ".join([" ".join(u) for u in examples])
+        print(f"Slot: '{left} ___ {right}' | Unique Fillers: {count}")
+        print(f"  Examples: {ex_str}, ...")
+        print("-" * 40)
 
-        print(f"\n[Cluster #{c_id}] (Volume: {vol:.0f})")
-        print(f"  Top Residents: {', '.join(top_words)}")
-        print(f"  Interpretation: Likely a slot for '{top_words[0]}' types")
-
-def analyze_unit_versatility(adj_matrix, unit_labels, top_n=15):
+def analyze_unit_entropy(catalog, top_n=15):
     """
-    Identifies 'High Entropy' units - words that appear in many different contexts.
-    These are often function words or highly polysemous words.
+    Finds units that appear in the most diverse set of contexts.
+    High entropy = Function words / Connectors.
     """
     print(f"\n{'='*60}")
     print(f"ANALYSIS 2: UNIT VERSATILITY (High Entropy)")
-    print(f"Which units appear in the most diverse array of contexts?")
+    print(f"Units that function in many different environments")
     print(f"{'='*60}")
-
-    # Calculate entropy for each row (unit) distribution across clusters
-    # Add small epsilon to avoid log(0)
-    row_sums = np.sum(adj_matrix, axis=1, keepdims=True) + 1e-9
-    probs = adj_matrix / row_sums
-    unit_entropies = entropy(probs, axis=1)
-
-    # Sort by entropy
-    sorted_indices = np.argsort(unit_entropies)[::-1]
+    
+    unit_entropy = []
+    
+    for unit, contexts in catalog.unit_to_contexts.items():
+        freq = catalog.unit_counts[unit]
+        if freq < 10: continue # Skip rare stuff
+        
+        # Calculate entropy of context distribution
+        ctx_counts = Counter(contexts)
+        total = sum(ctx_counts.values())
+        ent = 0
+        for count in ctx_counts.values():
+            p = count / total
+            ent -= p * math.log(p)
+            
+        unit_entropy.append((unit, ent, freq))
+        
+    # Sort
+    sorted_units = sorted(unit_entropy, key=lambda x: x[1], reverse=True)[:top_n]
     
     print(f"{'Rank':<5} | {'Unit':<20} | {'Entropy':<8} | {'Freq':<8}")
     print("-" * 50)
-    
-    count = 0
-    for idx in sorted_indices:
-        if row_sums[idx] < 5: continue # Skip rare words to avoid noise
-        
-        unit_str = unit_labels[idx]
-        ent = unit_entropies[idx]
-        freq = row_sums[idx][0]
-        
-        print(f"{count+1:<5} | {unit_str:<20} | {ent:.4f}   | {int(freq):<8}")
-        count += 1
-        if count >= top_n: break
+    for i, (unit, ent, freq) in enumerate(sorted_units):
+        u_str = " ".join(unit)
+        print(f"{i+1:<5} | {u_str:<20} | {ent:.4f}   | {freq:<8}")
 
-def automated_parse_test(parser, text_corpus, num_samples=5):
-    """
-    Splits the corpus into sentences and parses a random subset.
-    """
+def automated_parse_test(parser, catalog, num_samples=5):
     print(f"\n{'='*60}")
-    print(f"ANALYSIS 3: AUTOMATED PARSING SAMPLES")
-    print(f"Parsing random sentences from the input...")
+    print(f"ANALYSIS 3: PARSING SAMPLES")
     print(f"{'='*60}")
-
-    # Crude sentence splitter
-    sentences = text_corpus.replace("?", ".").replace("!", ".").split(".")
-    sentences = [s.strip() for s in sentences if len(s.split()) > 3] # Filter short stuff
     
-    if not sentences:
-        print("No valid sentences found to parse.")
+    # Try to parse actual lines from input.txt
+    try:
+        with open("input.txt", "r") as f:
+            lines = [line.strip() for line in f if len(line.split()) > 4]
+    except FileNotFoundError:
+        print("input.txt not found.")
         return
 
-    # Sample random sentences
-    samples = random.sample(sentences, min(num_samples, len(sentences)))
+    if not lines:
+        print("No valid lines in input.txt")
+        return
+
+    samples = random.sample(lines, min(len(lines), num_samples))
     
     for i, sent in enumerate(samples):
         print(f"\n--- Sample {i+1} ---")
         print(f"Input: '{sent}'")
-        tokens = sent.split()
+        tokens = catalog.tokenizer.tokenize(sent)
         
         try:
-            result = parser.parse(tokens)
-            parser.print_tree(result)
+            tree = parser.parse(tokens)
+            parser.print_tree(tree)
+        except RecursionError:
+            print("[Error: Sentence too long for recursion depth]")
         except Exception as e:
-            print(f"Parse Failed: {e}")
+            print(f"[Error: {e}]")
 
 def main():
-    input_file = "input.txt"
-    if not os.path.exists(input_file):
-        print(f"Error: {input_file} not found.")
-        return
-
-    # --- 1. CONFIGURATION ---
-    # Tweak these for "Deep Analysis" mode
-    data_loader.NUM_CLUSTERS = 256
-    data_loader.MIN_FREQ = 3
+    # 1. Setup
+    catalog = AggregatedCatalog()
     
-    # --- 2. LOAD DATA ---
-    print(f"Reading {input_file}...")
-    with open(input_file, "r", encoding="utf-8") as f:
-        text_corpus = f.read()
-    
-    # Truncate for speed if necessary, or process full
-    # text_corpus = text_corpus[:100000] 
-
-    print("Processing corpus (this may take a minute)...")
-    processor = CorpusProcessor()
-    processor.ingest_text(text_corpus)
-    
+    # 2. Ingest
     try:
-        processor.build_jax_structures()
-    except ValueError as e:
-        print(e)
+        with open("input.txt", "r") as f:
+            text = f.read()
+    except FileNotFoundError:
+        print("Error: input.txt not found in directory.")
         return
 
-    data_pack = processor.export()
+    catalog.ingest(text)
     
-    # Extract raw numpy arrays for analysis (no JAX needed for stat analysis)
-    adj_matrix = np.array(data_pack['adj_matrix']) # (Units, Clusters)
-    unit_labels = data_pack['unit_labels']         # ID -> Str
-
-    # --- 3. RUN ANALYTICS ---
-    analyze_clusters(adj_matrix, unit_labels)
-    analyze_unit_versatility(adj_matrix, unit_labels)
+    # 3. Analyze Patterns
+    analyze_context_slots(catalog)
+    analyze_unit_entropy(catalog)
     
-    # --- 4. RUN PARSER CHECK ---
-    print("\nInitializing Parser for sanity check...")
-    parser = JAXParser(data_pack)
-    automated_parse_test(parser, text_corpus)
+    # 4. Test Parser
+    engine = ExpansionEngine(catalog)
+    parser = TopDownParser(engine)
+    automated_parse_test(parser, catalog)
 
 if __name__ == "__main__":
     main()
