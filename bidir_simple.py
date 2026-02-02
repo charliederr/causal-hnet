@@ -92,6 +92,9 @@ class UnitCatalog:
         self.unit_to_idx = None
         # Length index for fast filtering
         self.units_by_length = {}
+        # Reverse lookup indexes: context word -> set of units
+        self.left_word_to_units = {}   # word -> {(unit_text, count), ...}
+        self.right_word_to_units = {}  # word -> {(unit_text, count), ...}
 
     def load(self, path: str):
         with open(path, 'rb') as f:
@@ -99,6 +102,8 @@ class UnitCatalog:
         print(f"Loaded {len(self.units):,} units from {path}")
         # Build length index
         self._build_length_index()
+        # Build reverse lookup indexes
+        self._build_reverse_indexes()
 
     def _build_length_index(self):
         """Index units by word count for fast length filtering."""
@@ -108,6 +113,42 @@ class UnitCatalog:
             if length not in self.units_by_length:
                 self.units_by_length[length] = []
             self.units_by_length[length].append(text)
+
+    def _build_reverse_indexes(self):
+        """Build reverse lookup: context word -> units that have it."""
+        from collections import defaultdict
+
+        self.left_word_to_units = defaultdict(list)
+        self.right_word_to_units = defaultdict(list)
+
+        for unit_text, pattern in self.units.items():
+            # Index left context words
+            for word, count in pattern.left_words.items():
+                self.left_word_to_units[word].append((unit_text, count))
+            # Index right context words
+            for word, count in pattern.right_words.items():
+                self.right_word_to_units[word].append((unit_text, count))
+
+        # Convert to regular dicts for pickle compatibility
+        self.left_word_to_units = dict(self.left_word_to_units)
+        self.right_word_to_units = dict(self.right_word_to_units)
+
+        print(f"  Built reverse indexes: {len(self.left_word_to_units):,} left words, "
+              f"{len(self.right_word_to_units):,} right words")
+
+    def reverse_left_lookup(self, word: str, min_count: int = 1) -> Set[str]:
+        """Find units that have 'word' in their left context."""
+        if word not in self.left_word_to_units:
+            return set()
+        return {unit_text for unit_text, count in self.left_word_to_units[word]
+                if count >= min_count}
+
+    def reverse_right_lookup(self, word: str, min_count: int = 1) -> Set[str]:
+        """Find units that have 'word' in their right context."""
+        if word not in self.right_word_to_units:
+            return set()
+        return {unit_text for unit_text, count in self.right_word_to_units[word]
+                if count >= min_count}
 
     def get_unit(self, text: str) -> Optional[ContextPattern]:
         return self.units.get(text)
@@ -135,9 +176,9 @@ class UnitCatalog:
             all_words.update(w for w, _ in pattern.left_words.most_common(10))
             all_words.update(w for w, _ in pattern.right_words.most_common(10))
 
-        vocab = sorted(all_words)
-        word_to_idx = {w: i for i, w in enumerate(vocab)}
-        vocab_size = len(vocab)
+        self.vocab = sorted(all_words)
+        self.word_to_idx = {w: i for i, w in enumerate(self.vocab)}
+        vocab_size = len(self.vocab)
 
         print(f"  {n_units:,} units, {vocab_size:,} vocabulary")
 
@@ -149,12 +190,12 @@ class UnitCatalog:
             pattern = freq_units[text]
 
             for w, c in pattern.left_words.most_common(10):
-                if w in word_to_idx:
-                    cpu_left[i, word_to_idx[w]] = c
+                if w in self.word_to_idx:
+                    cpu_left[i, self.word_to_idx[w]] = c
 
             for w, c in pattern.right_words.most_common(10):
-                if w in word_to_idx:
-                    cpu_right[i, word_to_idx[w]] = c
+                if w in self.word_to_idx:
+                    cpu_right[i, self.word_to_idx[w]] = c
 
         # Normalize
         left_norms = np.linalg.norm(cpu_left.astype(np.float32), axis=1, keepdims=True) + 1e-10
@@ -169,6 +210,181 @@ class UnitCatalog:
         self.gpu_ready = True
         mem_mb = (self.gpu_left.numel() + self.gpu_right.numel()) * 2 / (1024 * 1024)
         print(f"  GPU index ready ({mem_mb:.1f} MB)")
+
+        # Build index-based reverse lookups and length index for GPU operations
+        self._build_gpu_reverse_indexes()
+
+    def _build_gpu_reverse_indexes(self):
+        """Build reverse lookups that return indices (for GPU gathering)."""
+        from collections import defaultdict
+
+        # Index by length (using indices)
+        self.idx_by_length = defaultdict(list)
+        for idx, text in enumerate(self.unit_list):
+            length = text.count(' ') + 1
+            self.idx_by_length[length].append(idx)
+
+        # Reverse lookups: word -> set of unit indices
+        self.left_word_to_idx = defaultdict(set)
+        self.right_word_to_idx = defaultdict(set)
+
+        for idx, text in enumerate(self.unit_list):
+            pattern = self.units.get(text)
+            if pattern:
+                for word in pattern.left_words:
+                    self.left_word_to_idx[word].add(idx)
+                for word in pattern.right_words:
+                    self.right_word_to_idx[word].add(idx)
+
+        # Convert to regular dicts
+        self.idx_by_length = dict(self.idx_by_length)
+        self.left_word_to_idx = dict(self.left_word_to_idx)
+        self.right_word_to_idx = dict(self.right_word_to_idx)
+
+        print(f"  GPU reverse indexes ready")
+
+    def gpu_contextual_candidates(self, unit_text: str,
+                                   left_context: List[str],
+                                   right_context: List[str],
+                                   max_results: int = 100,
+                                   trace: bool = False) -> List[Tuple[str, float]]:
+        """
+        Find contextually-grounded candidates using GPU acceleration.
+
+        1. Intersection of reverse lookups (candidates must share presented context)
+        2. Filter by length
+        3. GPU matrix-vector multiply for overlap scoring
+        4. Return top-k
+
+        Args:
+            unit_text: Target unit
+            left_context: Words appearing before target in sentence
+            right_context: Words appearing after target in sentence
+            max_results: Maximum candidates to return
+
+        Returns:
+            List of (unit_text, overlap_score) tuples
+        """
+        if not self.gpu_ready:
+            return []
+
+        # Unknown units return empty - parser will split them
+        if unit_text not in self.unit_to_idx:
+            if trace:
+                print(f"\n  TRACE: '{unit_text}' not in index - will be split")
+            return []
+
+        target_idx = self.unit_to_idx[unit_text]
+        target_length = unit_text.count(' ') + 1
+
+        if trace:
+            print(f"\n  TRACE: gpu_contextual_candidates('{unit_text}')")
+            print(f"    left_context: {left_context}")
+            print(f"    right_context: {right_context}")
+            print(f"    Known unit (idx={target_idx})")
+
+        # Get length-filtered indices
+        length_indices = set(self.idx_by_length.get(target_length, []))
+        if not length_indices:
+            if trace:
+                print(f"    No units of length {target_length}")
+            return []
+
+        if trace:
+            print(f"    Units of length {target_length}: {len(length_indices)}")
+
+        # Find candidates sharing ALL left context words (intersection within side)
+        left_candidates = None
+        for word in left_context:
+            if word in self.left_word_to_idx:
+                word_indices = self.left_word_to_idx[word]
+                if trace:
+                    print(f"    Left '{word}': {len(word_indices)} units", end="")
+                if left_candidates is None:
+                    left_candidates = word_indices.copy()
+                else:
+                    left_candidates &= word_indices
+                if trace:
+                    print(f" -> intersection: {len(left_candidates) if left_candidates else 0}")
+            elif trace:
+                print(f"    Left '{word}': NOT IN INDEX")
+
+        # Find candidates sharing ALL right context words (intersection within side)
+        right_candidates = None
+        for word in right_context:
+            if word in self.right_word_to_idx:
+                word_indices = self.right_word_to_idx[word]
+                if trace:
+                    print(f"    Right '{word}': {len(word_indices)} units", end="")
+                if right_candidates is None:
+                    right_candidates = word_indices.copy()
+                else:
+                    right_candidates &= word_indices
+                if trace:
+                    print(f" -> intersection: {len(right_candidates) if right_candidates else 0}")
+            elif trace:
+                print(f"    Right '{word}': NOT IN INDEX")
+
+        # Combine: intersection across sides when both available, fallback to one side at edges
+        if left_candidates is not None and right_candidates is not None:
+            candidates = left_candidates & right_candidates
+            if trace:
+                print(f"    Left & Right intersection: {len(candidates)}")
+        elif left_candidates is not None:
+            candidates = left_candidates  # Edge: no right context
+            if trace:
+                print(f"    Using left only (edge): {len(candidates)}")
+        elif right_candidates is not None:
+            candidates = right_candidates  # Edge: no left context
+            if trace:
+                print(f"    Using right only (edge): {len(candidates)}")
+        else:
+            if trace:
+                print(f"    No candidates from either side")
+            return []
+
+        # Filter by length and remove target
+        candidates = candidates & length_indices
+        candidates.discard(target_idx)
+
+        if trace:
+            print(f"    After length filter: {len(candidates)}")
+
+        if not candidates:
+            return []
+
+        # Convert to tensor for GPU operations
+        candidate_indices = torch.tensor(list(candidates), dtype=torch.long, device=DEVICE)
+
+        # Get target's context vectors
+        target_left = self.gpu_left[target_idx].float()
+        target_right = self.gpu_right[target_idx].float()
+
+        # Get candidates' context vectors
+        cand_left = self.gpu_left[candidate_indices].float()
+        cand_right = self.gpu_right[candidate_indices].float()
+
+        # Compute overlap scores (dot product = cosine similarity for normalized vectors)
+        left_scores = torch.mv(cand_left, target_left)
+        right_scores = torch.mv(cand_right, target_right)
+        combined_scores = (left_scores + right_scores) / 2.0
+
+        # Get top-k
+        k = min(max_results, len(candidates))
+        top_scores, top_indices = torch.topk(combined_scores, k)
+
+        # Convert back to unit texts
+        results = []
+        for score, idx in zip(top_scores.cpu().tolist(), top_indices.cpu().tolist()):
+            unit_idx = candidate_indices[idx].item()
+            results.append((self.unit_list[unit_idx], score))
+
+        if trace:
+            print(f"    Top 5 results:")
+            for text, score in results[:5]:
+                print(f"      {score:.3f}: '{text}'")
+
+        return results
 
     def gpu_find_similar(self, unit_text: str, threshold: float = 0.3,
                          same_length: bool = True, max_results: int = 100,
@@ -644,18 +860,111 @@ def bidirectional_expansion_simple(unit_text: str,
 
     return (unit_expansion, context_expansion)
 
+
+def bidirectional_expansion_contextual(unit_text: str,
+                                       current_left: Counter,
+                                       current_right: Counter,
+                                       catalog: UnitCatalog,
+                                       max_results: int = 100,
+                                       max_iters: int = 2) -> Tuple[Set[str], Set[str]]:
+    """
+    GPU-accelerated contextual bidirectional expansion.
+
+    Key insight: Start from presented context (intersection filtering),
+    then score by similarity to target using GPU matrix operations.
+
+    1. Intersection of reverse lookups → candidates sharing presented context
+    2. GPU matrix-vector multiply → overlap scores with target
+    3. Top-k selection → niche grouping for this sentence
+
+    Returns: (unit_expansion, context_pattern_expansion)
+    """
+    target_unit = catalog.get_unit(unit_text)
+    if not target_unit:
+        return (set(), set())
+
+    # Initialize
+    unit_expansion = {unit_text}
+
+    # Build context pattern for target
+    target_pattern = frozenset(target_unit.left_words.most_common(5) +
+                               target_unit.right_words.most_common(5))
+    context_expansion = {target_pattern}
+
+    # Convert counters to lists for GPU method
+    left_ctx_list = list(current_left.keys())
+    right_ctx_list = list(current_right.keys())
+
+    for iteration in range(max_iters):
+        # ============================================================
+        # GPU-ACCELERATED CONTEXTUAL EXPANSION
+        # ============================================================
+        # Find units that:
+        # 1. Share the presented context (intersection of reverse lookups)
+        # 2. Are most similar to target (GPU scoring)
+
+        new_candidates = []
+
+        # Expand from each unit in current expansion
+        for existing_unit in list(unit_expansion):
+            candidates = catalog.gpu_contextual_candidates(
+                existing_unit,
+                left_context=left_ctx_list,
+                right_context=right_ctx_list,
+                max_results=max_results
+            )
+            new_candidates.extend(candidates)
+
+        # Deduplicate and filter already-expanded
+        seen = {}
+        for text, score in new_candidates:
+            if text not in unit_expansion:
+                if text not in seen or score > seen[text]:
+                    seen[text] = score
+
+        # Add top candidates to expansion
+        sorted_candidates = sorted(seen.items(), key=lambda x: -x[1])[:max_results]
+        new_units = {text for text, _ in sorted_candidates}
+
+        if not new_units:
+            break
+
+        unit_expansion.update(new_units)
+
+        # Build context patterns for new units
+        for u in new_units:
+            u_unit = catalog.get_unit(u)
+            if u_unit:
+                pattern = frozenset(u_unit.left_words.most_common(5) +
+                                   u_unit.right_words.most_common(5))
+                context_expansion.add(pattern)
+
+    return (unit_expansion, context_expansion)
+
+
 def compute_bidir_energy(span: Span,
                          left_context,
                          right_context,
                          catalog: UnitCatalog,
-                         debug=False) -> Tuple[float, int, int]:
-    """Energy via simplified bidirectional expansion."""
+                         debug=False,
+                         use_contextual: bool = True) -> Tuple[float, int, int]:
+    """Energy via bidirectional expansion.
+
+    Args:
+        use_contextual: If True, use contextual expansion (local context-driven).
+                       If False, use simple expansion (global statistics).
+    """
     current_left = Counter(left_context)
     current_right = Counter(right_context)
 
-    unit_exp, ctx_exp = bidirectional_expansion_simple(
-        span.text, current_left, current_right, catalog
-    )
+    if use_contextual:
+        unit_exp, ctx_exp = bidirectional_expansion_contextual(
+            span.text, current_left, current_right, catalog
+        )
+    else:
+        unit_exp, ctx_exp = bidirectional_expansion_simple(
+            span.text, current_left, current_right, catalog
+        )
 
     unit_exp_size = len(unit_exp)
     ctx_exp_size = len(ctx_exp)
@@ -677,10 +986,11 @@ def compute_bidir_energy(span: Span,
 class SimpleBidirParser:
     """Parser using simplified bidirectional expansion."""
 
-    def __init__(self, catalog, context_window=3, debug=False):
+    def __init__(self, catalog, context_window=3, debug=False, use_contextual=True):
         self.catalog = catalog
         self.context_window = context_window
         self.debug = debug
+        self.use_contextual = use_contextual
 
     def parse(self, tokens):
         span = Span(0, len(tokens), tokens)
@@ -692,7 +1002,8 @@ class SimpleBidirParser:
 
         # Test as unit
         unit_energy, u_exp, c_exp = compute_bidir_energy(
-            span, left_ctx, right_ctx, self.catalog, self.debug
+            span, left_ctx, right_ctx, self.catalog, self.debug,
+            use_contextual=self.use_contextual
         )
 
         # Test splits

@@ -1284,6 +1284,152 @@ class SubstitutionPredictor:
         candidates.sort(key=lambda x: -x[1] * math.log(x[2] + 1))
         return candidates[0]
 
+    def predict_with_evidence_consolidation(self, tokens: List[str],
+                                             parser: SimpleBidirParser,
+                                             top_k: int = 10,
+                                             min_evidence: int = 50) -> List[UnitPrediction]:
+        """
+        Predict using evidence consolidation through substitution chains.
+
+        Key principles:
+        1. Predictions come from direct right-context only (single words AND multi-word units)
+        2. Substitution chains ADD evidence to existing predictions (don't expand)
+        3. Multi-word predictions only when they have MORE direct evidence than single-word
+
+        Args:
+            tokens: Input prompt as list of tokens
+            parser: Parser for hierarchical decomposition
+            top_k: Number of predictions to return
+            min_evidence: Threshold for using direct evidence vs backoff
+        """
+        if len(tokens) < 1:
+            return []
+
+        # 1. Parse prompt into hierarchy
+        tree = parser.parse(tokens) if len(tokens) >= 2 else None
+
+        # 2. Collect direct evidence for predictions (both single words and multi-word units)
+        #    Key: prediction text (single word or multi-word)
+        #    Value: accumulated evidence
+        prediction_evidence = defaultdict(float)
+        prediction_sources = defaultdict(list)
+
+        # Get direct predictions from the full prompt
+        prompt_text = ' '.join(tokens)
+        self._add_direct_predictions(prompt_text, prediction_evidence, prediction_sources, weight=1.0)
+
+        # 3. Consolidate evidence through substitution chains
+        if tree:
+            spans = self._collect_all_nodes(tree)
+
+            for span_text, level in spans:
+                if span_text not in self.unit_patterns:
+                    continue
+
+                span_pattern = self.unit_patterns[span_text]
+
+                # If this span has low evidence, expand through substitution class
+                if span_pattern.count < min_evidence:
+                    sub_class = self.find_substitution_class(span_text, max_members=10)
+
+                    for member_text, centrality in sub_class:
+                        # Recombine: substitute member for span in the prompt
+                        recombined = self._recombine_prompt(tokens, span_text, member_text)
+
+                        if recombined and recombined in self.unit_patterns:
+                            # Add evidence from recombined prompt (with decay)
+                            decay = centrality * 0.5
+                            self._add_direct_predictions(
+                                recombined, prediction_evidence, prediction_sources,
+                                weight=decay, source=f"{span_text}→{member_text}→{recombined}"
+                            )
+
+        # 4. Consolidate: prefer multi-word units when they have MORE evidence
+        final_predictions = self._consolidate_predictions(prediction_evidence, top_k)
+
+        return final_predictions
+
+    def _add_direct_predictions(self, unit_text: str,
+                                 prediction_evidence: Dict[str, float],
+                                 prediction_sources: Dict[str, List],
+                                 weight: float = 1.0,
+                                 source: str = None):
+        """
+        Add direct predictions from a unit's right-context.
+
+        Currently only adds single-word predictions (what's stored in right_words).
+
+        TODO: Rebuild corpus to also index multi-word right-context phrases.
+        Then this method can add multi-word predictions directly from right-context.
+        """
+        if unit_text not in self.unit_patterns:
+            return
+
+        pattern = self.unit_patterns[unit_text]
+        right_dist = self.unit_right_contexts.get(unit_text, {})
+
+        # Weight by unit frequency
+        freq_weight = math.log(pattern.count + 1)
+        source = source or unit_text
+
+        # Add single-word predictions from right_words
+        for word, prob in right_dist.items():
+            idf = self.word_idf.get(word, 1.0)
+            evidence = prob * freq_weight * idf * weight
+            prediction_evidence[word] += evidence
+            prediction_sources[word].append((source, evidence))
+
+    def _consolidate_predictions(self, prediction_evidence: Dict[str, float],
+                                  top_k: int) -> List[UnitPrediction]:
+        """
+        Convert prediction evidence to UnitPrediction objects.
+
+        Currently returns single-word predictions only (current corpus limitation).
+
+        TODO: When corpus is rebuilt with multi-word right-context indexing,
+        this method should consolidate by preferring multi-word predictions
+        when they have MORE evidence than the single-word.
+        """
+        final = []
+
+        # Sort by evidence
+        sorted_preds = sorted(prediction_evidence.items(), key=lambda x: -x[1])
+
+        for pred_text, evidence in sorted_preds[:top_k]:
+            final.append(UnitPrediction(
+                unit_text=pred_text,
+                tokens=pred_text.split(),
+                score=evidence,
+                context_overlap=0.0,
+                frequency=self.unit_patterns.get(pred_text, ContextPattern(Counter(), Counter(), 0)).count
+            ))
+
+        # Normalize scores
+        total = sum(p.score for p in final)
+        if total > 0:
+            for p in final:
+                p.score = p.score / total
+
+        return final
+
+    def _recombine_prompt(self, tokens: List[str], span_text: str, member_text: str) -> Optional[str]:
+        """
+        Recombine prompt by substituting span with member.
+
+        Example: tokens=["i", "want", "to"], span="i want", member="i'd like"
+                 Returns: "i'd like to"
+        """
+        span_tokens = span_text.split()
+
+        # Find where span appears in tokens
+        for i in range(len(tokens) - len(span_tokens) + 1):
+            if tokens[i:i+len(span_tokens)] == span_tokens:
+                # Replace span with member
+                new_tokens = tokens[:i] + member_text.split() + tokens[i+len(span_tokens):]
+                return ' '.join(new_tokens)
+
+        return None
+
     def generate_with_substitution(self, prompt: List[str],
                                     parser: SimpleBidirParser,
                                     max_tokens: int = 20,

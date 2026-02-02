@@ -1,22 +1,25 @@
 #!/usr/bin/env python3
 """
-Analyze a phrase: parse it, show substitution classes for sub-spans, and predict continuations.
+Analyze a phrase: parse it and show contextual substitution classes for each node.
 
 Usage:
     python analyze_phrase.py "we should go"
-    python analyze_phrase.py "i want to"
+    python analyze_phrase.py "that's a beautiful hat"
 """
 
 import sys
 import warnings
 warnings.filterwarnings('ignore')
 
-from bidir_simple import UnitCatalog, SimpleBidirParser, ContextPattern, print_tree
-from substitution_predictor import SubstitutionPredictor
+# Import ContextPattern for pickle compatibility
+import prototype_topdown_units
+from prototype_topdown_units import ContextPattern
+
+from bidir_simple import UnitCatalog, SimpleBidirParser, print_tree
 
 
-def analyze(phrase: str, predictor: SubstitutionPredictor, parser: SimpleBidirParser,
-            max_class_members: int = 5, max_predictions: int = 10):
+def analyze(phrase: str, catalog: UnitCatalog, parser: SimpleBidirParser,
+            max_class_members: int = 5):
     """Analyze a phrase and display results."""
 
     tokens = phrase.lower().split()
@@ -33,65 +36,80 @@ def analyze(phrase: str, predictor: SubstitutionPredictor, parser: SimpleBidirPa
         print_tree(tree)
     else:
         print(f'  "{phrase}" (single token)')
+        tree = None
 
-    # 2. Collect all spans from the parse tree
-    print("\n[2] SUBSTITUTION CLASSES FOR SUB-SPANS")
+    # 2. Show contextual substitution classes for each node
+    print("\n[2] CONTEXTUAL SUBSTITUTION CLASSES")
     print("-" * 40)
+    print("(Units that share presented context, scored by similarity to target)")
 
-    if len(tokens) >= 2:
-        spans = collect_spans(tree)
-        # Sort by span length (longest first) then by position
-        spans.sort(key=lambda x: (-len(x.split()), phrase.find(x)))
-
-        for span_text in spans:
-            sub_class = predictor.find_substitution_class(span_text, max_members=max_class_members + 1)
-            if sub_class:
-                # Filter out the span itself
-                members = [(m, s) for m, s in sub_class if m != span_text][:max_class_members]
-                if members:
-                    print(f'\n  "{span_text}" ≈')
-                    for member, score in members:
-                        print(f'    {score:.3f}  "{member}"')
-            else:
-                # Check if it's in catalog but has no matches
-                if span_text in predictor.unit_patterns:
-                    print(f'\n  "{span_text}" ≈ (no similar units found)')
+    if tree:
+        show_contextual_expansions(tree, tokens, catalog, max_class_members)
     else:
-        sub_class = predictor.find_substitution_class(phrase.lower(), max_members=max_class_members)
-        if sub_class:
-            print(f'\n  "{phrase}" ≈')
-            for member, score in sub_class:
-                print(f'    {score:.3f}  "{member}"')
-        else:
-            print(f'  "{phrase}" not found in catalog')
-
-    # 3. Predictions
-    print("\n[3] PREDICTED CONTINUATIONS")
-    print("-" * 40)
-
-    preds = predictor.predict_with_substitution_class(tokens, parser, top_k=max_predictions)
-    if preds:
-        for i, p in enumerate(preds, 1):
-            print(f'  {i:2d}. "{p.unit_text}" ({p.score:.3f})')
-    else:
-        print("  (no predictions)")
+        # Single token
+        show_single_token_expansion(tokens[0], catalog, max_class_members)
 
     print()
 
 
-def collect_spans(node, spans=None):
-    """Recursively collect all span texts from parse tree."""
-    if spans is None:
-        spans = []
+def show_contextual_expansions(node, full_tokens, catalog, max_members, context_window=3):
+    """Recursively show contextual expansions for each node."""
+    span = node.span
 
-    spans.append(node.span.text)
+    # Reconstruct the context that was used during parsing
+    left_ctx = full_tokens[max(0, span.start - context_window):span.start]
+    right_ctx = full_tokens[span.end:min(len(full_tokens), span.end + context_window)]
 
+    # Get contextual candidates
+    candidates = catalog.gpu_contextual_candidates(
+        span.text,
+        left_context=left_ctx,
+        right_context=right_ctx,
+        max_results=max_members + 1
+    )
+
+    # Filter out the span itself
+    candidates = [(text, score) for text, score in candidates if text != span.text][:max_members]
+
+    # Display
+    ctx_str = f'[{" ".join(left_ctx)}] ___ [{" ".join(right_ctx)}]' if left_ctx or right_ctx else "(no context)"
+    print(f'\n  "{span.text}"  in context  {ctx_str}')
+
+    if candidates:
+        print(f'    Expansion size: {node.unit_expansion}')
+        print(f'    Top substitutes:')
+        for text, score in candidates:
+            print(f'      {score:.3f}  "{text}"')
+    else:
+        if node.unit_expansion > 1:
+            print(f'    Expansion size: {node.unit_expansion} (candidates not retrieved)')
+        else:
+            print(f'    (no contextual substitutes found)')
+
+    # Recurse to children
     if node.left:
-        collect_spans(node.left, spans)
+        show_contextual_expansions(node.left, full_tokens, catalog, max_members, context_window)
     if node.right:
-        collect_spans(node.right, spans)
+        show_contextual_expansions(node.right, full_tokens, catalog, max_members, context_window)
 
-    return spans
+
+def show_single_token_expansion(token, catalog, max_members):
+    """Show expansion for a single token (no parse tree context)."""
+    # For single tokens, we have no sibling context
+    candidates = catalog.gpu_contextual_candidates(
+        token,
+        left_context=[],
+        right_context=[],
+        max_results=max_members + 1
+    )
+    candidates = [(text, score) for text, score in candidates if text != token][:max_members]
+
+    print(f'\n  "{token}"  (single token, no context)')
+    if candidates:
+        for text, score in candidates:
+            print(f'    {score:.3f}  "{text}"')
+    else:
+        print(f'    (no substitutes found)')
 
 
 def main():
@@ -99,8 +117,8 @@ def main():
         print("Usage: python analyze_phrase.py \"phrase to analyze\"")
         print("\nExamples:")
         print('  python analyze_phrase.py "we should go"')
-        print('  python analyze_phrase.py "i want to"')
-        print('  python analyze_phrase.py "she said that"')
+        print('  python analyze_phrase.py "that\'s a beautiful hat"')
+        print('  python analyze_phrase.py "i want to see you"')
         sys.exit(1)
 
     phrase = sys.argv[1]
@@ -109,12 +127,12 @@ def main():
     print("Loading models...")
     catalog = UnitCatalog()
     catalog.load('unit_catalog.pkl')
+    catalog.build_gpu_index(min_freq=10)
 
-    predictor = SubstitutionPredictor(catalog, similarity_method='lin')
     parser = SimpleBidirParser(catalog, debug=False)
 
     # Analyze
-    analyze(phrase, predictor, parser)
+    analyze(phrase, catalog, parser)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,7 @@
 # Substitution-Based Sequence Prediction
 
+> **Note (Feb 2026):** This document describes an earlier approach using global context statistics via `SubstitutionPredictor`. This has been superseded by the contextual expansion approach in `bidir_simple.py`, which computes substitution classes dynamically based on presented sentence context rather than global statistics. See `analyze_phrase.py` for the current implementation.
+
 ## The Transformer Analogy
 
 This branch explores using **substitution-based parsing** as a foundation for sequence prediction, analogous to how transformers work but with key differences.
