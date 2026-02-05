@@ -5,3 +5,4 @@ python similarity.py --max-sentences 10000
 (ran) python expansion.py --max-sentences 5000 --similarity-threshold 0.15 --max-iterations 2 --similarity-metric cosine_tfidf_min 2>&1 | head -150
 (ran) python catalog.py --max-sentences 2000 2>&1 | head -80
 (ran (truncated unfortunately, supposed to be a smaller test)) python expansion.py --max-sentences 3000 --similarity-threshold 0.20 --max-iterations 2 --similarity-metric cosine…
+(ran) python parser.py --max-sentences 5000 --max-span-length 4 2>&1 | head -200    
