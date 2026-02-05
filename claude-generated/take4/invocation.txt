@@ -1,4 +1,6 @@
 python catalog.py --max-sentences 5000
 python expansion.py --max-sentences 5000 --similarity-threshold 0.25 --max-iterations 2
 python similarity.py --max-sentences 10000
+(suggested) expansion.py --max-sentences 10000 --similarity-threshold 0.15 --max-iterations 2 --similarity-metric cosine_tfidf_min 2>&1 | head -300
+
 

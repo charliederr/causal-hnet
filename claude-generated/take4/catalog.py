@@ -9,14 +9,50 @@ A "context" is represented as a tuple: (left_tuple, right_tuple)
 where left_tuple and right_tuple are tuples of tokens.
 """
 
+__version__ = "0.2.0"
+__date__ = "2026-02-05"
+
+import os
+import sys
 from collections import defaultdict, Counter
 from typing import List, Tuple, Dict, Set, Optional
+from datetime import datetime
+from pathlib import Path
 
 
 # Type aliases for clarity
 Token = str
 Unit = Tuple[Token, ...]  # An n-gram represented as a tuple of tokens
 Context = Tuple[Tuple[Token, ...], Tuple[Token, ...]]  # (left_context, right_context)
+
+# Output directory
+OUTPUT_DIR = Path(__file__).parent / "output"
+
+
+class OutputWriter:
+    """Handles writing output to both console and file."""
+
+    def __init__(self, output_path: Optional[Path] = None):
+        self.output_path = output_path
+        self.file_handle = None
+        if output_path:
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            self.file_handle = open(output_path, 'w', encoding='utf-8')
+
+    def write(self, msg: str = ""):
+        print(msg)
+        if self.file_handle:
+            self.file_handle.write(msg + "\n")
+
+    def close(self):
+        if self.file_handle:
+            self.file_handle.close()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
 
 
 class Catalog:
@@ -132,22 +168,30 @@ class Catalog:
         )
 
 
-def load_cornell_sentences(max_sentences: Optional[int] = None, verbose: bool = True) -> List[str]:
+def load_cornell_sentences(max_sentences: Optional[int] = None, verbose: bool = True,
+                           writer: Optional[OutputWriter] = None) -> List[str]:
     """
     Load sentences from the Cornell Movie Dialogues Corpus via convokit.
 
     Args:
         max_sentences: Maximum number of sentences to load (None for all)
         verbose: Print progress information
+        writer: OutputWriter for logging
 
     Returns:
         List of sentence strings
     """
     from convokit import Corpus, download
 
-    if verbose:
-        print("Loading Cornell Movie Dialogues Corpus...")
-        print("(This may download the corpus on first run)")
+    def log(msg):
+        if verbose:
+            if writer:
+                writer.write(msg)
+            else:
+                print(msg)
+
+    log("Loading Cornell Movie Dialogues Corpus...")
+    log("(This may download the corpus on first run)")
 
     corpus = Corpus(filename=download("movie-corpus"))
 
@@ -155,8 +199,7 @@ def load_cornell_sentences(max_sentences: Optional[int] = None, verbose: bool = 
     utterances = list(corpus.iter_utterances())
     total = len(utterances)
 
-    if verbose:
-        print(f"Total utterances in corpus: {total}")
+    log(f"Total utterances in corpus: {total}")
 
     for i, utterance in enumerate(utterances):
         text = utterance.text
@@ -170,10 +213,9 @@ def load_cornell_sentences(max_sentences: Optional[int] = None, verbose: bool = 
 
         # Progress indicator
         if verbose and (i + 1) % 50000 == 0:
-            print(f"  Processed {i + 1}/{total} utterances, collected {len(sentences)} sentences")
+            log(f"  Processed {i + 1}/{total} utterances, collected {len(sentences)} sentences")
 
-    if verbose:
-        print(f"Loaded {len(sentences)} sentences")
+    log(f"Loaded {len(sentences)} sentences")
 
     return sentences
 
@@ -182,7 +224,8 @@ def build_catalog_from_cornell(
     max_sentences: Optional[int] = None,
     context_size: int = 3,
     max_n: int = 4,
-    verbose: bool = True
+    verbose: bool = True,
+    writer: Optional[OutputWriter] = None
 ) -> "Catalog":
     """
     Build a catalog from the Cornell Movie Dialogues Corpus.
@@ -192,25 +235,31 @@ def build_catalog_from_cornell(
         context_size: Context window size
         max_n: Maximum n-gram size
         verbose: Print progress
+        writer: OutputWriter for logging
 
     Returns:
         Populated Catalog instance
     """
-    sentences = load_cornell_sentences(max_sentences, verbose)
+    def log(msg):
+        if verbose:
+            if writer:
+                writer.write(msg)
+            else:
+                print(msg)
+
+    sentences = load_cornell_sentences(max_sentences, verbose, writer)
 
     catalog = Catalog(context_size=context_size, max_n=max_n)
 
-    if verbose:
-        print(f"\nBuilding catalog (context_size={context_size}, max_n={max_n})...")
+    log(f"\nBuilding catalog (context_size={context_size}, max_n={max_n})...")
 
     for i, sentence in enumerate(sentences):
         catalog.add_sentence(sentence)
 
         if verbose and (i + 1) % 10000 == 0:
-            print(f"  Processed {i + 1}/{len(sentences)} sentences")
+            log(f"  Processed {i + 1}/{len(sentences)} sentences")
 
-    if verbose:
-        print(f"Done. {catalog}")
+    log(f"Done. {catalog}")
 
     return catalog
 
@@ -227,65 +276,94 @@ if __name__ == "__main__":
                         help="Context window size (default: 3)")
     parser.add_argument("--max-n", type=int, default=4,
                         help="Maximum n-gram size (default: 4)")
+    parser.add_argument("--no-output-file", action="store_true",
+                        help="Disable writing output to file")
     args = parser.parse_args()
 
-    print("="*60)
-    print("CATALOG BUILDER - Cornell Movie Dialogues Corpus")
-    print("="*60)
-    print(f"Parameters:")
-    print(f"  max_sentences: {args.max_sentences}")
-    print(f"  context_size: {args.context_size}")
-    print(f"  max_n: {args.max_n}")
-    print()
+    # Generate output filename with timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_file = OUTPUT_DIR / f"catalog_{timestamp}.txt" if not args.no_output_file else None
 
-    catalog = build_catalog_from_cornell(
-        max_sentences=args.max_sentences,
-        context_size=args.context_size,
-        max_n=args.max_n,
-        verbose=True
-    )
+    # Reconstruct command line
+    cmd_line = "python " + " ".join(sys.argv)
 
-    print("\n" + "="*60)
-    print("CATALOG STATISTICS")
-    print("="*60)
-    stats = catalog.stats()
-    print(f"Unique units: {stats['num_unique_units']:,}")
-    print(f"Unique contexts: {stats['num_unique_contexts']:,}")
-    print(f"Total occurrences: {stats['total_unit_occurrences']:,}")
-    print(f"\nMost common units:")
-    for unit, freq in stats['most_common_units']:
-        print(f"  '{' '.join(unit)}': {freq:,}")
+    with OutputWriter(output_file) as writer:
+        # Write header
+        writer.write("=" * 70)
+        writer.write("CATALOG BUILDER - Cornell Movie Dialogues Corpus")
+        writer.write("=" * 70)
+        writer.write(f"Version: {__version__} ({__date__})")
+        writer.write(f"Run timestamp: {datetime.now().isoformat()}")
+        writer.write(f"Command: {cmd_line}")
+        writer.write("")
+        writer.write("Parameters:")
+        writer.write(f"  max_sentences: {args.max_sentences}")
+        writer.write(f"  context_size: {args.context_size}")
+        writer.write(f"  max_n: {args.max_n}")
+        writer.write("")
 
-    # Test some lookups
-    print("\n" + "="*60)
-    print("SAMPLE UNIT LOOKUPS")
-    print("="*60)
+        if output_file:
+            writer.write(f"Output file: {output_file}")
+            writer.write("")
 
-    test_units = [
-        ("my", "money"),
-        ("go", "out"),
-        ("i", "love"),
-        ("you", "know"),
-        ("want", "to"),
-    ]
+        catalog = build_catalog_from_cornell(
+            max_sentences=args.max_sentences,
+            context_size=args.context_size,
+            max_n=args.max_n,
+            verbose=True,
+            writer=writer
+        )
 
-    for unit in test_units:
-        freq = catalog.get_unit_frequency(unit)
-        if freq == 0:
-            print(f"\n=== Unit: '{' '.join(unit)}' === NOT FOUND")
-            continue
+        writer.write("")
+        writer.write("=" * 70)
+        writer.write("CATALOG STATISTICS")
+        writer.write("=" * 70)
+        stats = catalog.stats()
+        writer.write(f"Unique units: {stats['num_unique_units']:,}")
+        writer.write(f"Unique contexts: {stats['num_unique_contexts']:,}")
+        writer.write(f"Total occurrences: {stats['total_unit_occurrences']:,}")
+        writer.write("")
+        writer.write("Most common units:")
+        for unit, freq in stats['most_common_units']:
+            writer.write(f"  '{' '.join(unit)}': {freq:,}")
 
-        print(f"\n=== Unit: '{' '.join(unit)}' ===")
-        print(f"  Frequency: {freq:,}")
+        # Test some lookups
+        writer.write("")
+        writer.write("=" * 70)
+        writer.write("SAMPLE UNIT LOOKUPS")
+        writer.write("=" * 70)
 
-        contexts = catalog.get_contexts(unit)
-        print(f"  Unique context instances: {len(contexts)}")
-        print(f"  Sample contexts:")
-        for ctx in contexts[:5]:
-            left, right = ctx
-            print(f"    [{' '.join(left)}] ___ [{' '.join(right)}]")
+        test_units = [
+            ("my", "money"),
+            ("go", "out"),
+            ("i", "love"),
+            ("you", "know"),
+            ("want", "to"),
+        ]
 
-        left_dist = catalog.get_left_distribution(unit)
-        right_dist = catalog.get_right_distribution(unit)
-        print(f"  Left dist (top 5): {left_dist.most_common(5)}")
-        print(f"  Right dist (top 5): {right_dist.most_common(5)}")
+        for unit in test_units:
+            freq = catalog.get_unit_frequency(unit)
+            if freq == 0:
+                writer.write(f"\n=== Unit: '{' '.join(unit)}' === NOT FOUND")
+                continue
+
+            writer.write(f"\n=== Unit: '{' '.join(unit)}' ===")
+            writer.write(f"  Frequency: {freq:,}")
+
+            contexts = catalog.get_contexts(unit)
+            writer.write(f"  Unique context instances: {len(contexts)}")
+            writer.write("  Sample contexts:")
+            for ctx in contexts[:5]:
+                left, right = ctx
+                writer.write(f"    [{' '.join(left)}] ___ [{' '.join(right)}]")
+
+            left_dist = catalog.get_left_distribution(unit)
+            right_dist = catalog.get_right_distribution(unit)
+            writer.write(f"  Left dist (top 5): {left_dist.most_common(5)}")
+            writer.write(f"  Right dist (top 5): {right_dist.most_common(5)}")
+
+        if output_file:
+            writer.write("")
+            writer.write("=" * 70)
+            writer.write(f"Output saved to: {output_file}")
+            writer.write("=" * 70)

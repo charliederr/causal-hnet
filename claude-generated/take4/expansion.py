@@ -11,43 +11,7 @@ Lower energy = larger expansion = better unit
 from collections import Counter
 from typing import Set, Tuple, Dict, List, Optional
 from catalog import Catalog, Unit, Context
-
-
-def jaccard_similarity(set_a: Set, set_b: Set) -> float:
-    """Jaccard similarity: |A ∩ B| / |A ∪ B|"""
-    if not set_a and not set_b:
-        return 0.0
-    intersection = len(set_a & set_b)
-    union = len(set_a | set_b)
-    return intersection / union if union > 0 else 0.0
-
-
-def counter_top_k_set(counter: Counter, k: int = 10) -> Set[str]:
-    """Get the top-k most common items from a counter as a set."""
-    return set(item for item, _ in counter.most_common(k))
-
-
-def context_similarity(
-    ctx1_left: Counter, ctx1_right: Counter,
-    ctx2_left: Counter, ctx2_right: Counter,
-    top_k: int = 10
-) -> float:
-    """
-    Compute similarity between two contexts using their aggregated distributions.
-    Uses Jaccard similarity on top-k words from each side.
-    """
-    # Get top-k words from each context's left and right distributions
-    left1 = counter_top_k_set(ctx1_left, top_k)
-    left2 = counter_top_k_set(ctx2_left, top_k)
-    right1 = counter_top_k_set(ctx1_right, top_k)
-    right2 = counter_top_k_set(ctx2_right, top_k)
-
-    # Combine left and right similarity
-    left_sim = jaccard_similarity(left1, left2)
-    right_sim = jaccard_similarity(right1, right2)
-
-    # Average of left and right similarity
-    return (left_sim + right_sim) / 2
+from similarity import SimilarityMetrics, IDFCalculator
 
 
 class BidirectionalExpander:
@@ -58,9 +22,9 @@ class BidirectionalExpander:
     def __init__(
         self,
         catalog: Catalog,
-        similarity_threshold: float = 0.2,
+        similarity_threshold: float = 0.15,
         max_iterations: int = 3,
-        top_k: int = 10,
+        similarity_metric: str = 'cosine_tfidf_min',
         verbose: bool = True
     ):
         """
@@ -68,14 +32,22 @@ class BidirectionalExpander:
             catalog: The corpus catalog
             similarity_threshold: Minimum similarity to consider contexts related
             max_iterations: Maximum expansion iterations
-            top_k: Number of top words to use for similarity comparison
+            similarity_metric: Which metric to use for finding similar units
+                Options: 'jaccard_avg', 'jaccard_min', 'jaccard_no_stop_avg',
+                         'jaccard_no_stop_min', 'weighted_jaccard_avg',
+                         'weighted_jaccard_min', 'cosine_tfidf_avg', 'cosine_tfidf_min'
             verbose: Print detailed progress information
         """
         self.catalog = catalog
         self.similarity_threshold = similarity_threshold
         self.max_iterations = max_iterations
-        self.top_k = top_k
+        self.similarity_metric = similarity_metric
         self.verbose = verbose
+
+        # Initialize similarity metrics (computes IDF weights)
+        self._log("Initializing similarity metrics...")
+        self.sim_metrics = SimilarityMetrics(catalog, verbose=verbose)
+        self._log(f"Using metric: {similarity_metric}, threshold: {similarity_threshold}")
 
     def _log(self, msg: str, indent: int = 0) -> None:
         """Print a message if verbose mode is on."""
@@ -83,34 +55,18 @@ class BidirectionalExpander:
             prefix = "  " * indent
             print(f"{prefix}{msg}")
 
-    def find_similar_units(self, unit: Unit) -> Set[Unit]:
+    def find_similar_units(self, unit: Unit, max_results: int = 100) -> Set[Unit]:
         """
         Find units with similar context distributions to the given unit.
+        Uses the configured similarity metric.
         """
-        similar = set()
-        unit_left = self.catalog.get_left_distribution(unit)
-        unit_right = self.catalog.get_right_distribution(unit)
-
-        if not unit_left and not unit_right:
-            return similar
-
-        for other_unit in self.catalog.unit_to_contexts.keys():
-            if other_unit == unit:
-                continue
-
-            other_left = self.catalog.get_left_distribution(other_unit)
-            other_right = self.catalog.get_right_distribution(other_unit)
-
-            sim = context_similarity(
-                unit_left, unit_right,
-                other_left, other_right,
-                self.top_k
-            )
-
-            if sim >= self.similarity_threshold:
-                similar.add(other_unit)
-
-        return similar
+        similar_list = self.sim_metrics.find_similar_units(
+            unit,
+            metric=self.similarity_metric,
+            threshold=self.similarity_threshold,
+            max_results=max_results
+        )
+        return set(u for u, score in similar_list)
 
     def find_units_for_context(self, context: Context) -> Set[Unit]:
         """
@@ -241,12 +197,15 @@ if __name__ == "__main__":
                         help="Context window size (default: 3)")
     parser.add_argument("--max-n", type=int, default=4,
                         help="Maximum n-gram size (default: 4)")
-    parser.add_argument("--similarity-threshold", type=float, default=0.2,
-                        help="Context similarity threshold (default: 0.2)")
+    parser.add_argument("--similarity-threshold", type=float, default=0.15,
+                        help="Context similarity threshold (default: 0.15)")
     parser.add_argument("--max-iterations", type=int, default=3,
                         help="Max expansion iterations (default: 3)")
-    parser.add_argument("--top-k", type=int, default=10,
-                        help="Top-k context words for similarity (default: 10)")
+    parser.add_argument("--similarity-metric", type=str, default='cosine_tfidf_min',
+                        choices=['jaccard_avg', 'jaccard_min', 'jaccard_no_stop_avg',
+                                 'jaccard_no_stop_min', 'weighted_jaccard_avg',
+                                 'weighted_jaccard_min', 'cosine_tfidf_avg', 'cosine_tfidf_min'],
+                        help="Similarity metric (default: cosine_tfidf_min)")
     args = parser.parse_args()
 
     print("="*70)
@@ -258,7 +217,7 @@ if __name__ == "__main__":
     print(f"  max_n: {args.max_n}")
     print(f"  similarity_threshold: {args.similarity_threshold}")
     print(f"  max_iterations: {args.max_iterations}")
-    print(f"  top_k: {args.top_k}")
+    print(f"  similarity_metric: {args.similarity_metric}")
     print()
 
     # Build catalog from Cornell corpus
@@ -278,7 +237,7 @@ if __name__ == "__main__":
         catalog,
         similarity_threshold=args.similarity_threshold,
         max_iterations=args.max_iterations,
-        top_k=args.top_k,
+        similarity_metric=args.similarity_metric,
         verbose=True
     )
 
