@@ -1,7 +1,7 @@
 {
-  "numStartups": 6,
+  "numStartups": 7,
   "tipsHistory": {
-    "new-user-warmup": 4,
+    "new-user-warmup": 7,
     "plan-mode-for-complex-tasks": 6,
     "terminal-setup": 1,
     "memory-command": 1,
@@ -22,10 +22,10 @@
     "web-app": 1,
     "mobile-app": 1,
     "guest-passes": 5,
-    "ide-upsell-external-terminal": 3,
+    "ide-upsell-external-terminal": 7,
     "custom-agents": 6
   },
-  "promptQueueUseCount": 3,
+  "promptQueueUseCount": 5,
   "cachedStatsigGates": {
     "tengu_prompt_suggestion": true,
     "tengu_session_memory": false,
@@ -112,37 +112,37 @@
         "version": null,
         "packageManager": null
       },
-      "lastCost": 0.033518299999999994,
-      "lastAPIDuration": 12525,
-      "lastAPIDurationWithoutRetries": 12522,
+      "lastCost": 0.10544324999999999,
+      "lastAPIDuration": 8965,
+      "lastAPIDurationWithoutRetries": 8962,
       "lastToolDuration": 0,
-      "lastDuration": 63323,
+      "lastDuration": 12252,
       "lastLinesAdded": 0,
       "lastLinesRemoved": 0,
       "lastTotalInputTokens": 4054,
-      "lastTotalOutputTokens": 427,
-      "lastTotalCacheCreationInputTokens": 0,
-      "lastTotalCacheReadInputTokens": 21193,
+      "lastTotalOutputTokens": 343,
+      "lastTotalCacheCreationInputTokens": 21193,
+      "lastTotalCacheReadInputTokens": 0,
       "lastTotalWebSearchRequests": 0,
       "lastModelUsage": {
         "claude-opus-4-5-20251101": {
           "inputTokens": 4052,
-          "outputTokens": 237,
-          "cacheReadInputTokens": 10655,
-          "cacheCreationInputTokens": 0,
+          "outputTokens": 185,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 10655,
           "webSearchRequests": 0,
-          "costUSD": 0.0315125
+          "costUSD": 0.09147875
         },
         "claude-haiku-4-5-20251001": {
           "inputTokens": 2,
-          "outputTokens": 190,
-          "cacheReadInputTokens": 10538,
-          "cacheCreationInputTokens": 0,
+          "outputTokens": 158,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 10538,
           "webSearchRequests": 0,
-          "costUSD": 0.0020058000000000003
+          "costUSD": 0.0139645
         }
       },
-      "lastSessionId": "18065088-074e-4482-8f22-a29a9b62b23d"
+      "lastSessionId": "507ec17f-e64d-4da4-96c9-ab6e89ddb4d4"
     },
     "/home/ni/vscode-ish/FabricPC": {
       "allowedTools": [],
@@ -270,14 +270,14 @@
   "groveConfigCache": {
     "0cd8c3c8-c315-44bd-97d5-c29da7a09fdd": {
       "grove_enabled": true,
-      "timestamp": 1770201986253
+      "timestamp": 1770289712183
     }
   },
   "s1mAccessCache": {
     "2402dae7-8213-4e26-8630-89e0eaaf6b43": {
       "hasAccess": true,
       "hasAccessNotAsDefault": false,
-      "timestamp": 1770201987637
+      "timestamp": 1770289712417
     }
   },
   "officialMarketplaceAutoInstallAttempted": true,
@@ -293,7 +293,7 @@
       },
       "referrer_reward": null,
       "remaining_passes": 3,
-      "timestamp": 1770201987649
+      "timestamp": 1770289712014
     }
   }
 }
