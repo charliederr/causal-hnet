@@ -132,52 +132,160 @@ class Catalog:
         )
 
 
+def load_cornell_sentences(max_sentences: Optional[int] = None, verbose: bool = True) -> List[str]:
+    """
+    Load sentences from the Cornell Movie Dialogues Corpus via convokit.
+
+    Args:
+        max_sentences: Maximum number of sentences to load (None for all)
+        verbose: Print progress information
+
+    Returns:
+        List of sentence strings
+    """
+    from convokit import Corpus, download
+
+    if verbose:
+        print("Loading Cornell Movie Dialogues Corpus...")
+        print("(This may download the corpus on first run)")
+
+    corpus = Corpus(filename=download("movie-corpus"))
+
+    sentences = []
+    utterances = list(corpus.iter_utterances())
+    total = len(utterances)
+
+    if verbose:
+        print(f"Total utterances in corpus: {total}")
+
+    for i, utterance in enumerate(utterances):
+        text = utterance.text
+        if text and len(text.strip()) > 0:
+            # Clean up the text a bit
+            text = text.strip()
+            sentences.append(text)
+
+        if max_sentences and len(sentences) >= max_sentences:
+            break
+
+        # Progress indicator
+        if verbose and (i + 1) % 50000 == 0:
+            print(f"  Processed {i + 1}/{total} utterances, collected {len(sentences)} sentences")
+
+    if verbose:
+        print(f"Loaded {len(sentences)} sentences")
+
+    return sentences
+
+
+def build_catalog_from_cornell(
+    max_sentences: Optional[int] = None,
+    context_size: int = 3,
+    max_n: int = 4,
+    verbose: bool = True
+) -> "Catalog":
+    """
+    Build a catalog from the Cornell Movie Dialogues Corpus.
+
+    Args:
+        max_sentences: Maximum sentences to process (None for all)
+        context_size: Context window size
+        max_n: Maximum n-gram size
+        verbose: Print progress
+
+    Returns:
+        Populated Catalog instance
+    """
+    sentences = load_cornell_sentences(max_sentences, verbose)
+
+    catalog = Catalog(context_size=context_size, max_n=max_n)
+
+    if verbose:
+        print(f"\nBuilding catalog (context_size={context_size}, max_n={max_n})...")
+
+    for i, sentence in enumerate(sentences):
+        catalog.add_sentence(sentence)
+
+        if verbose and (i + 1) % 10000 == 0:
+            print(f"  Processed {i + 1}/{len(sentences)} sentences")
+
+    if verbose:
+        print(f"Done. {catalog}")
+
+    return catalog
+
+
 # --- Demo / Test ---
 
 if __name__ == "__main__":
-    # Sample sentences from the PDF examples
-    sample_sentences = [
-        "I lost my money yesterday",
-        "I need my money for rent",
-        "Where is my money",
-        "I found your keys",
-        "Did you go out with Sarah",
-        "Would you go out with me",
-        "Let's go out on Friday",
-        "I go out the door",
-        "We go out the exit",
-        "I lost my keys yesterday",
-        "She lost her wallet",
-        "He found his phone",
-        "I want your help",
-        "We should hang out together",
-        "Let's meet up on Friday",
-        "Did you hang out with Helen",
-    ]
+    import argparse
 
-    catalog = Catalog(context_size=3, max_n=4)
-    catalog.add_corpus(sample_sentences)
+    parser = argparse.ArgumentParser(description="Build catalog from Cornell Movie Dialogues")
+    parser.add_argument("--max-sentences", type=int, default=10000,
+                        help="Maximum sentences to load (default: 10000)")
+    parser.add_argument("--context-size", type=int, default=3,
+                        help="Context window size (default: 3)")
+    parser.add_argument("--max-n", type=int, default=4,
+                        help="Maximum n-gram size (default: 4)")
+    args = parser.parse_args()
 
-    print("=== Catalog Stats ===")
-    print(catalog)
+    print("="*60)
+    print("CATALOG BUILDER - Cornell Movie Dialogues Corpus")
+    print("="*60)
+    print(f"Parameters:")
+    print(f"  max_sentences: {args.max_sentences}")
+    print(f"  context_size: {args.context_size}")
+    print(f"  max_n: {args.max_n}")
     print()
 
+    catalog = build_catalog_from_cornell(
+        max_sentences=args.max_sentences,
+        context_size=args.context_size,
+        max_n=args.max_n,
+        verbose=True
+    )
+
+    print("\n" + "="*60)
+    print("CATALOG STATISTICS")
+    print("="*60)
+    stats = catalog.stats()
+    print(f"Unique units: {stats['num_unique_units']:,}")
+    print(f"Unique contexts: {stats['num_unique_contexts']:,}")
+    print(f"Total occurrences: {stats['total_unit_occurrences']:,}")
+    print(f"\nMost common units:")
+    for unit, freq in stats['most_common_units']:
+        print(f"  '{' '.join(unit)}': {freq:,}")
+
     # Test some lookups
+    print("\n" + "="*60)
+    print("SAMPLE UNIT LOOKUPS")
+    print("="*60)
+
     test_units = [
         ("my", "money"),
-        ("lost", "my"),
         ("go", "out"),
+        ("i", "love"),
+        ("you", "know"),
+        ("want", "to"),
     ]
 
     for unit in test_units:
-        print(f"=== Unit: {' '.join(unit)} ===")
-        print(f"  Frequency: {catalog.get_unit_frequency(unit)}")
+        freq = catalog.get_unit_frequency(unit)
+        if freq == 0:
+            print(f"\n=== Unit: '{' '.join(unit)}' === NOT FOUND")
+            continue
+
+        print(f"\n=== Unit: '{' '.join(unit)}' ===")
+        print(f"  Frequency: {freq:,}")
+
         contexts = catalog.get_contexts(unit)
-        print(f"  Num contexts: {len(contexts)}")
-        for ctx in contexts[:5]:  # Show first 5
+        print(f"  Unique context instances: {len(contexts)}")
+        print(f"  Sample contexts:")
+        for ctx in contexts[:5]:
             left, right = ctx
             print(f"    [{' '.join(left)}] ___ [{' '.join(right)}]")
 
-        print(f"  Left dist (top 5): {catalog.get_left_distribution(unit).most_common(5)}")
-        print(f"  Right dist (top 5): {catalog.get_right_distribution(unit).most_common(5)}")
-        print()
+        left_dist = catalog.get_left_distribution(unit)
+        right_dist = catalog.get_right_distribution(unit)
+        print(f"  Left dist (top 5): {left_dist.most_common(5)}")
+        print(f"  Right dist (top 5): {right_dist.most_common(5)}")

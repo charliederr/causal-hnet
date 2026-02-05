@@ -231,84 +231,115 @@ class BidirectionalExpander:
 # --- Demo / Test ---
 
 if __name__ == "__main__":
-    from catalog import Catalog
+    import argparse
+    from catalog import Catalog, build_catalog_from_cornell
 
-    # Build catalog with sample sentences
-    sample_sentences = [
-        # Social "go out" contexts
-        "Did you go out with Sarah",
-        "Would you go out with me",
-        "Let's go out on Friday",
-        "We should hang out together",
-        "Let's meet up on Friday",
-        "Did you hang out with Helen",
-        "Would you hang out with me",
-        "We could get together sometime",
-        "Did you meet up with John",
+    parser = argparse.ArgumentParser(description="Bidirectional expansion on Cornell Movie Dialogues")
+    parser.add_argument("--max-sentences", type=int, default=10000,
+                        help="Maximum sentences to load (default: 10000)")
+    parser.add_argument("--context-size", type=int, default=3,
+                        help="Context window size (default: 3)")
+    parser.add_argument("--max-n", type=int, default=4,
+                        help="Maximum n-gram size (default: 4)")
+    parser.add_argument("--similarity-threshold", type=float, default=0.2,
+                        help="Context similarity threshold (default: 0.2)")
+    parser.add_argument("--max-iterations", type=int, default=3,
+                        help="Max expansion iterations (default: 3)")
+    parser.add_argument("--top-k", type=int, default=10,
+                        help="Top-k context words for similarity (default: 10)")
+    args = parser.parse_args()
 
-        # Motion "go out" contexts
-        "I go out the door",
-        "We go out the exit",
-        "Please step out this way",
-        "You should head out now",
-        "I walk out the door",
-        "We exit the building",
-
-        # "my money" contexts (possessive NP)
-        "I lost my money yesterday",
-        "I need my money for rent",
-        "Where is my money",
-        "I found my keys yesterday",
-        "I lost my keys yesterday",
-        "She lost her wallet",
-        "He found his phone",
-        "I want your help",
-        "I need your keys",
-        "Where is your phone",
-        "I lost the car",
-        "I found the wallet",
-
-        # Additional variety
-        "The dog ran quickly",
-        "A cat sat quietly",
-        "The bird flew away",
-    ]
-
-    print("Building catalog...")
-    catalog = Catalog(context_size=3, max_n=4)
-    catalog.add_corpus(sample_sentences)
-    print(f"Catalog: {catalog}")
+    print("="*70)
+    print("BIDIRECTIONAL EXPANSION - Cornell Movie Dialogues Corpus")
+    print("="*70)
+    print(f"Parameters:")
+    print(f"  max_sentences: {args.max_sentences}")
+    print(f"  context_size: {args.context_size}")
+    print(f"  max_n: {args.max_n}")
+    print(f"  similarity_threshold: {args.similarity_threshold}")
+    print(f"  max_iterations: {args.max_iterations}")
+    print(f"  top_k: {args.top_k}")
     print()
+
+    # Build catalog from Cornell corpus
+    catalog = build_catalog_from_cornell(
+        max_sentences=args.max_sentences,
+        context_size=args.context_size,
+        max_n=args.max_n,
+        verbose=True
+    )
+
+    print("\n" + "="*70)
+    print("CREATING EXPANDER")
+    print("="*70)
 
     # Create expander
     expander = BidirectionalExpander(
         catalog,
-        similarity_threshold=0.15,  # Lower threshold for small corpus
-        max_iterations=3,
-        top_k=5,  # Fewer top-k for small corpus
+        similarity_threshold=args.similarity_threshold,
+        max_iterations=args.max_iterations,
+        top_k=args.top_k,
         verbose=True
     )
 
-    # Test expansions for different units
+    # Test expansions for different units likely to appear in movie dialogues
     test_units = [
-        ("go", "out"),
-        ("my", "money"),
-        ("lost", "my"),
-        ("hang", "out"),
+        ("you", "know"),      # Very common filler
+        ("i", "love"),        # Common in movies
+        ("go", "out"),        # Social/motion polysemy
+        ("my", "money"),      # Possessive NP
+        ("want", "to"),       # Common verb phrase
+        ("going", "to"),      # Future tense marker
+        ("have", "to"),       # Modal-like
+        ("get", "out"),       # Phrasal verb
     ]
+
+    print(f"\nTesting {len(test_units)} units for expansion...")
+    print("(Only testing units that exist in the catalog)")
+    print()
 
     results = []
     for unit in test_units:
+        freq = catalog.get_unit_frequency(unit)
+        if freq == 0:
+            print(f"\nSkipping '{' '.join(unit)}' - not found in catalog")
+            continue
+
+        print(f"\n{'#'*70}")
+        print(f"TESTING UNIT: '{' '.join(unit)}' (frequency: {freq})")
+        print(f"{'#'*70}")
+
         unit_exp, ctx_exp, energy = expander.expand(unit)
-        results.append((unit, len(unit_exp), len(ctx_exp), energy))
-        print("\n" + "="*80 + "\n")
+        results.append((unit, freq, len(unit_exp), len(ctx_exp), energy))
+
+        # Show some sample units from expansion (not all, to keep output manageable)
+        if len(unit_exp) > 20:
+            print(f"\nSample of expanded units (showing 20 of {len(unit_exp)}):")
+            sample_units = sorted(unit_exp, key=lambda u: -catalog.get_unit_frequency(u))[:20]
+            for u in sample_units:
+                print(f"  '{' '.join(u)}' (freq={catalog.get_unit_frequency(u)})")
 
     # Summary comparison
-    print("\n" + "="*60)
-    print("SUMMARY COMPARISON")
-    print("="*60)
-    print(f"{'Unit':<20} {'Units':<10} {'Contexts':<10} {'Energy':<10}")
-    print("-"*50)
-    for unit, n_units, n_contexts, energy in sorted(results, key=lambda x: x[3]):
+    print("\n" + "="*70)
+    print("SUMMARY COMPARISON - Sorted by Energy (lower = better unit)")
+    print("="*70)
+    print(f"{'Unit':<20} {'Freq':<10} {'Units':<10} {'Contexts':<12} {'Energy':<10}")
+    print("-"*62)
+    for unit, freq, n_units, n_contexts, energy in sorted(results, key=lambda x: x[4]):
         unit_str = ' '.join(unit)
-        print(f"{unit_str:<20} {n_units:<10} {n_contexts:<10} {energy:<10.4f}")
+        print(f"{unit_str:<20} {freq:<10} {n_units:<10} {n_contexts:<12} {energy:<10.4f}")
+
+    print("\n" + "="*70)
+    print("INTERPRETATION")
+    print("="*70)
+    print("""
+Lower energy indicates a stronger syntactic unit:
+- Large unit expansion = many substitutable phrases
+- Large context expansion = diverse usage contexts
+- Together = high substitutability across diverse contexts
+
+Compare:
+- True multi-word units (e.g., 'go out', 'get out') should have
+  cohesive expansions with semantically related substitutes
+- Accidental adjacencies should have smaller or less coherent expansions
+""")
