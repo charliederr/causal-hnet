@@ -1,0 +1,159 @@
+2026-02-04T10:47:05.877Z [DEBUG] [init] configureGlobalMTLS starting
+2026-02-04T10:47:05.877Z [DEBUG] [init] configureGlobalMTLS complete
+2026-02-04T10:47:05.877Z [DEBUG] [init] configureGlobalAgents starting
+2026-02-04T10:47:05.877Z [DEBUG] [init] configureGlobalAgents complete
+2026-02-04T10:47:05.879Z [DEBUG] [LSP MANAGER] initializeLspServerManager() called
+2026-02-04T10:47:05.879Z [DEBUG] [LSP MANAGER] Created manager instance, state=pending
+2026-02-04T10:47:05.879Z [DEBUG] [LSP MANAGER] Starting async initialization (generation 1)
+2026-02-04T10:47:05.881Z [DEBUG] [STARTUP] Loading MCP configs...
+2026-02-04T10:47:05.881Z [DEBUG] Found 0 plugins (0 enabled, 0 disabled)
+2026-02-04T10:47:05.881Z [DEBUG] Total LSP servers loaded: 0
+2026-02-04T10:47:05.881Z [DEBUG] [LSP SERVER MANAGER] getAllLspServers returned 0 server(s)
+2026-02-04T10:47:05.881Z [DEBUG] LSP manager initialized with 0 servers
+2026-02-04T10:47:05.881Z [DEBUG] [STARTUP] MCP configs loaded in 0ms
+2026-02-04T10:47:05.881Z [DEBUG] LSP server manager initialized successfully
+2026-02-04T10:47:05.881Z [DEBUG] LSP notification handlers registered successfully for all 0 server(s)
+2026-02-04T10:47:05.885Z [DEBUG] [STARTUP] Running setup()...
+2026-02-04T10:47:05.887Z [DEBUG] Stats cache is up to date
+2026-02-04T10:47:05.898Z [DEBUG] Loading skills from: managed=/etc/claude-code/.claude/skills, user=/home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/skills, project=[]
+2026-02-04T10:47:05.899Z [DEBUG] Passes: Using fresh cached eligibility data
+2026-02-04T10:47:05.935Z [DEBUG] installed_plugins.json doesn't exist, returning empty V2 object
+2026-02-04T10:47:05.938Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/todos/18065088-074e-4482-8f22-a29a9b62b23d-agent-18065088-074e-4482-8f22-a29a9b62b23d.json.tmp.356089.1770202025938
+2026-02-04T10:47:05.948Z [DEBUG] Temp file written successfully, size: 2 bytes
+2026-02-04T10:47:05.948Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/todos/18065088-074e-4482-8f22-a29a9b62b23d-agent-18065088-074e-4482-8f22-a29a9b62b23d.json.tmp.356089.1770202025938 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/todos/18065088-074e-4482-8f22-a29a9b62b23d-agent-18065088-074e-4482-8f22-a29a9b62b23d.json
+2026-02-04T10:47:05.948Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/todos/18065088-074e-4482-8f22-a29a9b62b23d-agent-18065088-074e-4482-8f22-a29a9b62b23d.json written atomically
+2026-02-04T10:47:05.954Z [DEBUG] getPluginSkills: Processing 0 enabled plugins
+2026-02-04T10:47:05.954Z [DEBUG] Total plugin skills loaded: 0
+2026-02-04T10:47:05.954Z [DEBUG] Total plugin commands loaded: 0
+2026-02-04T10:47:05.954Z [DEBUG] Registered 0 hooks from 0 plugins
+2026-02-04T10:47:05.954Z [DEBUG] [STARTUP] setup() completed in 69ms
+2026-02-04T10:47:05.954Z [DEBUG] [STARTUP] Loading commands and agents...
+2026-02-04T10:47:05.958Z [DEBUG] Total plugin agents loaded: 0
+2026-02-04T10:47:05.958Z [DEBUG] Loaded 0 unique skills (managed: 0, user: 0, project: 0, legacy commands: 0)
+2026-02-04T10:47:05.958Z [DEBUG] getSkills returning: 0 skill dir commands, 0 plugin skills, 0 bundled skills
+2026-02-04T10:47:05.958Z [DEBUG] [STARTUP] Commands and agents loaded in 4ms
+2026-02-04T10:47:05.958Z [DEBUG] [STARTUP] Running showSetupScreens()...
+2026-02-04T10:47:05.959Z [DEBUG] [render] initYoga starting
+2026-02-04T10:47:05.964Z [DEBUG] Failed to acquire lock for 2.1.5: Error: EISDIR: illegal operation on a directory, rename '/home/ni/.local/state/claude/locks/2.1.5.lock.tmp.356089.1770202025963' -> '/home/ni/.local/state/claude/locks/2.1.5.lock'
+2026-02-04T10:47:05.965Z [ERROR] Error: Error: NON-FATAL: Lock acquisition failed for /home/ni/.local/share/claude/versions/2.1.5 (expected in multi-process scenarios)
+    at dQ$ (/$bunfs/root/claude:2767:2157)
+    at zPA (/$bunfs/root/claude:2767:1268)
+    at processTicksAndRejections (native:7:39)
+2026-02-04T10:47:05.967Z [DEBUG] [render] initYoga complete
+2026-02-04T10:47:05.989Z [DEBUG] [keybindings] KeybindingSetup initialized with 39 bindings, 0 warnings
+2026-02-04T10:47:05.994Z [DEBUG] Creating shell snapshot for bash (/bin/bash)
+2026-02-04T10:47:05.994Z [DEBUG] Looking for shell config file: /home/ni/.bashrc
+2026-02-04T10:47:05.994Z [DEBUG] Snapshots directory: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/shell-snapshots
+2026-02-04T10:47:05.994Z [DEBUG] Creating snapshot at: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/shell-snapshots/snapshot-bash-1770202025994-1kcebv.sh
+2026-02-04T10:47:05.994Z [DEBUG] Shell binary exists: true
+2026-02-04T10:47:05.994Z [DEBUG] Execution timeout: 10000ms
+2026-02-04T10:47:06.007Z [DEBUG] Grove: Using fresh cached config
+2026-02-04T10:47:06.007Z [DEBUG] [render] initYoga starting
+2026-02-04T10:47:06.007Z [DEBUG] [render] initYoga complete
+2026-02-04T10:47:06.010Z [DEBUG] [keybindings] Skipping file watcher - user customization disabled
+2026-02-04T10:47:06.012Z [DEBUG] Git remote URL: null
+2026-02-04T10:47:06.012Z [DEBUG] No git remote URL found
+2026-02-04T10:47:06.012Z [DEBUG] Not in a GitHub repository, skipping path mapping update
+2026-02-04T10:47:06.014Z [DEBUG] [keybindings] KeybindingSetup initialized with 39 bindings, 0 warnings
+2026-02-04T10:47:06.024Z [DEBUG] Shell snapshot created successfully (3248 bytes)
+2026-02-04T10:47:06.027Z [DEBUG] [keybindings] Skipping file watcher - user customization disabled
+2026-02-04T10:47:06.206Z [DEBUG] Metrics opt-out API response: enabled=true, vcsLinking=false
+2026-02-04T10:47:06.241Z [DEBUG] [STARTUP] showSetupScreens() completed in 283ms
+2026-02-04T10:47:06.241Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-02-04T10:47:06.241Z [DEBUG] [API:auth] OAuth token check starting
+2026-02-04T10:47:06.242Z [DEBUG] Passes: Using fresh cached eligibility data
+2026-02-04T10:47:06.245Z [DEBUG] [API:auth] OAuth token check complete
+2026-02-04T10:47:06.249Z [DEBUG] Initialized versioned plugins system with 0 plugins
+2026-02-04T10:47:06.251Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/.claude.json.tmp.356089.1770202026251
+2026-02-04T10:47:06.251Z [DEBUG] Preserving file permissions: 100600
+2026-02-04T10:47:06.260Z [DEBUG] Temp file written successfully, size: 9395 bytes
+2026-02-04T10:47:06.260Z [DEBUG] Applied original permissions to temp file
+2026-02-04T10:47:06.260Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/.claude.json.tmp.356089.1770202026251 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/.claude.json
+2026-02-04T10:47:06.260Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/.claude.json written atomically
+2026-02-04T10:47:06.265Z [DEBUG] Getting matching hook commands for SessionStart with query: startup
+2026-02-04T10:47:06.265Z [DEBUG] Found 0 hook matchers in settings
+2026-02-04T10:47:06.265Z [DEBUG] Matched 0 unique hooks for query "startup" (0 before deduplication)
+2026-02-04T10:47:06.266Z [DEBUG] [render] initYoga starting
+2026-02-04T10:47:06.266Z [DEBUG] [render] initYoga complete
+2026-02-04T10:47:06.270Z [DEBUG] Getting matching hook commands for SubagentStart with query: Explore
+2026-02-04T10:47:06.270Z [DEBUG] Found 0 hook matchers in settings
+2026-02-04T10:47:06.270Z [DEBUG] Matched 0 unique hooks for query "Explore" (0 before deduplication)
+2026-02-04T10:47:06.273Z [DEBUG] Getting matching hook commands for SubagentStart with query: Plan
+2026-02-04T10:47:06.273Z [DEBUG] Found 0 hook matchers in settings
+2026-02-04T10:47:06.273Z [DEBUG] Matched 0 unique hooks for query "Plan" (0 before deduplication)
+2026-02-04T10:47:06.275Z [DEBUG] Getting matching hook commands for SubagentStart with query: Bash
+2026-02-04T10:47:06.275Z [DEBUG] Found 0 hook matchers in settings
+2026-02-04T10:47:06.275Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-02-04T10:47:06.285Z [DEBUG] [keybindings] KeybindingSetup initialized with 39 bindings, 0 warnings
+2026-02-04T10:47:06.311Z [DEBUG] Ripgrep first use test: PASSED (mode=builtin, path=/home/ni/.local/share/claude/versions/2.1.5)
+2026-02-04T10:47:06.314Z [DEBUG] Skills and commands included in Skill tool:
+2026-02-04T10:47:06.315Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-02-04T10:47:06.315Z [DEBUG] [API:auth] OAuth token check starting
+2026-02-04T10:47:06.315Z [DEBUG] [API:auth] OAuth token check complete
+2026-02-04T10:47:06.325Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-02-04T10:47:06.325Z [DEBUG] Tool search disabled: MCPSearchTool is not available (may have been disallowed via disallowedTools).
+2026-02-04T10:47:06.326Z [DEBUG] Auto tool search disabled: 0 chars (threshold: 50000, 10% of context)
+2026-02-04T10:47:06.329Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-02-04T10:47:06.329Z [DEBUG] [API:auth] OAuth token check starting
+2026-02-04T10:47:06.329Z [DEBUG] [API:auth] OAuth token check complete
+2026-02-04T10:47:06.329Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-02-04T10:47:06.329Z [DEBUG] [API:auth] OAuth token check starting
+2026-02-04T10:47:06.330Z [DEBUG] [API:auth] OAuth token check complete
+2026-02-04T10:47:06.330Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-02-04T10:47:06.330Z [DEBUG] [API:auth] OAuth token check starting
+2026-02-04T10:47:06.331Z [DEBUG] [API:auth] OAuth token check complete
+2026-02-04T10:47:06.335Z [DEBUG] [keybindings] Skipping file watcher - user customization disabled
+2026-02-04T10:47:06.335Z [DEBUG] [REPL:mount] REPL mounted, disabled=false
+2026-02-04T10:47:06.335Z [DEBUG] Official marketplace auto-install skipped: already_attempted
+2026-02-04T10:47:06.335Z [DEBUG] performStartupChecks called
+2026-02-04T10:47:06.335Z [DEBUG] Starting background plugin installations
+2026-02-04T10:47:06.336Z [DEBUG] performBackgroundPluginInstallations called
+2026-02-04T10:47:06.342Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-02-04T10:47:06.343Z [DEBUG] Setting installation status: 0 marketplaces, 0 installable plugins, 0 uninstallable plugins
+2026-02-04T10:47:06.343Z [DEBUG] Loaded plugins - Enabled: 0, Disabled: 0, Commands: 0, Agents: 0, Errors: 0
+2026-02-04T10:47:06.347Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/.claude.json.tmp.356089.1770202026347
+2026-02-04T10:47:06.347Z [DEBUG] Preserving file permissions: 100600
+2026-02-04T10:47:06.350Z [DEBUG] Temp file written successfully, size: 9395 bytes
+2026-02-04T10:47:06.350Z [DEBUG] Applied original permissions to temp file
+2026-02-04T10:47:06.350Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/.claude.json.tmp.356089.1770202026347 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/.claude.json
+2026-02-04T10:47:06.350Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/.claude.json written atomically
+2026-02-04T10:47:06.697Z [DEBUG] Successfully refreshed marketplace: claude-plugins-official
+2026-02-04T10:47:06.697Z [DEBUG] Plugin autoupdate: checking installed plugins
+2026-02-04T10:47:07.922Z [DEBUG] Stream started - received first chunk
+2026-02-04T10:47:07.986Z [DEBUG] Stream started - received first chunk
+2026-02-04T10:47:09.216Z [DEBUG] Stream started - received first chunk
+2026-02-04T10:47:09.477Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-02-04T10:47:09.477Z [DEBUG] Found 0 hook matchers in settings
+2026-02-04T10:47:09.477Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-02-04T10:47:09.904Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-02-04T10:47:09.904Z [DEBUG] Found 0 hook matchers in settings
+2026-02-04T10:47:09.904Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-02-04T10:47:12.137Z [DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+2026-02-04T10:47:12.137Z [DEBUG] Found 0 hook matchers in settings
+2026-02-04T10:47:12.137Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-02-04T10:47:44.459Z [ERROR] Error: Error: Failed to execute clipboard command "xclip -selection clipboard": Error: Command failed with exit code 127: xclip -selection clipboard
+/bin/sh: 1: xclip: not found
+    at zh (/$bunfs/root/claude:3261:2585)
+    at async K (/$bunfs/root/claude:3608:1329)
+    at processTicksAndRejections (native:7:39)
+2026-02-04T10:47:44.461Z [ERROR] Error: Error: Failed to execute clipboard command "wl-copy": Error: Command failed with exit code 127: wl-copy
+/bin/sh: 1: wl-copy: not found
+    at zh (/$bunfs/root/claude:3261:2585)
+    at async K (/$bunfs/root/claude:3608:1329)
+    at processTicksAndRejections (native:7:39)
+2026-02-04T10:47:44.461Z [ERROR] Error: Error: Failed to copy to clipboard on linux
+    at zh (/$bunfs/root/claude:3261:2662)
+    at async K (/$bunfs/root/claude:3608:1329)
+    at processTicksAndRejections (native:7:39)
+2026-02-04T10:47:44.462Z [DEBUG] FileHistory: Added snapshot for 8b4f9103-736d-4397-87b7-0e93e56222dd, tracking 0 files
+2026-02-04T10:47:44.465Z [DEBUG] UserCommandMessage rendering: "resume" (args: "none", isSkillFormat: false)
+2026-02-04T10:47:44.474Z [DEBUG] Writing to temp file: /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/.claude.json.tmp.356089.1770202064474
+2026-02-04T10:47:44.474Z [DEBUG] Preserving file permissions: 100600
+2026-02-04T10:47:44.484Z [DEBUG] Temp file written successfully, size: 9395 bytes
+2026-02-04T10:47:44.484Z [DEBUG] Applied original permissions to temp file
+2026-02-04T10:47:44.484Z [DEBUG] Renaming /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/.claude.json.tmp.356089.1770202064474 to /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/.claude.json
+2026-02-04T10:47:44.484Z [DEBUG] File /home/ni/repos/h/causal-hnet/LLM-session-logs/claude/singbuntu24/.claude.json written atomically
+2026-02-04T10:47:44.491Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-02-04T10:48:08.689Z [DEBUG] Getting matching hook commands for SessionEnd with query: prompt_input_exit
+2026-02-04T10:48:08.689Z [DEBUG] Found 0 hook matchers in settings
+2026-02-04T10:48:08.689Z [DEBUG] Matched 0 unique hooks for query "prompt_input_exit" (0 before deduplication)
