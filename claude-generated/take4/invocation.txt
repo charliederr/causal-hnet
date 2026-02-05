@@ -1,2 +1,4 @@
 python catalog.py --max-sentences 5000
 python expansion.py --max-sentences 5000 --similarity-threshold 0.25 --max-iterations 2
+python similarity.py --max-sentences 10000
+
