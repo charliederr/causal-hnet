@@ -1,0 +1,101 @@
+======================================================================
+CATALOG BUILDER - Cornell Movie Dialogues Corpus
+======================================================================
+Version: 0.2.0 (2026-02-05)
+Run timestamp: 2026-02-05T05:33:06.298982
+Command: python catalog.py --max-sentences 2000
+
+Parameters:
+  max_sentences: 2000
+  context_size: 3
+  max_n: 4
+
+Output file: /home/ni/repos/h/causal-hnet/claude-generated/take4/output/catalog_20260205_053306.txt
+
+Loading Cornell Movie Dialogues Corpus...
+(This may download the corpus on first run)
+Total utterances in corpus: 304713
+Loaded 2000 sentences
+
+Building catalog (context_size=3, max_n=4)...
+Done. Catalog(units=44515, contexts=63664, occurrences=65521)
+
+======================================================================
+CATALOG STATISTICS
+======================================================================
+Unique units: 44,515
+Unique contexts: 63,664
+Total occurrences: 65,521
+
+Most common units:
+  'you': 752
+  'i': 671
+  'the': 531
+  'to': 506
+  'a': 459
+  'and': 231
+  'of': 222
+  'that': 174
+  'your': 170
+  'my': 163
+
+======================================================================
+SAMPLE UNIT LOOKUPS
+======================================================================
+
+=== Unit: 'my money' ===
+  Frequency: 1
+  Unique context instances: 1
+  Sample contexts:
+    [why don'tchya put] ___ [on the dresser.]
+  Left dist (top 5): [('why', 1), ("don'tchya", 1), ('put', 1)]
+  Right dist (top 5): [('on', 1), ('the', 1), ('dresser.', 1)]
+
+=== Unit: 'go out' ===
+  Frequency: 17
+  Unique context instances: 17
+  Sample contexts:
+    [never wanted to] ___ [with 'me, did]
+    [private line to] ___ [with a guy]
+    [to want to] ___ [with are the]
+    [actually want to] ___ [with, you know?]
+    [would've let me] ___ [with him instead]
+  Left dist (top 5): [('to', 7), ('you', 5), ('want', 3), ('actually', 2), ('she', 2)]
+  Right dist (top 5): [('with', 13), ('a', 3), ('her.', 3), ('you', 2), ('on', 2)]
+
+=== Unit: 'i love' ===
+  Frequency: 2
+  Unique context instances: 2
+  Sample contexts:
+    [] ___ [you.]
+    [patronizing you... nay,] ___ [you.]
+  Left dist (top 5): [('patronizing', 1), ('you...', 1), ('nay,', 1)]
+  Right dist (top 5): [('you.', 2)]
+
+=== Unit: 'you know' ===
+  Frequency: 27
+  Unique context instances: 27
+  Sample contexts:
+    [i'm kidding.] ___ [how sometimes you]
+    [] ___ [chastity?]
+    [] ___ [the deal. i]
+    [] ___ [french?]
+    [something i had.] ___ []
+  Left dist (top 5): [('now', 2), ('how', 2), ('and', 2), ('do', 2), ("i'm", 1)]
+  Right dist (top 5): [('the', 5), ('what', 5), ('i', 4), ('that', 4), ('you', 3)]
+
+=== Unit: 'want to' ===
+  Frequency: 28
+  Unique context instances: 28
+  Sample contexts:
+    [i don't] ___ [know how to]
+    [that though. i] ___ [know useful things.]
+    [we're supposed to] ___ [go out with]
+    [ones we actually] ___ [go out with,]
+    [listen, i] ___ [talk to you]
+  Left dist (top 5): [('i', 19), ("don't", 4), ('you', 4), ('but', 2), ('me', 2)]
+  Right dist (top 5): [('to', 5), ('go', 5), ('you', 4), ('know', 3), ('out', 2)]
+
+======================================================================
+Output saved to: /home/ni/repos/h/causal-hnet/claude-generated/take4/output/catalog_20260205_053306.txt
+======================================================================
