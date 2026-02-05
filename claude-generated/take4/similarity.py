@@ -15,10 +15,21 @@ This module explores alternative metrics:
 5. Cosine similarity on TF-IDF vectors
 """
 
+__version__ = "0.2.0"
+__date__ = "2026-02-05"
+
 import math
+import sys
 from collections import Counter
 from typing import Set, Dict, List, Tuple, Optional
-from catalog import Catalog, Unit
+from datetime import datetime
+from pathlib import Path
+
+from catalog import Catalog, Unit, OutputWriter
+
+
+# Output directory
+OUTPUT_DIR = Path(__file__).parent / "output"
 
 
 # Common English stopwords that inflate false similarity
@@ -59,9 +70,10 @@ class IDFCalculator:
     where N = total units, df(word) = number of units with this word in context
     """
 
-    def __init__(self, catalog: Catalog, verbose: bool = True):
+    def __init__(self, catalog: Catalog, verbose: bool = True, writer: Optional[OutputWriter] = None):
         self.catalog = catalog
         self.verbose = verbose
+        self.writer = writer
 
         # Count document frequency for each word
         # A "document" here is a unit's aggregated context
@@ -71,10 +83,16 @@ class IDFCalculator:
 
         self._compute_df()
 
+    def _log(self, msg: str):
+        if self.verbose:
+            if self.writer:
+                self.writer.write(msg)
+            else:
+                print(msg)
+
     def _compute_df(self):
         """Compute document frequencies."""
-        if self.verbose:
-            print(f"Computing IDF weights for {self.total_units} units...")
+        self._log(f"Computing IDF weights for {self.total_units} units...")
 
         for unit in self.catalog.unit_to_contexts.keys():
             left_dist = self.catalog.get_left_distribution(unit)
@@ -86,20 +104,19 @@ class IDFCalculator:
             for word in right_dist.keys():
                 self.right_df[word] += 1
 
-        if self.verbose:
-            print(f"  Left context vocabulary: {len(self.left_df)} words")
-            print(f"  Right context vocabulary: {len(self.right_df)} words")
+        self._log(f"  Left context vocabulary: {len(self.left_df)} words")
+        self._log(f"  Right context vocabulary: {len(self.right_df)} words")
 
-            # Show most common (lowest IDF) words
-            print(f"  Most common left context words (low IDF):")
-            for word, df in self.left_df.most_common(10):
-                idf = math.log(self.total_units / df) if df > 0 else 0
-                print(f"    '{word}': df={df}, idf={idf:.3f}")
+        # Show most common (lowest IDF) words
+        self._log(f"  Most common left context words (low IDF):")
+        for word, df in self.left_df.most_common(10):
+            idf = math.log(self.total_units / df) if df > 0 else 0
+            self._log(f"    '{word}': df={df}, idf={idf:.3f}")
 
-            print(f"  Most common right context words (low IDF):")
-            for word, df in self.right_df.most_common(10):
-                idf = math.log(self.total_units / df) if df > 0 else 0
-                print(f"    '{word}': df={df}, idf={idf:.3f}")
+        self._log(f"  Most common right context words (low IDF):")
+        for word, df in self.right_df.most_common(10):
+            idf = math.log(self.total_units / df) if df > 0 else 0
+            self._log(f"    '{word}': df={df}, idf={idf:.3f}")
 
     def get_left_idf(self, word: str) -> float:
         """Get IDF weight for a word in left context."""
@@ -236,14 +253,18 @@ class SimilarityMetrics:
     Collection of similarity metrics for comparing unit contexts.
     """
 
-    def __init__(self, catalog: Catalog, verbose: bool = True):
+    def __init__(self, catalog: Catalog, verbose: bool = True, writer: Optional[OutputWriter] = None):
         self.catalog = catalog
         self.verbose = verbose
-        self.idf = IDFCalculator(catalog, verbose)
+        self.writer = writer
+        self.idf = IDFCalculator(catalog, verbose, writer)
 
     def _log(self, msg: str):
         if self.verbose:
-            print(msg)
+            if self.writer:
+                self.writer.write(msg)
+            else:
+                print(msg)
 
     def compare_unit_pair(
         self,
@@ -357,83 +378,115 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Test similarity metrics")
     parser.add_argument("--max-sentences", type=int, default=10000,
                         help="Maximum sentences to load")
+    parser.add_argument("--no-output-file", action="store_true",
+                        help="Disable writing output to file")
     args = parser.parse_args()
 
-    print("="*70)
-    print("SIMILARITY METRICS COMPARISON")
-    print("="*70)
+    # Generate output filename with timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_file = OUTPUT_DIR / f"similarity_{timestamp}.txt" if not args.no_output_file else None
 
-    # Build catalog
-    catalog = build_catalog_from_cornell(
-        max_sentences=args.max_sentences,
-        context_size=3,
-        max_n=4,
-        verbose=True
-    )
+    # Reconstruct command line
+    cmd_line = "python " + " ".join(sys.argv)
 
-    print("\n" + "="*70)
-    print("INITIALIZING SIMILARITY METRICS")
-    print("="*70)
+    with OutputWriter(output_file) as writer:
+        # Write header
+        writer.write("=" * 70)
+        writer.write("SIMILARITY METRICS COMPARISON")
+        writer.write("=" * 70)
+        writer.write(f"Version: {__version__} ({__date__})")
+        writer.write(f"Run timestamp: {datetime.now().isoformat()}")
+        writer.write(f"Command: {cmd_line}")
+        writer.write("")
+        writer.write("Parameters:")
+        writer.write(f"  max_sentences: {args.max_sentences}")
+        writer.write("")
 
-    metrics = SimilarityMetrics(catalog, verbose=True)
+        if output_file:
+            writer.write(f"Output file: {output_file}")
+            writer.write("")
 
-    # Test pairs - some should be similar, some should not
-    test_pairs = [
-        # Should be similar (both phrasal verbs with 'out')
-        (("go", "out"), ("get", "out")),
-        (("go", "out"), ("hang", "out")),
+        # Build catalog
+        catalog = build_catalog_from_cornell(
+            max_sentences=args.max_sentences,
+            context_size=3,
+            max_n=4,
+            verbose=True,
+            writer=writer
+        )
 
-        # Should NOT be similar (the PDF's false positive example pattern)
-        (("go", "out"), ("a", "big")),
-        (("go", "out"), ("the", "man")),
+        writer.write("")
+        writer.write("=" * 70)
+        writer.write("INITIALIZING SIMILARITY METRICS")
+        writer.write("=" * 70)
 
-        # Should be similar (modal-like)
-        (("want", "to"), ("have", "to")),
-        (("going", "to"), ("have", "to")),
+        metrics = SimilarityMetrics(catalog, verbose=True, writer=writer)
 
-        # Should be similar (pronouns/determiners in same position)
-        (("my", "money"), ("your", "money")),
-        (("my", "money"), ("his", "wallet")),
+        # Test pairs - some should be similar, some should not
+        test_pairs = [
+            # Should be similar (both phrasal verbs with 'out')
+            (("go", "out"), ("get", "out")),
+            (("go", "out"), ("hang", "out")),
 
-        # Should NOT be similar
-        (("my", "money"), ("go", "out")),
-        (("i", "love"), ("the", "door")),
-    ]
+            # Should NOT be similar (the PDF's false positive example pattern)
+            (("go", "out"), ("a", "big")),
+            (("go", "out"), ("the", "man")),
 
-    print("\n" + "="*70)
-    print("PAIRWISE COMPARISONS")
-    print("="*70)
+            # Should be similar (modal-like)
+            (("want", "to"), ("have", "to")),
+            (("going", "to"), ("have", "to")),
 
-    for unit1, unit2 in test_pairs:
-        # Check both units exist
-        if catalog.get_unit_frequency(unit1) == 0:
-            print(f"\nSkipping '{' '.join(unit1)}' - not in catalog")
-            continue
-        if catalog.get_unit_frequency(unit2) == 0:
-            print(f"\nSkipping '{' '.join(unit2)}' - not in catalog")
-            continue
+            # Should be similar (pronouns/determiners in same position)
+            (("my", "money"), ("your", "money")),
+            (("my", "money"), ("his", "wallet")),
 
-        metrics.compare_unit_pair(unit1, unit2, show_details=True)
+            # Should NOT be similar
+            (("my", "money"), ("go", "out")),
+            (("i", "love"), ("the", "door")),
+        ]
 
-    # Test finding similar units
-    print("\n" + "="*70)
-    print("FINDING SIMILAR UNITS")
-    print("="*70)
+        writer.write("")
+        writer.write("=" * 70)
+        writer.write("PAIRWISE COMPARISONS")
+        writer.write("=" * 70)
 
-    test_units = [("go", "out"), ("want", "to"), ("my", "money")]
+        for unit1, unit2 in test_pairs:
+            # Check both units exist
+            if catalog.get_unit_frequency(unit1) == 0:
+                writer.write(f"\nSkipping '{' '.join(unit1)}' - not in catalog")
+                continue
+            if catalog.get_unit_frequency(unit2) == 0:
+                writer.write(f"\nSkipping '{' '.join(unit2)}' - not in catalog")
+                continue
 
-    for unit in test_units:
-        if catalog.get_unit_frequency(unit) == 0:
-            continue
+            metrics.compare_unit_pair(unit1, unit2, show_details=True)
 
-        print(f"\n{'='*60}")
-        print(f"Units similar to '{' '.join(unit)}' by different metrics:")
-        print(f"{'='*60}")
+        # Test finding similar units
+        writer.write("")
+        writer.write("=" * 70)
+        writer.write("FINDING SIMILAR UNITS")
+        writer.write("=" * 70)
 
-        for metric in ['jaccard_avg', 'jaccard_no_stop_min', 'cosine_tfidf_min']:
-            print(f"\n--- {metric} (threshold=0.15) ---")
-            similar = metrics.find_similar_units(unit, metric=metric, threshold=0.15, max_results=15)
-            print(f"Found {len(similar)} similar units:")
-            for other, score in similar[:15]:
-                freq = catalog.get_unit_frequency(other)
-                print(f"  {score:.3f}: '{' '.join(other)}' (freq={freq})")
+        test_units = [("go", "out"), ("want", "to"), ("my", "money")]
+
+        for unit in test_units:
+            if catalog.get_unit_frequency(unit) == 0:
+                continue
+
+            writer.write(f"\n{'='*60}")
+            writer.write(f"Units similar to '{' '.join(unit)}' by different metrics:")
+            writer.write(f"{'='*60}")
+
+            for metric in ['jaccard_avg', 'jaccard_no_stop_min', 'cosine_tfidf_min']:
+                writer.write(f"\n--- {metric} (threshold=0.15) ---")
+                similar = metrics.find_similar_units(unit, metric=metric, threshold=0.15, max_results=15)
+                writer.write(f"Found {len(similar)} similar units:")
+                for other, score in similar[:15]:
+                    freq = catalog.get_unit_frequency(other)
+                    writer.write(f"  {score:.3f}: '{' '.join(other)}' (freq={freq})")
+
+        if output_file:
+            writer.write("")
+            writer.write("=" * 70)
+            writer.write(f"Output saved to: {output_file}")
+            writer.write("=" * 70)

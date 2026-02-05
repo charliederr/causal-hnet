@@ -8,10 +8,22 @@ Score: E = -log(|unit_expansion| × log(|context_expansion| + 1))
 Lower energy = larger expansion = better unit
 """
 
+__version__ = "0.2.0"
+__date__ = "2026-02-05"
+
+import math
+import sys
 from collections import Counter
 from typing import Set, Tuple, Dict, List, Optional
-from catalog import Catalog, Unit, Context
+from datetime import datetime
+from pathlib import Path
+
+from catalog import Catalog, Unit, Context, OutputWriter, build_catalog_from_cornell
 from similarity import SimilarityMetrics, IDFCalculator
+
+
+# Output directory
+OUTPUT_DIR = Path(__file__).parent / "output"
 
 
 class BidirectionalExpander:
@@ -25,7 +37,8 @@ class BidirectionalExpander:
         similarity_threshold: float = 0.15,
         max_iterations: int = 3,
         similarity_metric: str = 'cosine_tfidf_min',
-        verbose: bool = True
+        verbose: bool = True,
+        writer: Optional[OutputWriter] = None
     ):
         """
         Args:
@@ -37,23 +50,29 @@ class BidirectionalExpander:
                          'jaccard_no_stop_min', 'weighted_jaccard_avg',
                          'weighted_jaccard_min', 'cosine_tfidf_avg', 'cosine_tfidf_min'
             verbose: Print detailed progress information
+            writer: OutputWriter for logging
         """
         self.catalog = catalog
         self.similarity_threshold = similarity_threshold
         self.max_iterations = max_iterations
         self.similarity_metric = similarity_metric
         self.verbose = verbose
+        self.writer = writer
 
         # Initialize similarity metrics (computes IDF weights)
         self._log("Initializing similarity metrics...")
-        self.sim_metrics = SimilarityMetrics(catalog, verbose=verbose)
+        self.sim_metrics = SimilarityMetrics(catalog, verbose=verbose, writer=writer)
         self._log(f"Using metric: {similarity_metric}, threshold: {similarity_threshold}")
 
     def _log(self, msg: str, indent: int = 0) -> None:
         """Print a message if verbose mode is on."""
         if self.verbose:
             prefix = "  " * indent
-            print(f"{prefix}{msg}")
+            full_msg = f"{prefix}{msg}"
+            if self.writer:
+                self.writer.write(full_msg)
+            else:
+                print(full_msg)
 
     def find_similar_units(self, unit: Unit, max_results: int = 100) -> Set[Unit]:
         """
@@ -162,7 +181,6 @@ class BidirectionalExpander:
             self._log(f"Expansion size: {len(unit_expansion)} units, {len(context_expansion)} contexts", indent=1)
 
         # Compute energy score
-        import math
         if len(unit_expansion) > 0 and len(context_expansion) > 0:
             energy = -math.log(len(unit_expansion) * math.log(len(context_expansion) + 1))
         else:
@@ -188,7 +206,6 @@ class BidirectionalExpander:
 
 if __name__ == "__main__":
     import argparse
-    from catalog import Catalog, build_catalog_from_cornell
 
     parser = argparse.ArgumentParser(description="Bidirectional expansion on Cornell Movie Dialogues")
     parser.add_argument("--max-sentences", type=int, default=10000,
@@ -206,92 +223,116 @@ if __name__ == "__main__":
                                  'jaccard_no_stop_min', 'weighted_jaccard_avg',
                                  'weighted_jaccard_min', 'cosine_tfidf_avg', 'cosine_tfidf_min'],
                         help="Similarity metric (default: cosine_tfidf_min)")
+    parser.add_argument("--no-output-file", action="store_true",
+                        help="Disable writing output to file")
     args = parser.parse_args()
 
-    print("="*70)
-    print("BIDIRECTIONAL EXPANSION - Cornell Movie Dialogues Corpus")
-    print("="*70)
-    print(f"Parameters:")
-    print(f"  max_sentences: {args.max_sentences}")
-    print(f"  context_size: {args.context_size}")
-    print(f"  max_n: {args.max_n}")
-    print(f"  similarity_threshold: {args.similarity_threshold}")
-    print(f"  max_iterations: {args.max_iterations}")
-    print(f"  similarity_metric: {args.similarity_metric}")
-    print()
+    # Generate output filename with timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_file = OUTPUT_DIR / f"expansion_{timestamp}.txt" if not args.no_output_file else None
 
-    # Build catalog from Cornell corpus
-    catalog = build_catalog_from_cornell(
-        max_sentences=args.max_sentences,
-        context_size=args.context_size,
-        max_n=args.max_n,
-        verbose=True
-    )
+    # Reconstruct command line
+    cmd_line = "python " + " ".join(sys.argv)
 
-    print("\n" + "="*70)
-    print("CREATING EXPANDER")
-    print("="*70)
+    with OutputWriter(output_file) as writer:
+        # Write header
+        writer.write("=" * 70)
+        writer.write("BIDIRECTIONAL EXPANSION - Cornell Movie Dialogues Corpus")
+        writer.write("=" * 70)
+        writer.write(f"Version: {__version__} ({__date__})")
+        writer.write(f"Run timestamp: {datetime.now().isoformat()}")
+        writer.write(f"Command: {cmd_line}")
+        writer.write("")
+        writer.write("Parameters:")
+        writer.write(f"  max_sentences: {args.max_sentences}")
+        writer.write(f"  context_size: {args.context_size}")
+        writer.write(f"  max_n: {args.max_n}")
+        writer.write(f"  similarity_threshold: {args.similarity_threshold}")
+        writer.write(f"  max_iterations: {args.max_iterations}")
+        writer.write(f"  similarity_metric: {args.similarity_metric}")
+        writer.write("")
 
-    # Create expander
-    expander = BidirectionalExpander(
-        catalog,
-        similarity_threshold=args.similarity_threshold,
-        max_iterations=args.max_iterations,
-        similarity_metric=args.similarity_metric,
-        verbose=True
-    )
+        if output_file:
+            writer.write(f"Output file: {output_file}")
+            writer.write("")
 
-    # Test expansions for different units likely to appear in movie dialogues
-    test_units = [
-        ("you", "know"),      # Very common filler
-        ("i", "love"),        # Common in movies
-        ("go", "out"),        # Social/motion polysemy
-        ("my", "money"),      # Possessive NP
-        ("want", "to"),       # Common verb phrase
-        ("going", "to"),      # Future tense marker
-        ("have", "to"),       # Modal-like
-        ("get", "out"),       # Phrasal verb
-    ]
+        # Build catalog from Cornell corpus
+        catalog = build_catalog_from_cornell(
+            max_sentences=args.max_sentences,
+            context_size=args.context_size,
+            max_n=args.max_n,
+            verbose=True,
+            writer=writer
+        )
 
-    print(f"\nTesting {len(test_units)} units for expansion...")
-    print("(Only testing units that exist in the catalog)")
-    print()
+        writer.write("")
+        writer.write("=" * 70)
+        writer.write("CREATING EXPANDER")
+        writer.write("=" * 70)
 
-    results = []
-    for unit in test_units:
-        freq = catalog.get_unit_frequency(unit)
-        if freq == 0:
-            print(f"\nSkipping '{' '.join(unit)}' - not found in catalog")
-            continue
+        # Create expander
+        expander = BidirectionalExpander(
+            catalog,
+            similarity_threshold=args.similarity_threshold,
+            max_iterations=args.max_iterations,
+            similarity_metric=args.similarity_metric,
+            verbose=True,
+            writer=writer
+        )
 
-        print(f"\n{'#'*70}")
-        print(f"TESTING UNIT: '{' '.join(unit)}' (frequency: {freq})")
-        print(f"{'#'*70}")
+        # Test expansions for different units likely to appear in movie dialogues
+        test_units = [
+            ("you", "know"),      # Very common filler
+            ("i", "love"),        # Common in movies
+            ("go", "out"),        # Social/motion polysemy
+            ("my", "money"),      # Possessive NP
+            ("want", "to"),       # Common verb phrase
+            ("going", "to"),      # Future tense marker
+            ("have", "to"),       # Modal-like
+            ("get", "out"),       # Phrasal verb
+        ]
 
-        unit_exp, ctx_exp, energy = expander.expand(unit)
-        results.append((unit, freq, len(unit_exp), len(ctx_exp), energy))
+        writer.write(f"\nTesting {len(test_units)} units for expansion...")
+        writer.write("(Only testing units that exist in the catalog)")
+        writer.write("")
 
-        # Show some sample units from expansion (not all, to keep output manageable)
-        if len(unit_exp) > 20:
-            print(f"\nSample of expanded units (showing 20 of {len(unit_exp)}):")
-            sample_units = sorted(unit_exp, key=lambda u: -catalog.get_unit_frequency(u))[:20]
-            for u in sample_units:
-                print(f"  '{' '.join(u)}' (freq={catalog.get_unit_frequency(u)})")
+        results = []
+        for unit in test_units:
+            freq = catalog.get_unit_frequency(unit)
+            if freq == 0:
+                writer.write(f"\nSkipping '{' '.join(unit)}' - not found in catalog")
+                continue
 
-    # Summary comparison
-    print("\n" + "="*70)
-    print("SUMMARY COMPARISON - Sorted by Energy (lower = better unit)")
-    print("="*70)
-    print(f"{'Unit':<20} {'Freq':<10} {'Units':<10} {'Contexts':<12} {'Energy':<10}")
-    print("-"*62)
-    for unit, freq, n_units, n_contexts, energy in sorted(results, key=lambda x: x[4]):
-        unit_str = ' '.join(unit)
-        print(f"{unit_str:<20} {freq:<10} {n_units:<10} {n_contexts:<12} {energy:<10.4f}")
+            writer.write(f"\n{'#'*70}")
+            writer.write(f"TESTING UNIT: '{' '.join(unit)}' (frequency: {freq})")
+            writer.write(f"{'#'*70}")
 
-    print("\n" + "="*70)
-    print("INTERPRETATION")
-    print("="*70)
-    print("""
+            unit_exp, ctx_exp, energy = expander.expand(unit)
+            results.append((unit, freq, len(unit_exp), len(ctx_exp), energy))
+
+            # Show some sample units from expansion (not all, to keep output manageable)
+            if len(unit_exp) > 20:
+                writer.write(f"\nSample of expanded units (showing 20 of {len(unit_exp)}):")
+                sample_units = sorted(unit_exp, key=lambda u: -catalog.get_unit_frequency(u))[:20]
+                for u in sample_units:
+                    writer.write(f"  '{' '.join(u)}' (freq={catalog.get_unit_frequency(u)})")
+
+        # Summary comparison
+        writer.write("")
+        writer.write("=" * 70)
+        writer.write("SUMMARY COMPARISON - Sorted by Energy (lower = better unit)")
+        writer.write("=" * 70)
+        writer.write(f"{'Unit':<20} {'Freq':<10} {'Units':<10} {'Contexts':<12} {'Energy':<10}")
+        writer.write("-" * 62)
+        for unit, freq, n_units, n_contexts, energy in sorted(results, key=lambda x: x[4]):
+            unit_str = ' '.join(unit)
+            writer.write(f"{unit_str:<20} {freq:<10} {n_units:<10} {n_contexts:<12} {energy:<10.4f}")
+
+        writer.write("")
+        writer.write("=" * 70)
+        writer.write("INTERPRETATION")
+        writer.write("=" * 70)
+        writer.write("""
 Lower energy indicates a stronger syntactic unit:
 - Large unit expansion = many substitutable phrases
 - Large context expansion = diverse usage contexts
@@ -302,3 +343,9 @@ Compare:
   cohesive expansions with semantically related substitutes
 - Accidental adjacencies should have smaller or less coherent expansions
 """)
+
+        if output_file:
+            writer.write("")
+            writer.write("=" * 70)
+            writer.write(f"Output saved to: {output_file}")
+            writer.write("=" * 70)
