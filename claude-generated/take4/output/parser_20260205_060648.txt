@@ -1,0 +1,309 @@
+======================================================================
+TOP-DOWN PARSER - Bidirectional Expansion
+======================================================================
+Version: 0.2.0 (2026-02-05)
+Run timestamp: 2026-02-05T06:06:48.917917
+Command: python parser.py --max-sentences 5000 --max-span-length 4
+
+Parameters:
+  max_sentences: 5000
+  context_size: 3
+  max_n: 4
+  min_frequency: 2
+  min_span_length: 1
+  max_span_length: 4
+  split_criterion: sum
+  use_full_expansion: False
+
+Output file: /home/ni/repos/h/causal-hnet/claude-generated/take4/output/parser_20260205_060648.txt
+
+Loading Cornell Movie Dialogues Corpus...
+(This may download the corpus on first run)
+Total utterances in corpus: 304713
+Loaded 5000 sentences
+
+Building catalog (context_size=3, max_n=4)...
+Done. Catalog(units=113006, contexts=170475, occurrences=176300)
+
+======================================================================
+CREATING PARSER
+======================================================================
+
+Parsing 8 test sentence(s)...
+
+
+============================================================
+PARSING: I want to go out with you
+Tokens: ['i', 'want', 'to', 'go', 'out', 'with', 'you']
+============================================================
+
+Precomputing span energies...
+Precomputed 22 new span energies (22 total spans)
+
+Recursive parsing:
+Parsing [0:7] 'i want to go out with you' (E=inf)
+  No good split found, treating as leaf
+
+============================================================
+PARSE RESULT
+============================================================
+Bracketed: [i want to go out with you]
+
+Tree:
+(i want to go out with you) E=inf
+
+
+============================================================
+PARSING: She gave him the book
+Tokens: ['she', 'gave', 'him', 'the', 'book']
+============================================================
+
+Precomputing span energies...
+Precomputed 14 new span energies (14 total spans)
+
+Recursive parsing:
+Parsing [0:5] 'she gave him the book' (E=inf)
+  No good split found, treating as leaf
+
+============================================================
+PARSE RESULT
+============================================================
+Bracketed: [she gave him the book]
+
+Tree:
+(she gave him the book) E=inf
+
+
+============================================================
+PARSING: The cat sat on the mat
+Tokens: ['the', 'cat', 'sat', 'on', 'the', 'mat']
+============================================================
+
+Precomputing span energies...
+Precomputed 16 new span energies (18 total spans)
+
+Recursive parsing:
+Parsing [0:6] 'the cat sat on the mat' (E=inf)
+  No good split found, treating as leaf
+
+============================================================
+PARSE RESULT
+============================================================
+Bracketed: [the cat sat on the mat]
+
+Tree:
+(the cat sat on the mat) E=inf
+
+
+============================================================
+PARSING: I don't know what to do
+Tokens: ['i', "don't", 'know', 'what', 'to', 'do']
+============================================================
+
+Precomputing span energies...
+Precomputed 16 new span energies (18 total spans)
+
+Recursive parsing:
+Parsing [0:6] 'i don't know what to do' (E=inf)
+  Splitting at position 4
+  Parsing [0:4] 'i don't know what' (E=-2.678)
+    Splitting at position 1
+    Parsing [0:1] 'i' (E=-9.357)
+    Parsing [1:4] 'don't know what' (E=-3.177)
+      Splitting at position 3
+      Parsing [1:3] 'don't know' (E=-5.092)
+        Splitting at position 2
+        Parsing [1:2] 'don't' (E=-7.750)
+        Parsing [2:3] 'know' (E=-7.177)
+      Parsing [3:4] 'what' (E=-7.814)
+  Parsing [4:6] 'to do' (E=-5.032)
+    Splitting at position 5
+    Parsing [4:5] 'to' (E=-9.138)
+    Parsing [5:6] 'do' (E=-7.436)
+
+============================================================
+PARSE RESULT
+============================================================
+Bracketed: [[[i] [[[don't] [know]] [what]]] [[to] [do]]]
+
+Tree:
+(i don't know what to do) E=inf
+  (i don't know what) E=-2.678
+    (i) E=-9.357
+    (don't know what) E=-3.177
+      (don't know) E=-5.092
+        (don't) E=-7.750
+        (know) E=-7.177
+      (what) E=-7.814
+  (to do) E=-5.032
+    (to) E=-9.138
+    (do) E=-7.436
+
+
+============================================================
+PARSING: Do you want to go out
+Tokens: ['do', 'you', 'want', 'to', 'go', 'out']
+============================================================
+
+Precomputing span energies...
+Precomputed 6 new span energies (18 total spans)
+
+Recursive parsing:
+Parsing [0:6] 'do you want to go out' (E=inf)
+  Splitting at position 2
+  Parsing [0:2] 'do you' (E=-6.339)
+    Splitting at position 1
+    Parsing [0:1] 'do' (E=-7.436)
+    Parsing [1:2] 'you' (E=-9.569)
+  Parsing [2:6] 'want to go out' (E=-0.787)
+    Splitting at position 5
+    Parsing [2:5] 'want to go' (E=-3.704)
+      Splitting at position 4
+      Parsing [2:4] 'want to' (E=-5.962)
+        Splitting at position 3
+        Parsing [2:3] 'want' (E=-6.727)
+        Parsing [3:4] 'to' (E=-9.138)
+      Parsing [4:5] 'go' (E=-6.570)
+    Parsing [5:6] 'out' (E=-6.787)
+
+============================================================
+PARSE RESULT
+============================================================
+Bracketed: [[[do] [you]] [[[[want] [to]] [go]] [out]]]
+
+Tree:
+(do you want to go out) E=inf
+  (do you) E=-6.339
+    (do) E=-7.436
+    (you) E=-9.569
+  (want to go out) E=-0.787
+    (want to go) E=-3.704
+      (want to) E=-5.962
+        (want) E=-6.727
+        (to) E=-9.138
+      (go) E=-6.570
+    (out) E=-6.787
+
+
+============================================================
+PARSING: I love you
+Tokens: ['i', 'love', 'you']
+============================================================
+
+Precomputing span energies...
+Precomputed 4 new span energies (6 total spans)
+
+Recursive parsing:
+Parsing [0:3] 'i love you' (E=-0.787)
+  Splitting at position 2
+  Parsing [0:2] 'i love' (E=-3.359)
+    Splitting at position 1
+    Parsing [0:1] 'i' (E=-9.357)
+    Parsing [1:2] 'love' (E=-4.321)
+  Parsing [2:3] 'you' (E=-9.569)
+
+============================================================
+PARSE RESULT
+============================================================
+Bracketed: [[[i] [love]] [you]]
+
+Tree:
+(i love you) E=-0.787
+  (i love) E=-3.359
+    (i) E=-9.357
+    (love) E=-4.321
+  (you) E=-9.569
+
+
+============================================================
+PARSING: What do you think
+Tokens: ['what', 'do', 'you', 'think']
+============================================================
+
+Precomputing span energies...
+Precomputed 6 new span energies (10 total spans)
+
+Recursive parsing:
+Parsing [0:4] 'what do you think' (E=-2.193)
+  Splitting at position 1
+  Parsing [0:1] 'what' (E=-7.814)
+  Parsing [1:4] 'do you think' (E=-4.042)
+    Splitting at position 3
+    Parsing [1:3] 'do you' (E=-6.339)
+      Splitting at position 2
+      Parsing [1:2] 'do' (E=-7.436)
+      Parsing [2:3] 'you' (E=-9.569)
+    Parsing [3:4] 'think' (E=-6.684)
+
+============================================================
+PARSE RESULT
+============================================================
+Bracketed: [[what] [[[do] [you]] [think]]]
+
+Tree:
+(what do you think) E=-2.193
+  (what) E=-7.814
+  (do you think) E=-4.042
+    (do you) E=-6.339
+      (do) E=-7.436
+      (you) E=-9.569
+    (think) E=-6.684
+
+
+============================================================
+PARSING: Let me know if you need help
+Tokens: ['let', 'me', 'know', 'if', 'you', 'need', 'help']
+============================================================
+
+Precomputing span energies...
+Precomputed 20 new span energies (22 total spans)
+
+Recursive parsing:
+Parsing [0:7] 'let me know if you need help' (E=inf)
+  No good split found, treating as leaf
+
+============================================================
+PARSE RESULT
+============================================================
+Bracketed: [let me know if you need help]
+
+Tree:
+(let me know if you need help) E=inf
+
+
+======================================================================
+SUMMARY
+======================================================================
+
+'I want to go out with you'
+  -> [i want to go out with you]
+
+'She gave him the book'
+  -> [she gave him the book]
+
+'The cat sat on the mat'
+  -> [the cat sat on the mat]
+
+'I don't know what to do'
+  -> [[[i] [[[don't] [know]] [what]]] [[to] [do]]]
+
+'Do you want to go out'
+  -> [[[do] [you]] [[[[want] [to]] [go]] [out]]]
+
+'I love you'
+  -> [[[i] [love]] [you]]
+
+'What do you think'
+  -> [[what] [[[do] [you]] [think]]]
+
+'Let me know if you need help'
+  -> [let me know if you need help]
+
+
+Cache statistics:
+  Hits: 126
+  Misses: 104
+
+======================================================================
+Output saved to: /home/ni/repos/h/causal-hnet/claude-generated/take4/output/parser_20260205_060648.txt
+======================================================================
