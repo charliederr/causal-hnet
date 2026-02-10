@@ -16,6 +16,7 @@ from collections import defaultdict, Counter
 from dataclasses import dataclass
 from typing import List, Optional, Tuple, Dict
 import math
+import string
 
 # =============================================================================
 # DATA STRUCTURES
@@ -65,7 +66,7 @@ class UnitCatalog:
     Catalog of n-gram units (n=1,2,3,4) with their corpus contexts.
     """
 
-    def __init__(self, min_freq=5, max_ngram=4, context_window=3):
+    def __init__(self, min_freq=5, max_ngram=4, context_window=1):
         self.min_freq = min_freq
         self.max_ngram = max_ngram
         self.context_window = context_window
@@ -108,11 +109,15 @@ class UnitCatalog:
         # Filter by frequency and store
         for ngram, data in ngram_contexts.items():
             if data['count'] >= self.min_freq:
-                self.units[ngram] = ContextPattern(
-                    left_words=data['left_words'],
-                    right_words=data['right_words'],
-                    count=data['count']
-                )
+                # Skip n-grams that start or end with punctuation (keeps contractions)
+                first_char = ngram[0] if ngram else ''
+                last_char = ngram[-1] if ngram else ''
+                if first_char not in string.punctuation and last_char not in string.punctuation:
+                    self.units[ngram] = ContextPattern(
+                        left_words=data['left_words'],
+                        right_words=data['right_words'],
+                        count=data['count']
+                    )
 
         print(f"Extracted {len(self.units):,} units (min_freq={self.min_freq})")
         print(f"  1-grams: {sum(1 for u in self.units if ' ' not in u):,}")

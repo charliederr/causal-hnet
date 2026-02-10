@@ -59,6 +59,8 @@ class ParseNode:
     energy: float
     unit_expansion: int = 0
     context_expansion: int = 0
+    unit_expansion_set: Optional[Set[str]] = None  # Actual substitution class
+    context_expansion_set: Optional[Set] = None  # Actual context patterns
     split_point: Optional[int] = None
     left: Optional["ParseNode"] = None
     right: Optional["ParseNode"] = None
@@ -203,9 +205,17 @@ class UnitCatalog:
         cpu_left = (cpu_left / left_norms).astype(np.float16)
         cpu_right = (cpu_right / right_norms).astype(np.float16)
 
+        #rjf edit to reduce unneeded digits to reduce memory footprint
+        cpu_left = np.round(cpu_left / left_norms, decimals=3).astype(np.float16)
+        cpu_right = np.round(cpu_right / right_norms, decimals=3).astype(np.float16)
+
         # Transfer to GPU
         self.gpu_left = torch.from_numpy(cpu_left).to(DEVICE)
         self.gpu_right = torch.from_numpy(cpu_right).to(DEVICE)
+
+        # Compute information content weights for each vocabulary word
+        # IC(word) = -log(P(word appears in context)) = -log(count / n_units)
+        self._compute_ic_weights(n_units)
 
         self.gpu_ready = True
         mem_mb = (self.gpu_left.numel() + self.gpu_right.numel()) * 2 / (1024 * 1024)
@@ -213,6 +223,63 @@ class UnitCatalog:
 
         # Build index-based reverse lookups and length index for GPU operations
         self._build_gpu_reverse_indexes()
+
+    def _compute_ic_weights(self, n_units: int):
+        """
+        Compute information content weights for ALL context words.
+
+        IC(word) = -log(P(word appears in context position))
+                 = -log(units_with_word / n_units)
+
+        Rare context words have high IC (more informative).
+        Common context words have low IC (less informative).
+        """
+        from collections import Counter
+
+        # Count how many units have each word in left/right context (ALL words)
+        left_unit_counts = Counter()  # word -> number of units that have it in left context
+        right_unit_counts = Counter()
+
+        for text in self.unit_list:
+            pattern = self.units.get(text)
+            if pattern:
+                # Count each word once per unit (presence, not frequency)
+                for word in pattern.left_words:
+                    left_unit_counts[word] += 1
+                for word in pattern.right_words:
+                    right_unit_counts[word] += 1
+
+        # Compute IC = -log(count / n_units) with smoothing
+        # Higher IC = rarer = more informative
+        eps = 1.0
+        self.ic_left_dict = {}
+        self.ic_right_dict = {}
+
+        for word, count in left_unit_counts.items():
+            self.ic_left_dict[word] = -math.log((count + eps) / (n_units + eps))
+
+        for word, count in right_unit_counts.items():
+            self.ic_right_dict[word] = -math.log((count + eps) / (n_units + eps))
+
+        # Also build GPU tensors for IC weights (for IC-weighted cosine scoring)
+        # These are indexed by vocabulary position (matching gpu_left/gpu_right)
+        vocab_size = len(self.vocab)
+        ic_left_array = np.zeros(vocab_size, dtype=np.float32)
+        ic_right_array = np.zeros(vocab_size, dtype=np.float32)
+
+        for word, idx in self.word_to_idx.items():
+            if word in self.ic_left_dict:
+                ic_left_array[idx] = self.ic_left_dict[word]
+            if word in self.ic_right_dict:
+                ic_right_array[idx] = self.ic_right_dict[word]
+
+        self.gpu_ic_left = torch.from_numpy(ic_left_array).to(DEVICE)
+        self.gpu_ic_right = torch.from_numpy(ic_right_array).to(DEVICE)
+
+        max_left = max(self.ic_left_dict.values()) if self.ic_left_dict else 0
+        max_right = max(self.ic_right_dict.values()) if self.ic_right_dict else 0
+        print(f"  IC weights computed for {len(self.ic_left_dict):,} left words, {len(self.ic_right_dict):,} right words")
+        print(f"    (left max={max_left:.2f}, right max={max_right:.2f})")
 
     def _build_gpu_reverse_indexes(self):
         """Build reverse lookups that return indices (for GPU gathering)."""
@@ -244,147 +311,167 @@ class UnitCatalog:
         print(f"  GPU reverse indexes ready")
 
     def gpu_contextual_candidates(self, unit_text: str,
-                                   left_context: List[str],
-                                   right_context: List[str],
-                                   max_results: int = 100,
-                                   trace: bool = False) -> List[Tuple[str, float]]:
+                               left_context: List[str],
+                               right_context: List[str],
+                               max_results: int = 100,
+                               scoring: str = 'cosine',
+                               seed_side = 'both',  # or 'left', 'right'
+                               trace: bool = False) -> List[Tuple[str, float]]:
         """
         Find contextually-grounded candidates using GPU acceleration.
-
-        1. Intersection of reverse lookups (candidates must share presented context)
-        2. Filter by length
-        3. GPU matrix-vector multiply for overlap scoring
-        4. Return top-k
-
-        Args:
-            unit_text: Target unit
-            left_context: Words appearing before target in sentence
-            right_context: Words appearing after target in sentence
-            max_results: Maximum candidates to return
-
-        Returns:
-            List of (unit_text, overlap_score) tuples
+        1. Union of reverse lookups (candidates may share SOME context)
+        2. Score each candidate with total PMI to context
+        3. Filter by total PMI threshold
+        4. Score remaining with selected method
+        5. Return top-k
         """
+
+        candidates = set()
+        if seed_side in ('left', 'both') and left_context:
+            for word in left_context:
+                if word in self.left_word_to_idx:
+                    candidates |= self.left_word_to_idx[word]
+        if seed_side in ('right', 'both') and right_context:
+            for word in right_context:
+                if word in self.right_word_to_idx:
+                    candidates |= self.right_word_to_idx[word]
+
         if not self.gpu_ready:
             return []
 
         # Unknown units return empty - parser will split them
         if unit_text not in self.unit_to_idx:
             if trace:
-                print(f"\n  TRACE: '{unit_text}' not in index - will be split")
+                print(f"\n TRACE: '{unit_text}' not in index - will be split")
             return []
 
         target_idx = self.unit_to_idx[unit_text]
         target_length = unit_text.count(' ') + 1
-
         if trace:
-            print(f"\n  TRACE: gpu_contextual_candidates('{unit_text}')")
-            print(f"    left_context: {left_context}")
-            print(f"    right_context: {right_context}")
-            print(f"    Known unit (idx={target_idx})")
+            print(f"\n TRACE: gpu_contextual_candidates('{unit_text}')")
+            print(f" left_context: {left_context}")
+            print(f" right_context: {right_context}")
+            print(f" Known unit (idx={target_idx})")
 
         # Get length-filtered indices
         length_indices = set(self.idx_by_length.get(target_length, []))
         if not length_indices:
             if trace:
-                print(f"    No units of length {target_length}")
+                print(f" No units of length {target_length}")
             return []
 
         if trace:
-            print(f"    Units of length {target_length}: {len(length_indices)}")
+            print(f" Units of length {target_length}: {len(length_indices)}")
 
-        # Find candidates sharing ALL left context words (intersection within side)
-        left_candidates = None
+        # Step 1: Union of candidates sharing ANY context words
+        candidates = set()
         for word in left_context:
             if word in self.left_word_to_idx:
-                word_indices = self.left_word_to_idx[word]
-                if trace:
-                    print(f"    Left '{word}': {len(word_indices)} units", end="")
-                if left_candidates is None:
-                    left_candidates = word_indices.copy()
-                else:
-                    left_candidates &= word_indices
-                if trace:
-                    print(f" -> intersection: {len(left_candidates) if left_candidates else 0}")
-            elif trace:
-                print(f"    Left '{word}': NOT IN INDEX")
-
-        # Find candidates sharing ALL right context words (intersection within side)
-        right_candidates = None
+                candidates |= self.left_word_to_idx[word]
         for word in right_context:
             if word in self.right_word_to_idx:
-                word_indices = self.right_word_to_idx[word]
-                if trace:
-                    print(f"    Right '{word}': {len(word_indices)} units", end="")
-                if right_candidates is None:
-                    right_candidates = word_indices.copy()
-                else:
-                    right_candidates &= word_indices
-                if trace:
-                    print(f" -> intersection: {len(right_candidates) if right_candidates else 0}")
-            elif trace:
-                print(f"    Right '{word}': NOT IN INDEX")
+                candidates |= self.right_word_to_idx[word]
 
-        # Combine: intersection across sides when both available, fallback to one side at edges
-        if left_candidates is not None and right_candidates is not None:
-            candidates = left_candidates & right_candidates
-            if trace:
-                print(f"    Left & Right intersection: {len(candidates)}")
-        elif left_candidates is not None:
-            candidates = left_candidates  # Edge: no right context
-            if trace:
-                print(f"    Using left only (edge): {len(candidates)}")
-        elif right_candidates is not None:
-            candidates = right_candidates  # Edge: no left context
-            if trace:
-                print(f"    Using right only (edge): {len(candidates)}")
-        else:
-            if trace:
-                print(f"    No candidates from either side")
-            return []
+        if trace:
+            print(f" Union candidates: {len(candidates)}")
+
+        # Step 2: Score each candidate with total PMI to context words
+
+        cond_prob_scores = {}
+        for cand_idx in candidates:
+            cand_text = self.unit_list[cand_idx]
+            pattern = self.units.get(cand_text)
+            if not pattern:
+                cond_prob_scores[cand_idx] = 0.0
+                continue
+
+            score = 0.0
+            left_total = sum(pattern.left_words.values()) or 1
+            right_total = sum(pattern.right_words.values()) or 1
+
+            for word in left_context:
+                if word in pattern.left_words:
+                    score += pattern.left_words[word] / left_total  # P(word | cand left)
+
+            for word in right_context:
+                if word in pattern.right_words:
+                    score += pattern.right_words[word] / right_total  # P(word | cand right)
+
+            cond_prob_scores[cand_idx] = score
+
+        # Step 3 Filter by minimum total cond prob
+        #min_cond_prob = 0.2  # tune: sum P >=0.2; lower=more candidates
+        #OOM error. Test stricter PMI
+        min_cond_prob = 0.5  # tune: sum P >0.5; lower=more candidates
+        candidates = {idx for idx, prob in cond_prob_scores.items() if prob >= min_cond_prob}
+
+        if trace:
+            print(f" Candidates after cond prob filter (min={min_cond_prob}): {len(candidates)}")
 
         # Filter by length and remove target
         candidates = candidates & length_indices
         candidates.discard(target_idx)
 
         if trace:
-            print(f"    After length filter: {len(candidates)}")
+            print(f" After length filter: {len(candidates)}")
 
         if not candidates:
             return []
 
-        # Convert to tensor for GPU operations
-        candidate_indices = torch.tensor(list(candidates), dtype=torch.long, device=DEVICE)
+        # Proceed with scoring (original code from here)
+        candidate_list = list(candidates)
+        if scoring == 'pmi':
+            # Use the pre-computed PMI scores as final (since we're PMI-focused)
+            combined_scores = torch.tensor([pmi_scores[idx] for idx in candidate_list], dtype=torch.float32, device=DEVICE)
+        else:
+            # GPU-based cosine or ic_cosine - use batching to avoid memory issues
+            batch_size = 1000  # Process candidates in batches
+            target_left = self.gpu_left[target_idx].float()
+            target_right = self.gpu_right[target_idx].float()
 
-        # Get target's context vectors
-        target_left = self.gpu_left[target_idx].float()
-        target_right = self.gpu_right[target_idx].float()
+            all_scores = []
+            for batch_start in range(0, len(candidate_list), batch_size):
+                batch_end = min(batch_start + batch_size, len(candidate_list))
+                batch_indices = candidate_list[batch_start:batch_end]
+                batch_indices_t = torch.tensor(batch_indices, dtype=torch.long, device=DEVICE)
 
-        # Get candidates' context vectors
-        cand_left = self.gpu_left[candidate_indices].float()
-        cand_right = self.gpu_right[candidate_indices].float()
+                cand_left = self.gpu_left[batch_indices_t].float()
+                cand_right = self.gpu_right[batch_indices_t].float()
 
-        # Compute overlap scores (dot product = cosine similarity for normalized vectors)
-        left_scores = torch.mv(cand_left, target_left)
-        right_scores = torch.mv(cand_right, target_right)
-        combined_scores = (left_scores + right_scores) / 2.0
+                if scoring == 'ic_cosine':
+                    ic_left = self.gpu_ic_left.float()
+                    ic_right = self.gpu_ic_right.float()
+                    weighted_target_left = target_left * ic_left
+                    weighted_target_right = target_right * ic_right
+                    left_scores = torch.mv(cand_left, weighted_target_left)
+                    right_scores = torch.mv(cand_right, weighted_target_right)
+                else:
+                    left_scores = torch.mv(cand_left, target_left)
+                    right_scores = torch.mv(cand_right, target_right)
+                batch_scores = (left_scores + right_scores) / 2.0
+                all_scores.extend(batch_scores.cpu().tolist())
 
-        # Get top-k
+            combined_scores = torch.tensor(all_scores, dtype=torch.float32, device=DEVICE)
+
+        if trace:
+            print(f" Scored {len(candidate_list)} candidates using {scoring}")
+
+        candidate_indices = torch.tensor(candidate_list, dtype=torch.long, device=DEVICE)
         k = min(max_results, len(candidates))
         top_scores, top_indices = torch.topk(combined_scores, k)
 
-        # Convert back to unit texts
         results = []
         for score, idx in zip(top_scores.cpu().tolist(), top_indices.cpu().tolist()):
             unit_idx = candidate_indices[idx].item()
             results.append((self.unit_list[unit_idx], score))
 
         if trace:
-            print(f"    Top 5 results:")
+            print(f" Top 5 results:")
             for text, score in results[:5]:
-                print(f"      {score:.3f}: '{text}'")
+                print(f" {score:.3f}: '{text}'")
 
         return results
+
 
     def gpu_find_similar(self, unit_text: str, threshold: float = 0.3,
                          same_length: bool = True, max_results: int = 100,
@@ -941,22 +1028,21 @@ def bidirectional_expansion_contextual(unit_text: str,
 
     return (unit_expansion, context_expansion)
 
-
 def compute_bidir_energy(span: Span,
                          left_context,
                          right_context,
                          catalog: UnitCatalog,
                          debug=False,
-                         use_contextual: bool = True) -> Tuple[float, int, int]:
+                         use_contextual: bool = True) -> Tuple[float, int, int, Set[str], Set]:
     """Energy via bidirectional expansion.
-
     Args:
         use_contextual: If True, use contextual expansion (local context-driven).
                        If False, use simple expansion (global statistics).
+    Returns:
+        Tuple of (energy, unit_exp_size, ctx_exp_size, unit_exp_set, ctx_exp_set)
     """
     current_left = Counter(left_context)
     current_right = Counter(right_context)
-
     if use_contextual:
         unit_exp, ctx_exp = bidirectional_expansion_contextual(
             span.text, current_left, current_right, catalog
@@ -965,23 +1051,154 @@ def compute_bidir_energy(span: Span,
         unit_exp, ctx_exp = bidirectional_expansion_simple(
             span.text, current_left, current_right, catalog
         )
-
     unit_exp_size = len(unit_exp)
     ctx_exp_size = len(ctx_exp)
+    unit_exp_set = unit_exp  # The set of substitutes
 
     if unit_exp_size == 0:
-        return (100.0, 0, 0)
+        return (100.0, 0, 0, set(), set())
 
-    # Energy from combined expansion
+    # === ORIGINAL combined (generalizability) ===
     combined = unit_exp_size * math.log(ctx_exp_size + 1)
-    energy = -math.log(combined + 1)
+
+    # === NEW: Prediction consensus term (low entropy = high agreement = strong prediction) ===
+    prediction_consensus = 0.0
+    if unit_exp_set:
+        # Aggregate right_words across all substitutes
+        agg_right = Counter()
+        for sub in unit_exp_set:
+            pat = catalog.get_unit(sub)
+            if pat and pat.right_words:
+                agg_right.update(pat.right_words)
+
+        if agg_right:
+            total = sum(agg_right.values())
+            if total > 0:
+                # Shannon entropy of the normalized distribution
+                entropy = -sum(
+                    (count / total) * math.log2((count / total) + 1e-10)
+                    for count in agg_right.values()
+                )
+                # Normalize (max entropy is log2(num distinct words))
+                max_entropy = math.log2(len(agg_right) + 1e-10) if len(agg_right) > 1 else 0
+                norm_entropy = entropy / max_entropy if max_entropy > 0 else 0
+                prediction_consensus = 1.0 - norm_entropy  # 1.0 = perfect agreement
+
+    # === Combine: weight consensus by evidence size (U) ===
+    pred_term = 2.0 * prediction_consensus * math.log(unit_exp_size + 1)  # tune 2.0
+
+    # === Final energy ===
+    energy = -math.log(combined + pred_term + 1)
 
     if debug and span.length >= 2:
-        print(f"  \"{span.text}\": U={unit_exp_size}, C={ctx_exp_size}, E={energy:.2f}")
+        print(f"  \"{span.text}\": U={unit_exp_size}, C={ctx_exp_size}, "
+              f"Consensus={prediction_consensus:.3f}, Pred_term={pred_term:.3f}, E={energy:.3f}")
         if unit_exp_size <= 10:
             print(f"    expansion: {list(unit_exp)[:10]}")
 
-    return (energy, unit_exp_size, ctx_exp_size)
+    return (energy, unit_exp_size, ctx_exp_size, unit_exp_set, ctx_exp)
+
+class IncrementalBidirParser:
+    """
+    Incremental bottom-up chart parser.
+
+    Builds parse incrementally as words arrive, computing each span exactly once.
+    Uses O(n²) time instead of exponential, with natural caching via chart storage.
+    Supports both batch parsing and true streaming for neurosimulator applications.
+    """
+
+    def __init__(self, catalog, context_window=3, debug=False):
+        self.catalog = catalog
+        self.context_window = context_window
+        self.debug = debug
+        self.chart = {}  # (start, end) -> ParseNode
+        self.tokens = []
+
+    def reset(self):
+        """Clear the chart and tokens for a new parse."""
+        self.chart = {}
+        self.tokens = []
+
+    def add_word(self, word: str):
+        """
+        Add a word to the parse incrementally.
+        Creates all new spans ending at this position and updates the chart.
+        """
+        self.tokens.append(word.lower())
+        n = len(self.tokens)
+        k = n - 1  # Index of new word
+
+        # Create all spans ending at position n (after the new word)
+        for i in range(n):
+            self._compute_span(i, n)
+
+    def _compute_span(self, i: int, j: int):
+        """
+        Compute best parse for span [i, j) using DP.
+        Assumes all smaller spans are already in the chart.
+        """
+        if (i, j) in self.chart:
+            return  # Already computed
+
+        span = Span(i, j, self.tokens[i:j])
+
+        # Get context for this span
+        left_ctx = self.tokens[max(0, i - self.context_window):i]
+        right_ctx = self.tokens[j:min(len(self.tokens), j + self.context_window)]
+
+        # Option 1: Treat as a unit
+        unit_energy, u_exp, c_exp, u_exp_set, c_exp_set = compute_bidir_energy(
+            span, left_ctx, right_ctx, self.catalog, self.debug,
+            use_contextual=True
+        )
+
+        # Option 2: Try all binary splits (if length >= 2)
+        best_split_energy = float('inf')
+        best_split = None
+
+        if j - i >= 2:
+            for m in range(i + 1, j):
+                # Left and right children should already be in chart
+                left_child = self.chart.get((i, m))
+                right_child = self.chart.get((m, j))
+
+                if left_child and right_child:
+                    split_energy = left_child.energy + right_child.energy + 2.0
+
+                    if split_energy < best_split_energy:
+                        best_split_energy = split_energy
+                        best_split = (m, left_child, right_child)
+
+        # Choose best option
+        if best_split is None or unit_energy <= best_split_energy:
+            node = ParseNode(span, unit_energy)
+            node.unit_expansion = u_exp
+            node.context_expansion = c_exp
+            node.unit_expansion_set = u_exp_set
+            node.context_expansion_set = c_exp_set
+            self.chart[(i, j)] = node
+        else:
+            m, left_child, right_child = best_split
+            node = ParseNode(span, best_split_energy, split_point=m,
+                           left=left_child, right=right_child)
+            self.chart[(i, j)] = node
+
+    def get_current_parse(self) -> ParseNode:
+        """Get the best parse for all tokens seen so far."""
+        if not self.tokens:
+            return None
+        return self.chart.get((0, len(self.tokens)))
+
+    def parse(self, tokens: List[str]) -> ParseNode:
+        """
+        Parse a complete sequence of tokens (batch mode).
+        Equivalent to adding all words then getting the final parse.
+        """
+        self.reset()
+        for token in tokens:
+            self.add_word(token)
+        return self.get_current_parse()
+
 
 class SimpleBidirParser:
     """Parser using simplified bidirectional expansion."""
