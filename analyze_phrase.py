@@ -51,82 +51,127 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
             right_text = " ".join(prefix_tokens[split:])
             print(f"  Testing pairwise mapping: (\"{left_text}\" \"{right_text}\")")
 
-            # Reuse from cache (subparse)
+            # Get cached parses for left and right
             left_subs, left_eff_left, left_eff_right = subparse_cache.get(left_text, ([], [], []))
-
-            # Reuse or bootstrap right
             right_subs, right_eff_left, right_eff_right = subparse_cache.get(right_text, ([], [], []))
+
+            # Bootstrap right if not cached yet
             if not right_subs:
-                right_subs = catalog.gpu_contextual_candidates(right_text, external_left, external_right, max_class_members + 1, scoring)
-                right_subs = [(t, s) for t, s in right_subs if t != right_text][:max_class_members]
                 pattern = catalog.get_unit(right_text)
-                right_eff_left = [w for w, c in pattern.left_words.most_common(20) if c >= 5] if pattern else []
-                right_eff_right = [w for w, c in pattern.right_words.most_common(20) if c >= 5] if pattern else []
+                if pattern:
+                    right_eff_left = [w for w, c in pattern.left_words.most_common(20) if c >= 5]
+                    right_eff_right = [w for w, c in pattern.right_words.most_common(20) if c >= 5]
+                else:
+                    right_eff_left = []
+                    right_eff_right = []
+                # For initial bootstrap, right_subs is just the unit itself
+                right_subs = [(right_text, 1.0)]
                 subparse_cache[right_text] = (right_subs, right_eff_left, right_eff_right)
 
-            # Step 1: Generate substitutes for right seeded by right contexts of left (as per your goal)
-            print(f"    [DEBUG] Seeding right subs with right contexts of left: {left_eff_right[:10]} ... (total {len(left_eff_right)})")
-#            right_candidates = catalog.gpu_contextual_candidates(
-#                right_text,
-#                left_context=[], 
-#                right_context=left_eff_right + external_right,  # Seed with right of left
-#                max_results=max_class_members * 2,
-#                scoring=scoring,
-#                seed_side='right'  # Use the new param to seed only right
-#            )
-#            right_candidates = sorted([(t, s) for t, s in right_candidates if t != right_text], key=lambda x: -x[1])[:max_class_members]
+            # MUTUAL EXPANSION: Only proceed if we have context from BOTH sides
+            # This ensures we have actual fillers to seed the expansion
 
-            # Step 2: Generate substitutes for left seeded by left contexts of right
-            print(f"    [DEBUG] Seeding left subs with left contexts of right: {right_eff_left[:10]} ... (total {len(right_eff_left)})")
-#            left_candidates = catalog.gpu_contextual_candidates(
-#                left_text,
-#                left_context=right_eff_left + external_left,  # Seed with left of right
-#                right_context=[], 
-#                max_results=max_class_members * 2,
-#                scoring=scoring,
-#                seed_side='left'  # Seed only left
-#            )
-#            left_candidates = sorted([(t, s) for t, s in left_candidates if t != left_text], key=lambda x: -x[1])[:max_class_members]
-#
-#            print(f"    Initial substitutes for right: {right_candidates}")
-#            print(f"    Initial substitutes for left: {left_candidates}")
+            print(f"    Left context available: {len(left_eff_left)} left, {len(left_eff_right)} right")
+            print(f"    Right context available: {len(right_eff_left)} left, {len(right_eff_right)} right")
 
-            # Step 3: Mutual filter with both sides (filter candidates using contexts from both)
+            # Skip mutual expansion if either side has no context fillers
+            if not left_eff_right and not right_eff_left:
+                print(f"    Skipping mutual expansion: no context fillers from either side yet")
+                # Cache the prefix with just the units themselves
+                subparse_cache[prefix] = ([(left_text, 1.0), (right_text, 1.0)], left_eff_left, left_eff_right)
+                continue
 
-            refined_right = catalog.gpu_contextual_candidates(
-                left_text, # source of "seed" substitutes for right hand side
-                left_context=right_eff_left + external_left,     # own left
-                right_context=right_eff_right + external_right,  # own right
+            # Step 1: Get substitutes for LEFT side using right's left context
+            print(f"    [STEP 1] Get substitutes for LEFT: \"{left_text}\"")
+            left_subs_for_expansion = catalog.gpu_contextual_candidates(
+                left_text,
+                left_context=external_left,
+                right_context=list(right_eff_left) + external_right if right_eff_left else external_right,
+                max_results=max_class_members * 3,
+                scoring=scoring
+            )
+            left_subs_for_expansion = [(t, s) for t, s in left_subs_for_expansion if t != left_text][:max_class_members]
+            print(f"      Found {len(left_subs_for_expansion)} substitutes for left")
+
+            # Collect right_words from left substitutes → candidates for RIGHT
+            left_right_contexts = set()
+            for sub_text, _ in left_subs_for_expansion:
+                sub_pattern = catalog.get_unit(sub_text)
+                if sub_pattern:
+                    for word in sub_pattern.right_words.keys():
+                        left_right_contexts.add(word)
+            print(f"      Collected {len(left_right_contexts)} right-context words from left subs")
+
+            # Step 2: Get substitutes for RIGHT side using left's right context
+            print(f"    [STEP 2] Get substitutes for RIGHT: \"{right_text}\"")
+            right_subs_for_expansion = catalog.gpu_contextual_candidates(
+                right_text,
+                left_context=list(left_right_contexts) + external_left if left_right_contexts else external_left,
+                right_context=external_right,
+                max_results=max_class_members * 3,
+                scoring=scoring
+            )
+            right_subs_for_expansion = [(t, s) for t, s in right_subs_for_expansion if t != right_text][:max_class_members]
+            print(f"      Found {len(right_subs_for_expansion)} substitutes for right")
+
+            # Collect left_words from right substitutes → candidates for LEFT
+            right_left_contexts = set()
+            for sub_text, _ in right_subs_for_expansion:
+                sub_pattern = catalog.get_unit(sub_text)
+                if sub_pattern:
+                    for word in sub_pattern.left_words.keys():
+                        right_left_contexts.add(word)
+            print(f"      Collected {len(right_left_contexts)} left-context words from right subs")
+
+            # Step 3: Score candidates for RIGHT using left's right_contexts as seed
+            print(f"    [STEP 3] Score RIGHT candidates using left's right contexts")
+            right_candidates = catalog.gpu_contextual_candidates(
+                right_text,
+                left_context=list(left_right_contexts) + external_left if left_right_contexts else external_left,
+                right_context=external_right,
                 max_results=max_class_members + 1,
                 scoring=scoring
             )
-            refined_right = sorted([(t, s) for t, s in refined_right if t != left_text], key=lambda x: -x[1])[:max_class_members]
+            right_candidates = [(t, s) for t, s in right_candidates if t != right_text][:max_class_members]
+            print(f"      Scored right candidates: {len(right_candidates)} results")
 
-            refined_left = catalog.gpu_contextual_candidates(
-                right_text, # source of "seed" substitutes for left hand side
-                left_context=left_eff_left + external_left,    # own left
-                right_context=left_eff_right + external_right, # own right
+            # Step 4: Score candidates for LEFT using right's left_contexts as seed
+            print(f"    [STEP 4] Score LEFT candidates using right's left contexts")
+            left_candidates = catalog.gpu_contextual_candidates(
+                left_text,
+                left_context=external_left,
+                right_context=list(right_left_contexts) + external_right if right_left_contexts else external_right,
                 max_results=max_class_members + 1,
                 scoring=scoring
             )
-            refined_left = sorted([(t, s) for t, s in refined_left if t != right_text], key=lambda x: -x[1])[:max_class_members]
+            left_candidates = [(t, s) for t, s in left_candidates if t != left_text][:max_class_members]
+            print(f"      Scored left candidates: {len(left_candidates)} results")
 
-            print(f"    Refined right subs (filtered both sides): {refined_right}")
-            print(f"    Refined left subs (filtered both sides): {refined_left}")
+            print(f"    Left candidates: {left_candidates[:5]}")
+            print(f"    Right candidates: {right_candidates[:5]}")
 
-            # Final mutual set: ranked by combined score (average from both sides for matching texts)
-            mutual = {}
-            for t, s_left in refined_left:
-                for cand_t, s_right in refined_right:
-                    if t == cand_t:
-                        mutual[t] = (s_left + s_right) / 2
-            mutual_sorted = sorted(mutual.items(), key=lambda x: -x[1])[:max_class_members]
-            print(f"    Final mutual set (combined scores): {mutual_sorted}")
+            # Update cache for whole prefix
+            # Combine left and right candidates as substitutes for the full span
+            combined_candidates = []
 
-            # Update cache for whole prefix (use mutual as subs, combined eff)
+            # Add left candidates (they replace the whole left side)
+            for t, s in left_candidates:
+                combined_candidates.append((t, s))
+
+            # Add right candidates (they replace the whole right side)
+            for t, s in right_candidates:
+                combined_candidates.append((t, s))
+
+            # Sort by score and keep top
+            combined_candidates = sorted(set(combined_candidates), key=lambda x: -x[1])[:max_class_members]
+
+            # Update context words from both sides
             eff_left = list(set(left_eff_left) | set(right_eff_left))
             eff_right = list(set(left_eff_right) | set(right_eff_right))
-            subparse_cache[prefix] = (mutual_sorted, eff_left, eff_right)
+
+            subparse_cache[prefix] = (combined_candidates, eff_left, eff_right)
+
+            print(f"    Cache updated for \"{prefix}\": {len(combined_candidates)} combined candidates")
 
     tree = parser.get_current_parse()
 
