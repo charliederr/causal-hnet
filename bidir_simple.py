@@ -458,49 +458,63 @@ class UnitCatalog:
 
         # Apply consensus weighting: boost candidates whose overlaps are shared by many others
         # This creates "winner takes all" dynamics where common overlaps dominate
-        candidate_overlaps = {}
-        for cand_idx in candidate_list:
+        # VECTORIZED: Uses matrix operations instead of Python loops for efficiency
+
+        # Step 1: Build overlap matrix (N_candidates x N_words)
+        # Entry [i, j] = 1 if candidate i has context word j in its pattern
+        all_context_words = set(left_context) | set(right_context)
+        word_to_idx = {word: idx for idx, word in enumerate(sorted(all_context_words))}
+        n_candidates = len(candidate_list)
+        n_words = len(word_to_idx)
+
+        # Initialize overlap matrix and overlap counts
+        overlap_matrix = torch.zeros((n_candidates, n_words), device=DEVICE, dtype=torch.float32)
+        overlap_counts = torch.ones(n_candidates, device=DEVICE, dtype=torch.float32)  # avoid div by 0
+
+        for i, cand_idx in enumerate(candidate_list):
             cand_text = self.unit_list[cand_idx]
             pattern = self.units.get(cand_text)
             if not pattern:
-                candidate_overlaps[cand_idx] = set()
                 continue
 
-            overlapping_words = set()
+            num_overlaps = 0
             for word in left_context:
-                if word in pattern.left_words:
-                    overlapping_words.add(word)
+                if word in pattern.left_words and word in word_to_idx:
+                    j = word_to_idx[word]
+                    overlap_matrix[i, j] = 1.0
+                    num_overlaps += 1
             for word in right_context:
-                if word in pattern.right_words:
-                    overlapping_words.add(word)
+                if word in pattern.right_words and word in word_to_idx:
+                    j = word_to_idx[word]
+                    if overlap_matrix[i, j] == 0:  # avoid double-counting
+                        overlap_matrix[i, j] = 1.0
+                        num_overlaps += 1
 
-            candidate_overlaps[cand_idx] = overlapping_words
+            if num_overlaps > 0:
+                overlap_counts[i] = num_overlaps
 
-        # Count how many candidates share each context word overlap
-        from collections import Counter
-        overlap_frequency = Counter()
-        for overlaps in candidate_overlaps.values():
-            overlap_frequency.update(overlaps)
+        # Step 2: Count how many candidates share each context word
+        # Shape: (N_words,) - counts across all candidates for each word
+        word_frequency = overlap_matrix.sum(dim=0)
 
-        # Compute consensus weight for each candidate
-        consensus_scores = []
-        for cand_idx in candidate_list:
-            overlaps = candidate_overlaps[cand_idx]
-            if overlaps:
-                # Log-weighted consensus: candidates sharing frequent overlaps get higher boost
-                consensus_weight = sum(math.log(overlap_frequency[word] + 1.0) for word in overlaps) / len(overlaps)
-            else:
-                consensus_weight = 0.0
+        # Step 3: Create frequency weight vector using log
+        # freq_weights[j] = log(count_of_word_j + 1)
+        freq_weights = torch.log(word_frequency + 1.0)
 
-            consensus_scores.append(consensus_weight)
+        # Step 4: Vectorized consensus computation
+        # consensus_scores = overlap_matrix @ freq_weights / overlap_counts
+        # This computes: for each candidate, sum of log-frequencies of its overlaps, divided by count
+        if n_words > 0:
+            consensus_scores = torch.mv(overlap_matrix, freq_weights) / overlap_counts
+        else:
+            consensus_scores = torch.zeros(n_candidates, device=DEVICE, dtype=torch.float32)
 
         if trace:
-            print(f" Consensus weights: min={min(consensus_scores) if consensus_scores else 0:.3f}, max={max(consensus_scores) if consensus_scores else 0:.3f}")
+            print(f" Consensus weights: min={consensus_scores.min().item():.3f}, max={consensus_scores.max().item():.3f}")
 
         # Apply multiplicative boost: base_score * (1 + consensus_weight)
         # This implements "winner takes all": candidates with high-consensus overlaps dominate
-        consensus_tensor = torch.tensor(consensus_scores, dtype=torch.float32, device=DEVICE)
-        combined_scores = combined_scores * (1.0 + consensus_tensor)
+        combined_scores = combined_scores * (1.0 + consensus_scores)
 
         if trace:
             print(f" After consensus weighting: min={combined_scores.min().item():.3f}, max={combined_scores.max().item():.3f}")
