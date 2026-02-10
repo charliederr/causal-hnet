@@ -185,7 +185,41 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
 
     print("\n[3] CONTEXTUAL SUBSTITUTION CLASSES")
     print("-" * 40)
-    # (keep your show_contextual_expansions / show_single_token_expansion; add external ctx to calls if needed)
+
+    # Display substitution classes for nodes in the final parse tree
+    if tree:
+        def show_node_subs(node, depth=0):
+            """Recursively show substitution classes for each node in parse tree."""
+            indent = "  " * depth
+            span_text = node.span.text
+
+            # Get substitutes for this span using external context only
+            subs = catalog.gpu_contextual_candidates(
+                span_text,
+                left_context=external_left,
+                right_context=external_right,
+                max_results=5,
+                scoring=scoring
+            )
+            subs = [(t, s) for t, s in subs if t != span_text][:5]
+
+            print(f"{indent}Span: \"{span_text}\"")
+            if subs:
+                print(f"{indent}  Substitution class:")
+                for sub_text, score in subs:
+                    print(f"{indent}    - {sub_text:.20s} (score: {score:.4f})")
+            else:
+                print(f"{indent}  (No substitutes found)")
+
+            # Recursively show left and right children
+            if node.left:
+                show_node_subs(node.left, depth + 1)
+            if node.right:
+                show_node_subs(node.right, depth + 1)
+
+        show_node_subs(tree)
+    else:
+        print("No parse tree to display")
 
 def main():
     import argparse
