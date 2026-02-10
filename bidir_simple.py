@@ -456,6 +456,55 @@ class UnitCatalog:
         if trace:
             print(f" Scored {len(candidate_list)} candidates using {scoring}")
 
+        # Apply consensus weighting: boost candidates whose overlaps are shared by many others
+        # This creates "winner takes all" dynamics where common overlaps dominate
+        candidate_overlaps = {}
+        for cand_idx in candidate_list:
+            cand_text = self.unit_list[cand_idx]
+            pattern = self.units.get(cand_text)
+            if not pattern:
+                candidate_overlaps[cand_idx] = set()
+                continue
+
+            overlapping_words = set()
+            for word in left_context:
+                if word in pattern.left_words:
+                    overlapping_words.add(word)
+            for word in right_context:
+                if word in pattern.right_words:
+                    overlapping_words.add(word)
+
+            candidate_overlaps[cand_idx] = overlapping_words
+
+        # Count how many candidates share each context word overlap
+        from collections import Counter
+        overlap_frequency = Counter()
+        for overlaps in candidate_overlaps.values():
+            overlap_frequency.update(overlaps)
+
+        # Compute consensus weight for each candidate
+        consensus_scores = []
+        for cand_idx in candidate_list:
+            overlaps = candidate_overlaps[cand_idx]
+            if overlaps:
+                # Log-weighted consensus: candidates sharing frequent overlaps get higher boost
+                consensus_weight = sum(math.log(overlap_frequency[word] + 1.0) for word in overlaps) / len(overlaps)
+            else:
+                consensus_weight = 0.0
+
+            consensus_scores.append(consensus_weight)
+
+        if trace:
+            print(f" Consensus weights: min={min(consensus_scores) if consensus_scores else 0:.3f}, max={max(consensus_scores) if consensus_scores else 0:.3f}")
+
+        # Apply multiplicative boost: base_score * (1 + consensus_weight)
+        # This implements "winner takes all": candidates with high-consensus overlaps dominate
+        consensus_tensor = torch.tensor(consensus_scores, dtype=torch.float32, device=DEVICE)
+        combined_scores = combined_scores * (1.0 + consensus_tensor)
+
+        if trace:
+            print(f" After consensus weighting: min={combined_scores.min().item():.3f}, max={combined_scores.max().item():.3f}")
+
         candidate_indices = torch.tensor(candidate_list, dtype=torch.long, device=DEVICE)
         k = min(max_results, len(candidates))
         top_scores, top_indices = torch.topk(combined_scores, k)
