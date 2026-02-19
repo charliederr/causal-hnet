@@ -64,6 +64,10 @@ class ParseNode:
     split_point: Optional[int] = None
     left: Optional["ParseNode"] = None
     right: Optional["ParseNode"] = None
+    # Store alternative split even when unit is chosen
+    best_split_energy: Optional[float] = None
+    best_split_left: Optional["ParseNode"] = None
+    best_split_right: Optional["ParseNode"] = None
 
     def is_leaf(self):
         return self.left is None and self.right is None
@@ -155,7 +159,7 @@ class UnitCatalog:
     def get_unit(self, text: str) -> Optional[ContextPattern]:
         return self.units.get(text)
 
-    def build_gpu_index(self, min_freq: int = 10):
+    def build_gpu_index(self, min_freq: int = 1):
         """Build GPU tensors for fast batch similarity computation."""
         if not HAS_TORCH or DEVICE is None:
             print("GPU not available, using CPU fallback")
@@ -172,32 +176,63 @@ class UnitCatalog:
         self.unit_to_idx = {text: i for i, text in enumerate(self.unit_list)}
         n_units = len(self.unit_list)
 
-        # Build vocabulary from top-k context words
-        all_words = set()
+        # Build vocabulary from globally most frequent context words
+        # This ensures common units like "i" are represented without exploding vocabulary size
+        from collections import Counter
+        global_left_words = Counter()
+        global_right_words = Counter()
         for pattern in freq_units.values():
-            all_words.update(w for w, _ in pattern.left_words.most_common(10))
-            all_words.update(w for w, _ in pattern.right_words.most_common(10))
+            global_left_words.update(pattern.left_words)
+            global_right_words.update(pattern.right_words)
 
-        self.vocab = sorted(all_words)
+        # Combine and take top N globally
+        MAX_VOCAB_SIZE = 20000
+        all_context_words = global_left_words + global_right_words
+        top_words = [w for w, _ in all_context_words.most_common(MAX_VOCAB_SIZE)]
+
+        self.vocab = sorted(top_words)
         self.word_to_idx = {w: i for i, w in enumerate(self.vocab)}
         vocab_size = len(self.vocab)
 
         print(f"  {n_units:,} units, {vocab_size:,} vocabulary")
 
+        # Debug: Check if "i" is represented
+        if "i" in freq_units:
+            i_pattern = freq_units["i"]
+            i_left_in_vocab = sum(1 for w, _ in i_pattern.left_words.most_common(1000) if w in self.word_to_idx)
+            i_right_in_vocab = sum(1 for w, _ in i_pattern.right_words.most_common(1000) if w in self.word_to_idx)
+            print(f"  DEBUG 'i': {len(i_pattern.left_words)} left_words ({i_left_in_vocab} in vocab), "
+                  f"{len(i_pattern.right_words)} right_words ({i_right_in_vocab} in vocab)")
+            if i_left_in_vocab == 0 and i_right_in_vocab == 0:
+                print(f"    WARNING: 'i' has NO contexts in vocabulary!")
+                print(f"    Sample left_words: {[w for w, _ in i_pattern.left_words.most_common(10)]}")
+                print(f"    Sample right_words: {[w for w, _ in i_pattern.right_words.most_common(10)]}")
+                print(f"    Sample vocab: {self.vocab[:20]}")
+
         # Build dense matrices (float16 for memory efficiency)
         cpu_left = np.zeros((n_units, vocab_size), dtype=np.float16)
         cpu_right = np.zeros((n_units, vocab_size), dtype=np.float16)
 
+        nonzero_count = 0
         for i, text in enumerate(self.unit_list):
             pattern = freq_units[text]
 
-            for w, c in pattern.left_words.most_common(10):
+            left_count = 0
+            for w, c in pattern.left_words.most_common(1000):
                 if w in self.word_to_idx:
                     cpu_left[i, self.word_to_idx[w]] = c
+                    left_count += 1
 
-            for w, c in pattern.right_words.most_common(10):
+            right_count = 0
+            for w, c in pattern.right_words.most_common(1000):
                 if w in self.word_to_idx:
                     cpu_right[i, self.word_to_idx[w]] = c
+                    right_count += 1
+
+            if left_count > 0 or right_count > 0:
+                nonzero_count += 1
+
+        print(f"  {nonzero_count:,} / {n_units:,} units have non-zero vectors")
 
         # Normalize
         left_norms = np.linalg.norm(cpu_left.astype(np.float32), axis=1, keepdims=True) + 1e-10
@@ -205,9 +240,9 @@ class UnitCatalog:
         cpu_left = (cpu_left / left_norms).astype(np.float16)
         cpu_right = (cpu_right / right_norms).astype(np.float16)
 
-        #rjf edit to reduce unneeded digits to reduce memory footprint
-        cpu_left = np.round(cpu_left / left_norms, decimals=3).astype(np.float16)
-        cpu_right = np.round(cpu_right / right_norms, decimals=3).astype(np.float16)
+        # Round to reduce memory footprint (already normalized above)
+        cpu_left = np.round(cpu_left, decimals=3).astype(np.float16)
+        cpu_right = np.round(cpu_right, decimals=3).astype(np.float16)
 
         # Transfer to GPU
         self.gpu_left = torch.from_numpy(cpu_left).to(DEVICE)
@@ -310,116 +345,119 @@ class UnitCatalog:
 
         print(f"  GPU reverse indexes ready")
 
-    def gpu_contextual_candidates(self, unit_text: str,
-                               left_context: List[str],
-                               right_context: List[str],
+    def add_unit_to_gpu_index(self, text: str, left_words: dict, right_words: dict):
+        """
+        Dynamically add a new unit to the GPU index.
+
+        Args:
+            text: Unit text
+            left_words: Counter/dict of left context words
+            right_words: Counter/dict of right context words
+        """
+        if not self.gpu_ready:
+            return
+
+        # Skip if already in index
+        if text in self.unit_to_idx:
+            return
+
+        # Add to unit list and index
+        new_idx = len(self.unit_list)
+        self.unit_list.append(text)
+        self.unit_to_idx[text] = new_idx
+
+        # Create new rows for this unit
+        vocab_size = len(self.vocab)
+        new_left = np.zeros((1, vocab_size), dtype=np.float16)
+        new_right = np.zeros((1, vocab_size), dtype=np.float16)
+
+        # Populate with context words (use top 1000)
+        for w, c in Counter(left_words).most_common(1000):
+            if w in self.word_to_idx:
+                new_left[0, self.word_to_idx[w]] = c
+
+        for w, c in Counter(right_words).most_common(1000):
+            if w in self.word_to_idx:
+                new_right[0, self.word_to_idx[w]] = c
+
+        # Normalize
+        left_norm = np.linalg.norm(new_left.astype(np.float32)) + 1e-10
+        right_norm = np.linalg.norm(new_right.astype(np.float32)) + 1e-10
+        new_left = np.round(new_left / left_norm, decimals=3).astype(np.float16)
+        new_right = np.round(new_right / right_norm, decimals=3).astype(np.float16)
+
+        # Convert to GPU tensors and concatenate
+        new_left_gpu = torch.from_numpy(new_left).to(DEVICE)
+        new_right_gpu = torch.from_numpy(new_right).to(DEVICE)
+
+        self.gpu_left = torch.cat([self.gpu_left, new_left_gpu], dim=0)
+        self.gpu_right = torch.cat([self.gpu_right, new_right_gpu], dim=0)
+
+        # Add to units dict if not already there
+        if text not in self.units:
+            self.units[text] = ContextPattern(
+                count=1,  # Synthesized unit
+                left_words=Counter(left_words),
+                right_words=Counter(right_words)
+            )
+
+    def gpu_contextual_candidates(self, target: str,
+                               candidates: List[str],
                                max_results: int = 100,
                                scoring: str = 'cosine',
-                               seed_side = 'both',  # or 'left', 'right'
                                trace: bool = False) -> List[Tuple[str, float]]:
         """
-        Find contextually-grounded candidates using GPU acceleration.
-        1. Union of reverse lookups (candidates may share SOME context)
-        2. Score each candidate with total PMI to context
-        3. Filter by total PMI threshold
-        4. Score remaining with selected method
-        5. Return top-k
-        """
+        Score candidate substitutes by similarity to target using GPU acceleration.
 
-        candidates = set()
-        if seed_side in ('left', 'both') and left_context:
-            for word in left_context:
-                if word in self.left_word_to_idx:
-                    candidates |= self.left_word_to_idx[word]
-        if seed_side in ('right', 'both') and right_context:
-            for word in right_context:
-                if word in self.right_word_to_idx:
-                    candidates |= self.right_word_to_idx[word]
+        Args:
+            target: The unit to find substitutes for
+            candidates: List of candidate substitute texts to score
+            max_results: Maximum number of results to return
+            scoring: Scoring method ('cosine', 'ic_cosine', or 'pmi')
+            trace: Enable debug output
+
+        Returns:
+            List of (text, score) tuples, sorted by descending score
+        """
 
         if not self.gpu_ready:
             return []
 
-        # Unknown units return empty - parser will split them
-        if unit_text not in self.unit_to_idx:
-            if trace:
-                print(f"\n TRACE: '{unit_text}' not in index - will be split")
+        # Fallback for units not in GPU index
+        if target not in self.unit_to_idx:
+            pattern = self.units.get(target)
+            if pattern:
+                if trace:
+                    print(f"\n TRACE: score_candidates('{target}')")
+                    print(f"        Target not in GPU index (freq={pattern.count}), returning self")
+                return [(target, 1.0)]
+            else:
+                if trace:
+                    print(f"\n TRACE: score_candidates('{target}')")
+                    print(f"        Target not in catalog")
+                return []
+
+        target_idx = self.unit_to_idx[target]
+
+        # Filter candidates: indexed and not self (allow different lengths)
+        candidate_indices = set()
+        for text in candidates:
+            if text in self.unit_to_idx and text != target:
+                idx = self.unit_to_idx[text]
+                candidate_indices.add(idx)
+
+        if trace:
+            print(f"\n TRACE: score_candidates(target='{target}', {len(candidates)} candidates)")
+            print(f"       {len(candidate_indices)} valid (indexed, not self)")
+            # Debug: check if target actually has a vector
+            target_pattern = self.units.get(target)
+            if target_pattern:
+                print(f"       Target pattern: {len(target_pattern.left_words)} left_words, {len(target_pattern.right_words)} right_words")
+
+        if not candidate_indices:
             return []
 
-        target_idx = self.unit_to_idx[unit_text]
-        target_length = unit_text.count(' ') + 1
-        if trace:
-            print(f"\n TRACE: gpu_contextual_candidates('{unit_text}')")
-            print(f" left_context: {left_context}")
-            print(f" right_context: {right_context}")
-            print(f" Known unit (idx={target_idx})")
-
-        # Get length-filtered indices
-        length_indices = set(self.idx_by_length.get(target_length, []))
-        if not length_indices:
-            if trace:
-                print(f" No units of length {target_length}")
-            return []
-
-        if trace:
-            print(f" Units of length {target_length}: {len(length_indices)}")
-
-        # Step 1: Union of candidates sharing ANY context words
-        candidates = set()
-        for word in left_context:
-            if word in self.left_word_to_idx:
-                candidates |= self.left_word_to_idx[word]
-        for word in right_context:
-            if word in self.right_word_to_idx:
-                candidates |= self.right_word_to_idx[word]
-
-        if trace:
-            print(f" Union candidates: {len(candidates)}")
-
-        # Step 2: Score each candidate with total PMI to context words
-
-        cond_prob_scores = {}
-        for cand_idx in candidates:
-            cand_text = self.unit_list[cand_idx]
-            pattern = self.units.get(cand_text)
-            if not pattern:
-                cond_prob_scores[cand_idx] = 0.0
-                continue
-
-            score = 0.0
-            left_total = sum(pattern.left_words.values()) or 1
-            right_total = sum(pattern.right_words.values()) or 1
-
-            for word in left_context:
-                if word in pattern.left_words:
-                    score += pattern.left_words[word] / left_total  # P(word | cand left)
-
-            for word in right_context:
-                if word in pattern.right_words:
-                    score += pattern.right_words[word] / right_total  # P(word | cand right)
-
-            cond_prob_scores[cand_idx] = score
-
-        # Step 3 Filter by minimum total cond prob
-        #min_cond_prob = 0.2  # tune: sum P >=0.2; lower=more candidates
-        #OOM error. Test stricter PMI
-        min_cond_prob = 0.5  # tune: sum P >0.5; lower=more candidates
-        candidates = {idx for idx, prob in cond_prob_scores.items() if prob >= min_cond_prob}
-
-        if trace:
-            print(f" Candidates after cond prob filter (min={min_cond_prob}): {len(candidates)}")
-
-        # Filter by length and remove target
-        candidates = candidates & length_indices
-        candidates.discard(target_idx)
-
-        if trace:
-            print(f" After length filter: {len(candidates)}")
-
-        if not candidates:
-            return []
-
-        # Proceed with scoring (original code from here)
-        candidate_list = list(candidates)
+        candidate_list = list(candidate_indices)
         if scoring == 'pmi':
             # Use the pre-computed PMI scores as final (since we're PMI-focused)
             combined_scores = torch.tensor([pmi_scores[idx] for idx in candidate_list], dtype=torch.float32, device=DEVICE)
@@ -455,59 +493,79 @@ class UnitCatalog:
 
         if trace:
             print(f" Scored {len(candidate_list)} candidates using {scoring}")
+            print(f" Base cosine scores: min={combined_scores.min().item():.6f}, max={combined_scores.max().item():.6f}, mean={combined_scores.mean().item():.6f}")
+            if combined_scores.max().item() == 0.0:
+                print(f" WARNING: All cosine scores are zero!")
+                print(f" Target vector norms: left={target_left.norm().item():.6f}, right={target_right.norm().item():.6f}")
+                if len(candidate_list) > 0:
+                    sample_idx = candidate_list[0]
+                    sample_left = self.gpu_left[sample_idx].float()
+                    sample_right = self.gpu_right[sample_idx].float()
+                    print(f" Sample candidate vector norms: left={sample_left.norm().item():.6f}, right={sample_right.norm().item():.6f}")
 
         # Apply consensus weighting: boost candidates whose overlaps are shared by many others
         # This creates "winner takes all" dynamics where common overlaps dominate
         # VECTORIZED: Uses matrix operations instead of Python loops for efficiency
 
-        # Step 1: Build overlap matrix (N_candidates x N_words)
-        # Entry [i, j] = 1 if candidate i has context word j in its pattern
-        all_context_words = set(left_context) | set(right_context)
-        word_to_idx = {word: idx for idx, word in enumerate(sorted(all_context_words))}
-        n_candidates = len(candidate_list)
-        n_words = len(word_to_idx)
+        # Get target's context words for overlap checking
+        target_pattern = self.units.get(target)
+        if not target_pattern:
+            # No target pattern, skip consensus weighting
+            consensus_scores = torch.zeros(len(candidate_list), device=DEVICE, dtype=torch.float32)
+        else:
+            # Build set of target's context words (what overlaps are possible)
+            target_left_words = set(target_pattern.left_words.keys())
+            target_right_words = set(target_pattern.right_words.keys())
+            all_target_context = target_left_words | target_right_words
 
-        # Initialize overlap matrix and overlap counts
-        overlap_matrix = torch.zeros((n_candidates, n_words), device=DEVICE, dtype=torch.float32)
-        overlap_counts = torch.ones(n_candidates, device=DEVICE, dtype=torch.float32)  # avoid div by 0
+            word_to_idx = {word: idx for idx, word in enumerate(sorted(all_target_context))}
+            n_candidates = len(candidate_list)
+            n_words = len(word_to_idx)
 
-        for i, cand_idx in enumerate(candidate_list):
-            cand_text = self.unit_list[cand_idx]
-            pattern = self.units.get(cand_text)
-            if not pattern:
-                continue
+            # Initialize overlap matrix and overlap counts
+            overlap_matrix = torch.zeros((n_candidates, n_words), device=DEVICE, dtype=torch.float32)
+            overlap_counts = torch.ones(n_candidates, device=DEVICE, dtype=torch.float32)  # avoid div by 0
 
-            num_overlaps = 0
-            for word in left_context:
-                if word in pattern.left_words and word in word_to_idx:
-                    j = word_to_idx[word]
-                    overlap_matrix[i, j] = 1.0
-                    num_overlaps += 1
-            for word in right_context:
-                if word in pattern.right_words and word in word_to_idx:
-                    j = word_to_idx[word]
-                    if overlap_matrix[i, j] == 0:  # avoid double-counting
+            # For each candidate, mark which of target's context words it shares
+            for i, cand_idx in enumerate(candidate_list):
+                cand_text = self.unit_list[cand_idx]
+                pattern = self.units.get(cand_text)
+                if not pattern:
+                    continue
+
+                num_overlaps = 0
+                # Check left_words overlap with target's left_words
+                for word in pattern.left_words.keys():
+                    if word in target_left_words and word in word_to_idx:
+                        j = word_to_idx[word]
                         overlap_matrix[i, j] = 1.0
                         num_overlaps += 1
+                # Check right_words overlap with target's right_words
+                for word in pattern.right_words.keys():
+                    if word in target_right_words and word in word_to_idx:
+                        j = word_to_idx[word]
+                        if overlap_matrix[i, j] == 0:  # avoid double-counting
+                            overlap_matrix[i, j] = 1.0
+                            num_overlaps += 1
 
-            if num_overlaps > 0:
-                overlap_counts[i] = num_overlaps
+                if num_overlaps > 0:
+                    overlap_counts[i] = num_overlaps
 
-        # Step 2: Count how many candidates share each context word
-        # Shape: (N_words,) - counts across all candidates for each word
-        word_frequency = overlap_matrix.sum(dim=0)
+            # Step 2: Count how many candidates share each context word
+            # Shape: (N_words,) - counts across all candidates for each word
+            word_frequency = overlap_matrix.sum(dim=0)
 
-        # Step 3: Create frequency weight vector using log
-        # freq_weights[j] = log(count_of_word_j + 1)
-        freq_weights = torch.log(word_frequency + 1.0)
+            # Step 3: Create frequency weight vector using log
+            # freq_weights[j] = log(count_of_word_j + 1)
+            freq_weights = torch.log(word_frequency + 1.0)
 
-        # Step 4: Vectorized consensus computation
-        # consensus_scores = overlap_matrix @ freq_weights / overlap_counts
-        # This computes: for each candidate, sum of log-frequencies of its overlaps, divided by count
-        if n_words > 0:
-            consensus_scores = torch.mv(overlap_matrix, freq_weights) / overlap_counts
-        else:
-            consensus_scores = torch.zeros(n_candidates, device=DEVICE, dtype=torch.float32)
+            # Step 4: Vectorized consensus computation
+            # consensus_scores = overlap_matrix @ freq_weights / overlap_counts
+            # This computes: for each candidate, sum of log-frequencies of its overlaps, divided by count
+            if n_words > 0:
+                consensus_scores = torch.mv(overlap_matrix, freq_weights) / overlap_counts
+            else:
+                consensus_scores = torch.zeros(n_candidates, device=DEVICE, dtype=torch.float32)
 
         if trace:
             print(f" Consensus weights: min={consensus_scores.min().item():.3f}, max={consensus_scores.max().item():.3f}")
@@ -520,7 +578,9 @@ class UnitCatalog:
             print(f" After consensus weighting: min={combined_scores.min().item():.3f}, max={combined_scores.max().item():.3f}")
 
         candidate_indices = torch.tensor(candidate_list, dtype=torch.long, device=DEVICE)
-        k = min(max_results, len(candidates))
+        k = min(max_results, len(candidate_list))
+        if k == 0:
+            return []
         top_scores, top_indices = torch.topk(combined_scores, k)
 
         results = []
@@ -1176,11 +1236,17 @@ class IncrementalBidirParser:
         self.debug = debug
         self.chart = {}  # (start, end) -> ParseNode
         self.tokens = []
+        self.split_energies = {}  # (left_text, right_text) -> energy
 
     def reset(self):
         """Clear the chart and tokens for a new parse."""
         self.chart = {}
         self.tokens = []
+        self.split_energies = {}
+
+    def store_split_energy(self, left_text: str, right_text: str, energy: float):
+        """Store energy for a specific binary split."""
+        self.split_energies[(left_text, right_text)] = energy
 
     def add_word(self, word: str):
         """
@@ -1192,7 +1258,8 @@ class IncrementalBidirParser:
         k = n - 1  # Index of new word
 
         # Create all spans ending at position n (after the new word)
-        for i in range(n):
+        # Compute in reverse order (shortest to longest) so child spans exist for splits
+        for i in range(n - 1, -1, -1):
             self._compute_span(i, n)
 
     def _compute_span(self, i: int, j: int):
@@ -1205,45 +1272,48 @@ class IncrementalBidirParser:
 
         span = Span(i, j, self.tokens[i:j])
 
-        # Get context for this span
-        left_ctx = self.tokens[max(0, i - self.context_window):i]
-        right_ctx = self.tokens[j:min(len(self.tokens), j + self.context_window)]
+        # For single tokens, create leaf node
+        if j - i == 1:
+            # Leaf node with zero energy
+            node = ParseNode(span, 0.0)
+            self.chart[(i, j)] = node
+            return
 
-        # Option 1: Treat as a unit
-        unit_energy, u_exp, c_exp, u_exp_set, c_exp_set = compute_bidir_energy(
-            span, left_ctx, right_ctx, self.catalog, self.debug,
-            use_contextual=True
-        )
-
-        # Option 2: Try all binary splits (if length >= 2)
+        # For multi-token spans, find best binary split
         best_split_energy = float('inf')
         best_split = None
 
-        if j - i >= 2:
-            for m in range(i + 1, j):
-                # Left and right children should already be in chart
-                left_child = self.chart.get((i, m))
-                right_child = self.chart.get((m, j))
+        for m in range(i + 1, j):
+            # Left and right children should already be in chart
+            left_child = self.chart.get((i, m))
+            right_child = self.chart.get((m, j))
 
-                if left_child and right_child:
-                    split_energy = left_child.energy + right_child.energy + 2.0
+            if left_child and right_child:
+                # Look up stored energy for this split (from mutual expansion)
+                left_text = " ".join(self.tokens[i:m])
+                right_text = " ".join(self.tokens[m:j])
+                split_key = (left_text, right_text)
 
-                    if split_energy < best_split_energy:
-                        best_split_energy = split_energy
-                        best_split = (m, left_child, right_child)
+                if split_key in self.split_energies:
+                    # Use energy from mutual expansion analysis
+                    split_energy = self.split_energies[split_key]
+                else:
+                    # Fallback: sum of child energies
+                    split_energy = left_child.energy + right_child.energy
 
-        # Choose best option
-        if best_split is None or unit_energy <= best_split_energy:
-            node = ParseNode(span, unit_energy)
-            node.unit_expansion = u_exp
-            node.context_expansion = c_exp
-            node.unit_expansion_set = u_exp_set
-            node.context_expansion_set = c_exp_set
-            self.chart[(i, j)] = node
-        else:
+                if split_energy < best_split_energy:
+                    best_split_energy = split_energy
+                    best_split = (m, left_child, right_child)
+
+        # Always use the best split (no unit option)
+        if best_split:
             m, left_child, right_child = best_split
             node = ParseNode(span, best_split_energy, split_point=m,
                            left=left_child, right=right_child)
+            self.chart[(i, j)] = node
+        else:
+            # Shouldn't happen if children exist, but fallback to zero energy
+            node = ParseNode(span, 0.0)
             self.chart[(i, j)] = node
 
     def get_current_parse(self) -> ParseNode:
