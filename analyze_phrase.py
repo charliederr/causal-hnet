@@ -11,9 +11,148 @@ warnings.filterwarnings('ignore')
 # Import ContextPattern for pickle compatibility
 import prototype_topdown_units
 from prototype_topdown_units import ContextPattern
-from bidir_simple import UnitCatalog, IncrementalBidirParser, print_tree
+from bidir_simple import UnitCatalog, IncrementalBidirParser, print_tree, CorpusIndex
 from collections import defaultdict
 import math
+
+def find_subparse_combinations(left_text: str, right_text: str,
+                               catalog: UnitCatalog, corpus_index: CorpusIndex,
+                               subparse_cache: dict,
+                               max_results: int = 20, max_subs_per_word: int = 15) -> list:
+    """
+    Find valid multi-word combinations by trying substitutions of subparse elements.
+    Uses incremental filtering to avoid combinatorial explosion.
+
+    For example, for "they made" + "the car":
+    - Get subparses: ["they", "made"] + ["the", "car"]
+    - Try combinations like: "you did a job", "we saw the house", etc.
+    - Filter at each step: only keep sequences where adjacent words can follow each other
+    - Stop early when we find max_results valid sequences
+
+    Returns: list of (combined_text, score) tuples
+    """
+    # Get subparses (splits) for each multi-word phrase
+    def get_subparse_words(text):
+        """Get the words from the best subparse of a multi-word phrase."""
+        words = text.split()
+        if len(words) == 1:
+            return words
+        # For multi-word, return the words (we could recursively get subparses, but start simple)
+        return words
+
+    left_words = get_subparse_words(left_text)
+    right_words = get_subparse_words(right_text)
+    all_words = left_words + right_words
+
+    if len(all_words) <= 2:
+        # Too short for meaningful subparse combinations
+        return []
+
+    # Get substitutes for each word position
+    # LAZY APPROACH: Get candidates without scoring (fast!)
+    # Only score complete sequences that pass all filters
+    position_subs = []
+    for i, word in enumerate(all_words):
+        word_subs = [word]  # Always include original (no score yet)
+
+        # Get words from contexts (fast - just dictionary lookup, no GPU scoring)
+        word_pattern = catalog.get_unit(word)
+        if word_pattern:
+            # Get words that appear in similar contexts
+            # Combine left and right contexts
+            context_words = set(word_pattern.left_words.keys()) | set(word_pattern.right_words.keys())
+
+            # Sort by frequency (simple Counter, no GPU)
+            context_freq = {}
+            for ctx_word in context_words:
+                ctx_pattern = catalog.get_unit(ctx_word)
+                if ctx_pattern:
+                    context_freq[ctx_word] = ctx_pattern.count
+
+            # Take top N by frequency
+            sorted_by_freq = sorted(context_freq.items(), key=lambda x: -x[1])
+            top_context_words = [w for w, _ in sorted_by_freq[:max_subs_per_word]]
+
+            # Add to word_subs (just words, no scores)
+            for sub_word in top_context_words:
+                if sub_word not in word_subs:
+                    word_subs.append(sub_word)
+
+        position_subs.append(word_subs[:max_subs_per_word])
+
+    # Incremental search with filtering (NO SCORING until complete!)
+    valid_sequences = []
+    partial_sequences = [[]]  # Just word lists, no scores yet
+
+    for pos in range(len(all_words)):
+        new_partials = []
+
+        for partial_words in partial_sequences:
+            for sub_word in position_subs[pos]:
+                extended_words = partial_words + [sub_word]
+
+                # Filter: check if this extension is valid (adjacency constraint)
+                # Use CorpusIndex to avoid min_freq=5 limitation
+                if pos > 0:
+                    prev_word = partial_words[-1]
+                    # Check if the pair exists in corpus (no frequency threshold)
+                    pair_text = f"{prev_word} {sub_word}"
+                    pair_pattern = get_unit_with_fallback(pair_text, catalog, corpus_index, debug=False)
+                    if not pair_pattern:
+                        # This pair never appears in corpus → skip
+                        continue
+
+                # If complete sequence, check if it exists in corpus
+                if len(extended_words) == len(all_words):
+                    combined_text = " ".join(extended_words)
+
+                    # Only include if different from original
+                    original_text = " ".join(all_words)
+                    if combined_text == original_text:
+                        continue
+
+                    # Check if this combination exists in catalog/corpus
+                    pattern = get_unit_with_fallback(combined_text, catalog, corpus_index, debug=False)
+                    if pattern:
+                        # NOW score it (only for complete sequences that exist!)
+                        # Use corpus frequency as score
+                        score = pattern.count
+                        valid_sequences.append((combined_text, score))
+                        if len(valid_sequences) >= max_results:
+                            return valid_sequences
+                else:
+                    # Continue building this sequence
+                    new_partials.append(extended_words)
+
+        partial_sequences = new_partials
+
+        # Early abandonment if no partials remain
+        if not partial_sequences:
+            break
+
+    return valid_sequences
+
+
+def get_unit_with_fallback(text: str, catalog: UnitCatalog, corpus_index: CorpusIndex = None, debug: bool = False):
+    """
+    Get unit from catalog, with fallback to corpus index if not found.
+    This allows lookup of longer phrases (5-7 grams) not pre-indexed in catalog.
+    """
+    # Try catalog first
+    pattern = catalog.get_unit(text)
+    if pattern is not None:
+        return pattern
+
+    # Fallback to corpus index if available
+    if corpus_index is not None:
+        pattern = corpus_index.get_unit(text)
+        if pattern is not None:
+            if debug and text.count(' ') >= 3:
+                print(f"        [CORPUS] Found in corpus: \"{text}\" (freq={pattern.count})")
+            return pattern
+
+    return None
+
 
 def get_all_substitutes_merged(cache: dict, text: str) -> list:
     """
@@ -64,6 +203,38 @@ def get_all_substitutes_merged(cache: dict, text: str) -> list:
     return sorted(result, key=lambda x: -x[1])
 
 
+def get_substitutes_for_split(cache: dict, text: str, split) -> list:
+    """
+    Get substitutes for a specific (text, split) cache entry with metadata.
+
+    Returns:
+        List of (sub_text, score, source_type, origins) tuples for THIS specific split only
+    """
+    cache_key = (text, split)
+    if cache_key not in cache:
+        return []
+
+    cache_value = cache[cache_key]
+    subs = cache_value[0]  # List of (text, score) tuples
+    origins_dict = cache_value[4] if len(cache_value) >= 5 else {}
+
+    # Determine source type from split format
+    if isinstance(split, tuple) and len(split) == 2 and split[0] == 'expansion':
+        source_type = 'expansion'
+    elif isinstance(split, tuple):
+        source_type = 'aggregation'
+    else:
+        source_type = 'other'
+
+    # Convert to list with metadata
+    result = []
+    for sub_text, score in subs:
+        sub_origins = origins_dict.get(sub_text) if origins_dict else None
+        result.append((sub_text, score, source_type, sub_origins))
+
+    return result
+
+
 def get_best_parse(cache: dict, text: str) -> tuple:
     """
     Get the best parse for a text from cache (lowest energy).
@@ -86,6 +257,93 @@ def get_best_parse(cache: dict, text: str) -> tuple:
     else:
         # No origins: (subs, eff_left, eff_right, energy)
         return best_value + (best_key[1], None)
+
+
+def count_bridging_paths(left_sub: str, right_sub: str,
+                         left_text: str, right_text: str,
+                         catalog, corpus_index=None) -> tuple:
+    """
+    Count context→context→context paths between substitutes.
+
+    Returns:
+        (direct_bridges, left_validated, right_validated)
+        - direct_bridges: words W where left_sub → W → right_sub
+        - left_validated: words W where left_sub → W and W → right_text
+        - right_validated: words W where left_text → W and W → right_sub
+    """
+    # Use corpus_index fallback to handle rare words/phrases
+    left_sub_pattern = get_unit_with_fallback(left_sub, catalog, corpus_index)
+    right_sub_pattern = get_unit_with_fallback(right_sub, catalog, corpus_index)
+    left_text_pattern = get_unit_with_fallback(left_text, catalog, corpus_index)
+    right_text_pattern = get_unit_with_fallback(right_text, catalog, corpus_index)
+
+    direct_bridges = 0
+    left_validated = 0
+    right_validated = 0
+
+    if left_sub_pattern and right_sub_pattern:
+        # Direct bridging: words that can follow left_sub AND precede right_sub
+        left_sub_right = set(left_sub_pattern.right_words.keys())
+        right_sub_left = set(right_sub_pattern.left_words.keys())
+        direct_bridges = len(left_sub_right & right_sub_left)
+
+    if left_sub_pattern and right_text_pattern:
+        # Left validation: words that can follow left_sub AND precede right_text
+        left_sub_right = set(left_sub_pattern.right_words.keys())
+        right_text_left = set(right_text_pattern.left_words.keys())
+        left_validated = len(left_sub_right & right_text_left)
+
+    if left_text_pattern and right_sub_pattern:
+        # Right validation: words that can follow left_text AND precede right_sub
+        left_text_right = set(left_text_pattern.right_words.keys())
+        right_sub_left = set(right_sub_pattern.left_words.keys())
+        right_validated = len(left_text_right & right_sub_left)
+
+    return (direct_bridges, left_validated, right_validated)
+
+
+def compute_outer_context_score(combined_text: str,
+                                  outer_left_context: list,
+                                  outer_right_context: list,
+                                  catalog, corpus_index=None) -> float:
+    """
+    Score how well a combined substitute matches the outer context of the head phrase.
+
+    This is the consensus score against external context that was previously
+    only used for expansion substitutes.
+
+    Returns:
+        Score between 0 and 1 indicating context match quality
+    """
+    # Use corpus_index fallback to handle rare phrases
+    combined_pattern = get_unit_with_fallback(combined_text, catalog, corpus_index)
+    if not combined_pattern:
+        return 0.0
+
+    # Check overlap with outer left context (words that can precede this phrase)
+    left_score = 0.0
+    if outer_left_context:
+        combined_left_ctx = set(combined_pattern.left_words.keys())
+        outer_left_set = set(outer_left_context)
+        if combined_left_ctx and outer_left_set:
+            intersection = len(combined_left_ctx & outer_left_set)
+            union = len(combined_left_ctx | outer_left_set)
+            left_score = intersection / union if union > 0 else 0.0
+
+    # Check overlap with outer right context (words that can follow this phrase)
+    right_score = 0.0
+    if outer_right_context:
+        combined_right_ctx = set(combined_pattern.right_words.keys())
+        outer_right_set = set(outer_right_context)
+        if combined_right_ctx and outer_right_set:
+            intersection = len(combined_right_ctx & outer_right_set)
+            union = len(combined_right_ctx | outer_right_set)
+            right_score = intersection / union if union > 0 else 0.0
+
+    # Return average of left and right scores
+    if left_score > 0 or right_score > 0:
+        return (left_score + right_score) / 2.0
+    return 0.0
 
 
 def run_mutual_expansion(left_text: str, right_text: str,
@@ -423,6 +681,7 @@ def compute_consensus_score(substitutes: list, catalog: UnitCatalog, target_text
     return min(1.0, avg_frequency)
 
 def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
+            corpus_index: CorpusIndex = None,
             max_class_members: int = 500, scoring: str = 'cosine', external_left: list = [], external_right: list = []):
     """Analyze a phrase and display results."""
     tokens = phrase.lower().split()
@@ -478,9 +737,44 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                 right_text = " ".join(tokens[split_pos:k])
                 print(f"    Testing split: (\"{left_text}\" \"{right_text}\")")
 
-                # Get cached parses for left and right (best energy)
-                left_subs, left_eff_left, left_eff_right, left_energy, left_split, _ = get_best_parse(subparse_cache, left_text)
-                right_subs, right_eff_left, right_eff_right, right_energy, right_split, _ = get_best_parse(subparse_cache, right_text)
+                # Get ALL substitutes for left and right (including aggregation and expansion)
+                # This ensures aggregation substitutes are available as seeds for expansion
+                left_subs_all = get_all_substitutes_merged(subparse_cache, left_text)
+                right_subs_all = get_all_substitutes_merged(subparse_cache, right_text)
+
+                # Also get best parse for energy and basic info
+                _, left_eff_left_base, left_eff_right_base, left_energy, left_split, _ = get_best_parse(subparse_cache, left_text)
+                _, right_eff_left_base, right_eff_right_base, right_energy, right_split, _ = get_best_parse(subparse_cache, right_text)
+
+                # Aggregate contexts from ALL substitutes (not just best parse)
+                # This includes aggregation substitutes as seeds for expansion
+                left_subs = [(text, score) for text, score, _, _ in left_subs_all]
+                right_subs = [(text, score) for text, score, _, _ in right_subs_all]
+
+                # Build context sets from ALL substitutes
+                left_eff_left = set(left_eff_left_base) if left_eff_left_base else set()
+                left_eff_right = set(left_eff_right_base) if left_eff_right_base else set()
+                right_eff_left = set(right_eff_left_base) if right_eff_left_base else set()
+                right_eff_right = set(right_eff_right_base) if right_eff_right_base else set()
+
+                # Add contexts from all substitutes (including aggregation)
+                for sub_text, _, _, _ in left_subs_all:
+                    sub_pattern = catalog.get_unit(sub_text)
+                    if sub_pattern:
+                        left_eff_left.update(sub_pattern.left_words.keys())
+                        left_eff_right.update(sub_pattern.right_words.keys())
+
+                for sub_text, _, _, _ in right_subs_all:
+                    sub_pattern = catalog.get_unit(sub_text)
+                    if sub_pattern:
+                        right_eff_left.update(sub_pattern.left_words.keys())
+                        right_eff_right.update(sub_pattern.right_words.keys())
+
+                # Convert back to lists
+                left_eff_left = list(left_eff_left)
+                left_eff_right = list(left_eff_right)
+                right_eff_left = list(right_eff_left)
+                right_eff_right = list(right_eff_right)
 
                 # Bootstrap right if not cached yet
                 if not right_subs:
@@ -552,7 +846,9 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                             context_word_counts[word] = context_word_counts.get(word, 0) + 1
 
                 # Keep words shared by ≥ 30% of substitutes (minimum 2)
-                min_share = max(2, int(n_subs_with_pattern * 0.3))
+                # CONSENSUS_THRESHOLD = 0.3  # Original: filters to only common words
+                CONSENSUS_THRESHOLD = 0.0  # Disabled: allow all context words through
+                min_share = max(2, int(n_subs_with_pattern * CONSENSUS_THRESHOLD))
                 right_contexts_of_left_element = {w for w, c in context_word_counts.items() if c >= min_share}
                 print(f"      Context consensus: {len(context_word_counts)} raw → "
                       f"{len(right_contexts_of_left_element)} shared (≥{min_share}/{n_subs_with_pattern} subs)")
@@ -585,7 +881,9 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                             context_word_counts_r[word] = context_word_counts_r.get(word, 0) + 1
 
                 # Keep words shared by ≥ 30% of substitutes (minimum 2)
-                min_share_r = max(2, int(n_rsubs_with_pattern * 0.3))
+                # CONSENSUS_THRESHOLD = 0.3  # Original: filters to only common words
+                CONSENSUS_THRESHOLD = 0.0  # Disabled: allow all context words through
+                min_share_r = max(2, int(n_rsubs_with_pattern * CONSENSUS_THRESHOLD))
                 left_contexts_of_right_element = {w for w, c in context_word_counts_r.items() if c >= min_share_r}
                 print(f"      Context consensus: {len(context_word_counts_r)} raw → "
                       f"{len(left_contexts_of_right_element)} shared (≥{min_share_r}/{n_rsubs_with_pattern} subs)")
@@ -692,22 +990,76 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                 combinations_in_catalog = 0
                 combinations_with_external_context = 0
 
+                # Compute outer context (words outside the current span in the full sentence)
+                outer_left_context = list(tokens[0:start_pos]) if start_pos > 0 else []
+                outer_right_context = list(tokens[k:]) if k < len(tokens) else []
+
+                # DEBUG: Check candidate types
+                left_multiword = [t for t, _ in left_candidates if ' ' in t]
+                right_multiword = [t for t, _ in right_candidates if ' ' in t]
+                print(f"    Candidate types: LEFT has {len(left_multiword)} multi-word (of {len(left_candidates)}), RIGHT has {len(right_multiword)} multi-word (of {len(right_candidates)})")
+
                 for left_sub, left_score in left_candidates:
                     for right_sub, right_score in right_candidates:
                         # Form the combined phrase
                         combined_text = f"{left_sub} {right_sub}"
                         total_combinations_tried += 1
 
-                        # Only keep combinations that exist in catalog
+                        # Only keep combinations that exist in catalog or corpus
                         # This avoids synthetic phrases with no observed contexts
-                        combined_pattern = catalog.get_unit(combined_text)
+                        combined_pattern = get_unit_with_fallback(combined_text, catalog, corpus_index)
                         if not combined_pattern:
                             continue
 
                         combinations_in_catalog += 1
 
-                        # Combine scores (multiply to get joint probability-like score)
-                        combined_score = left_score * right_score
+                        # UNIFIED SCORING: Two components
+                        # 1. Context path counting (NEW)
+                        direct_bridges, left_validated, right_validated = count_bridging_paths(
+                            left_sub, right_sub, left_text, right_text, catalog, corpus_index
+                        )
+                        # Normalize path counts (log scale to prevent explosion)
+                        import math
+                        path_score = math.log(1 + direct_bridges + left_validated + right_validated)
+
+                        # 2. Bidirectional overlap (EXISTING - kept for compatibility)
+                        left_overlap_score = 0.0
+                        right_pattern = get_unit_with_fallback(right_text, catalog, corpus_index)
+                        right_sub_pattern = get_unit_with_fallback(right_sub, catalog, corpus_index)
+                        if right_pattern and right_sub_pattern:
+                            right_left_ctx = set(right_pattern.left_words.keys())
+                            right_sub_left_ctx = set(right_sub_pattern.left_words.keys())
+                            if right_left_ctx and right_sub_left_ctx:
+                                intersection = len(right_left_ctx & right_sub_left_ctx)
+                                union = len(right_left_ctx | right_sub_left_ctx)
+                                left_overlap_score = intersection / union if union > 0 else 0.0
+
+                        right_overlap_score = 0.0
+                        left_pattern = get_unit_with_fallback(left_text, catalog, corpus_index)
+                        left_sub_pattern = get_unit_with_fallback(left_sub, catalog, corpus_index)
+                        if left_pattern and left_sub_pattern:
+                            left_right_ctx = set(left_pattern.right_words.keys())
+                            left_sub_right_ctx = set(left_sub_pattern.right_words.keys())
+                            if left_right_ctx and left_sub_right_ctx:
+                                intersection = len(left_right_ctx & left_sub_right_ctx)
+                                union = len(left_right_ctx | left_sub_right_ctx)
+                                right_overlap_score = intersection / union if union > 0 else 0.0
+
+                        overlap_bonus = math.sqrt(left_overlap_score * right_overlap_score) if (left_overlap_score > 0 and right_overlap_score > 0) else 0.0
+
+                        # 3. Outer context consensus (NEW - unified with expansion)
+                        outer_context_score = compute_outer_context_score(
+                            combined_text, outer_left_context, outer_right_context, catalog, corpus_index
+                        )
+
+                        # Combined score: base * overlap * paths * outer_context
+                        # Weight the components: overlap and path_score are multiplicative bonuses
+                        combined_score = left_score * right_score * (1.0 + overlap_bonus) * (1.0 + path_score * 0.1) * (1.0 + outer_context_score)
+
+                        # DEBUG: Track multi-word scoring
+                        if ' ' in combined_text and combinations_in_catalog <= 5:
+                            print(f"      MULTIWORD: '{combined_text}' = {left_sub}+{right_sub}, score={combined_score:.4f} (base={left_score*right_score:.4f}, overlap={overlap_bonus:.4f}, paths={path_score:.4f}, outer={outer_context_score:.4f})")
+
                         combined_candidates.append((combined_text, combined_score))
 
                         # Track origin: which left and right subs were combined
@@ -717,7 +1069,8 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                             'left_source': right_text,  # Left subs come from left context of right element
                             'right_sub': right_sub,
                             'right_score': right_score,
-                            'right_source': left_text  # Right subs come from right context of left element
+                            'right_source': left_text,  # Right subs come from right context of left element
+                            'parent_split': (left_text, right_text)  # The split that created this substitute
                         }
 
                         # NEW: Also filter multi-word combinations on external context
@@ -747,6 +1100,212 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                 print(f"    Combined candidates breakdown: {len(single_word_combos)} single-word, {len(multi_word_combos)} multi-word")
                 if multi_word_combos:
                     print(f"    Sample multi-word combinations: {multi_word_combos[:5]}")
+                    # Show top multi-word with scores
+                    multi_word_with_scores = [(t, s) for t, s in combined_candidates if ' ' in t][:3]
+                    print(f"    Top multi-word with scores: {multi_word_with_scores}")
+                else:
+                    print(f"    WARNING: No multi-word combinations despite {combinations_in_catalog} combinations in catalog")
+
+                # NEW: Multi-level aggregation - combine existing aggregation substitutes
+                print(f"    [MULTI-LEVEL AGGREGATION] Attempting aggregations of aggregations...")
+                multilevel_candidates = []
+                multilevel_stats = {'tried': 0, 'in_catalog': 0, 'scored': 0}
+                multilevel_samples_not_found = []  # Track samples that weren't in catalog
+
+                # Direction 1: Get aggregation substitutes for LEFT, combine with ALL substitutes for RIGHT
+                left_agg_subs = get_all_substitutes_merged(subparse_cache, left_text)
+                left_agg_subs = [(t, s, src, orig) for t, s, src, orig in left_agg_subs if src == 'aggregation']
+                print(f"      Found {len(left_agg_subs)} aggregation substitutes for left element \"{left_text}\"")
+
+                # Get ALL substitutes for right (both aggregation and expansion)
+                right_all_subs = get_all_substitutes_merged(subparse_cache, right_text)
+                print(f"      Found {len(right_all_subs)} total substitutes for right element \"{right_text}\"")
+
+                if left_agg_subs and right_all_subs:
+                    for left_agg_text, left_agg_score, _, left_agg_orig in left_agg_subs[:100]:
+                        for right_sub_text, right_sub_score, _, _ in right_all_subs[:100]:
+                            multilevel_text = f"{left_agg_text} {right_sub_text}"
+                            multilevel_stats['tried'] += 1
+
+                            # Check if direct phrase-level combination exists in catalog or corpus
+                            multilevel_pattern = get_unit_with_fallback(multilevel_text, catalog, corpus_index, debug=True)
+                            if not multilevel_pattern:
+                                # Track a few samples of combinations not found
+                                if len(multilevel_samples_not_found) < 5:
+                                    multilevel_samples_not_found.append(f"{left_agg_text} + {right_sub_text} = {multilevel_text}")
+                                continue
+
+                            multilevel_stats['in_catalog'] += 1
+
+                            # UNIFIED SCORING (same as regular aggregation)
+                            # 1. Context path counting
+                            direct_bridges, left_validated, right_validated = count_bridging_paths(
+                                left_agg_text, right_sub_text, left_text, right_text, catalog, corpus_index
+                            )
+                            import math
+                            path_score = math.log(1 + direct_bridges + left_validated + right_validated)
+
+                            # 2. Bidirectional overlap
+                            left_overlap_score = 0.0
+                            right_pattern = get_unit_with_fallback(right_text, catalog, corpus_index)
+                            right_sub_pattern = get_unit_with_fallback(right_sub_text, catalog, corpus_index)
+                            if right_pattern and right_sub_pattern:
+                                right_left_ctx = set(right_pattern.left_words.keys())
+                                right_sub_left_ctx = set(right_sub_pattern.left_words.keys())
+                                if right_left_ctx and right_sub_left_ctx:
+                                    intersection = len(right_left_ctx & right_sub_left_ctx)
+                                    union = len(right_left_ctx | right_sub_left_ctx)
+                                    left_overlap_score = intersection / union if union > 0 else 0.0
+
+                            right_overlap_score = 0.0
+                            left_pattern = get_unit_with_fallback(left_text, catalog, corpus_index)
+                            left_agg_pattern = get_unit_with_fallback(left_agg_text, catalog, corpus_index)
+                            if left_pattern and left_agg_pattern:
+                                left_right_ctx = set(left_pattern.right_words.keys())
+                                left_agg_right_ctx = set(left_agg_pattern.right_words.keys())
+                                if left_right_ctx and left_agg_right_ctx:
+                                    intersection = len(left_right_ctx & left_agg_right_ctx)
+                                    union = len(left_right_ctx | left_agg_right_ctx)
+                                    right_overlap_score = intersection / union if union > 0 else 0.0
+
+                            overlap_bonus = math.sqrt(left_overlap_score * right_overlap_score) if (left_overlap_score > 0 and right_overlap_score > 0) else 0.0
+
+                            # 3. Outer context consensus
+                            outer_context_score = compute_outer_context_score(
+                                multilevel_text, outer_left_context, outer_right_context, catalog, corpus_index
+                            )
+
+                            # Combined score
+                            multilevel_score = left_agg_score * right_sub_score * (1.0 + overlap_bonus) * (1.0 + path_score * 0.1) * (1.0 + outer_context_score)
+
+                            if multilevel_score > 0:
+                                multilevel_stats['scored'] += 1
+                                multilevel_candidates.append((multilevel_text, multilevel_score))
+
+                                # Track origin for this multi-level aggregation
+                                origins_dict[multilevel_text] = {
+                                    'left_sub': left_agg_text,
+                                    'left_score': left_agg_score,
+                                    'left_source': f"aggregation_of_{left_text}",
+                                    'right_sub': right_sub_text,
+                                    'right_score': right_sub_score,
+                                    'right_source': right_text,
+                                    'parent_split': (left_text, right_text),
+                                    'multilevel': True  # Mark as multi-level aggregation
+                                }
+
+                # Direction 2: Get aggregation substitutes for RIGHT, combine with ALL substitutes for LEFT
+                right_agg_subs = get_all_substitutes_merged(subparse_cache, right_text)
+                right_agg_subs = [(t, s, src, orig) for t, s, src, orig in right_agg_subs if src == 'aggregation']
+                print(f"      Found {len(right_agg_subs)} aggregation substitutes for right element \"{right_text}\"")
+
+                # Get ALL substitutes for left
+                left_all_subs = get_all_substitutes_merged(subparse_cache, left_text)
+                print(f"      Found {len(left_all_subs)} total substitutes for left element \"{left_text}\"")
+
+                if right_agg_subs and left_all_subs:
+                    for left_sub_text, left_sub_score, _, _ in left_all_subs[:100]:
+                        for right_agg_text, right_agg_score, _, right_agg_orig in right_agg_subs[:100]:
+                            multilevel_text = f"{left_sub_text} {right_agg_text}"
+                            multilevel_stats['tried'] += 1
+
+                            # Check if direct phrase-level combination exists in catalog or corpus
+                            multilevel_pattern = get_unit_with_fallback(multilevel_text, catalog, corpus_index, debug=True)
+                            if not multilevel_pattern:
+                                # Track a few samples of combinations not found
+                                if len(multilevel_samples_not_found) < 5:
+                                    multilevel_samples_not_found.append(f"{left_sub_text} + {right_agg_text} = {multilevel_text}")
+                                continue
+
+                            multilevel_stats['in_catalog'] += 1
+
+                            # UNIFIED SCORING (same as regular aggregation)
+                            # 1. Context path counting
+                            direct_bridges, left_validated, right_validated = count_bridging_paths(
+                                left_sub_text, right_agg_text, left_text, right_text, catalog, corpus_index
+                            )
+                            import math
+                            path_score = math.log(1 + direct_bridges + left_validated + right_validated)
+
+                            # 2. Bidirectional overlap
+                            left_overlap_score = 0.0
+                            right_pattern = get_unit_with_fallback(right_text, catalog, corpus_index)
+                            right_agg_pattern = get_unit_with_fallback(right_agg_text, catalog, corpus_index)
+                            if right_pattern and right_agg_pattern:
+                                right_left_ctx = set(right_pattern.left_words.keys())
+                                right_agg_left_ctx = set(right_agg_pattern.left_words.keys())
+                                if right_left_ctx and right_agg_left_ctx:
+                                    intersection = len(right_left_ctx & right_agg_left_ctx)
+                                    union = len(right_left_ctx | right_agg_left_ctx)
+                                    left_overlap_score = intersection / union if union > 0 else 0.0
+
+                            right_overlap_score = 0.0
+                            left_pattern = get_unit_with_fallback(left_text, catalog, corpus_index)
+                            left_sub_pattern = get_unit_with_fallback(left_sub_text, catalog, corpus_index)
+                            if left_pattern and left_sub_pattern:
+                                left_right_ctx = set(left_pattern.right_words.keys())
+                                left_sub_right_ctx = set(left_sub_pattern.right_words.keys())
+                                if left_right_ctx and left_sub_right_ctx:
+                                    intersection = len(left_right_ctx & left_sub_right_ctx)
+                                    union = len(left_right_ctx | left_sub_right_ctx)
+                                    right_overlap_score = intersection / union if union > 0 else 0.0
+
+                            overlap_bonus = math.sqrt(left_overlap_score * right_overlap_score) if (left_overlap_score > 0 and right_overlap_score > 0) else 0.0
+
+                            # 3. Outer context consensus
+                            outer_context_score = compute_outer_context_score(
+                                multilevel_text, outer_left_context, outer_right_context, catalog, corpus_index
+                            )
+
+                            # Combined score
+                            multilevel_score = left_sub_score * right_agg_score * (1.0 + overlap_bonus) * (1.0 + path_score * 0.1) * (1.0 + outer_context_score)
+
+                            if multilevel_score > 0:
+                                multilevel_stats['scored'] += 1
+                                multilevel_candidates.append((multilevel_text, multilevel_score))
+
+                                # Track origin
+                                origins_dict[multilevel_text] = {
+                                    'left_sub': left_sub_text,
+                                    'left_score': left_sub_score,
+                                    'left_source': left_text,
+                                    'right_sub': right_agg_text,
+                                    'right_score': right_agg_score,
+                                    'right_source': f"aggregation_of_{right_text}",
+                                    'parent_split': (left_text, right_text),
+                                    'multilevel': True
+                                }
+
+                # Add multi-level aggregations to combined_candidates
+                # Always print stats, even if no candidates found
+                print(f"      Multi-level stats: {multilevel_stats['tried']} tried, {multilevel_stats['in_catalog']} in catalog, {multilevel_stats['scored']} scored")
+
+                if multilevel_samples_not_found:
+                    print(f"      Sample combinations NOT in corpus:")
+                    for sample in multilevel_samples_not_found[:5]:
+                        print(f"        ✗ {sample}")
+
+                if multilevel_candidates:
+                    # Remove duplicates and sort by score
+                    multilevel_unique = {}
+                    for text, score in multilevel_candidates:
+                        if text not in multilevel_unique or score > multilevel_unique[text]:
+                            multilevel_unique[text] = score
+
+                    multilevel_candidates = [(text, score) for text, score in multilevel_unique.items()]
+                    multilevel_candidates = sorted(multilevel_candidates, key=lambda x: -x[1])  # No arbitrary limit - let them compete
+
+                    print(f"      Found {len(multilevel_candidates)} unique multi-level aggregations")
+                    if multilevel_candidates:
+                        print(f"      Sample multi-level aggregations:")
+                        for i, (text, score) in enumerate(multilevel_candidates[:5], 1):
+                            print(f"        {i}. \"{text}\" (score={score:.3f})")
+
+                    # Merge into combined_candidates
+                    combined_candidates.extend(multilevel_candidates)
+                    combined_candidates = sorted(combined_candidates, key=lambda x: -x[1])[:max_class_members * 4]
+                else:
+                    print(f"      No combinations passed catalog/corpus check (none of the {multilevel_stats['tried']} combinations exist in corpus)")
 
                 # Merge current substitutes with externally filtered multi-word combinations
                 # Convert to uniform format first: (text, score, context_info)
@@ -956,7 +1515,7 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
     print(f"\nCollected {len(html_buffer)} parses for HTML generation")
     return tree, subparse_cache, html_buffer
 
-def export_html_tree(phrase: str, tree, subparse_cache: dict, catalog: UnitCatalog, parse_buffer: list, output_file: str = "parse_tree.html"):
+def export_html_tree(phrase: str, tree, subparse_cache: dict, catalog: UnitCatalog, parse_buffer: list, corpus_index: CorpusIndex = None, output_file: str = "parse_tree.html"):
     """
     Export parse tree as interactive HTML file.
 
@@ -965,6 +1524,8 @@ def export_html_tree(phrase: str, tree, subparse_cache: dict, catalog: UnitCatal
         tree: Parse tree
         subparse_cache: Cache with all parses
         catalog: Unit catalog
+        parse_buffer: Parse info buffer
+        corpus_index: Optional corpus index for looking up phrases not in catalog
         output_file: Output HTML filename
     """
 
@@ -982,7 +1543,7 @@ def export_html_tree(phrase: str, tree, subparse_cache: dict, catalog: UnitCatal
         .span-text:hover {{ text-decoration: underline; background: #e3f2fd; }}
         .energy {{ color: #FF5722; font-size: 0.9em; }}
         .split-info {{ color: #666; font-size: 0.85em; font-style: italic; }}
-        .substitutes {{ display: none; margin-top: 10px; padding: 10px; background: #e8f5e9; border-radius: 4px; }}
+        .substitutes {{ display: none; margin-top: 10px; padding: 10px; background: #e8f5e9; border-radius: 4px; border: 2px solid #4CAF50; }}
         .substitutes.visible {{ display: block; }}
         .sub-item {{ margin: 5px 0; padding: 5px; background: white; border-radius: 3px; }}
         .score {{ color: #666; font-size: 0.9em; }}
@@ -996,6 +1557,10 @@ def export_html_tree(phrase: str, tree, subparse_cache: dict, catalog: UnitCatal
         .context-label {{ font-weight: bold; font-size: 0.8em; color: #666; }}
         .origin-tooltip {{ display: none; position: absolute; bottom: 100%; left: 0; background: #333; color: white; padding: 8px; border-radius: 4px; white-space: nowrap; z-index: 1000; font-size: 0.9em; }}
         .substitute-text:hover .origin-tooltip {{ display: block; }}
+        .length-breakdown {{ font-size: 1.1em; color: #1976D2; padding: 5px 0; }}
+        .length-group {{ margin: 10px 0; }}
+        .substitutes-by-length {{ margin-top: 5px; }}
+        .substitutes-by-length.visible {{ display: block; }}
         .indent-1 {{ margin-left: 20px; }}
         .indent-2 {{ margin-left: 40px; }}
         .indent-3 {{ margin-left: 60px; }}
@@ -1005,7 +1570,21 @@ def export_html_tree(phrase: str, tree, subparse_cache: dict, catalog: UnitCatal
     <script>
         function toggleNode(id) {{
             const el = document.getElementById(id);
-            el.classList.toggle('visible');
+            if (!el) {{
+                console.error('toggleNode: Element not found with id:', id);
+                alert('Element not found: ' + id);
+                return;
+            }}
+            // Check current display and toggle (works for both inline styles and CSS classes)
+            const currentDisplay = window.getComputedStyle(el).display;
+            console.log('toggleNode:', id, 'current display:', currentDisplay);
+            if (currentDisplay === 'none') {{
+                el.style.display = 'block';
+                el.style.backgroundColor = '#fff9c4';  // Yellow highlight when opened
+            }} else {{
+                el.style.display = 'none';
+                el.style.backgroundColor = '';
+            }}
         }}
     </script>
 </head>
@@ -1047,7 +1626,7 @@ def export_html_tree(phrase: str, tree, subparse_cache: dict, catalog: UnitCatal
             html_parts.append(f'<span class="sub-expansion">{exp_count} expansion</span></strong>')
 
             for sub_text, score, source_type, sub_origins in merged_subs[:50]:  # Limit to 50 for display
-                sub_pattern = catalog.get_unit(sub_text)
+                sub_pattern = get_unit_with_fallback(sub_text, catalog, corpus_index)
                 if sub_pattern:
                     left_ctx = [w for w, c in sub_pattern.left_words.most_common(5)]
                     right_ctx = [w for w, c in sub_pattern.right_words.most_common(5)]
@@ -1058,7 +1637,11 @@ def export_html_tree(phrase: str, tree, subparse_cache: dict, catalog: UnitCatal
                     if sub_origins:
                         left_path = f'"{sub_origins["left_source"]}" → "{sub_origins["left_sub"]}" ({sub_origins["left_score"]:.2f})'
                         right_path = f'"{sub_origins["right_source"]}" → "{sub_origins["right_sub"]}" ({sub_origins["right_score"]:.2f})'
-                        origin_html = f'<span class="origin-tooltip">Aggregation: {left_path} + {right_path}</span>'
+                        # Check if this used word-level substitutions
+                        if sub_origins.get('subparse_combo'):
+                            origin_html = f'<span class="origin-tooltip">Word-level combination from {left_path} + {right_path} → "{sub_text}"</span>'
+                        else:
+                            origin_html = f'<span class="origin-tooltip">Aggregation: {left_path} + {right_path}</span>'
                     elif source_type == 'expansion':
                         origin_html = f'<span class="origin-tooltip">Expansion: from parent context</span>'
 
@@ -1165,8 +1748,8 @@ def export_html_tree(phrase: str, tree, subparse_cache: dict, catalog: UnitCatal
 
             # Show ALL merged substitutes (no limit) since they're hidden until clicked
             for sub_text, score, source_type, sub_origins in merged_subs:
-                # Get contexts for this substitute from catalog
-                sub_pattern = catalog.get_unit(sub_text)
+                # Get contexts for this substitute from catalog or corpus index
+                sub_pattern = get_unit_with_fallback(sub_text, catalog, corpus_index)
                 if sub_pattern:
                     # Get top contexts (most frequent)
                     left_ctx = [w for w, c in sub_pattern.left_words.most_common(10)]
@@ -1180,7 +1763,11 @@ def export_html_tree(phrase: str, tree, subparse_cache: dict, catalog: UnitCatal
                         # Aggregation: show combination origin
                         left_path = f'"{sub_origins["left_source"]}" → "{sub_origins["left_sub"]}" ({sub_origins["left_score"]:.2f})'
                         right_path = f'"{sub_origins["right_source"]}" → "{sub_origins["right_sub"]}" ({sub_origins["right_score"]:.2f})'
-                        origin_html = f'<span class="origin-tooltip">Aggregation: {left_path} + {right_path}</span>'
+                        # Check if this used word-level substitutions
+                        if sub_origins.get('subparse_combo'):
+                            origin_html = f'<span class="origin-tooltip">Word-level combination from {left_path} + {right_path} → "{sub_text}"</span>'
+                        else:
+                            origin_html = f'<span class="origin-tooltip">Aggregation: {left_path} + {right_path}</span>'
                     elif source_type == 'expansion':
                         # Expansion: show it came from parent context
                         origin_html = f'<span class="origin-tooltip">Expansion: from parent context mutual expansion</span>'
@@ -1298,10 +1885,14 @@ def export_html_tree(phrase: str, tree, subparse_cache: dict, catalog: UnitCatal
             context_word: The sibling word that provides context
         """
         indent_class = f"indent-{min(depth, 5)}"
-        span_id = make_span_id(word_text) + f'-leaf-{depth}'
+        # Make ID unique by including context_word hash to avoid duplicate IDs across different parses
+        context_hash = id(context_word) if context_word else 0
+        span_id = make_span_id(word_text) + f'-leaf-{depth}-{context_hash}'
 
         result = f'<div class="{indent_class}">'
         result += f'<span class="span-text" onclick="toggleNode(\'{span_id}\')" style="cursor: pointer;">{word_text}</span>'
+        # DEBUG: Show ID being used
+        result += f' <span style="color: #999; font-size: 0.7em;">[id: {span_id}]</span>'
 
         # Add substitutes section for single word
         result += f'<div class="substitutes" id="{span_id}">'
@@ -1314,7 +1905,7 @@ def export_html_tree(phrase: str, tree, subparse_cache: dict, catalog: UnitCatal
             result += f'<span class="sub-expansion">{exp_count} expansion</span></strong>'
 
             for sub_text, score, source_type, sub_origins in merged_subs:  # Show all
-                sub_pattern = catalog.get_unit(sub_text)
+                sub_pattern = get_unit_with_fallback(sub_text, catalog, corpus_index)
                 if sub_pattern:
                     left_ctx = [w for w, c in sub_pattern.left_words.most_common(5)]
                     right_ctx = [w for w, c in sub_pattern.right_words.most_common(5)]
@@ -1363,13 +1954,16 @@ def export_html_tree(phrase: str, tree, subparse_cache: dict, catalog: UnitCatal
     def render_simple_tree(span_text, split, depth=0):
         indent_class = f"indent-{min(depth, 5)}"
 
-        # Get basic info if in cache
+        # Get substitutes and energy for THIS specific split
         cache_key = (span_text, split)
         if cache_key in subparse_cache:
             energy = subparse_cache[cache_key][3]
-            num_subs = len(subparse_cache[cache_key][0])
-            info = f'E={energy:.2f}, {num_subs} subs'
+            # Get substitutes directly from this cache entry (no merging, no filtering needed)
+            merged_subs = get_substitutes_for_split(subparse_cache, span_text, split)
+            info = f'E={energy:.2f}, {len(merged_subs)} subs'
         else:
+            energy = None
+            merged_subs = []
             info = ''
 
         # Create unique ID for this node's substitutes
@@ -1379,52 +1973,88 @@ def export_html_tree(phrase: str, tree, subparse_cache: dict, catalog: UnitCatal
         result += f'<span class="span-text" onclick="toggleNode(\'{span_id}\')" style="cursor: pointer;">{span_text}</span>'
         if info:
             result += f' <span class="energy">{info}</span>'
+        # DEBUG: Show ID being used
+        result += f' <span style="color: #999; font-size: 0.7em;">[id: {span_id}]</span>'
 
         # Add substitutes section (hidden by default)
         result += f'<div class="substitutes" id="{span_id}">'
-        merged_subs = get_all_substitutes_merged(subparse_cache, span_text)
+
         if merged_subs:
-            agg_count = sum(1 for _, _, src, _ in merged_subs if src == 'aggregation')
-            exp_count = sum(1 for _, _, src, _ in merged_subs if src == 'expansion')
-            result += f'<strong>Substitutes ({len(merged_subs)}): '
-            result += f'<span class="sub-aggregation">{agg_count} aggregation</span>, '
-            result += f'<span class="sub-expansion">{exp_count} expansion</span></strong>'
+            # Group substitutes by word count
+            by_length = {}
+            for sub_text, score, source_type, sub_origins in merged_subs:
+                word_count = sub_text.count(' ') + 1
+                if word_count not in by_length:
+                    by_length[word_count] = []
+                by_length[word_count].append((sub_text, score, source_type, sub_origins))
 
-            for sub_text, score, source_type, sub_origins in merged_subs:  # Show all
-                sub_pattern = catalog.get_unit(sub_text)
-                if sub_pattern:
-                    left_ctx = [w for w, c in sub_pattern.left_words.most_common(5)]
-                    right_ctx = [w for w, c in sub_pattern.right_words.most_common(5)]
-                    left_ctx_str = ', '.join(left_ctx) if left_ctx else '(none)'
-                    right_ctx_str = ', '.join(right_ctx) if right_ctx else '(none)'
+            # Sort each group by score
+            for length in by_length:
+                by_length[length].sort(key=lambda x: -x[1])
 
-                    # Build origin tooltip
-                    origin_html = ''
-                    if sub_origins:
-                        if 'left_source' in sub_origins:
-                            # Detailed aggregation: show combination origin
-                            left_path = f'"{sub_origins["left_source"]}" → "{sub_origins["left_sub"]}" ({sub_origins["left_score"]:.2f})'
-                            right_path = f'"{sub_origins["right_source"]}" → "{sub_origins["right_sub"]}" ({sub_origins["right_score"]:.2f})'
-                            origin_html = f'<span class="origin-tooltip">Aggregation: {left_path} + {right_path}</span>'
-                        elif sub_origins.get('split_type') == 'expansion':
-                            # Expansion: show parent split
-                            parent = sub_origins.get('parent_split', 'unknown')
-                            origin_html = f'<span class="origin-tooltip">Expansion: from parent context {parent}</span>'
-                        elif sub_origins.get('split_type') == 'aggregation':
-                            # Simple aggregation: show the split
-                            parent = sub_origins.get('parent_split', 'unknown')
-                            origin_html = f'<span class="origin-tooltip">Aggregation: from constituent combination {parent}</span>'
-                    elif source_type == 'expansion':
-                        # Fallback expansion tooltip
-                        origin_html = f'<span class="origin-tooltip">Expansion: from parent context mutual expansion</span>'
+            # Build header with length breakdown
+            result += f'<strong>Substitutes ({len(merged_subs)} total): '
+            result += f'<span class="sub-aggregation">aggregation from this split</span></strong><br>'
+            result += '<span class="length-breakdown">'
+            for length in sorted(by_length.keys()):
+                count = len(by_length[length])
+                result += f'{length}-word: <strong>{count}</strong> &nbsp; '
+            result += '</span><br><br>'
 
-                    source_class = f'sub-{source_type}'
-                    result += f'<div class="sub-item">'
-                    result += f'<span class="context-label">L:</span> <span class="left-context">{left_ctx_str}</span> | '
-                    result += f'<span class="substitute-text {source_class}">{sub_text}{origin_html}</span> '
-                    result += f'<span class="score">(score: {score:.4f})</span> | '
-                    result += f'<span class="context-label">R:</span> <span class="right-context">{right_ctx_str}</span>'
-                    result += f'</div>'
+            # Display substitutes grouped by length
+            for length in sorted(by_length.keys(), reverse=True):  # Show longest first
+                subs_at_length = by_length[length]
+                length_id = f'{span_id}-len{length}'
+
+                # Collapsible section for this length
+                result += f'<div class="length-group">'
+                result += f'<strong onclick="toggleNode(\'{length_id}\')" style="cursor: pointer; color: #2196F3;">'
+                result += f'▸ {length}-word substitutes ({len(subs_at_length)})</strong>'
+                result += f'<div class="substitutes-by-length" id="{length_id}" style="display: none; margin-left: 20px;">'
+
+                for sub_text, score, source_type, sub_origins in subs_at_length:
+                    sub_pattern = get_unit_with_fallback(sub_text, catalog, corpus_index)
+                    if sub_pattern:
+                        left_ctx = [w for w, c in sub_pattern.left_words.most_common(5)]
+                        right_ctx = [w for w, c in sub_pattern.right_words.most_common(5)]
+                        left_ctx_str = ', '.join(left_ctx) if left_ctx else '(none)'
+                        right_ctx_str = ', '.join(right_ctx) if right_ctx else '(none)'
+
+                        # Build origin tooltip
+                        origin_html = ''
+                        if sub_origins:
+                            if 'left_source' in sub_origins:
+                                # Detailed aggregation: show combination origin
+                                left_path = f'"{sub_origins["left_source"]}" → "{sub_origins["left_sub"]}" ({sub_origins["left_score"]:.2f})'
+                                right_path = f'"{sub_origins["right_source"]}" → "{sub_origins["right_sub"]}" ({sub_origins["right_score"]:.2f})'
+                                # Check if this used word-level substitutions
+                                if sub_origins.get('subparse_combo'):
+                                    origin_html = f'<span class="origin-tooltip">Word-level combination from {left_path} + {right_path} → "{sub_text}"</span>'
+                                else:
+                                    origin_html = f'<span class="origin-tooltip">Aggregation: {left_path} + {right_path}</span>'
+                            elif sub_origins.get('split_type') == 'expansion':
+                                # Expansion: show parent split
+                                parent = sub_origins.get('parent_split', 'unknown')
+                                origin_html = f'<span class="origin-tooltip">Expansion: from parent context {parent}</span>'
+                            elif sub_origins.get('split_type') == 'aggregation':
+                                # Simple aggregation: show the split
+                                parent = sub_origins.get('parent_split', 'unknown')
+                                origin_html = f'<span class="origin-tooltip">Aggregation: from constituent combination {parent}</span>'
+                        elif source_type == 'expansion':
+                            # Fallback expansion tooltip
+                            origin_html = f'<span class="origin-tooltip">Expansion: from parent context mutual expansion</span>'
+
+                        source_class = f'sub-{source_type}'
+                        result += f'<div class="sub-item">'
+                        result += f'<span class="context-label">L:</span> <span class="left-context">{left_ctx_str}</span> | '
+                        result += f'<span class="substitute-text {source_class}">{sub_text}{origin_html}</span> '
+                        result += f'<span class="score">(score: {score:.4f})</span> | '
+                        result += f'<span class="context-label">R:</span> <span class="right-context">{right_ctx_str}</span>'
+                        result += f'</div>'
+
+                # Close this length group
+                result += f'</div></div>'  # Close substitutes-by-length and length-group
+
         else:
             result += '<em>No substitutes</em>'
         result += '</div>'
@@ -1529,19 +2159,28 @@ def main():
     catalog = UnitCatalog()
     catalog.load('unit_catalog.pkl')
     catalog.build_gpu_index(min_freq=1)  # Index all units, maximize information
+
+    # Initialize corpus index for runtime lookup of longer phrases
+    print("\nInitializing corpus index...")
+    corpus_index = CorpusIndex('dialog_corpus.txt', max_ngram=7, context_window=1, cache_size=10000)
+
     parser = IncrementalBidirParser(catalog, debug=False)
 
     # Analyze
     if args.compare:
         for scoring in ['cosine', 'ic_cosine', 'pmi']:
-            tree, cache, parse_buffer = analyze(args.phrase, catalog, parser, scoring=scoring)
+            tree, cache, parse_buffer = analyze(args.phrase, catalog, parser, corpus_index, scoring=scoring)
             print("\n" + "=" * 70 + "\n")
         # Export HTML for last scoring method
-        export_html_tree(args.phrase, tree, cache, catalog, parse_buffer, f"parse_tree_{args.phrase.replace(' ', '_')}.html")
+        export_html_tree(args.phrase, tree, cache, catalog, parse_buffer, corpus_index, f"parse_tree_{args.phrase.replace(' ', '_')}.html")
     else:
-        tree, cache, parse_buffer = analyze(args.phrase, catalog, parser, scoring=args.scoring)
+        tree, cache, parse_buffer = analyze(args.phrase, catalog, parser, corpus_index, scoring=args.scoring)
         # Export HTML
-        export_html_tree(args.phrase, tree, cache, catalog, parse_buffer, f"parse_tree_{args.phrase.replace(' ', '_')}.html")
+        export_html_tree(args.phrase, tree, cache, catalog, parse_buffer, corpus_index, f"parse_tree_{args.phrase.replace(' ', '_')}.html")
+
+    # Show corpus index usage statistics
+    if corpus_index:
+        corpus_index.get_usage_stats(top_n=20)
 
 if __name__ == "__main__":
     main()
