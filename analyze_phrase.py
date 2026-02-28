@@ -352,7 +352,8 @@ def run_mutual_expansion(left_text: str, right_text: str,
                          catalog: UnitCatalog,
                          max_class_members: int = 10,
                          scoring: str = 'cosine',
-                         verbose: bool = False) -> tuple:
+                         verbose: bool = False,
+                         corpus_index: 'CorpusIndex' = None) -> tuple:
     """
     Run mutual expansion between left and right elements.
 
@@ -372,11 +373,14 @@ def run_mutual_expansion(left_text: str, right_text: str,
         print(f"      [STEP 1] Get substitutes for LEFT: \"{left_text}\"")
         print(f"        Candidates: {len(right_eff_left)} words from RIGHT's left_words")
 
+    left_scoring = 'containment'
+    right_scoring = 'containment'
+
     all_left_subs = catalog.gpu_contextual_candidates(
         target=left_text,
         candidates=right_eff_left,
         max_results=max_class_members * 3,
-        scoring=scoring,
+        scoring=left_scoring,
         trace=False
     )
     all_left_subs = [(t, s) for t, s in all_left_subs if t != left_text]
@@ -386,7 +390,7 @@ def run_mutual_expansion(left_text: str, right_text: str,
     context_word_counts = {}
     n_subs_with_pattern = 0
     for sub_text, _ in left_subs:
-        sub_pattern = catalog.get_unit(sub_text)
+        sub_pattern = get_unit_with_fallback(sub_text, catalog, corpus_index)
         if sub_pattern:
             n_subs_with_pattern += 1
             for word in sub_pattern.right_words.keys():
@@ -404,7 +408,7 @@ def run_mutual_expansion(left_text: str, right_text: str,
         target=right_text,
         candidates=left_eff_right,
         max_results=max_class_members * 3,
-        scoring=scoring,
+        scoring=right_scoring,
         trace=False
     )
     all_right_subs = [(t, s) for t, s in all_right_subs if t != right_text]
@@ -414,7 +418,7 @@ def run_mutual_expansion(left_text: str, right_text: str,
     context_word_counts_r = {}
     n_rsubs_with_pattern = 0
     for sub_text, _ in right_subs:
-        sub_pattern = catalog.get_unit(sub_text)
+        sub_pattern = get_unit_with_fallback(sub_text, catalog, corpus_index)
         if sub_pattern:
             n_rsubs_with_pattern += 1
             for word in sub_pattern.left_words.keys():
@@ -428,7 +432,7 @@ def run_mutual_expansion(left_text: str, right_text: str,
         target=right_text,
         candidates=list(right_contexts_of_left_element),
         max_results=max_class_members + 1,
-        scoring=scoring,
+        scoring=right_scoring,
         trace=False
     )
     right_candidates = [(t, s) for t, s in right_candidates if t != right_text][:max_class_members]
@@ -438,7 +442,7 @@ def run_mutual_expansion(left_text: str, right_text: str,
         target=left_text,
         candidates=list(left_contexts_of_right_element),
         max_results=max_class_members + 1,
-        scoring=scoring,
+        scoring=left_scoring,
         trace=False
     )
     left_candidates = [(t, s) for t, s in left_candidates if t != left_text][:max_class_members]
@@ -446,7 +450,7 @@ def run_mutual_expansion(left_text: str, right_text: str,
     return (left_subs, right_subs, left_candidates, right_candidates)
 
 
-def aggregate_contexts_from_constituents(text: str, subparse_cache: dict, catalog: UnitCatalog, verbose: bool = False) -> tuple:
+def aggregate_contexts_from_constituents(text: str, subparse_cache: dict, catalog: UnitCatalog, verbose: bool = False, corpus_index: 'CorpusIndex' = None) -> tuple:
     """
     For multi-word units, aggregate contexts from COMBINATIONS of substitutes across binary splits.
 
@@ -463,9 +467,9 @@ def aggregate_contexts_from_constituents(text: str, subparse_cache: dict, catalo
     tokens = text.split()
     if len(tokens) == 1:
         # Single word - use its own pattern
-        pattern = catalog.get_unit(text)
-        eff_left = [w for w, c in pattern.left_words.most_common(50) if c >= 3] if pattern else []
-        eff_right = [w for w, c in pattern.right_words.most_common(50) if c >= 3] if pattern else []
+        pattern = get_unit_with_fallback(text, catalog, corpus_index)
+        eff_left = list(pattern.left_words.keys()) if pattern else []
+        eff_right = list(pattern.right_words.keys()) if pattern else []
         return (eff_left, eff_right)
 
     # Multi-word: aggregate from combinations across all binary parses
@@ -473,12 +477,12 @@ def aggregate_contexts_from_constituents(text: str, subparse_cache: dict, catalo
     all_right = set()
 
     # Include the unit's own context if it exists
-    pattern = catalog.get_unit(text)
+    pattern = get_unit_with_fallback(text, catalog, corpus_index)
     own_left_count = 0
     own_right_count = 0
     if pattern:
-        own_left = [w for w, c in pattern.left_words.most_common(50) if c >= 3]
-        own_right = [w for w, c in pattern.right_words.most_common(50) if c >= 3]
+        own_left = list(pattern.left_words.keys())
+        own_right = list(pattern.right_words.keys())
         all_left.update(own_left)
         all_right.update(own_right)
         own_left_count = len(own_left)
@@ -498,15 +502,15 @@ def aggregate_contexts_from_constituents(text: str, subparse_cache: dict, catalo
         if not left_subs:
             if len(left_text.split()) == 1:
                 # Single word: use identity substitute
-                left_pattern = catalog.get_unit(left_text)
+                left_pattern = get_unit_with_fallback(left_text, catalog, corpus_index)
                 if left_pattern:
                     left_subs = [(left_text, 1.0)]
-                    left_eff_left = [w for w, c in left_pattern.left_words.most_common(50) if c >= 3]
-                    left_eff_right = [w for w, c in left_pattern.right_words.most_common(50) if c >= 3]
+                    left_eff_left = list(left_pattern.left_words.keys())
+                    left_eff_right = list(left_pattern.right_words.keys())
             else:
                 # Multi-word: recursively aggregate contexts and run mutual expansion
                 left_eff_left, left_eff_right = aggregate_contexts_from_constituents(
-                    left_text, subparse_cache, catalog, verbose=False
+                    left_text, subparse_cache, catalog, verbose=False, corpus_index=corpus_index
                 )
                 # Generate substitutes through mutual expansion of its constituents
                 # For now, use identity as placeholder - will be generated in next iteration
@@ -515,15 +519,15 @@ def aggregate_contexts_from_constituents(text: str, subparse_cache: dict, catalo
         if not right_subs:
             if len(right_text.split()) == 1:
                 # Single word: use identity substitute
-                right_pattern = catalog.get_unit(right_text)
+                right_pattern = get_unit_with_fallback(right_text, catalog, corpus_index)
                 if right_pattern:
                     right_subs = [(right_text, 1.0)]
-                    right_eff_left = [w for w, c in right_pattern.left_words.most_common(50) if c >= 3]
-                    right_eff_right = [w for w, c in right_pattern.right_words.most_common(50) if c >= 3]
+                    right_eff_left = list(right_pattern.left_words.keys())
+                    right_eff_right = list(right_pattern.right_words.keys())
             else:
                 # Multi-word: recursively aggregate contexts and run mutual expansion
                 right_eff_left, right_eff_right = aggregate_contexts_from_constituents(
-                    right_text, subparse_cache, catalog, verbose=False
+                    right_text, subparse_cache, catalog, verbose=False, corpus_index=corpus_index
                 )
                 # Generate substitutes through mutual expansion of its constituents
                 # For now, use identity as placeholder - will be generated in next iteration
@@ -540,7 +544,8 @@ def aggregate_contexts_from_constituents(text: str, subparse_cache: dict, catalo
                 catalog,
                 max_class_members=10,
                 scoring='cosine',
-                verbose=verbose
+                verbose=verbose,
+                corpus_index=corpus_index
             )
             # Use generated substitutes if we got any, otherwise keep identity
             if left_subs_exp:
@@ -562,8 +567,8 @@ def aggregate_contexts_from_constituents(text: str, subparse_cache: dict, catalo
                 # Form the joined phrase from this combination
                 combined_text = f"{left_sub_text} {right_sub_text}"
 
-                # Look up this complete alternative phrasing in the catalog
-                combined_pattern = catalog.get_unit(combined_text)
+                # Look up this complete alternative phrasing in catalog/corpus
+                combined_pattern = get_unit_with_fallback(combined_text, catalog, corpus_index)
                 if not combined_pattern:
                     continue
 
@@ -616,7 +621,7 @@ def aggregate_contexts_from_constituents(text: str, subparse_cache: dict, catalo
 
     return (list(all_left), list(all_right))
 
-def compute_energy(num_substitutes: int, consensus_score: float) -> float:
+def compute_energy(num_substitutes: int, consensus_score: float, full_length_count: int = None) -> float:
     """
     Compute energy from substitution class properties.
 
@@ -627,6 +632,7 @@ def compute_energy(num_substitutes: int, consensus_score: float) -> float:
     Args:
         num_substitutes: Number of substitutes found
         consensus_score: Average context overlap consensus (0-1)
+        full_length_count: Number of substitutes matching the span's word count (0 if not applicable)
 
     Returns:
         Energy value (lower is better)
@@ -634,14 +640,17 @@ def compute_energy(num_substitutes: int, consensus_score: float) -> float:
     # Avoid log(0)
     num_subs = max(1, num_substitutes)
     consensus = max(0.01, consensus_score)
+    full_length = max(1, full_length_count) if full_length_count is not None else 1
 
-    # Energy combines both factors (equal weighting)
-    # Negative because more subs/consensus = lower energy
-    energy = -math.log(num_subs) - math.log(consensus)
+    # Energy: lower is better
+    # - More total subs = lower energy (good)
+    # - High consensus = higher energy (bad) — diverse contexts = good compositional unit
+    # - More full-length subs = lower energy (good) — productive parse structure
+    energy = -math.log(num_subs) + math.log(consensus) - math.log(full_length)
 
     return energy
 
-def compute_consensus_score(substitutes: list, catalog: UnitCatalog, target_text: str) -> float:
+def compute_consensus_score(substitutes: list, catalog: UnitCatalog, target_text: str, corpus_index: 'CorpusIndex' = None) -> float:
     """
     Compute consensus score: how much substitutes agree on their contexts.
 
@@ -651,7 +660,7 @@ def compute_consensus_score(substitutes: list, catalog: UnitCatalog, target_text
     if not substitutes:
         return 0.01
 
-    target_pattern = catalog.get_unit(target_text)
+    target_pattern = get_unit_with_fallback(target_text, catalog, corpus_index)
     if not target_pattern:
         return 0.01
 
@@ -666,7 +675,7 @@ def compute_consensus_score(substitutes: list, catalog: UnitCatalog, target_text
     # For each context word, count how many substitutes share it
     word_counts = {}
     for sub_text, _ in substitutes:
-        sub_pattern = catalog.get_unit(sub_text)
+        sub_pattern = get_unit_with_fallback(sub_text, catalog, corpus_index)
         if sub_pattern:
             sub_contexts = set(sub_pattern.left_words.keys()) | set(sub_pattern.right_words.keys())
             for word in sub_contexts & all_target_context:
@@ -701,8 +710,8 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
         print(f"\nAdding word '{word}' at position {k}")
 
         # Parse ALL subspans ending at position k (from shortest to longest)
-        # This ensures right-side constituents like "found my" are available for splits
-        for start_pos in range(k):  # 0 to k-1
+        # CKY order: process shorter spans first so constituents are available for longer spans
+        for start_pos in range(k - 1, -1, -1):  # k-1 down to 0 (shortest spans first)
             span_tokens = tokens[start_pos:k]
             span_text = " ".join(span_tokens)
             span_length = len(span_tokens)
@@ -721,11 +730,9 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                 energy = float('inf')
                 subparse_cache[(span_text, None)] = (subs, eff_left, eff_right, energy)
 
-                # Add to GPU index for dynamic scoring
+                # Add to GPU index for dynamic scoring (bootstrap: uniform weights)
                 from collections import Counter
-                left_context_dict = Counter({w: 1 for w in eff_left})
-                right_context_dict = Counter({w: 1 for w in eff_right})
-                catalog.add_unit_to_gpu_index(span_text, left_context_dict, right_context_dict)
+                catalog.add_unit_to_gpu_index(span_text, Counter({w: 1 for w in eff_left}), Counter({w: 1 for w in eff_right}))
 
                 print(f"    Bootstrap subs for \"{span_text}\": {subs}")
                 continue
@@ -752,29 +759,35 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                 right_subs = [(text, score) for text, score, _, _ in right_subs_all]
 
                 # Build context sets from ALL substitutes
-                left_eff_left = set(left_eff_left_base) if left_eff_left_base else set()
-                left_eff_right = set(left_eff_right_base) if left_eff_right_base else set()
-                right_eff_left = set(right_eff_left_base) if right_eff_left_base else set()
-                right_eff_right = set(right_eff_right_base) if right_eff_right_base else set()
+                # Use Counters to track how many substitutes contribute each context word
+                from collections import Counter
+                left_eff_left_counts = Counter(left_eff_left_base) if left_eff_left_base else Counter()
+                left_eff_right_counts = Counter(left_eff_right_base) if left_eff_right_base else Counter()
+                right_eff_left_counts = Counter(right_eff_left_base) if right_eff_left_base else Counter()
+                right_eff_right_counts = Counter(right_eff_right_base) if right_eff_right_base else Counter()
 
                 # Add contexts from all substitutes (including aggregation)
                 for sub_text, _, _, _ in left_subs_all:
-                    sub_pattern = catalog.get_unit(sub_text)
+                    sub_pattern = get_unit_with_fallback(sub_text, catalog, corpus_index)
                     if sub_pattern:
-                        left_eff_left.update(sub_pattern.left_words.keys())
-                        left_eff_right.update(sub_pattern.right_words.keys())
+                        for w in sub_pattern.left_words.keys():
+                            left_eff_left_counts[w] += 1
+                        for w in sub_pattern.right_words.keys():
+                            left_eff_right_counts[w] += 1
 
                 for sub_text, _, _, _ in right_subs_all:
-                    sub_pattern = catalog.get_unit(sub_text)
+                    sub_pattern = get_unit_with_fallback(sub_text, catalog, corpus_index)
                     if sub_pattern:
-                        right_eff_left.update(sub_pattern.left_words.keys())
-                        right_eff_right.update(sub_pattern.right_words.keys())
+                        for w in sub_pattern.left_words.keys():
+                            right_eff_left_counts[w] += 1
+                        for w in sub_pattern.right_words.keys():
+                            right_eff_right_counts[w] += 1
 
-                # Convert back to lists
-                left_eff_left = list(left_eff_left)
-                left_eff_right = list(left_eff_right)
-                right_eff_left = list(right_eff_left)
-                right_eff_right = list(right_eff_right)
+                # Convert to lists for candidate generation (keys only)
+                left_eff_left = list(left_eff_left_counts.keys())
+                left_eff_right = list(left_eff_right_counts.keys())
+                right_eff_left = list(right_eff_left_counts.keys())
+                right_eff_right = list(right_eff_right_counts.keys())
 
                 # Bootstrap right if not cached yet
                 if not right_subs:
@@ -788,11 +801,9 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                     right_energy = float('inf')
                     subparse_cache[(right_text, None)] = (right_subs, right_eff_left, right_eff_right, right_energy)
 
-                    # Add to GPU index for dynamic scoring
+                    # Add to GPU index for dynamic scoring (bootstrap: uniform weights)
                     from collections import Counter
-                    left_context_dict = Counter({w: 1 for w in right_eff_left})
-                    right_context_dict = Counter({w: 1 for w in right_eff_right})
-                    catalog.add_unit_to_gpu_index(right_text, left_context_dict, right_context_dict)
+                    catalog.add_unit_to_gpu_index(right_text, Counter({w: 1 for w in right_eff_left}), Counter({w: 1 for w in right_eff_right}))
 
                 # MUTUAL EXPANSION: Only proceed if we have context from BOTH sides
                 # This ensures we have actual fillers to seed the expansion
@@ -809,11 +820,9 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                     subparse_cache[(span_text, (left_text, right_text))] = (combined_subs, left_eff_left, left_eff_right, combined_energy)
                     html_buffer.append((span_text, (left_text, right_text), combined_energy, span_length))
 
-                    # Add to GPU index for dynamic scoring
+                    # Add to GPU index for dynamic scoring (bootstrap: uniform weights)
                     from collections import Counter
-                    left_context_dict = Counter({w: 1 for w in left_eff_left})
-                    right_context_dict = Counter({w: 1 for w in left_eff_right})
-                    catalog.add_unit_to_gpu_index(span_text, left_context_dict, right_context_dict)
+                    catalog.add_unit_to_gpu_index(span_text, Counter({w: 1 for w in left_eff_left}), Counter({w: 1 for w in left_eff_right}))
 
                     continue
 
@@ -822,16 +831,24 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                 # Score them by similarity to LEFT's context patterns
                 print(f"      [STEP 1] Get substitutes for LEFT: \"{left_text}\"")
                 print(f"        Candidates: {len(right_eff_left)} words from RIGHT's left_words")
+                left_scoring = 'containment'
                 all_left_subs = catalog.gpu_contextual_candidates(
                     target=left_text,
                     candidates=right_eff_left,
                     max_results=max_class_members * 3,
-                    scoring=scoring,
+                    scoring=left_scoring,
                     trace=True  # Debug scoring
                 )
                 all_left_subs = [(t, s) for t, s in all_left_subs if t != left_text]
                 left_subs_for_expansion = all_left_subs[:max_class_members]
                 print(f"        Found {len(all_left_subs)} scored, keeping top {len(left_subs_for_expansion)}")
+                # TRACE: Check specific verbs
+                for tv in ["leave", "left", "borrow", "borrowed", "wrote", "met", "called", "saw"]:
+                    found_all = [(t, s) for t, s in all_left_subs if t == tv]
+                    found_top = [(t, s) for t, s in left_subs_for_expansion if t == tv]
+                    if found_all:
+                        rank = next(i for i, (t, _) in enumerate(all_left_subs) if t == tv)
+                        print(f"        TRACE LEFT: '{tv}' score={found_all[0][1]:.4f}, rank={rank}, in top 500={bool(found_top)}")
 
                 # Collect right_words from left substitutes → candidates for RIGHT
                 # Context consensus: only keep words shared by multiple substitutes
@@ -839,7 +856,7 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                 context_word_counts = {}  # word → how many substitutes have it as right_word
                 n_subs_with_pattern = 0
                 for sub_text, _ in left_subs_for_expansion:
-                    sub_pattern = catalog.get_unit(sub_text)
+                    sub_pattern = get_unit_with_fallback(sub_text, catalog, corpus_index)
                     if sub_pattern:
                         n_subs_with_pattern += 1
                         for word in sub_pattern.right_words.keys():
@@ -858,11 +875,12 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                 # Score them by similarity to RIGHT's context patterns
                 print(f"    [STEP 2] Get substitutes for RIGHT: \"{right_text}\"")
                 print(f"      Candidates: {len(left_eff_right)} words from LEFT's right_words")
+                right_scoring = 'containment'
                 all_right_subs = catalog.gpu_contextual_candidates(
                     target=right_text,
                     candidates=left_eff_right,
                     max_results=max_class_members * 3,
-                    scoring=scoring
+                    scoring=right_scoring
                 )
                 all_right_subs = [(t, s) for t, s in all_right_subs if t != right_text]
                 right_subs_for_expansion = all_right_subs[:max_class_members]
@@ -874,7 +892,7 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                 context_word_counts_r = {}  # word → how many substitutes have it as left_word
                 n_rsubs_with_pattern = 0
                 for sub_text, _ in right_subs_for_expansion:
-                    sub_pattern = catalog.get_unit(sub_text)
+                    sub_pattern = get_unit_with_fallback(sub_text, catalog, corpus_index)
                     if sub_pattern:
                         n_rsubs_with_pattern += 1
                         for word in sub_pattern.left_words.keys():
@@ -888,91 +906,127 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                 print(f"      Context consensus: {len(context_word_counts_r)} raw → "
                       f"{len(left_contexts_of_right_element)} shared (≥{min_share_r}/{n_rsubs_with_pattern} subs)")
 
-                # Step 3: Score RIGHT candidates (consensus-filtered right_words from left subs)
-                # These are words that follow left substitutes, filtered to shared ones
-                # Score by similarity to RIGHT's context patterns
-                print(f"    [STEP 3] Score RIGHT candidates by matching RIGHT's constraints")
-                print(f"      Candidates: {len(right_contexts_of_left_element)} words (right_contexts of left element)")
-                print(f"      Sample: {sorted(list(right_contexts_of_left_element))[:10]}")
-                right_candidates = catalog.gpu_contextual_candidates(
-                    target=right_text,
-                    candidates=list(right_contexts_of_left_element),
-                    max_results=max_class_members + 1,
-                    scoring=scoring
-                )
-                right_candidates = [(t, s) for t, s in right_candidates if t != right_text][:max_class_members]
-                print(f"      Found {len(right_candidates)} scored candidates for RIGHT")
-
-                # Step 4: Score LEFT candidates (consensus-filtered left_words from right subs)
-                # These are words that precede right substitutes, filtered to shared ones
-                # Score by similarity to LEFT's context patterns
-                print(f"    [STEP 4] Score LEFT candidates by matching LEFT's constraints")
-                print(f"      Candidates: {len(left_contexts_of_right_element)} words (left_contexts of right element)")
-                print(f"      Sample: {sorted(list(left_contexts_of_right_element))[:10]}")
-                left_candidates = catalog.gpu_contextual_candidates(
-                    target=left_text,
-                    candidates=list(left_contexts_of_right_element),
-                    max_results=max_class_members + 1,
-                    scoring=scoring
-                )
-                left_candidates = [(t, s) for t, s in left_candidates if t != left_text][:max_class_members]
-                print(f"      Found {len(left_candidates)} scored candidates for LEFT")
+                # LEFT candidates = Step 1 subs (from *R, scored against *LEFT*)
+                # RIGHT candidates = Step 2 subs (from L*, scored against *RIGHT*)
+                # Steps 3-4 removed: they were a round-trip through single-word
+                # intermediaries that lost the specificity of the *R connection.
+                left_candidates = list(left_subs_for_expansion)
+                right_candidates = list(right_subs_for_expansion)
 
                 print(f"    Left candidates: {left_candidates[:5]}")
                 print(f"    Right candidates: {right_candidates[:5]}")
 
-                # NEW: Enhance right_candidates with multi-word combinations filtered on external context
-                # If right_text is multi-word and we have an external left context (left_text),
-                # add combinations of right's constituents that can follow left_text
-                if ' ' in right_text and ' ' not in left_text:  # right is multi-word, left is single-word
-                    print(f"    [ENHANCEMENT] Adding multi-word combinations for RIGHT \"{right_text}\" filtered on external context \"{left_text}\"")
+                # CACHED SUBSTITUTES: Use lower-level cached substitutes as primary candidates
+                # These are the multi-word substitutes already computed for each element
+                # (e.g., "his cellar", "your towel" for "my hat") — they are fundamental
+                # because their contexts record real corpus co-occurrences.
+                # Single-word candidates from Steps 2-4 supplement these.
 
-                    # Find constituent splits for right_text in cache
-                    right_constituent_splits = [(k, v) for k, v in subparse_cache.items()
-                                               if k[0] == right_text and isinstance(k[1], tuple) and len(k[1]) == 2]
+                if right_subs and len(right_subs) > 1:
+                    # right_subs are cached lower-level substitutes for right_text
+                    # Filter: keep those whose LEFT contexts include words distributionally
+                    # similar to left_text. E.g., "his cellar" has left context "find" —
+                    # score "find" against "found"'s contexts to check compatibility.
+                    cached_right_texts = [t for t, s in right_subs if t != right_text]
+                    if cached_right_texts:
+                        print(f"    [CACHED SUBS] Filtering {len(cached_right_texts)} cached subs for RIGHT \"{right_text}\" by left-context compatibility with \"{left_text}\"")
 
-                    if right_constituent_splits:
-                        # Use the first split (could try all splits and merge)
-                        split_key, split_value = right_constituent_splits[0]
-                        right_split_left, right_split_right = split_key[1]
+                        # For each cached sub, collect its left contexts and score them
+                        # as potential substitutes for left_text using containment
+                        scored_cached_right = []
+                        for sub_text, sub_score in right_subs:
+                            if sub_text == right_text:
+                                continue
+                            sub_pattern = get_unit_with_fallback(sub_text, catalog, corpus_index)
+                            if not sub_pattern:
+                                continue
+                            sub_left_ctx = list(sub_pattern.left_words.keys())
+                            if not sub_left_ctx:
+                                continue
+                            # Score the sub's left contexts as candidates for left_text
+                            # This asks: are the words preceding this sub (e.g. "find", "borrow")
+                            # distributionally similar to left_text (e.g. "found")?
+                            ctx_scores = catalog.gpu_contextual_candidates(
+                                target=left_text,
+                                candidates=sub_left_ctx,
+                                max_results=5,
+                                scoring=left_scoring
+                            )
+                            if ctx_scores:
+                                # Use best matching left context as the score
+                                best_ctx_score = ctx_scores[0][1]
+                                if best_ctx_score > 0:
+                                    scored_cached_right.append((sub_text, best_ctx_score))
 
-                        print(f"      Found constituent split: (\"{right_split_left}\", \"{right_split_right}\")")
+                        scored_cached_right = sorted(scored_cached_right, key=lambda x: -x[1])
+                        # TRACE: Check specific subs
+                        trace_subs = ["your gloves", "his wife", "your towel"]
+                        for ts in trace_subs:
+                            found_in_cached = [(t, s) for t, s in scored_cached_right if t == ts]
+                            found_in_right_subs = [(t, s) for t, s in right_subs if t == ts]
+                            print(f"      TRACE cached RIGHT: '{ts}' in right_subs={bool(found_in_right_subs)} (score={found_in_right_subs}), in scored_cached_right={bool(found_in_cached)} (score={found_in_cached})")
+                        print(f"      Found {len(scored_cached_right)} cached RIGHT subs with compatible left contexts")
+                        if scored_cached_right:
+                            print(f"      Sample cached RIGHT: {scored_cached_right[:5]}")
+                            # Merge: cached subs are primary, single-word subs supplement
+                            existing_texts = {t for t, _ in scored_cached_right}
+                            for t, s in right_candidates:
+                                if t not in existing_texts:
+                                    scored_cached_right.append((t, s))
+                                    existing_texts.add(t)
+                            right_candidates = sorted(scored_cached_right, key=lambda x: -x[1])[:max_class_members * 2]
+                            print(f"      Merged RIGHT candidates: {len(right_candidates)} total ({sum(1 for t, _ in right_candidates if ' ' in t)} multi-word)")
 
-                        # Get substitutes for each constituent
-                        r_left_subs, _, _, _, _, _ = get_best_parse(subparse_cache, right_split_left)
-                        r_right_subs, _, _, _, _, _ = get_best_parse(subparse_cache, right_split_right)
+                if left_subs and len(left_subs) > 1:
+                    # left_subs are cached lower-level substitutes for left_text
+                    # Filter: keep those whose RIGHT contexts include words distributionally
+                    # similar to right_text.
+                    cached_left_texts = [t for t, s in left_subs if t != left_text]
+                    if cached_left_texts:
+                        print(f"    [CACHED SUBS] Filtering {len(cached_left_texts)} cached subs for LEFT \"{left_text}\" by right-context compatibility with \"{right_text}\"")
 
-                        if r_left_subs and r_right_subs:
-                            print(f"      Forming combinations from {len(r_left_subs)} × {len(r_right_subs)} constituent substitutes")
-                            multi_word_candidates = []
+                        scored_cached_left = []
+                        for sub_text, sub_score in left_subs:
+                            if sub_text == left_text:
+                                continue
+                            sub_pattern = get_unit_with_fallback(sub_text, catalog, corpus_index)
+                            if not sub_pattern:
+                                continue
+                            sub_right_ctx = list(sub_pattern.right_words.keys())
+                            if not sub_right_ctx:
+                                continue
+                            # Score the sub's right contexts as candidates for right_text
+                            # This asks: are the words following this sub distributionally
+                            # similar to right_text?
+                            ctx_scores = catalog.gpu_contextual_candidates(
+                                target=right_text,
+                                candidates=sub_right_ctx,
+                                max_results=5,
+                                scoring=right_scoring
+                            )
+                            if ctx_scores:
+                                best_ctx_score = ctx_scores[0][1]
+                                if best_ctx_score > 0:
+                                    scored_cached_left.append((sub_text, best_ctx_score))
 
-                            for r_left_text, r_left_score in r_left_subs[:10]:
-                                for r_right_text, r_right_score in r_right_subs[:10]:
-                                    combo_text = f"{r_left_text} {r_right_text}"
-
-                                    # Check if combination exists in catalog
-                                    combo_pattern = catalog.get_unit(combo_text)
-                                    if not combo_pattern:
-                                        continue
-
-                                    # Filter on external context: can left_text precede this combination?
-                                    if left_text in combo_pattern.left_words:
-                                        combo_score = r_left_score * r_right_score
-                                        multi_word_candidates.append((combo_text, combo_score))
-
-                            print(f"      Found {len(multi_word_candidates)} multi-word combinations compatible with \"{left_text}\"")
-                            if multi_word_candidates:
-                                # Merge with right_candidates
-                                right_candidates.extend(multi_word_candidates)
-                                right_candidates = sorted(right_candidates, key=lambda x: -x[1])[:max_class_members * 2]
-                                print(f"      Enhanced RIGHT candidates (now {len(right_candidates)} total)")
-                                print(f"      Sample multi-word: {multi_word_candidates[:3]}")
+                        scored_cached_left = sorted(scored_cached_left, key=lambda x: -x[1])
+                        print(f"      Found {len(scored_cached_left)} cached LEFT subs with compatible right contexts")
+                        if scored_cached_left:
+                            print(f"      Sample cached LEFT: {scored_cached_left[:5]}")
+                            # Merge: cached subs are primary, single-word subs supplement
+                            existing_texts = {t for t, _ in scored_cached_left}
+                            for t, s in left_candidates:
+                                if t not in existing_texts:
+                                    scored_cached_left.append((t, s))
+                                    existing_texts.add(t)
+                            left_candidates = sorted(scored_cached_left, key=lambda x: -x[1])[:max_class_members * 2]
+                            print(f"      Merged LEFT candidates: {len(left_candidates)} total ({sum(1 for t, _ in left_candidates if ' ' in t)} multi-word)")
 
                 # Compute energies for left and right based on their substitution classes
-                left_consensus = compute_consensus_score(left_subs_for_expansion, catalog, left_text)
+                left_consensus = compute_consensus_score(left_subs_for_expansion, catalog, left_text, corpus_index=corpus_index)
                 left_energy = compute_energy(len(left_subs_for_expansion), left_consensus)
 
-                right_consensus = compute_consensus_score(right_subs_for_expansion, catalog, right_text)
+                right_consensus = compute_consensus_score(right_subs_for_expansion, catalog, right_text, corpus_index=corpus_index)
                 right_energy = compute_energy(len(right_subs_for_expansion), right_consensus)
 
                 print(f"    LEFT energy: {left_energy:.2f} (n={len(left_subs_for_expansion)}, consensus={left_consensus:.3f})")
@@ -999,6 +1053,17 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                 right_multiword = [t for t, _ in right_candidates if ' ' in t]
                 print(f"    Candidate types: LEFT has {len(left_multiword)} multi-word (of {len(left_candidates)}), RIGHT has {len(right_multiword)} multi-word (of {len(right_candidates)})")
 
+                # DEBUG: Trace specific examples
+                left_candidate_dict = {t: s for t, s in left_candidates}
+                right_candidate_dict = {t: s for t, s in right_candidates}
+                trace_pairs = [("leave", "your gloves"), ("left", "his wife"), ("borrow", "your towel"), ("borrowed", "your towel")]
+                for tl, tr in trace_pairs:
+                    l_in = tl in left_candidate_dict
+                    r_in = tr in right_candidate_dict
+                    combo = f"{tl} {tr}"
+                    combo_exists = get_unit_with_fallback(combo, catalog, corpus_index) is not None if l_in and r_in else None
+                    print(f"    TRACE: '{tl}' in LEFT={l_in} (score={left_candidate_dict.get(tl, 'N/A')}), '{tr}' in RIGHT={r_in} (score={right_candidate_dict.get(tr, 'N/A')}), '{combo}' in corpus={combo_exists}")
+
                 for left_sub, left_score in left_candidates:
                     for right_sub, right_score in right_candidates:
                         # Form the combined phrase
@@ -1022,43 +1087,89 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                         import math
                         path_score = math.log(1 + direct_bridges + left_validated + right_validated)
 
-                        # 2. Bidirectional overlap (EXISTING - kept for compatibility)
-                        left_overlap_score = 0.0
-                        right_pattern = get_unit_with_fallback(right_text, catalog, corpus_index)
-                        right_sub_pattern = get_unit_with_fallback(right_sub, catalog, corpus_index)
-                        if right_pattern and right_sub_pattern:
-                            right_left_ctx = set(right_pattern.left_words.keys())
-                            right_sub_left_ctx = set(right_sub_pattern.left_words.keys())
-                            if right_left_ctx and right_sub_left_ctx:
-                                intersection = len(right_left_ctx & right_sub_left_ctx)
-                                union = len(right_left_ctx | right_sub_left_ctx)
-                                left_overlap_score = intersection / union if union > 0 else 0.0
+                        # 2. Inner boundary diversity
+                        # Measure diversity among substitutes' contexts at the boundary
+                        # HIGH diversity = open contexts = good compositional unit
 
-                        right_overlap_score = 0.0
-                        left_pattern = get_unit_with_fallback(left_text, catalog, corpus_index)
-                        left_sub_pattern = get_unit_with_fallback(left_sub, catalog, corpus_index)
-                        if left_pattern and left_sub_pattern:
-                            left_right_ctx = set(left_pattern.right_words.keys())
-                            left_sub_right_ctx = set(left_sub_pattern.right_words.keys())
-                            if left_right_ctx and left_sub_right_ctx:
-                                intersection = len(left_right_ctx & left_sub_right_ctx)
-                                union = len(left_right_ctx | left_sub_right_ctx)
-                                right_overlap_score = intersection / union if union > 0 else 0.0
+                        # LEFT element: measure RIGHT-facing diversity (contexts at boundary)
+                        # Use unique/total ratio for more breadth
+                        left_right_diversity = 0.0
+                        if len(left_candidates) >= 3:
+                            all_right_contexts = []
+                            for lsub, _ in left_candidates[:100]:
+                                lsub_pattern = get_unit_with_fallback(lsub, catalog, corpus_index)
+                                if lsub_pattern:
+                                    all_right_contexts.extend(lsub_pattern.right_words.keys())
+                            if len(all_right_contexts) > 0:
+                                unique = len(set(all_right_contexts))
+                                total = len(all_right_contexts)
+                                left_right_diversity = unique / total  # High unique/total = high diversity
 
-                        overlap_bonus = math.sqrt(left_overlap_score * right_overlap_score) if (left_overlap_score > 0 and right_overlap_score > 0) else 0.0
+                        # RIGHT element: measure LEFT-facing diversity (contexts at boundary)
+                        right_left_diversity = 0.0
+                        if len(right_candidates) >= 3:
+                            all_left_contexts = []
+                            for rsub, _ in right_candidates[:100]:
+                                rsub_pattern = get_unit_with_fallback(rsub, catalog, corpus_index)
+                                if rsub_pattern:
+                                    all_left_contexts.extend(rsub_pattern.left_words.keys())
+                            if len(all_left_contexts) > 0:
+                                unique = len(set(all_left_contexts))
+                                total = len(all_left_contexts)
+                                right_left_diversity = unique / total  # High unique/total = high diversity
 
-                        # 3. Outer context consensus (NEW - unified with expansion)
+                        # Boundary diversity bonus: both sides should have diverse contexts
+                        boundary_diversity = 0.0
+                        if left_right_diversity > 0 and right_left_diversity > 0:
+                            boundary_diversity = math.sqrt(left_right_diversity * right_left_diversity)
+
+                        # 3. Outer context diversity (breaks symmetry)
+                        # Measure diversity among SUBSTITUTES' outer contexts
+                        # HIGH diversity = open, productive contexts = good unit
+
+                        # LEFT element: measure diversity in LEFT contexts (outer)
+                        left_outer_diversity = 0.0
+                        if len(left_candidates) >= 3:
+                            all_left_outer_contexts = []
+                            for lsub, _ in left_candidates[:100]:
+                                lsub_pattern = get_unit_with_fallback(lsub, catalog, corpus_index)
+                                if lsub_pattern:
+                                    all_left_outer_contexts.extend(lsub_pattern.left_words.keys())
+                            if len(all_left_outer_contexts) > 0:
+                                unique = len(set(all_left_outer_contexts))
+                                total = len(all_left_outer_contexts)
+                                left_outer_diversity = unique / total  # High unique/total = high diversity
+
+                        # RIGHT element: measure diversity in RIGHT contexts (outer)
+                        right_outer_diversity = 0.0
+                        if len(right_candidates) >= 3:
+                            all_right_outer_contexts = []
+                            for rsub, _ in right_candidates[:100]:
+                                rsub_pattern = get_unit_with_fallback(rsub, catalog, corpus_index)
+                                if rsub_pattern:
+                                    all_right_outer_contexts.extend(rsub_pattern.right_words.keys())
+                            if len(all_right_outer_contexts) > 0:
+                                unique = len(set(all_right_outer_contexts))
+                                total = len(all_right_outer_contexts)
+                                right_outer_diversity = unique / total  # High unique/total = high diversity
+
+                        # Combined: geometric mean of diversity values
+                        diversity_bonus = 0.0
+                        if left_outer_diversity > 0 and right_outer_diversity > 0:
+                            diversity_bonus = math.sqrt(left_outer_diversity * right_outer_diversity)
+
+                        # 4. Outer context consensus (existing - checks sentence context)
                         outer_context_score = compute_outer_context_score(
                             combined_text, outer_left_context, outer_right_context, catalog, corpus_index
                         )
 
-                        # Combined score: base * overlap * paths * outer_context
-                        # Weight the components: overlap and path_score are multiplicative bonuses
-                        combined_score = left_score * right_score * (1.0 + overlap_bonus) * (1.0 + path_score * 0.1) * (1.0 + outer_context_score)
+                        # Combined score: base * boundary_diversity * paths * outer_diversity * outer_context
+                        # Weight both diversities heavily to reward compositional units
+                        combined_score = left_score * right_score * (1.0 + boundary_diversity * 3.0) * (1.0 + path_score * 0.1) * (1.0 + diversity_bonus * 5.0) * (1.0 + outer_context_score)
 
                         # DEBUG: Track multi-word scoring
                         if ' ' in combined_text and combinations_in_catalog <= 5:
-                            print(f"      MULTIWORD: '{combined_text}' = {left_sub}+{right_sub}, score={combined_score:.4f} (base={left_score*right_score:.4f}, overlap={overlap_bonus:.4f}, paths={path_score:.4f}, outer={outer_context_score:.4f})")
+                            print(f"      MULTIWORD: '{combined_text}' = {left_sub}+{right_sub}, score={combined_score:.4f} (base={left_score*right_score:.4f}, boundary_div={boundary_diversity:.4f} [L→R={left_right_diversity:.3f},R→L={right_left_diversity:.3f}], paths={path_score:.4f}, outer_div={diversity_bonus:.4f} [L={left_outer_diversity:.3f},R={right_outer_diversity:.3f}], outer_ctx={outer_context_score:.4f})")
 
                         combined_candidates.append((combined_text, combined_score))
 
@@ -1088,21 +1199,31 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                 if combinations_in_catalog > 0 and combinations_in_catalog <= 10:
                     print(f"    Combinations found in catalog: {[t for t, s in combined_candidates[:10]]}")
 
-                # Sort by score and keep top (increase limit to handle sparsity)
-                combined_candidates = sorted(combined_candidates, key=lambda x: -x[1])[:max_class_members * 3]
+                # Sort by score and keep top per word-length
+                # Separate lists prevent shorter subs from crowding out full-length ones
+                from collections import defaultdict
+                by_length = defaultdict(list)
+                for t, s in combined_candidates:
+                    by_length[len(t.split())].append((t, s))
+
+                combined_candidates = []
+                for wlen in sorted(by_length.keys()):
+                    bucket = sorted(by_length[wlen], key=lambda x: -x[1])[:max_class_members * 3]
+                    combined_candidates.extend(bucket)
+
                 external_filtered_candidates = sorted(external_filtered_candidates, key=lambda x: -x[1])[:max_class_members * 2]
 
                 print(f"    Found {len(combined_candidates)} combined candidates, {len(external_filtered_candidates)} externally filtered")
 
-                # DEBUG: Show what types of candidates we have
-                single_word_combos = [t for t, s in combined_candidates if ' ' not in t]
+                # DEBUG: Show what types of candidates we have by word-length
+                for wlen in sorted(by_length.keys()):
+                    bucket = by_length[wlen]
+                    kept = [t for t, s in combined_candidates if len(t.split()) == wlen]
+                    top3 = sorted(bucket, key=lambda x: -x[1])[:3]
+                    print(f"    {wlen}-word subs: {len(bucket)} found, {len(kept)} kept, top: {[(t, f'{s:.3f}') for t, s in top3]}")
                 multi_word_combos = [t for t, s in combined_candidates if ' ' in t]
-                print(f"    Combined candidates breakdown: {len(single_word_combos)} single-word, {len(multi_word_combos)} multi-word")
                 if multi_word_combos:
                     print(f"    Sample multi-word combinations: {multi_word_combos[:5]}")
-                    # Show top multi-word with scores
-                    multi_word_with_scores = [(t, s) for t, s in combined_candidates if ' ' in t][:3]
-                    print(f"    Top multi-word with scores: {multi_word_with_scores}")
                 else:
                     print(f"    WARNING: No multi-word combinations despite {combinations_in_catalog} combinations in catalog")
 
@@ -1145,38 +1266,73 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                             import math
                             path_score = math.log(1 + direct_bridges + left_validated + right_validated)
 
-                            # 2. Bidirectional overlap
-                            left_overlap_score = 0.0
-                            right_pattern = get_unit_with_fallback(right_text, catalog, corpus_index)
-                            right_sub_pattern = get_unit_with_fallback(right_sub_text, catalog, corpus_index)
-                            if right_pattern and right_sub_pattern:
-                                right_left_ctx = set(right_pattern.left_words.keys())
-                                right_sub_left_ctx = set(right_sub_pattern.left_words.keys())
-                                if right_left_ctx and right_sub_left_ctx:
-                                    intersection = len(right_left_ctx & right_sub_left_ctx)
-                                    union = len(right_left_ctx | right_sub_left_ctx)
-                                    left_overlap_score = intersection / union if union > 0 else 0.0
+                            # 2. Inner boundary diversity (use unique/total ratio)
+                            # LEFT element: measure RIGHT-facing diversity (contexts at boundary)
+                            left_right_diversity = 0.0
+                            if len(left_agg_subs) >= 3:
+                                all_right_contexts = []
+                                for lsub_text, _, _, _ in left_agg_subs[:100]:
+                                    lsub_pattern = get_unit_with_fallback(lsub_text, catalog, corpus_index)
+                                    if lsub_pattern:
+                                        all_right_contexts.extend(lsub_pattern.right_words.keys())
+                                if len(all_right_contexts) > 0:
+                                    unique = len(set(all_right_contexts))
+                                    total = len(all_right_contexts)
+                                    left_right_diversity = unique / total
 
-                            right_overlap_score = 0.0
-                            left_pattern = get_unit_with_fallback(left_text, catalog, corpus_index)
-                            left_agg_pattern = get_unit_with_fallback(left_agg_text, catalog, corpus_index)
-                            if left_pattern and left_agg_pattern:
-                                left_right_ctx = set(left_pattern.right_words.keys())
-                                left_agg_right_ctx = set(left_agg_pattern.right_words.keys())
-                                if left_right_ctx and left_agg_right_ctx:
-                                    intersection = len(left_right_ctx & left_agg_right_ctx)
-                                    union = len(left_right_ctx | left_agg_right_ctx)
-                                    right_overlap_score = intersection / union if union > 0 else 0.0
+                            # RIGHT element: measure LEFT-facing diversity (contexts at boundary)
+                            right_left_diversity = 0.0
+                            if len(right_all_subs) >= 3:
+                                all_left_contexts = []
+                                for rsub_text, _, _, _ in right_all_subs[:100]:
+                                    rsub_pattern = get_unit_with_fallback(rsub_text, catalog, corpus_index)
+                                    if rsub_pattern:
+                                        all_left_contexts.extend(rsub_pattern.left_words.keys())
+                                if len(all_left_contexts) > 0:
+                                    unique = len(set(all_left_contexts))
+                                    total = len(all_left_contexts)
+                                    right_left_diversity = unique / total
 
-                            overlap_bonus = math.sqrt(left_overlap_score * right_overlap_score) if (left_overlap_score > 0 and right_overlap_score > 0) else 0.0
+                            boundary_diversity = 0.0
+                            if left_right_diversity > 0 and right_left_diversity > 0:
+                                boundary_diversity = math.sqrt(left_right_diversity * right_left_diversity)
 
-                            # 3. Outer context consensus
+                            # 3. Outer context diversity (use unique/total ratio)
+                            left_outer_diversity = 0.0
+                            if len(left_agg_subs) >= 3:
+                                all_left_outer_contexts = []
+                                for lsub_text, _, _, _ in left_agg_subs[:100]:
+                                    lsub_pattern = get_unit_with_fallback(lsub_text, catalog, corpus_index)
+                                    if lsub_pattern:
+                                        all_left_outer_contexts.extend(lsub_pattern.left_words.keys())
+                                if len(all_left_outer_contexts) > 0:
+                                    unique = len(set(all_left_outer_contexts))
+                                    total = len(all_left_outer_contexts)
+                                    left_outer_diversity = unique / total
+
+                            right_outer_diversity = 0.0
+                            if len(right_all_subs) >= 3:
+                                all_right_outer_contexts = []
+                                for rsub_text, _, _, _ in right_all_subs[:100]:
+                                    rsub_pattern = get_unit_with_fallback(rsub_text, catalog, corpus_index)
+                                    if rsub_pattern:
+                                        all_right_outer_contexts.extend(rsub_pattern.right_words.keys())
+                                if len(all_right_outer_contexts) > 0:
+                                    unique = len(set(all_right_outer_contexts))
+                                    total = len(all_right_outer_contexts)
+                                    right_outer_diversity = unique / total
+
+                            diversity_bonus = 0.0
+                            if left_outer_diversity > 0 and right_outer_diversity > 0:
+                                diversity_bonus = math.sqrt(left_outer_diversity * right_outer_diversity)
+
+                            # 4. Outer context score
                             outer_context_score = compute_outer_context_score(
                                 multilevel_text, outer_left_context, outer_right_context, catalog, corpus_index
                             )
 
                             # Combined score
-                            multilevel_score = left_agg_score * right_sub_score * (1.0 + overlap_bonus) * (1.0 + path_score * 0.1) * (1.0 + outer_context_score)
+                            multilevel_score = left_agg_score * right_sub_score * (1.0 + boundary_diversity * 3.0) * (1.0 + path_score * 0.1) * (1.0 + diversity_bonus * 5.0) * (1.0 + outer_context_score)
 
                             if multilevel_score > 0:
                                 multilevel_stats['scored'] += 1
@@ -1227,38 +1383,71 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                             import math
                             path_score = math.log(1 + direct_bridges + left_validated + right_validated)
 
-                            # 2. Bidirectional overlap
-                            left_overlap_score = 0.0
-                            right_pattern = get_unit_with_fallback(right_text, catalog, corpus_index)
-                            right_agg_pattern = get_unit_with_fallback(right_agg_text, catalog, corpus_index)
-                            if right_pattern and right_agg_pattern:
-                                right_left_ctx = set(right_pattern.left_words.keys())
-                                right_agg_left_ctx = set(right_agg_pattern.left_words.keys())
-                                if right_left_ctx and right_agg_left_ctx:
-                                    intersection = len(right_left_ctx & right_agg_left_ctx)
-                                    union = len(right_left_ctx | right_agg_left_ctx)
-                                    left_overlap_score = intersection / union if union > 0 else 0.0
+                            # 2. Inner boundary diversity (use unique/total ratio)
+                            left_right_diversity = 0.0
+                            if len(left_all_subs) >= 3:
+                                all_right_contexts = []
+                                for lsub_text, _, _, _ in left_all_subs[:100]:
+                                    lsub_pattern = get_unit_with_fallback(lsub_text, catalog, corpus_index)
+                                    if lsub_pattern:
+                                        all_right_contexts.extend(lsub_pattern.right_words.keys())
+                                if len(all_right_contexts) > 0:
+                                    unique = len(set(all_right_contexts))
+                                    total = len(all_right_contexts)
+                                    left_right_diversity = unique / total
 
-                            right_overlap_score = 0.0
-                            left_pattern = get_unit_with_fallback(left_text, catalog, corpus_index)
-                            left_sub_pattern = get_unit_with_fallback(left_sub_text, catalog, corpus_index)
-                            if left_pattern and left_sub_pattern:
-                                left_right_ctx = set(left_pattern.right_words.keys())
-                                left_sub_right_ctx = set(left_sub_pattern.right_words.keys())
-                                if left_right_ctx and left_sub_right_ctx:
-                                    intersection = len(left_right_ctx & left_sub_right_ctx)
-                                    union = len(left_right_ctx | left_sub_right_ctx)
-                                    right_overlap_score = intersection / union if union > 0 else 0.0
+                            right_left_diversity = 0.0
+                            if len(right_agg_subs) >= 3:
+                                all_left_contexts = []
+                                for rsub_text, _, _, _ in right_agg_subs[:100]:
+                                    rsub_pattern = get_unit_with_fallback(rsub_text, catalog, corpus_index)
+                                    if rsub_pattern:
+                                        all_left_contexts.extend(rsub_pattern.left_words.keys())
+                                if len(all_left_contexts) > 0:
+                                    unique = len(set(all_left_contexts))
+                                    total = len(all_left_contexts)
+                                    right_left_diversity = unique / total
 
-                            overlap_bonus = math.sqrt(left_overlap_score * right_overlap_score) if (left_overlap_score > 0 and right_overlap_score > 0) else 0.0
+                            boundary_diversity = 0.0
+                            if left_right_diversity > 0 and right_left_diversity > 0:
+                                boundary_diversity = math.sqrt(left_right_diversity * right_left_diversity)
 
-                            # 3. Outer context consensus
+                            # 3. Outer context diversity (use unique/total ratio)
+                            left_outer_diversity = 0.0
+                            if len(left_all_subs) >= 3:
+                                all_left_outer_contexts = []
+                                for lsub_text, _, _, _ in left_all_subs[:100]:
+                                    lsub_pattern = get_unit_with_fallback(lsub_text, catalog, corpus_index)
+                                    if lsub_pattern:
+                                        all_left_outer_contexts.extend(lsub_pattern.left_words.keys())
+                                if len(all_left_outer_contexts) > 0:
+                                    unique = len(set(all_left_outer_contexts))
+                                    total = len(all_left_outer_contexts)
+                                    left_outer_diversity = unique / total
+
+                            right_outer_diversity = 0.0
+                            if len(right_agg_subs) >= 3:
+                                all_right_outer_contexts = []
+                                for rsub_text, _, _, _ in right_agg_subs[:100]:
+                                    rsub_pattern = get_unit_with_fallback(rsub_text, catalog, corpus_index)
+                                    if rsub_pattern:
+                                        all_right_outer_contexts.extend(rsub_pattern.right_words.keys())
+                                if len(all_right_outer_contexts) > 0:
+                                    unique = len(set(all_right_outer_contexts))
+                                    total = len(all_right_outer_contexts)
+                                    right_outer_diversity = unique / total
+
+                            diversity_bonus = 0.0
+                            if left_outer_diversity > 0 and right_outer_diversity > 0:
+                                diversity_bonus = math.sqrt(left_outer_diversity * right_outer_diversity)
+
+                            # 4. Outer context score
                             outer_context_score = compute_outer_context_score(
                                 multilevel_text, outer_left_context, outer_right_context, catalog, corpus_index
                             )
 
                             # Combined score
-                            multilevel_score = left_sub_score * right_agg_score * (1.0 + overlap_bonus) * (1.0 + path_score * 0.1) * (1.0 + outer_context_score)
+                            multilevel_score = left_sub_score * right_agg_score * (1.0 + boundary_diversity * 3.0) * (1.0 + path_score * 0.1) * (1.0 + diversity_bonus * 5.0) * (1.0 + outer_context_score)
 
                             if multilevel_score > 0:
                                 multilevel_stats['scored'] += 1
@@ -1301,9 +1490,15 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                         for i, (text, score) in enumerate(multilevel_candidates[:5], 1):
                             print(f"        {i}. \"{text}\" (score={score:.3f})")
 
-                    # Merge into combined_candidates
+                    # Merge into combined_candidates (per word-length to avoid crowding)
                     combined_candidates.extend(multilevel_candidates)
-                    combined_candidates = sorted(combined_candidates, key=lambda x: -x[1])[:max_class_members * 4]
+                    by_length_ml = defaultdict(list)
+                    for t, s in combined_candidates:
+                        by_length_ml[len(t.split())].append((t, s))
+                    combined_candidates = []
+                    for wlen in sorted(by_length_ml.keys()):
+                        bucket = sorted(by_length_ml[wlen], key=lambda x: -x[1])[:max_class_members * 4]
+                        combined_candidates.extend(bucket)
                 else:
                     print(f"      No combinations passed catalog/corpus check (none of the {multilevel_stats['tried']} combinations exist in corpus)")
 
@@ -1321,19 +1516,73 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                     if not any(t == text for t, _, _ in all_substitutes_with_context):
                         all_substitutes_with_context.append((text, score, context_info))
 
-                # Sort by score and keep top
-                all_substitutes_with_context = sorted(all_substitutes_with_context, key=lambda x: -x[1])[:max_class_members * 3]
+                # Sort by score and keep top per word-length
+                by_length_final = defaultdict(list)
+                for t, s, c in all_substitutes_with_context:
+                    by_length_final[len(t.split())].append((t, s, c))
+                all_substitutes_with_context = []
+                for wlen in sorted(by_length_final.keys()):
+                    bucket = sorted(by_length_final[wlen], key=lambda x: -x[1])[:max_class_members * 3]
+                    all_substitutes_with_context.extend(bucket)
 
                 # Convert back to (text, score) format for energy computation
                 combined_candidates = [(text, score) for text, score, _ in all_substitutes_with_context]
 
-                # Compute energy for the combined span
-                combined_consensus = compute_consensus_score(combined_candidates, catalog, span_text)
-                combined_energy = compute_energy(len(combined_candidates), combined_consensus)
+                # Compute energy using Hamiltonian-aligned consensus (among substitutes' contexts)
+                # Measure consensus among combined_candidates' contexts (not with target)
+                # Use simple unique/total ratio for global diversity measure
+                combined_consensus = 0.01  # Default
+                if len(combined_candidates) >= 3:
+                    # Collect all contexts from top substitutes (use more for breadth)
+                    all_left_contexts = []
+                    all_right_contexts = []
+                    for sub_text, _ in combined_candidates[:100]:
+                        sub_pattern = get_unit_with_fallback(sub_text, catalog, corpus_index)
+                        if sub_pattern:
+                            all_left_contexts.extend(sub_pattern.left_words.keys())
+                            all_right_contexts.extend(sub_pattern.right_words.keys())
+
+                    # Compute consensus as 1 - (unique/total)
+                    # High unique/total = high diversity = low consensus
+                    left_consensus = 0.0
+                    if len(all_left_contexts) > 0:
+                        unique_left = len(set(all_left_contexts))
+                        total_left = len(all_left_contexts)
+                        left_consensus = 1.0 - (unique_left / total_left)
+
+                    right_consensus = 0.0
+                    if len(all_right_contexts) > 0:
+                        unique_right = len(set(all_right_contexts))
+                        total_right = len(all_right_contexts)
+                        right_consensus = 1.0 - (unique_right / total_right)
+
+                    # Average of left and right consensus
+                    if left_consensus > 0 and right_consensus > 0:
+                        combined_consensus = (left_consensus + right_consensus) / 2.0
+                    elif left_consensus > 0:
+                        combined_consensus = left_consensus
+                    elif right_consensus > 0:
+                        combined_consensus = right_consensus
+
+                # Count full-length substitutes (matching span word count)
+                full_length_subs_list = [(t, s) for t, s in combined_candidates if len(t.split()) == span_length]
+                full_length_subs = len(full_length_subs_list)
+                if span_length >= 3:
+                    print(f"      TRACE full_length: {full_length_subs} subs with {span_length} words")
+                    for t, s in full_length_subs_list[:10]:
+                        print(f"        '{t}' (score={s:.4f})")
+                    # Also check: is "borrow your towel" in combined_candidates at all?
+                    byt = [(t, s) for t, s in combined_candidates if 'borrow your' in t]
+                    if byt:
+                        print(f"      TRACE 'borrow your*' in combined: {byt[:5]}")
+                combined_energy = compute_energy(len(combined_candidates), combined_consensus, full_length_subs)
 
                 # Update context words from both sides
                 eff_left = list(set(left_eff_left) | set(right_eff_left))
                 eff_right = list(set(left_eff_right) | set(right_eff_right))
+                # Merge consensus counts from both sides for GPU index weighting
+                eff_left_counts = left_eff_left_counts + right_eff_left_counts
+                eff_right_counts = left_eff_right_counts + right_eff_right_counts
 
                 # Cache with split structure, energy, and origins
                 subparse_cache[(span_text, (left_text, right_text))] = (combined_candidates, eff_left, eff_right, combined_energy, origins_dict)
@@ -1356,19 +1605,15 @@ def analyze(phrase: str, catalog: UnitCatalog, parser: IncrementalBidirParser,
                         right_subs_for_expansion, right_eff_left, right_eff_right, right_energy
                     )
 
-                print(f"      COMBINED energy: {combined_energy:.2f} (n={len(combined_candidates)}, consensus={combined_consensus:.3f})")
+                print(f"      COMBINED energy: {combined_energy:.2f} (n={len(combined_candidates)}, consensus={combined_consensus:.3f}, full_length={full_length_subs})")
 
                 # Show top substitutes with context information
                 print(f"      Top substitutes with context info:")
                 for i, (text, score, context_info) in enumerate(all_substitutes_with_context[:5], 1):
                     print(f"        {i}. \"{text}\" (score={score:.3f}) [{context_info}]")
 
-                # Add to GPU index for dynamic scoring
-                # Convert context lists to dicts with equal weights
-                from collections import Counter
-                left_context_dict = Counter({w: 1 for w in eff_left})
-                right_context_dict = Counter({w: 1 for w in eff_right})
-                catalog.add_unit_to_gpu_index(span_text, left_context_dict, right_context_dict)
+                # Add to GPU index for dynamic scoring with consensus-weighted contexts
+                catalog.add_unit_to_gpu_index(span_text, eff_left_counts, eff_right_counts)
 
                 print(f"      Cache updated for \"{span_text}\" split (\"{left_text}\", \"{right_text}\"): {len(combined_candidates)} combined candidates")
 
@@ -1709,8 +1954,13 @@ def export_html_tree(phrase: str, tree, subparse_cache: dict, catalog: UnitCatal
         return ''.join(html_parts)
 
     # Helper function to create consistent IDs from span text
+    _node_counter = [0]  # Mutable container for closure
     def make_span_id(span_text):
         return f"subs-{span_text.replace(' ', '-')}"
+
+    def next_node_id():
+        _node_counter[0] += 1
+        return _node_counter[0]
 
     # Generate tree HTML recursively
     def render_node(node, depth=0):
@@ -1885,9 +2135,8 @@ def export_html_tree(phrase: str, tree, subparse_cache: dict, catalog: UnitCatal
             context_word: The sibling word that provides context
         """
         indent_class = f"indent-{min(depth, 5)}"
-        # Make ID unique by including context_word hash to avoid duplicate IDs across different parses
-        context_hash = id(context_word) if context_word else 0
-        span_id = make_span_id(word_text) + f'-leaf-{depth}-{context_hash}'
+        # Make ID unique with global counter to avoid duplicate IDs across different parses
+        span_id = make_span_id(word_text) + f'-leaf-{depth}-{next_node_id()}'
 
         result = f'<div class="{indent_class}">'
         result += f'<span class="span-text" onclick="toggleNode(\'{span_id}\')" style="cursor: pointer;">{word_text}</span>'
@@ -1967,7 +2216,7 @@ def export_html_tree(phrase: str, tree, subparse_cache: dict, catalog: UnitCatal
             info = ''
 
         # Create unique ID for this node's substitutes
-        span_id = make_span_id(span_text) + f'-alt-{depth}-{id(split)}'
+        span_id = make_span_id(span_text) + f'-alt-{depth}-{next_node_id()}'
 
         result = f'<div class="{indent_class}">'
         result += f'<span class="span-text" onclick="toggleNode(\'{span_id}\')" style="cursor: pointer;">{span_text}</span>'
