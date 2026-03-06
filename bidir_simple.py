@@ -461,6 +461,47 @@ class UnitCatalog:
         if scoring == 'pmi':
             # Use the pre-computed PMI scores as final (since we're PMI-focused)
             combined_scores = torch.tensor([pmi_scores[idx] for idx in candidate_list], dtype=torch.float32, device=DEVICE)
+        elif scoring == 'containment':
+            # Unweighted containment: what fraction of candidate's contexts appear
+            # anywhere in the target's contexts?
+            # This is asymmetric — measures how well the candidate fits INTO the target's space.
+            # Uses set membership (not consensus weights) so minority meaning groups
+            # score equally well as majority ones.
+            target_pattern = self.units.get(target)
+            if not target_pattern:
+                combined_scores = torch.zeros(len(candidate_list), dtype=torch.float32, device=DEVICE)
+            else:
+                target_left_set = set(target_pattern.left_words.keys())
+                target_right_set = set(target_pattern.right_words.keys())
+
+                scores = []
+                for cand_idx in candidate_list:
+                    cand_text = self.unit_list[cand_idx]
+                    cand_pattern = self.units.get(cand_text)
+                    if not cand_pattern:
+                        scores.append(0.0)
+                        continue
+
+                    # Left containment: what fraction of candidate's left_words
+                    # are present in the target's left context set?
+                    cand_left = cand_pattern.left_words
+                    if cand_left:
+                        left_overlap = sum(1 for w in cand_left if w in target_left_set)
+                        left_score = left_overlap / len(cand_left)
+                    else:
+                        left_score = 0.0
+
+                    # Right containment: same for right context words
+                    cand_right = cand_pattern.right_words
+                    if cand_right:
+                        right_overlap = sum(1 for w in cand_right if w in target_right_set)
+                        right_score = right_overlap / len(cand_right)
+                    else:
+                        right_score = 0.0
+
+                    scores.append((left_score + right_score) / 2.0)
+
+                combined_scores = torch.tensor(scores, dtype=torch.float32, device=DEVICE)
         else:
             # GPU-based cosine or ic_cosine - use batching to avoid memory issues
             batch_size = 1000  # Process candidates in batches
@@ -493,89 +534,20 @@ class UnitCatalog:
 
         if trace:
             print(f" Scored {len(candidate_list)} candidates using {scoring}")
-            print(f" Base cosine scores: min={combined_scores.min().item():.6f}, max={combined_scores.max().item():.6f}, mean={combined_scores.mean().item():.6f}")
+            print(f" Base {scoring} scores: min={combined_scores.min().item():.6f}, max={combined_scores.max().item():.6f}, mean={combined_scores.mean().item():.6f}")
             if combined_scores.max().item() == 0.0:
-                print(f" WARNING: All cosine scores are zero!")
-                print(f" Target vector norms: left={target_left.norm().item():.6f}, right={target_right.norm().item():.6f}")
+                print(f" WARNING: All scores are zero!")
+                if scoring not in ('containment', 'pmi'):
+                    print(f" Target vector norms: left={target_left.norm().item():.6f}, right={target_right.norm().item():.6f}")
                 if len(candidate_list) > 0:
                     sample_idx = candidate_list[0]
                     sample_left = self.gpu_left[sample_idx].float()
                     sample_right = self.gpu_right[sample_idx].float()
                     print(f" Sample candidate vector norms: left={sample_left.norm().item():.6f}, right={sample_right.norm().item():.6f}")
 
-        # Apply consensus weighting: boost candidates whose overlaps are shared by many others
-        # This creates "winner takes all" dynamics where common overlaps dominate
-        # VECTORIZED: Uses matrix operations instead of Python loops for efficiency
-
-        # Get target's context words for overlap checking
-        target_pattern = self.units.get(target)
-        if not target_pattern:
-            # No target pattern, skip consensus weighting
-            consensus_scores = torch.zeros(len(candidate_list), device=DEVICE, dtype=torch.float32)
-        else:
-            # Build set of target's context words (what overlaps are possible)
-            target_left_words = set(target_pattern.left_words.keys())
-            target_right_words = set(target_pattern.right_words.keys())
-            all_target_context = target_left_words | target_right_words
-
-            word_to_idx = {word: idx for idx, word in enumerate(sorted(all_target_context))}
-            n_candidates = len(candidate_list)
-            n_words = len(word_to_idx)
-
-            # Initialize overlap matrix and overlap counts
-            overlap_matrix = torch.zeros((n_candidates, n_words), device=DEVICE, dtype=torch.float32)
-            overlap_counts = torch.ones(n_candidates, device=DEVICE, dtype=torch.float32)  # avoid div by 0
-
-            # For each candidate, mark which of target's context words it shares
-            for i, cand_idx in enumerate(candidate_list):
-                cand_text = self.unit_list[cand_idx]
-                pattern = self.units.get(cand_text)
-                if not pattern:
-                    continue
-
-                num_overlaps = 0
-                # Check left_words overlap with target's left_words
-                for word in pattern.left_words.keys():
-                    if word in target_left_words and word in word_to_idx:
-                        j = word_to_idx[word]
-                        overlap_matrix[i, j] = 1.0
-                        num_overlaps += 1
-                # Check right_words overlap with target's right_words
-                for word in pattern.right_words.keys():
-                    if word in target_right_words and word in word_to_idx:
-                        j = word_to_idx[word]
-                        if overlap_matrix[i, j] == 0:  # avoid double-counting
-                            overlap_matrix[i, j] = 1.0
-                            num_overlaps += 1
-
-                if num_overlaps > 0:
-                    overlap_counts[i] = num_overlaps
-
-            # Step 2: Count how many candidates share each context word
-            # Shape: (N_words,) - counts across all candidates for each word
-            word_frequency = overlap_matrix.sum(dim=0)
-
-            # Step 3: Create frequency weight vector using log
-            # freq_weights[j] = log(count_of_word_j + 1)
-            freq_weights = torch.log(word_frequency + 1.0)
-
-            # Step 4: Vectorized consensus computation
-            # consensus_scores = overlap_matrix @ freq_weights / overlap_counts
-            # This computes: for each candidate, sum of log-frequencies of its overlaps, divided by count
-            if n_words > 0:
-                consensus_scores = torch.mv(overlap_matrix, freq_weights) / overlap_counts
-            else:
-                consensus_scores = torch.zeros(n_candidates, device=DEVICE, dtype=torch.float32)
-
-        if trace:
-            print(f" Consensus weights: min={consensus_scores.min().item():.3f}, max={consensus_scores.max().item():.3f}")
-
-        # Apply multiplicative boost: base_score * (1 + consensus_weight)
-        # This implements "winner takes all": candidates with high-consensus overlaps dominate
-        combined_scores = combined_scores * (1.0 + consensus_scores)
-
-        if trace:
-            print(f" After consensus weighting: min={combined_scores.min().item():.3f}, max={combined_scores.max().item():.3f}")
+        # Consensus weighting removed: it created "winner takes all" dynamics
+        # that suppressed minority meaning groups. With containment scoring and
+        # diversity-based energy, we want the full range of context subsets represented.
 
         candidate_indices = torch.tensor(candidate_list, dtype=torch.long, device=DEVICE)
         k = min(max_results, len(candidate_list))
@@ -990,6 +962,171 @@ class UnitCatalog:
                 expansions[unit] = {unit} | set(exp_list[:max_per_unit])
 
         return expansions
+
+
+class CorpusIndex:
+    """
+    Runtime corpus index for looking up phrases not in the catalog.
+    Uses efficient n-gram index with on-demand context extraction.
+    Includes LRU caching and usage tracking.
+    """
+
+    def __init__(self, corpus_file: str, max_ngram: int = 7, context_window: int = 1, cache_size: int = 10000):
+        self.corpus_file = corpus_file
+        self.max_ngram = max_ngram
+        self.context_window = context_window
+        self.cache_size = cache_size
+
+        # Ngram index: phrase -> list of positions in corpus
+        self.ngram_index = {}
+
+        # LRU cache: phrase -> ContextPattern
+        self.pattern_cache = {}
+        self.cache_order = []  # For LRU eviction
+
+        # Usage tracking: phrase -> access_count
+        self.usage_counts = Counter()
+
+        # Corpus tokens (loaded once)
+        self.tokens = []
+
+        # Build index
+        self._build_index()
+
+    def _build_index(self):
+        """Build n-gram index from corpus."""
+        import time
+        start = time.time()
+
+        print(f"Building corpus index from {self.corpus_file}...")
+
+        # Load corpus with sentence boundary markers
+        with open(self.corpus_file, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+
+        # Build token list with <S> and </S> markers between sentences
+        # Track which positions are boundary markers so we skip them in n-gram extraction
+        self.tokens = []
+        self._boundary_positions = set()
+        for line in lines:
+            line = line.strip().lower()
+            if line:
+                words = line.split()
+                if words:
+                    self._boundary_positions.add(len(self.tokens))
+                    self.tokens.append('__BOS__')
+                    self.tokens.extend(words)
+                    self._boundary_positions.add(len(self.tokens))
+                    self.tokens.append('__EOS__')
+
+        real_token_count = len(self.tokens) - len(self._boundary_positions)
+        print(f"  Loaded {real_token_count:,} tokens in {len(self._boundary_positions) // 2:,} sentences")
+
+        # Build n-gram index (only store positions, not contexts)
+        # Skip positions that would include boundary markers within the n-gram
+        # Pre-compute a boolean array for fast boundary checking
+        is_boundary = [False] * len(self.tokens)
+        for pos in self._boundary_positions:
+            is_boundary[pos] = True
+
+        for n in range(1, self.max_ngram + 1):
+            ngram_count = 0
+            for i in range(len(self.tokens) - n + 1):
+                # Skip if any position in the n-gram span is a boundary marker
+                skip = False
+                for j in range(i, i + n):
+                    if is_boundary[j]:
+                        skip = True
+                        break
+                if skip:
+                    continue
+
+                ngram = " ".join(self.tokens[i:i+n])
+
+                if ngram not in self.ngram_index:
+                    self.ngram_index[ngram] = []
+                self.ngram_index[ngram].append(i)
+                ngram_count += 1
+
+            # Only count unique n-grams
+            unique_count = sum(1 for k in self.ngram_index if k.count(' ') == n - 1)
+            print(f"  {n}-grams: {unique_count:,} unique")
+
+        elapsed = time.time() - start
+        print(f"  Index built in {elapsed:.1f}s")
+        print(f"  Total unique n-grams: {len(self.ngram_index):,}")
+
+    def get_unit(self, text: str) -> Optional[ContextPattern]:
+        """
+        Look up a phrase and extract its contexts.
+        Uses LRU cache to avoid repeated corpus scans.
+        """
+        # Track usage
+        self.usage_counts[text] += 1
+
+        # Check cache first
+        if text in self.pattern_cache:
+            # Move to end of LRU order
+            self.cache_order.remove(text)
+            self.cache_order.append(text)
+            return self.pattern_cache[text]
+
+        # Check if phrase exists in index
+        if text not in self.ngram_index:
+            return None
+
+        # Extract contexts from corpus
+        positions = self.ngram_index[text]
+        phrase_len = text.count(' ') + 1
+
+        left_words = Counter()
+        right_words = Counter()
+
+        for pos in positions:
+            # Extract left context
+            left_start = max(0, pos - self.context_window)
+            left_context = self.tokens[left_start:pos]
+            left_words.update(left_context)
+
+            # Extract right context
+            right_end = min(len(self.tokens), pos + phrase_len + self.context_window)
+            right_context = self.tokens[pos + phrase_len:right_end]
+            right_words.update(right_context)
+
+        # Create pattern
+        pattern = ContextPattern(
+            left_words=left_words,
+            right_words=right_words,
+            count=len(positions)
+        )
+
+        # Add to cache
+        self._cache_pattern(text, pattern)
+
+        return pattern
+
+    def _cache_pattern(self, text: str, pattern: ContextPattern):
+        """Add pattern to LRU cache."""
+        # Evict oldest if cache is full
+        if len(self.pattern_cache) >= self.cache_size:
+            oldest = self.cache_order.pop(0)
+            del self.pattern_cache[oldest]
+
+        # Add to cache
+        self.pattern_cache[text] = pattern
+        self.cache_order.append(text)
+
+    def get_usage_stats(self, top_n: int = 20):
+        """Get usage statistics for monitoring."""
+        print(f"\nCorpusIndex Usage Stats:")
+        print(f"  Cache size: {len(self.pattern_cache)} / {self.cache_size}")
+        print(f"  Total lookups: {sum(self.usage_counts.values())}")
+        print(f"  Unique phrases: {len(self.usage_counts)}")
+        print(f"\n  Top {top_n} most accessed:")
+        for phrase, count in self.usage_counts.most_common(top_n):
+            cached = "✓" if phrase in self.pattern_cache else " "
+            print(f"    [{cached}] {count:4d}x  \"{phrase}\"")
+
 
 def context_similarity_aggregated(ctx1_counter: Counter, ctx2_counter: Counter) -> float:
     """

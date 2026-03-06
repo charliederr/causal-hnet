@@ -76,12 +76,23 @@ class UnitCatalog:
         """Extract all n-grams and their contexts from corpus."""
         print(f"Building unit catalog from {corpus_file}...")
 
-        # Read corpus
+        # Read corpus - split into sentences (one per line) with boundary markers
         with open(corpus_file, 'r', encoding='utf-8') as f:
-            text = f.read().lower()
+            lines = f.readlines()
 
-        tokens = text.split()
-        print(f"Total tokens: {len(tokens):,}")
+        # Build token list with sentence boundary markers
+        # <S> marks sentence start, </S> marks sentence end
+        sentences = []
+        total_tokens = 0
+        for line in lines:
+            line = line.strip().lower()
+            if line:
+                words = line.split()
+                if words:
+                    sentences.append(['__BOS__'] + words + ['__EOS__'])
+                    total_tokens += len(words)
+
+        print(f"Total tokens: {total_tokens:,} in {len(sentences):,} sentences")
 
         # Extract all n-grams
         ngram_contexts = defaultdict(lambda: {
@@ -90,21 +101,27 @@ class UnitCatalog:
             'right_words': Counter()
         })
 
-        for n in range(1, self.max_ngram + 1):
-            for i in range(len(tokens) - n + 1):
-                ngram = " ".join(tokens[i:i+n])
+        for sent_tokens in sentences:
+            # sent_tokens includes <S> at [0] and </S> at [-1]
+            # Real words are at indices 1 to len-2
+            real_start = 1
+            real_end = len(sent_tokens) - 1  # exclusive: index of </S>
 
-                # Extract context
-                left_start = max(0, i - self.context_window)
-                left_context = tokens[left_start:i]
+            for n in range(1, self.max_ngram + 1):
+                for i in range(real_start, real_end - n + 1):
+                    ngram = " ".join(sent_tokens[i:i+n])
 
-                right_end = min(len(tokens), i + n + self.context_window)
-                right_context = tokens[i+n:right_end]
+                    # Extract context (may include <S> or </S> markers)
+                    left_start = max(0, i - self.context_window)
+                    left_context = sent_tokens[left_start:i]
 
-                # Store
-                ngram_contexts[ngram]['count'] += 1
-                ngram_contexts[ngram]['left_words'].update(left_context)
-                ngram_contexts[ngram]['right_words'].update(right_context)
+                    right_end = min(len(sent_tokens), i + n + self.context_window)
+                    right_context = sent_tokens[i+n:right_end]
+
+                    # Store
+                    ngram_contexts[ngram]['count'] += 1
+                    ngram_contexts[ngram]['left_words'].update(left_context)
+                    ngram_contexts[ngram]['right_words'].update(right_context)
 
         # Filter by frequency and store
         for ngram, data in ngram_contexts.items():

@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+*.swp
+*.swo
+
+# Large/generated outputs
+stdout*
+catalog_build.log
+*.zip
+dialog_corpus.txt
+
+# Corpus data (large, not source code)
+cornell\ movie-dialogs\ corpus/
+__MACOSX/
+
+# Large parse tree HTML outputs (>10 MB — generate with: python3 analyze_phrase.py "phrase")
+parse_tree_I_found_my_hat_again.html
+parse_tree_I_found_my_hat23-2-26.html
+
+# Old backup files
+*.bak
+*.bak2
+
+# Benchmark/scratch outputs
+benchmark_results.txt
+
+# Generated catalog (large binary — rebuild with preprocess_corpus.py)
+unit_catalog.pkl
+*.pkl
+
+# LaTeX build artifacts
+docs/*.aux
+docs/*.log
+docs/*.out
+
+# Scratch/experiment files
+check_again.py

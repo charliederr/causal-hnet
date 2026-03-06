@@ -30,6 +30,8 @@ Usage:
     python3 timeline_parse.py "she might leave"
     python3 timeline_parse.py "we should go" --top-n 15
     python3 timeline_parse.py "we should go" --save-png /tmp/timeline.png
+    python3 timeline_parse.py "i found my hat"
+    python3 timeline_parse.py "i found my hat" --save-png /tmp/timeline_4w.png
 """
 
 import sys
@@ -38,13 +40,6 @@ import argparse
 from collections import Counter
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
-# Add raster-sim to path for NeuralRasterGUI and TemporalSpikeEvent
-RASTER_SIM_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                              '..', 'raster-sim')
-RASTER_SIM_DIR = os.path.abspath(RASTER_SIM_DIR)
-if RASTER_SIM_DIR not in sys.path:
-    sys.path.insert(0, RASTER_SIM_DIR)
 
 # ContextPattern must be importable before pickle.load
 from bidir_simple import UnitCatalog, ContextPattern  # noqa: F401
@@ -252,6 +247,194 @@ def compute_timeline(phrase, catalog, corpus_index=None, top_n=10, max_n=200):
     return results, tokens[:3]
 
 
+def compute_timeline_4w(phrase, catalog, corpus_index=None, top_n=10, max_n=200):
+    """
+    Compute all eleven time bins for a 4-token phrase.
+
+    T0–T7: same 3-word processing for (w0, w1, w2).
+    T8–T10: 4-word extension when D = w3 arrives.
+
+      T8   +100ms   →FF D arrives — noun-class scored from det right-contexts
+      T9   +100ms   ←DIS *D — 4-word competition:
+                     COMP_L3 (ABC|D): 3-step cascade from left_3 → (subj, verb, det) trigrams
+                     COMP_L2 (AB|CD): reactivation of T6 COMP_AB (left_2 context)
+                     COMP_L1 (A|BCD): reactivation of T6 COMP_A  (left_1 context)
+      T10  +100ms   →FF ** — 4-word continuations:
+                     FF_R1 (ABC|D): 1-word D-class
+                     FF_R2 (AB|CD): 2-word (det, noun) CD-class
+                     FF_R3 (A|BCD): 3-word (verb, det, noun) BCD-class
+
+    Returns:
+        results: list of (time_bin, population, word, score, rank)
+        tokens:  first four lowercase tokens
+    """
+    tokens = phrase.lower().split()
+    if len(tokens) < 4:
+        raise ValueError(f'Need at least 4 tokens (got {len(tokens)}): {tokens}')
+
+    w0, w1, w2, w3 = tokens[:4]
+
+    left_0, right_0 = get_ctx(w0, catalog, corpus_index)
+    left_1, right_1 = get_ctx(w1, catalog, corpus_index)
+    left_2, right_2 = get_ctx(w2, catalog, corpus_index)
+    left_3, right_3 = get_ctx(w3, catalog, corpus_index)
+
+    results = []
+
+    def emit(tb, pop, items):
+        for rank, (word, score) in enumerate(items[:top_n]):
+            results.append((tb, pop, word, score, rank))
+
+    # ── T0–T7: 3-word processing for (w0, w1, w2) ────────────────────
+    emit(0, 'INPUT', [(w0, 1.0)])
+
+    ff_1 = score_subs(catalog, w1, right_0, max_n)
+    emit(1, 'INPUT', [(w1, 1.0)])
+    emit(1, 'FF',    ff_1)
+
+    ff1_left_ctx = consensus_ctx(ff_1[:top_n], catalog, corpus_index,
+                                 side='left', min_count=2)
+    dis_2 = score_subs(catalog, w0, ff1_left_ctx, max_n)
+    emit(2, 'DIS', dis_2)
+
+    dis2_right_ctx = consensus_ctx(dis_2[:top_n], catalog, corpus_index,
+                                   side='right', min_count=2)
+    ff_3 = score_subs(catalog, w1, dis2_right_ctx, max_n)
+    emit(3, 'FF', ff_3)
+
+    ff3_left_ctx = consensus_ctx(ff_3[:top_n], catalog, corpus_index,
+                                 side='left', min_count=2)
+    dis_4 = score_subs(catalog, w0, ff3_left_ctx, max_n)
+    emit(4, 'DIS', dis_4)
+
+    ff3_right_ctx = consensus_ctx(ff_3[:top_n], catalog, corpus_index,
+                                  side='right', min_count=2)
+    ff_5 = score_subs(catalog, w2, ff3_right_ctx, max_n)
+    emit(5, 'INPUT', [(w2, 1.0)])
+    emit(5, 'FF',    ff_5)
+
+    add_bigram(catalog, f'{w0} {w1}', left_0, right_1)
+    add_bigram(catalog, f'{w1} {w2}', left_1, right_2)
+
+    comp_AB_modals = score_subs(catalog, w1, left_2, max_n)
+    comp_AB_subj_pool = consensus_ctx(comp_AB_modals[:top_n], catalog, corpus_index,
+                                      side='left', min_count=2)
+    comp_AB_subjs = score_subs(catalog, w0, comp_AB_subj_pool, max_n)
+    comp_AB_pairs = [
+        (f'{subj} {modal}', s_sc * m_sc)
+        for subj, s_sc in comp_AB_subjs[:top_n]
+        for modal, m_sc in comp_AB_modals[:top_n]
+    ]
+    comp_AB_pairs.sort(key=lambda x: -x[1])
+    comp_AB = comp_AB_pairs[:max_n]
+
+    comp_A = score_subs(catalog, w0, left_1, max_n)
+    emit(6, 'COMP_AB', comp_AB)
+    emit(6, 'COMP_A',  comp_A)
+
+    ff_ab_verb_pool = consensus_ctx(comp_AB_modals[:top_n], catalog, corpus_index,
+                                    side='right', min_count=2)
+    ff_7_AB = score_subs(catalog, w2, ff_ab_verb_pool, max_n)
+
+    ff_a_modal_pool = consensus_ctx(comp_A[:top_n], catalog, corpus_index,
+                                    side='right', min_count=2)
+    ff_a_modals = score_subs(catalog, w1, ff_a_modal_pool, max_n)
+    ff_a_verb_pool = consensus_ctx(ff_a_modals[:top_n], catalog, corpus_index,
+                                   side='right', min_count=2)
+    ff_a_verbs = score_subs(catalog, w2, ff_a_verb_pool, max_n)
+    ff_7_A = sorted([
+        (f'{modal} {verb}', m_sc * v_sc)
+        for modal, m_sc in ff_a_modals[:top_n]
+        for verb, v_sc  in ff_a_verbs[:top_n]
+    ], key=lambda x: -x[1])[:max_n]
+    emit(7, 'FF_AB', ff_7_AB)
+    emit(7, 'FF_A',  ff_7_A)
+
+    # ── T8: →FF + D = w3 arrives ──────────────────────────────────────
+    # Right-contexts of T7 C-element substitutes (ff_7_AB = det/prep class)
+    # scored against w3 → D-class noun substitutes
+    ff8_pool = consensus_ctx(ff_7_AB[:top_n], catalog, corpus_index,
+                             side='right', min_count=2)
+    ff_8 = score_subs(catalog, w3, ff8_pool, max_n)
+    emit(8, 'INPUT', [(w3, 1.0)])
+    emit(8, 'FF',    ff_8)
+
+    # ── T9: ←DIS *D — 4-word competition ─────────────────────────────
+    # Register CD bigram and ABC/BCD multi-word units
+    add_bigram(catalog, f'{w2} {w3}',       left_2, right_3)   # CD
+    add_bigram(catalog, f'{w0} {w1} {w2}',  left_0, right_2)   # ABC
+    add_bigram(catalog, f'{w1} {w2} {w3}',  left_1, right_3)   # BCD
+
+    # COMP_L3 (ABC|D): 3-step DIS cascade from D's left-context
+    # left_3 = left-contexts of w3 ("hat") = det/possessive class
+    comp_l3_dets  = score_subs(catalog, w2, left_3, max_n)          # det-subs for w2
+    comp_l3_vpool = consensus_ctx(comp_l3_dets[:top_n], catalog, corpus_index,
+                                  side='left', min_count=2)
+    comp_l3_verbs = score_subs(catalog, w1, comp_l3_vpool, max_n)   # verb-subs for w1
+    comp_l3_spool = consensus_ctx(comp_l3_verbs[:top_n], catalog, corpus_index,
+                                  side='left', min_count=2)
+    comp_l3_subjs = score_subs(catalog, w0, comp_l3_spool, max_n)   # subj-subs for w0
+    comp_L3 = sorted([
+        (f'{s} {v} {d}', s_sc * v_sc * d_sc)
+        for s, s_sc in comp_l3_subjs[:top_n]
+        for v, v_sc in comp_l3_verbs[:top_n]
+        for d, d_sc in comp_l3_dets[:top_n]
+    ], key=lambda x: -x[1])[:max_n]
+
+    # COMP_L2 (AB|CD): reactivation — CD's left-context = left_2, same as T6 COMP_AB
+    comp_L2 = comp_AB  # identical computation (left_2 context unchanged)
+
+    # COMP_L1 (A|BCD): reactivation — BCD's left-context = left_1, same as T6 COMP_A
+    comp_L1 = comp_A   # identical computation (left_1 context unchanged)
+
+    emit(9, 'COMP_L3', comp_L3)
+    emit(9, 'COMP_L2', comp_L2)
+    emit(9, 'COMP_L1', comp_L1)
+
+    # ── T10: →FF ** — 4-word continuations ────────────────────────────
+
+    # FF_R1 (ABC|D): single-word D-class — right-contexts of det winners → noun subs
+    ff_r1_pool = consensus_ctx(comp_l3_dets[:top_n], catalog, corpus_index,
+                               side='right', min_count=2)
+    ff_R1 = score_subs(catalog, w3, ff_r1_pool, max_n)
+
+    # FF_R2 (AB|CD): 2-word (det, noun) CD-class — 2-step from verb right-contexts
+    ff_r2_dpool = consensus_ctx(comp_AB_modals[:top_n], catalog, corpus_index,
+                                side='right', min_count=2)
+    ff_r2_dets   = score_subs(catalog, w2, ff_r2_dpool, max_n)
+    ff_r2_npool  = consensus_ctx(ff_r2_dets[:top_n], catalog, corpus_index,
+                                 side='right', min_count=2)
+    ff_r2_nouns  = score_subs(catalog, w3, ff_r2_npool, max_n)
+    ff_R2 = sorted([
+        (f'{d} {n}', d_sc * n_sc)
+        for d, d_sc in ff_r2_dets[:top_n]
+        for n, n_sc in ff_r2_nouns[:top_n]
+    ], key=lambda x: -x[1])[:max_n]
+
+    # FF_R3 (A|BCD): 3-word (verb, det, noun) BCD-class — 3-step from subject right-contexts
+    ff_r3_vpool  = consensus_ctx(comp_A[:top_n], catalog, corpus_index,
+                                 side='right', min_count=2)
+    ff_r3_verbs  = score_subs(catalog, w1, ff_r3_vpool, max_n)
+    ff_r3_dpool  = consensus_ctx(ff_r3_verbs[:top_n], catalog, corpus_index,
+                                 side='right', min_count=2)
+    ff_r3_dets   = score_subs(catalog, w2, ff_r3_dpool, max_n)
+    ff_r3_npool  = consensus_ctx(ff_r3_dets[:top_n], catalog, corpus_index,
+                                 side='right', min_count=2)
+    ff_r3_nouns  = score_subs(catalog, w3, ff_r3_npool, max_n)
+    ff_R3 = sorted([
+        (f'{v} {d} {n}', v_sc * d_sc * n_sc)
+        for v, v_sc in ff_r3_verbs[:top_n]
+        for d, d_sc in ff_r3_dets[:top_n]
+        for n, n_sc in ff_r3_nouns[:top_n]
+    ], key=lambda x: -x[1])[:max_n]
+
+    emit(10, 'FF_R1', ff_R1)
+    emit(10, 'FF_R2', ff_R2)
+    emit(10, 'FF_R3', ff_R3)
+
+    return results, tokens[:4]
+
+
 # ── Build TemporalSpikeEvents ─────────────────────────────────────────
 
 def build_events(results):
@@ -299,17 +482,40 @@ def main():
     catalog.build_gpu_index(min_freq=args.min_freq)
     print(f'Catalog loaded ({len(catalog.units)} units).\n')
 
-    print(f'Computing timeline for: "{args.phrase}"')
-    results, tokens = compute_timeline(
-        args.phrase, catalog,
-        top_n=args.top_n,
-        max_n=args.max_n,
-    )
+    n_tokens = len(args.phrase.split())
+    print(f'Computing timeline for: "{args.phrase}" ({n_tokens} tokens)')
 
     from neural_raster import NeuralRasterGUI
-    events = build_events(results)
-    title = f'Neural Timeline: "{args.phrase}"'
-    gui = NeuralRasterGUI(events, title=title)
+
+    if n_tokens >= 4:
+        from neural_raster import (
+            POPULATIONS_4W, POP_LABELS_4W, POP_COLORS_4W, POP_TOP_N_4W,
+            N_TIME_BINS_4W, TIME_BIN_LABELS_4W, TIME_BIN_COLORS_4W,
+        )
+        results, tokens = compute_timeline_4w(
+            args.phrase, catalog,
+            top_n=args.top_n,
+            max_n=args.max_n,
+        )
+        events = build_events(results)
+        title  = f'Neural Timeline: "{args.phrase}"'
+        gui = NeuralRasterGUI(events, title=title,
+                              populations=POPULATIONS_4W,
+                              pop_labels=POP_LABELS_4W,
+                              pop_colors=POP_COLORS_4W,
+                              pop_top_n=POP_TOP_N_4W,
+                              n_time_bins=N_TIME_BINS_4W,
+                              time_bin_labels=TIME_BIN_LABELS_4W,
+                              time_bin_colors=TIME_BIN_COLORS_4W)
+    else:
+        results, tokens = compute_timeline(
+            args.phrase, catalog,
+            top_n=args.top_n,
+            max_n=args.max_n,
+        )
+        events = build_events(results)
+        title  = f'Neural Timeline: "{args.phrase}"'
+        gui = NeuralRasterGUI(events, title=title)
 
     if args.save_png:
         gui.fig.savefig(args.save_png, dpi=150, bbox_inches='tight')
