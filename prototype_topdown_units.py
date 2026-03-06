@@ -16,6 +16,7 @@ from collections import defaultdict, Counter
 from dataclasses import dataclass
 from typing import List, Optional, Tuple, Dict
 import math
+import string
 
 # =============================================================================
 # DATA STRUCTURES
@@ -65,7 +66,7 @@ class UnitCatalog:
     Catalog of n-gram units (n=1,2,3,4) with their corpus contexts.
     """
 
-    def __init__(self, min_freq=5, max_ngram=4, context_window=3):
+    def __init__(self, min_freq=5, max_ngram=4, context_window=1):
         self.min_freq = min_freq
         self.max_ngram = max_ngram
         self.context_window = context_window
@@ -75,12 +76,23 @@ class UnitCatalog:
         """Extract all n-grams and their contexts from corpus."""
         print(f"Building unit catalog from {corpus_file}...")
 
-        # Read corpus
+        # Read corpus - split into sentences (one per line) with boundary markers
         with open(corpus_file, 'r', encoding='utf-8') as f:
-            text = f.read().lower()
+            lines = f.readlines()
 
-        tokens = text.split()
-        print(f"Total tokens: {len(tokens):,}")
+        # Build token list with sentence boundary markers
+        # <S> marks sentence start, </S> marks sentence end
+        sentences = []
+        total_tokens = 0
+        for line in lines:
+            line = line.strip().lower()
+            if line:
+                words = line.split()
+                if words:
+                    sentences.append(['__BOS__'] + words + ['__EOS__'])
+                    total_tokens += len(words)
+
+        print(f"Total tokens: {total_tokens:,} in {len(sentences):,} sentences")
 
         # Extract all n-grams
         ngram_contexts = defaultdict(lambda: {
@@ -89,30 +101,40 @@ class UnitCatalog:
             'right_words': Counter()
         })
 
-        for n in range(1, self.max_ngram + 1):
-            for i in range(len(tokens) - n + 1):
-                ngram = " ".join(tokens[i:i+n])
+        for sent_tokens in sentences:
+            # sent_tokens includes <S> at [0] and </S> at [-1]
+            # Real words are at indices 1 to len-2
+            real_start = 1
+            real_end = len(sent_tokens) - 1  # exclusive: index of </S>
 
-                # Extract context
-                left_start = max(0, i - self.context_window)
-                left_context = tokens[left_start:i]
+            for n in range(1, self.max_ngram + 1):
+                for i in range(real_start, real_end - n + 1):
+                    ngram = " ".join(sent_tokens[i:i+n])
 
-                right_end = min(len(tokens), i + n + self.context_window)
-                right_context = tokens[i+n:right_end]
+                    # Extract context (may include <S> or </S> markers)
+                    left_start = max(0, i - self.context_window)
+                    left_context = sent_tokens[left_start:i]
 
-                # Store
-                ngram_contexts[ngram]['count'] += 1
-                ngram_contexts[ngram]['left_words'].update(left_context)
-                ngram_contexts[ngram]['right_words'].update(right_context)
+                    right_end = min(len(sent_tokens), i + n + self.context_window)
+                    right_context = sent_tokens[i+n:right_end]
+
+                    # Store
+                    ngram_contexts[ngram]['count'] += 1
+                    ngram_contexts[ngram]['left_words'].update(left_context)
+                    ngram_contexts[ngram]['right_words'].update(right_context)
 
         # Filter by frequency and store
         for ngram, data in ngram_contexts.items():
             if data['count'] >= self.min_freq:
-                self.units[ngram] = ContextPattern(
-                    left_words=data['left_words'],
-                    right_words=data['right_words'],
-                    count=data['count']
-                )
+                # Skip n-grams that start or end with punctuation (keeps contractions)
+                first_char = ngram[0] if ngram else ''
+                last_char = ngram[-1] if ngram else ''
+                if first_char not in string.punctuation and last_char not in string.punctuation:
+                    self.units[ngram] = ContextPattern(
+                        left_words=data['left_words'],
+                        right_words=data['right_words'],
+                        count=data['count']
+                    )
 
         print(f"Extracted {len(self.units):,} units (min_freq={self.min_freq})")
         print(f"  1-grams: {sum(1 for u in self.units if ' ' not in u):,}")
